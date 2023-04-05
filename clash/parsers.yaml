@@ -1,0 +1,8 @@
+# To use configuration.js need to add parsers.
+# Please go to Setting => Profiles => Parsers.
+
+parsers:
+  - url: https://subscription.link/a-sub
+    file: "YOUR_PATH/configuration.js"
+  - url: https://subscription.link/b-sub
+    file: "YOUR_PATH/configuration.js"

@@ -1,0 +1,223 @@
+name: Eastern Network
+desc: Replace original config.
+proxy-groups: #!replace
+  - name: 🛣️ 科学上网
+    type: select
+    proxies:
+      - DIRECT
+      - 🌟 目标节点
+      - 🌠 故障切换
+      - 🇭🇰 香港节点
+      - 🇯🇵 日本节点
+  - name: 🌊 规则逃逸
+    type: select
+    proxies:
+      - DIRECT
+      - 🛣️ 科学上网
+  - name: 🌤️ 特殊控制
+    type: select
+    proxies:
+      - REJECT
+      - 🌟 目标节点
+      - 🌠 故障切换
+      - 🇭🇰 香港节点
+      - 🇯🇵 日本节点
+  - name: 🌟 目标节点
+    type: select
+    proxies:
+      - REJECT
+      - 🇷🇺 俄罗斯 01 RT IPv6
+      - 🇷🇺 俄罗斯 02 RT/TTK IPv6
+      - 🇷🇺 俄罗斯 03 CN2 IPv6（2.2倍率）
+      - 卢森堡 01 Cogent（0.5倍率/无版权）
+      - 🇹🇼 台湾 01 HiNet
+      - 🇹🇼 台湾 02 HiNet
+      - 🇹🇷 土耳其 01 Cogent
+      - 🇧🇷 巴西 01 Ascenty
+      - 🇩🇪 德国 01 GIA CN2（1.9倍率）
+      - 🇩🇪 德国 03 Cogent/Tata IPv6
+      - 🇸🇬 新加坡 01 Cogent IPv6（流媒体）
+      - 🇸🇬 新加坡 02 PCCW（2.4倍率）
+      - 🇯🇵 日本 01 电信/沪日专线（3倍率）
+      - 🇯🇵 日本 02 电信/沪日专线（3倍率）
+      - 🇯🇵 日本 05 NTT IPv6
+      - 🇯🇵 日本 06 M247 IPv6
+      - 🇯🇵 日本 07 IIJ
+      - 🇯🇵 日本 09 IIJ
+      - 🇯🇵 日本 11 IIJ IPv6
+      - 🇯🇵 日本 13 IIJ IPv6
+      - 🇯🇵 日本 15 IIJ
+      - 🇯🇵 日本 17 IIJ
+      - 🇯🇵 日本 19 IIJ
+      - 🇯🇵 日本 21 NTT
+      - 🇦🇺 澳大利亚 01 NTT IPv6
+      - 🇺🇲 美国 01 GIA CN2 IPv6
+      - 🇺🇲 美国 03 GIA CN2 IPv6
+      - 🇺🇲 美国 05 Cogent IPv6（流媒体）
+      - 🇬🇧 英国 01 NTT/GTT
+      - 🇦🇷 阿根廷 01 Telecom
+      - 🇦🇷 阿根廷 02 Velocom
+      - 🇰🇷 韩国 01 SK（2.7倍率）
+      - 🇭🇰 香港 01 电信/深港专线（2.5倍率）
+      - 🇭🇰 香港 02 电信/深港专线（2.5倍率）
+      - 🇭🇰 香港 05 移动/深港专线（2倍率）
+      - 🇭🇰 香港 06 移动/深港专线（2倍率）
+      - 🇭🇰 香港 09 HKT商宽（0.5倍率）
+      - 🇭🇰 香港 10 HKT家宽（0.5倍率）
+      - 🇭🇰 香港 11 HKBN家宽（0.5倍率）
+      - 🇭🇰 香港 12 NTT IPv6
+      - 🇭🇰 香港 13 Cogent IPv6（流媒体）
+  - name: 🇭🇰 香港节点
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+    lazy: true
+    proxies:
+      - 🇭🇰 香港 01 电信/深港专线（2.5倍率）
+      - 🇭🇰 香港 02 电信/深港专线（2.5倍率）
+      - 🇭🇰 香港 05 移动/深港专线（2倍率）
+      - 🇭🇰 香港 06 移动/深港专线（2倍率）
+      - 🇭🇰 香港 09 HKT商宽（0.5倍率）
+      - 🇭🇰 香港 10 HKT家宽（0.5倍率）
+      - 🇭🇰 香港 11 HKBN家宽（0.5倍率）
+      - 🇭🇰 香港 12 NTT IPv6
+  - name: 🇯🇵 日本节点
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+    lazy: true
+    proxies:
+      - 🇯🇵 日本 01 电信/沪日专线（3倍率）
+      - 🇯🇵 日本 02 电信/沪日专线（3倍率）
+      - 🇯🇵 日本 05 NTT IPv6
+      - 🇯🇵 日本 06 M247 IPv6
+      - 🇯🇵 日本 07 IIJ
+      - 🇯🇵 日本 09 IIJ
+      - 🇯🇵 日本 11 IIJ IPv6
+      - 🇯🇵 日本 13 IIJ IPv6
+      - 🇯🇵 日本 15 IIJ
+      - 🇯🇵 日本 17 IIJ
+      - 🇯🇵 日本 19 IIJ
+      - 🇯🇵 日本 21 NTT
+  - name: 🌠 故障切换
+    type: fallback
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+    lazy: true
+    proxies:
+      - 🇭🇰 香港 05 移动/深港专线（2倍率）
+      - 🇭🇰 香港 06 移动/深港专线（2倍率）
+      - 🇭🇰 香港 01 电信/深港专线（2.5倍率）
+      - 🇭🇰 香港 02 电信/深港专线（2.5倍率）
+      - 🇯🇵 日本 01 电信/沪日专线（3倍率）
+      - 🇯🇵 日本 02 电信/沪日专线（3倍率）
+rules: #!replace
+  - PROCESS-NAME,aria2c.exe,DIRECT
+  - PROCESS-NAME,BitComet_x64.exe,DIRECT
+  - PROCESS-NAME,Motrix.exe,DIRECT
+  - RULE-SET,Customize-Reject,REJECT
+  - RULE-SET,Customize-Special,🌤️ 特殊控制
+  - RULE-SET,Customize-Direct,DIRECT
+  - RULE-SET,Customize-Proxy,🛣️ 科学上网
+  - RULE-SET,Remote-Applications,DIRECT
+  - RULE-SET,Remote-Apple,DIRECT
+  - RULE-SET,Remote-iCloud,DIRECT
+  - RULE-SET,Remote-Reject,REJECT
+  - RULE-SET,Remote-Proxy,🛣️ 科学上网
+  - RULE-SET,Remote-GFW,🛣️ 科学上网
+  - RULE-SET,Remote-Direct,DIRECT
+  - RULE-SET,Remote-Private,DIRECT
+  - RULE-SET,Remote-Greatfire,🛣️ 科学上网
+  - RULE-SET,Remote-Tld-not-cn,🛣️ 科学上网
+  - RULE-SET,Remote-Telegramcidr,🛣️ 科学上网,no-resolve
+  - RULE-SET,Remote-Cncidr,DIRECT,no-resolve
+  - RULE-SET,Remote-Lancidr,DIRECT,no-resolve
+  - GEOIP,LAN,DIRECT,no-resolve
+  - GEOIP,CN,DIRECT,no-resolve
+  - MATCH,🌊 规则逃逸
+rule-providers: #!replace
+  Remote-Reject:
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt
+    interval: 86400
+  Remote-Proxy:
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/proxy.txt
+    interval: 86400
+  Remote-Direct:
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/direct.txt
+    interval: 86400
+  Remote-Private:
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt
+    interval: 86400
+  Remote-GFW:
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt
+    interval: 86400
+  Remote-Greatfire:
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/greatfire.txt
+    interval: 86400
+  Remote-Tld-not-cn:
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/tld-not-cn.txt
+    interval: 86400
+  Remote-Telegramcidr:
+    type: http
+    behavior: ipcidr
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt
+    interval: 86400
+  Remote-Cncidr:
+    type: http
+    behavior: ipcidr
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt
+    interval: 86400
+  Remote-Lancidr:
+    type: http
+    behavior: ipcidr
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt
+    interval: 86400
+  Remote-Applications:
+    type: http
+    behavior: classical
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt
+    interval: 86400
+  Remote-iCloud:
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt
+    interval: 86400
+  Remote-Apple:
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt
+    interval: 86400
+  Customize-Special:
+    type: http
+    behavior: domain
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/special.yaml
+    interval: 86400
+  Customize-Direct:
+    type: http
+    behavior: domain
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/direct.yaml
+    interval: 86400
+  Customize-Reject:
+    type: http
+    behavior: domain
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/reject.yaml
+    interval: 86400
+  Customize-Proxy:
+    type: http
+    behavior: domain
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/proxy.yaml
+    interval: 86400
