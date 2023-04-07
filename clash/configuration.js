@@ -31,14 +31,14 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     "Remote-Apple": { ...httpDomain },
   }
   // Personal rule provider will separate into remote access and local access.
-  // Remote access. => https://raw.githubusercontent.com/dyaln127c/proxy-rules/main/customize%20rules/
+  // Remote access. => https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/
   const ruleProvidersWithPersonalHttp = {
     "Customize-Special": { ...httpDomain },
     "Customize-Direct": { ...httpDomain },
     "Customize-Reject": { ...httpDomain },
     "Customize-Proxy": { ...httpDomain }
   };
-  // Local access. => H:/Proxy Rules/rules/
+  // Local access. => path.resolve(__dirname, "..\\) + "\\customize rules\\"
   const ruleProvidersWithPersonalFile = {
     "Customize-Special": { ...fileDomain },
     "Customize-Direct": { ...fileDomain },
@@ -47,7 +47,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   };
 
   const path = require("path");
-  
+
   // Setup url or path for rule providers.
   const remote = "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/";
   const remotePersonal = "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/";
@@ -77,8 +77,8 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
 
   // User-defined rules will replace original rules.
   obj["rules"] = [
-    "PROCESS-NAME,aria2c.exe,DIRECT",
     "PROCESS-NAME,BitComet_x64.exe,DIRECT",
+    "PROCESS-NAME,aria2c.exe,DIRECT",
     "PROCESS-NAME,Motrix.exe,DIRECT",
     "RULE-SET,Customize-Reject,REJECT", // personal rules
     "RULE-SET,Customize-Special,🌤️ 特殊控制", // personal rules (Special for ChatGPT)
@@ -155,6 +155,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
 
   // Special group for Cola Cloud.
   let proxyGroupHongKongOverseas;
+  let proxyGroupLoadBalance;
   if (isColaCloud) {
     proxyGroupHongKongOverseas = {
       name: "🇭🇰 海外节点",
@@ -166,6 +167,17 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     }
     proxyGroupMainUse.proxies.push("🇭🇰 海外节点");
     proxyGroupAISpecial.proxies.push("🇭🇰 海外节点");
+
+    proxyGroupLoadBalance = {
+      name: "🔖 负载均衡",
+      type: "load-balance",
+      url: "http://www.gstatic.com/generate_204",
+      interval: 300,
+      strategy: "round-robin",
+      proxies: []
+    }
+    obj["rules"].shift();
+    obj["rules"].unshift("PROCESS-NAME,BitComet_x64.exe,🔖 负载均衡");
   }
 
   // For sorting proxy, it will be used by proxyGroupOrderSwitching group.
@@ -180,26 +192,29 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     // Filter out Cola Cloud's useless node.
     if (proxyName.match(/^((?!套餐).)*$/gm)) {
       proxyGroupAllNodes.proxies.push(proxyName);
+      if (isColaCloud) {
+        proxyGroupLoadBalance.proxies.push(proxyName);
+      }
     }
 
     if (proxyName.match(/香港\s\d\d/gm) && proxyName.match(/^((?!流媒体).)*$/gm)) {
-      proxyGroupHongKong.proxies.push(ele.name);
+      proxyGroupHongKong.proxies.push(proxyName);
 
       // Special group for Cola Cloud.
       if (isColaCloud) {
-        proxyGroupOrderSwitching.proxies.push(ele.name);
+        proxyGroupOrderSwitching.proxies.push(proxyName);
       }
     }
 
     // Special group for Eastern Network.
     if (proxyName.match(/香港\d\d\s海外用節點/gm)) {
-      proxyGroupHongKongOverseas.proxies.push(ele.name);
+      proxyGroupHongKongOverseas.proxies.push(proxyName);
     }
 
     // Special sort for Eastern Network.
     if (isEasternNetwork) {
       if (proxyName.match(/日本\s\d\d/gm)) {
-        proxyGroupJapan.proxies.push(ele.name)
+        proxyGroupJapan.proxies.push(proxyName)
 
         if (proxyName.match(/电信\/沪日专线/gm)) {
           JapanChinaTelecom.push(proxyName);
@@ -232,6 +247,10 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     obj["proxy-groups"].push(proxyGroupHongKongOverseas);
   }
   obj["proxy-groups"].push(proxyGroupOrderSwitching);
+
+  if (isColaCloud) {
+    obj["proxy-groups"].push(proxyGroupLoadBalance);
+  }
 
   // Output file for Stash App.
   const fs = require("fs");

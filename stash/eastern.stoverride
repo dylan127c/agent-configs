@@ -112,8 +112,8 @@ proxy-groups: #!replace
       - 🇯🇵 日本 01 电信/沪日专线（3倍率）
       - 🇯🇵 日本 02 电信/沪日专线（3倍率）
 rules: #!replace
-  - PROCESS-NAME,aria2c.exe,DIRECT
   - PROCESS-NAME,BitComet_x64.exe,DIRECT
+  - PROCESS-NAME,aria2c.exe,DIRECT
   - PROCESS-NAME,Motrix.exe,DIRECT
   - RULE-SET,Customize-Reject,REJECT
   - RULE-SET,Customize-Special,🌤️ 特殊控制

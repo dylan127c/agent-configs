@@ -1,4 +1,6 @@
 payload:
+  - '+.webbrowsertools.com'
+  - '+.mybrowseraddon.com'
   - '+.sms-activate.org'
   - '+.bing.com'
   - '+.bing.net'
@@ -23,3 +25,4 @@ payload:
   - '+.qubook.cc'
   - '+.stripst.com'
   - '+.strpst.com'
+  - '+.dukou.icu'
