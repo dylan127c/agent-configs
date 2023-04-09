@@ -77,7 +77,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
 
   // User-defined rules will replace original rules.
   obj["rules"] = [
-    "PROCESS-NAME,BitComet_x64.exe,DIRECT",
+    "PROCESS-NAME,BitComet.exe,DIRECT",
     "PROCESS-NAME,aria2c.exe,DIRECT",
     "PROCESS-NAME,Motrix.exe,DIRECT",
     "RULE-SET,Customize-Reject,REJECT", // personal rules
@@ -177,7 +177,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
       proxies: []
     }
     obj["rules"].shift();
-    obj["rules"].unshift("PROCESS-NAME,BitComet_x64.exe,🔖 负载均衡");
+    obj["rules"].unshift("PROCESS-NAME,BitComet.exe,🔖 负载均衡");
   }
 
   // For sorting proxy, it will be used by proxyGroupOrderSwitching group.

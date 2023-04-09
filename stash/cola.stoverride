@@ -228,7 +228,7 @@ proxy-groups: #!replace
       - 日本63 海外用節點
       - 香港64 海外用節點
 rules: #!replace
-  - PROCESS-NAME,BitComet_x64.exe,🔖 负载均衡
+  - PROCESS-NAME,BitComet.exe,🔖 负载均衡
   - PROCESS-NAME,aria2c.exe,DIRECT
   - PROCESS-NAME,Motrix.exe,DIRECT
   - RULE-SET,Customize-Reject,REJECT

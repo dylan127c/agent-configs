@@ -1,2 +1,9 @@
 payload:
   - '+.openai.com'
+  - '+.bypass.churchless.tech'
+  - '+.azureedge.net'
+  - '+.intercom.io'
+  - '+.sentry.io'
+  - '+.azurefd.net'
+  - '+.openaicom.imgix.net'
+  - '+.featuregates.org'
