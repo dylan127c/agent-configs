@@ -155,7 +155,6 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
 
   // Special group for Cola Cloud.
   let proxyGroupHongKongOverseas;
-  let proxyGroupLoadBalance;
   if (isColaCloud) {
     proxyGroupHongKongOverseas = {
       name: "🇭🇰 海外节点",
@@ -168,16 +167,8 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     proxyGroupMainUse.proxies.push("🇭🇰 海外节点");
     proxyGroupAISpecial.proxies.push("🇭🇰 海外节点");
 
-    proxyGroupLoadBalance = {
-      name: "🔖 负载均衡",
-      type: "load-balance",
-      url: "http://www.gstatic.com/generate_204",
-      interval: 300,
-      strategy: "round-robin",
-      proxies: []
-    }
     obj["rules"].shift();
-    obj["rules"].unshift("PROCESS-NAME,BitComet.exe,🔖 负载均衡");
+    obj["rules"].unshift("PROCESS-NAME,BitComet.exe,🛣️ 科学上网");
   }
 
   // For sorting proxy, it will be used by proxyGroupOrderSwitching group.
@@ -192,9 +183,6 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     // Filter out Cola Cloud's useless node.
     if (proxyName.match(/^((?!套餐).)*$/gm)) {
       proxyGroupAllNodes.proxies.push(proxyName);
-      if (isColaCloud) {
-        proxyGroupLoadBalance.proxies.push(proxyName);
-      }
     }
 
     if (proxyName.match(/香港\s\d\d/gm) && proxyName.match(/^((?!流媒体).)*$/gm)) {
@@ -248,10 +236,6 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   }
   obj["proxy-groups"].push(proxyGroupOrderSwitching);
 
-  if (isColaCloud) {
-    obj["proxy-groups"].push(proxyGroupLoadBalance);
-  }
-
   // Output file for Stash App.
   const fs = require("fs");
   let fileName = "Undefined";
@@ -276,18 +260,48 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
 
   // Convert to raw and replace some case in necessarily.
   const str = yaml.stringify(output);
-  const finalOutput = str.replace("rules:", "rules: #!replace")
+  var finalOutput = str.replace("rules:", "rules: #!replace")
     .replace("proxy-groups:", "proxy-groups: #!replace")
     .replace("rule-providers:", "rule-providers: #!replace");
+
+  // Final return config.
+  var finalReturn = yaml.stringify(obj);
+
+  // Specialized groups.
+  if (isEasternNetwork) {
+    finalOutput = specializedEastern(finalOutput);
+    finalReturn = specializedEastern(finalReturn);
+  } else if (isColaCloud) {
+    finalOutput = specializedCola(finalOutput);
+    finalReturn = specializedCola(finalReturn);
+  }
 
   // Output file.
   fs.writeFile(path.resolve(__dirname, "..\\") + "\\stash\\" + fileName + ".stoverride", finalOutput, (err) => { });
 
   // Output configuration.
-  return yaml.stringify(obj)
+  return finalReturn;
 }
 
 module.exports.get = function getFileName(key, type) {
   // Notice that obj.match() will return type Array, and array.pop() will return type String.
   return key.match(/(-\w+)+/gm).pop().replace(/^-/gm, "").toLowerCase() + "." + type;
+}
+
+// Groups with same group name may cause problem when switch proxy node.
+// Below two methods are using for specializing proxy node's group.
+function specializedEastern(str) {
+  const groupNames = ["科学上网", "规则逃逸", "特殊控制", "目标节点", "香港节点", "日本节点", "故障切换"];
+  for (var i = 0; i < groupNames.length; i++) {
+    str = str.replaceAll(groupNames[i], groupNames[i] + "（A）");
+  }
+  return str;
+}
+
+function specializedCola(str) {
+  const groupNames = ["科学上网", "规则逃逸", "特殊控制", "目标节点", "香港节点", "海外节点", "故障切换"];
+  for (var i = 0; i < groupNames.length; i++) {
+    str = str.replaceAll(groupNames[i], groupNames[i] + "（B）");
+  }
+  return str;
 }
