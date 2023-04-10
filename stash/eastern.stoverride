@@ -1,28 +1,28 @@
 name: Eastern Network
 desc: Replace original config.
 proxy-groups: #!replace
-  - name: 🛣️ 科学上网（A）
+  - name: 🛣️ 科学上网 A
     type: select
     proxies:
       - DIRECT
-      - 🌟 目标节点（A）
-      - 🌠 故障切换（A）
-      - 🇭🇰 香港节点（A）
-      - 🇯🇵 日本节点（A）
-  - name: 🌊 规则逃逸（A）
+      - 🌟 目标节点 A
+      - 🌠 故障切换 A
+      - 🇭🇰 香港节点 A
+      - 🇯🇵 日本节点 A
+  - name: 🌊 规则逃逸 A
     type: select
     proxies:
       - DIRECT
-      - 🛣️ 科学上网（A）
-  - name: 🌤️ 特殊控制（A）
+      - 🛣️ 科学上网 A
+  - name: 🌤️ 特殊控制 A
     type: select
     proxies:
       - REJECT
-      - 🌟 目标节点（A）
-      - 🌠 故障切换（A）
-      - 🇭🇰 香港节点（A）
-      - 🇯🇵 日本节点（A）
-  - name: 🌟 目标节点（A）
+      - 🌟 目标节点 A
+      - 🌠 故障切换 A
+      - 🇭🇰 香港节点 A
+      - 🇯🇵 日本节点 A
+  - name: 🌟 目标节点 A
     type: select
     proxies:
       - REJECT
@@ -67,7 +67,7 @@ proxy-groups: #!replace
       - 🇭🇰 香港 11 HKBN家宽（0.5倍率）
       - 🇭🇰 香港 12 NTT IPv6
       - 🇭🇰 香港 13 Cogent IPv6（流媒体）
-  - name: 🇭🇰 香港节点（A）
+  - name: 🇭🇰 香港节点 A
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 600
@@ -81,7 +81,7 @@ proxy-groups: #!replace
       - 🇭🇰 香港 10 HKT家宽（0.5倍率）
       - 🇭🇰 香港 11 HKBN家宽（0.5倍率）
       - 🇭🇰 香港 12 NTT IPv6
-  - name: 🇯🇵 日本节点（A）
+  - name: 🇯🇵 日本节点 A
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 600
@@ -99,7 +99,7 @@ proxy-groups: #!replace
       - 🇯🇵 日本 17 IIJ
       - 🇯🇵 日本 19 IIJ
       - 🇯🇵 日本 21 NTT
-  - name: 🌠 故障切换（A）
+  - name: 🌠 故障切换 A
     type: fallback
     url: http://www.gstatic.com/generate_204
     interval: 600
@@ -116,25 +116,25 @@ rules: #!replace
   - PROCESS-NAME,aria2c.exe,DIRECT
   - PROCESS-NAME,Motrix.exe,DIRECT
   - RULE-SET,Customize-Reject,REJECT
-  - RULE-SET,Customize-Special,🌤️ 特殊控制（A）
+  - RULE-SET,Customize-Special,🌤️ 特殊控制 A
   - RULE-SET,Customize-Direct,DIRECT
-  - RULE-SET,Customize-Proxy,🛣️ 科学上网（A）
+  - RULE-SET,Customize-Proxy,🛣️ 科学上网 A
   - RULE-SET,Remote-Applications,DIRECT
   - RULE-SET,Remote-Apple,DIRECT
   - RULE-SET,Remote-iCloud,DIRECT
   - RULE-SET,Remote-Reject,REJECT
-  - RULE-SET,Remote-Proxy,🛣️ 科学上网（A）
-  - RULE-SET,Remote-GFW,🛣️ 科学上网（A）
+  - RULE-SET,Remote-Proxy,🛣️ 科学上网 A
+  - RULE-SET,Remote-GFW,🛣️ 科学上网 A
   - RULE-SET,Remote-Direct,DIRECT
   - RULE-SET,Remote-Private,DIRECT
-  - RULE-SET,Remote-Greatfire,🛣️ 科学上网（A）
-  - RULE-SET,Remote-Tld-not-cn,🛣️ 科学上网（A）
-  - RULE-SET,Remote-Telegramcidr,🛣️ 科学上网（A）,no-resolve
+  - RULE-SET,Remote-Greatfire,🛣️ 科学上网 A
+  - RULE-SET,Remote-Tld-not-cn,🛣️ 科学上网 A
+  - RULE-SET,Remote-Telegramcidr,🛣️ 科学上网 A,no-resolve
   - RULE-SET,Remote-Cncidr,DIRECT,no-resolve
   - RULE-SET,Remote-Lancidr,DIRECT,no-resolve
   - GEOIP,LAN,DIRECT,no-resolve
   - GEOIP,CN,DIRECT,no-resolve
-  - MATCH,🌊 规则逃逸（A）
+  - MATCH,🌊 规则逃逸 A
 rule-providers: #!replace
   Remote-Reject:
     type: http

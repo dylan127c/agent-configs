@@ -293,7 +293,7 @@ module.exports.get = function getFileName(key, type) {
 function specializedEastern(str) {
   const groupNames = ["科学上网", "规则逃逸", "特殊控制", "目标节点", "香港节点", "日本节点", "故障切换"];
   for (var i = 0; i < groupNames.length; i++) {
-    str = str.replaceAll(groupNames[i], groupNames[i] + "（A）");
+    str = str.replaceAll(groupNames[i], groupNames[i] + " A");
   }
   return str;
 }
@@ -301,7 +301,7 @@ function specializedEastern(str) {
 function specializedCola(str) {
   const groupNames = ["科学上网", "规则逃逸", "特殊控制", "目标节点", "香港节点", "海外节点", "故障切换"];
   for (var i = 0; i < groupNames.length; i++) {
-    str = str.replaceAll(groupNames[i], groupNames[i] + "（B）");
+    str = str.replaceAll(groupNames[i], groupNames[i] + " B");
   }
   return str;
 }
