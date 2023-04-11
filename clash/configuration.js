@@ -9,9 +9,9 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   const obj = yaml.parse(raw);
 
   // Construct rule provider's format.
-  const httpClassical = { type: "http", behavior: "classical", url: "", interval: 86400 };
-  const httpDomain = { type: "http", behavior: "domain", url: "", interval: 86400 };
-  const httpIpcidr = { type: "http", behavior: "ipcidr", url: "", interval: 86400 };
+  const httpClassical = { type: "http", behavior: "classical", url: "", path: "", interval: 86400 };
+  const httpDomain = { type: "http", behavior: "domain", url: "", path: "", interval: 86400 };
+  const httpIpcidr = { type: "http", behavior: "ipcidr", url: "", path: "", interval: 86400 };
   const fileDomain = { type: "file", behavior: "domain", path: "" };
 
   // Remote rule provider. => https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/
@@ -55,6 +55,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
 
   for (const [key, value] of Object.entries(ruleProviders)) {
     ruleProviders[key]["url"] = remote + this.get(key, "txt");
+    ruleProviders[key]["path"] = path.resolve(__dirname) + "\\rules\\" + this.get(key, "yaml"); // ! confuse, why first time setup require this prop?
   }
   for (const [key, value] of Object.entries(ruleProvidersWithPersonalHttp)) {
     ruleProvidersWithPersonalHttp[key]["url"] = remotePersonal + this.get(key, "yaml");
@@ -155,6 +156,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
 
   // Special group for Cola Cloud.
   let proxyGroupHongKongOverseas;
+  let proxyGroupLoadBalance;
   if (isColaCloud) {
     proxyGroupHongKongOverseas = {
       name: "🇭🇰 海外节点",

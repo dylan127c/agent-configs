@@ -1,5 +1,6 @@
 payload:
   - '+.kanshuv.com'
+  - '+.gitlab.com'
   - '+.ng.ul4k.com'
   - '+.kentxt.com'
   - '+.xkentxt.com'
@@ -30,3 +31,4 @@ payload:
   - '+.stripst.com'
   - '+.strpst.com'
   - '+.dukou.icu'
+  - '+.fontsfree.net'
