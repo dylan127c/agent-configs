@@ -59,6 +59,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   }
   for (const [key, value] of Object.entries(ruleProvidersWithPersonalHttp)) {
     ruleProvidersWithPersonalHttp[key]["url"] = remotePersonal + this.get(key, "yaml");
+    ruleProvidersWithPersonalHttp[key]["path"] = localPersonal + this.get(key, "yaml");
   }
   for (const [key, value] of Object.entries(ruleProvidersWithPersonalFile)) {
     ruleProvidersWithPersonalFile[key]["path"] = localPersonal + this.get(key, "yaml");
@@ -279,7 +280,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   }
 
   // Output file.
-  fs.writeFile(path.resolve(__dirname, "..\\") + "\\stash\\" + fileName + ".stoverride", finalOutput, (err) => { });
+  fs.writeFile(path.resolve(__dirname, "..\\") + "\\stash\\" + fileName + ".stoverride", removePath(finalOutput), (err) => { });
 
   // Output configuration.
   return finalReturn;
@@ -306,4 +307,8 @@ function specializedCola(str) {
     str = str.replaceAll(groupNames[i], groupNames[i] + " B");
   }
   return str;
+}
+
+function removePath(str) {
+  return str.replaceAll(/\s{4}path:\s*.+\.yaml\n/gm,"");
 }
