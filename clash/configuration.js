@@ -60,7 +60,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     "Remote-Apple": { ...fileDomain },
   }
   // Personal rule provider will separate into remote access and local access.
-  // Remote access. => https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/
+  // Remote access. => https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/
   const ruleProvidersWithPersonalHttp = {
     "Customize-Special": { ...httpDomain },
     "Customize-Direct": { ...httpDomain },
@@ -77,8 +77,8 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
 
   // Setup url or path for rule providers.
   const remote = "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/";
-  const remotePersonal = "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/";
-  const localPersonal = path.resolve(__dirname, "..\\") + "\\customize rules\\";
+  const remotePersonal = "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/";
+  const localPersonal = path.resolve(__dirname) + "\\customize rules\\";
 
   for (const [key, value] of Object.entries(ruleProvidersHttp)) {
     ruleProvidersHttp[key]["url"] = remote + this.get(key, "txt");

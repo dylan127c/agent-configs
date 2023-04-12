@@ -205,19 +205,19 @@ rule-providers: #!replace
     type: http
     behavior: domain
     interval: 86400
-    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/special.yaml
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/special.yaml
   Customize-Direct:
     type: http
     behavior: domain
     interval: 86400
-    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/direct.yaml
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/direct.yaml
   Customize-Reject:
     type: http
     behavior: domain
     interval: 86400
-    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/reject.yaml
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/reject.yaml
   Customize-Proxy:
     type: http
     behavior: domain
     interval: 86400
-    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/proxy.yaml
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/proxy.yaml
