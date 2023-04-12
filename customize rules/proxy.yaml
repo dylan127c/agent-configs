@@ -1,4 +1,5 @@
 payload:
+  - '+.parsec.app'
   - '+.kanshuv.com'
   - '+.gitlab.com'
   - '+.ng.ul4k.com'

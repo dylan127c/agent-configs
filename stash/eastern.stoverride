@@ -139,85 +139,85 @@ rule-providers: #!replace
   Remote-Reject:
     type: http
     behavior: domain
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt
     interval: 86400
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt
   Remote-Proxy:
     type: http
     behavior: domain
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/proxy.txt
     interval: 86400
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/proxy.txt
   Remote-Direct:
     type: http
     behavior: domain
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/direct.txt
     interval: 86400
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/direct.txt
   Remote-Private:
     type: http
     behavior: domain
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt
     interval: 86400
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt
   Remote-GFW:
     type: http
     behavior: domain
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt
     interval: 86400
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/gfw.txt
   Remote-Greatfire:
     type: http
     behavior: domain
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/greatfire.txt
     interval: 86400
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/greatfire.txt
   Remote-Tld-not-cn:
     type: http
     behavior: domain
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/tld-not-cn.txt
     interval: 86400
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/tld-not-cn.txt
   Remote-Telegramcidr:
     type: http
     behavior: ipcidr
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt
     interval: 86400
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/telegramcidr.txt
   Remote-Cncidr:
     type: http
     behavior: ipcidr
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt
     interval: 86400
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/cncidr.txt
   Remote-Lancidr:
     type: http
     behavior: ipcidr
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt
     interval: 86400
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/lancidr.txt
   Remote-Applications:
     type: http
     behavior: classical
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt
     interval: 86400
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/applications.txt
   Remote-iCloud:
     type: http
     behavior: domain
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt
     interval: 86400
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/icloud.txt
   Remote-Apple:
     type: http
     behavior: domain
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt
     interval: 86400
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/apple.txt
   Customize-Special:
     type: http
     behavior: domain
-    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/special.yaml
     interval: 86400
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/special.yaml
   Customize-Direct:
     type: http
     behavior: domain
-    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/direct.yaml
     interval: 86400
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/direct.yaml
   Customize-Reject:
     type: http
     behavior: domain
-    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/reject.yaml
     interval: 86400
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/reject.yaml
   Customize-Proxy:
     type: http
     behavior: domain
-    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/proxy.yaml
     interval: 86400
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/proxy.yaml

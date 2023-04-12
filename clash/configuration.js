@@ -8,14 +8,26 @@
 module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url, interval, selected }) => {
   const obj = yaml.parse(raw);
 
+  const https = require("https");
+
+  const fs = require("fs");
+  const path = require("path");
+
+  const settingsFile = fs.readFileSync(path.resolve(__dirname) + "\\settings.yaml", "utf8");
+  const disableHttp = yaml.parse(settingsFile)["disableHttp"];
+
   // Construct rule provider's format.
-  const httpClassical = { type: "http", behavior: "classical", url: "", path: "", interval: 86400 };
-  const httpDomain = { type: "http", behavior: "domain", url: "", path: "", interval: 86400 };
-  const httpIpcidr = { type: "http", behavior: "ipcidr", url: "", path: "", interval: 86400 };
-  const fileDomain = { type: "file", behavior: "domain", path: "" };
+  const httpClassical = { type: "http", behavior: "classical", interval: 86400 };
+  const httpDomain = { type: "http", behavior: "domain", interval: 86400 };
+  const httpIpcidr = { type: "http", behavior: "ipcidr", interval: 86400 };
+
+  const fileClassical = { type: "file", behavior: "classical", };
+  const fileDomain = { type: "file", behavior: "domain", };
+  const fileIpcidr = { type: "file", behavior: "ipcidr", };
 
   // Remote rule provider. => https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/
-  const ruleProviders = {
+  // Or remote => https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/
+  const ruleProvidersHttp = {
     "Remote-Reject": { ...httpDomain }, // shallow copy, those object are only including String and Number
     "Remote-Proxy": { ...httpDomain },
     "Remote-Direct": { ...httpDomain },
@@ -29,6 +41,23 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     "Remote-Applications": { ...httpClassical },
     "Remote-iCloud": { ...httpDomain },
     "Remote-Apple": { ...httpDomain },
+  }
+
+  // Local rule provider. => https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/
+  const ruleProvidersFile = {
+    "Remote-Reject": { ...fileDomain }, // shallow copy, those object are only including String and Number
+    "Remote-Proxy": { ...fileDomain },
+    "Remote-Direct": { ...fileDomain },
+    "Remote-Private": { ...fileDomain },
+    "Remote-GFW": { ...fileDomain },
+    "Remote-Greatfire": { ...fileDomain },
+    "Remote-Tld-not-cn": { ...fileDomain },
+    "Remote-Telegramcidr": { ...fileIpcidr },
+    "Remote-Cncidr": { ...fileIpcidr },
+    "Remote-Lancidr": { ...fileIpcidr },
+    "Remote-Applications": { ...fileClassical },
+    "Remote-iCloud": { ...fileDomain },
+    "Remote-Apple": { ...fileDomain },
   }
   // Personal rule provider will separate into remote access and local access.
   // Remote access. => https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/
@@ -46,36 +75,45 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     "Customize-Proxy": { ...fileDomain }
   };
 
-  const path = require("path");
-
   // Setup url or path for rule providers.
-  const remote = "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/";
+  const remote = "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/";
   const remotePersonal = "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/customize%20rules/";
   const localPersonal = path.resolve(__dirname, "..\\") + "\\customize rules\\";
 
-  for (const [key, value] of Object.entries(ruleProviders)) {
-    ruleProviders[key]["url"] = remote + this.get(key, "txt");
-    ruleProviders[key]["path"] = path.resolve(__dirname) + "\\rules\\" + this.get(key, "yaml"); // ! confuse, why first time setup require this prop?
+  for (const [key, value] of Object.entries(ruleProvidersHttp)) {
+    ruleProvidersHttp[key]["url"] = remote + this.get(key, "txt");
+  }
+  for (const [key, value] of Object.entries(ruleProvidersFile)) {
+    ruleProvidersFile[key]["path"] = path.resolve(__dirname) + "\\rules\\" + this.get(key, "yaml");
   }
   for (const [key, value] of Object.entries(ruleProvidersWithPersonalHttp)) {
     ruleProvidersWithPersonalHttp[key]["url"] = remotePersonal + this.get(key, "yaml");
-    ruleProvidersWithPersonalHttp[key]["path"] = localPersonal + this.get(key, "yaml");
   }
   for (const [key, value] of Object.entries(ruleProvidersWithPersonalFile)) {
     ruleProvidersWithPersonalFile[key]["path"] = localPersonal + this.get(key, "yaml");
   }
 
   // Create rule providers' deep copy by useing JSON.stringify() and JSON.parse().
-  const rawRuleProviders = JSON.stringify(ruleProviders);
+  const rawRuleProvidersHttp = JSON.stringify(ruleProvidersHttp);
+  const rawRuleProvidersFile = JSON.stringify(ruleProvidersFile);
   const rawRuleProvidersWithPersonalHttp = JSON.stringify(ruleProvidersWithPersonalHttp);
   const rawRuleProvidersWithPersonalFile = JSON.stringify(ruleProvidersWithPersonalFile);
 
-  // User-defined rule providers will replace the original rule providers.
-  obj["rule-providers"] = Object.assign(
-    // By default, remote rule providers and personal local access rule providers will be chosen.
-    // DEEP COPY!!!
-    JSON.parse(rawRuleProviders), JSON.parse(rawRuleProvidersWithPersonalFile)
-  );
+  if (disableHttp) {
+    // User-defined rule providers will replace the original rule providers.
+    obj["rule-providers"] = Object.assign(
+      // By default, remote rule providers and personal local access rule providers will be chosen.
+      // DEEP COPY!!!
+      JSON.parse(rawRuleProvidersFile), JSON.parse(rawRuleProvidersWithPersonalFile)
+    );
+  } else {
+    // User-defined rule providers will replace the original rule providers.
+    obj["rule-providers"] = Object.assign(
+      // By default, remote rule providers and personal local access rule providers will be chosen.
+      // DEEP COPY!!!
+      JSON.parse(rawRuleProvidersHttp), JSON.parse(rawRuleProvidersWithPersonalFile)
+    );
+  }
 
   // User-defined rules will replace original rules.
   obj["rules"] = [
@@ -240,7 +278,6 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   obj["proxy-groups"].push(proxyGroupOrderSwitching);
 
   // Output file for Stash App.
-  const fs = require("fs");
   let fileName = "Undefined";
   const output = {
     name: "",
@@ -248,7 +285,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     "proxy-groups": obj["proxy-groups"],
     rules: obj.rules,
     "rule-providers": Object.assign(
-      JSON.parse(rawRuleProviders), JSON.parse(rawRuleProvidersWithPersonalHttp)
+      JSON.parse(rawRuleProvidersHttp), JSON.parse(rawRuleProvidersWithPersonalHttp)
     )
   };
 
@@ -280,7 +317,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   }
 
   // Output file.
-  fs.writeFile(path.resolve(__dirname, "..\\") + "\\stash\\" + fileName + ".stoverride", removePath(finalOutput), (err) => { });
+  fs.writeFile(path.resolve(__dirname, "..\\") + "\\stash\\" + fileName + ".stoverride", finalOutput, (err) => { throw err; });
 
   // Output configuration.
   return finalReturn;
@@ -307,8 +344,4 @@ function specializedCola(str) {
     str = str.replaceAll(groupNames[i], groupNames[i] + " B");
   }
   return str;
-}
-
-function removePath(str) {
-  return str.replaceAll(/\s{4}path:\s*.+\.yaml\n/gm,"");
 }
