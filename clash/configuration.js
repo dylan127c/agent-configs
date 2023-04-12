@@ -1,22 +1,16 @@
-﻿/*
-  配置文件不是什么需要经常改动的文件，所有必要的配置信息推荐尽量置于代码之中。
-
-  将不常改动的配置，提取到单独的配置文件中，实际上是得不偿失的；
-  仅推荐将需要经常改动的配置提取到文件中，如：本地的域名访问权限等配置。
-*/
-
-module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url, interval, selected }) => {
+﻿module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url, interval, selected }) => {
   const obj = yaml.parse(raw);
 
-  const https = require("https");
-
+  // 引入必要模块
   const fs = require("fs");
   const path = require("path");
 
-  const settingsFile = fs.readFileSync(path.resolve(__dirname) + "\\settings.yaml", "utf8");
-  const disableHttp = yaml.parse(settingsFile)["disableHttp"];
+  // 读取当前目录下的settings.yaml配置文件
+  const settingsFile = fs.readFileSync(path.resolve(__dirname, "settings.yaml"), "utf8");
+  const disableHttp = yaml.parse(settingsFile)["disableHttp"]; // 是否启用http方式获取规则列表
+  const disableStashOutput = yaml.parse(settingsFile)["disableStashOutput"]; // 是否转换并导出stash配置文件
 
-  // Construct rule provider's format.
+  // 构建Rule providers对象
   const httpClassical = { type: "http", behavior: "classical", interval: 86400 };
   const httpDomain = { type: "http", behavior: "domain", interval: 86400 };
   const httpIpcidr = { type: "http", behavior: "ipcidr", interval: 86400 };
@@ -25,10 +19,10 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   const fileDomain = { type: "file", behavior: "domain", };
   const fileIpcidr = { type: "file", behavior: "ipcidr", };
 
-  // Remote rule provider. => https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/
-  // Or remote => https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/
-  const ruleProvidersHttp = {
-    "Remote-Reject": { ...httpDomain }, // shallow copy, those object are only including String and Number
+  // 远程非自定义的规则文件 => https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/
+  // 另一个获取规则文件地址 => https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/
+  const rpRemoteHttp = {
+    "Remote-Reject": { ...httpDomain }, // 针对不可变对象，使用shallow copy即可
     "Remote-Proxy": { ...httpDomain },
     "Remote-Direct": { ...httpDomain },
     "Remote-Private": { ...httpDomain },
@@ -41,11 +35,19 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     "Remote-Applications": { ...httpClassical },
     "Remote-iCloud": { ...httpDomain },
     "Remote-Apple": { ...httpDomain },
-  }
+  };
 
-  // Local rule provider. => https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/
-  const ruleProvidersFile = {
-    "Remote-Reject": { ...fileDomain }, // shallow copy, those object are only including String and Number
+  // 远程自定义的规则文件 => https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/
+  const rpCustomizeHttp = {
+    "Customize-Special": { ...httpDomain },
+    "Customize-Direct": { ...httpDomain },
+    "Customize-Reject": { ...httpDomain },
+    "Customize-Proxy": { ...httpDomain }
+  };
+
+  // 本地非自定义的规则文件 => path.resolve(__dirname, "remote rules")
+  const rpRemoteFile = {
+    "Remote-Reject": { ...fileDomain },
     "Remote-Proxy": { ...fileDomain },
     "Remote-Direct": { ...fileDomain },
     "Remote-Private": { ...fileDomain },
@@ -58,17 +60,10 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     "Remote-Applications": { ...fileClassical },
     "Remote-iCloud": { ...fileDomain },
     "Remote-Apple": { ...fileDomain },
-  }
-  // Personal rule provider will separate into remote access and local access.
-  // Remote access. => https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/
-  const ruleProvidersWithPersonalHttp = {
-    "Customize-Special": { ...httpDomain },
-    "Customize-Direct": { ...httpDomain },
-    "Customize-Reject": { ...httpDomain },
-    "Customize-Proxy": { ...httpDomain }
   };
-  // Local access. => path.resolve(__dirname, "..\\) + "\\customize rules\\"
-  const ruleProvidersWithPersonalFile = {
+
+  // 本地自定义的规则文件 => path.resolve(__dirname, "customize rules")
+  const rpCustomizeFile = {
     "Customize-Special": { ...fileDomain },
     "Customize-Direct": { ...fileDomain },
     "Customize-Reject": { ...fileDomain },
@@ -76,42 +71,39 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   };
 
   // Setup url or path for rule providers.
-  const remote = "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/";
-  const remotePersonal = "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/";
-  const localPersonal = path.resolve(__dirname) + "\\customize rules\\";
+  const httpRemote = "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/";
+  const httpCustomize = "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/";
+  const fileRemote = path.resolve(__dirname, "remote rules");
+  const fileCustomize = path.resolve(__dirname, "customize rules");
 
-  for (const [key, value] of Object.entries(ruleProvidersHttp)) {
-    ruleProvidersHttp[key]["url"] = remote + this.get(key, "txt");
+  for (const [key, value] of Object.entries(rpRemoteHttp)) {
+    rpRemoteHttp[key]["url"] = httpRemote + this.get(key, "txt");
   }
-  for (const [key, value] of Object.entries(ruleProvidersFile)) {
-    ruleProvidersFile[key]["path"] = path.resolve(__dirname) + "\\remote rules\\" + this.get(key, "yaml");
+  for (const [key, value] of Object.entries(rpCustomizeHttp)) {
+    rpCustomizeHttp[key]["url"] = httpCustomize + this.get(key, "yaml");
   }
-  for (const [key, value] of Object.entries(ruleProvidersWithPersonalHttp)) {
-    ruleProvidersWithPersonalHttp[key]["url"] = remotePersonal + this.get(key, "yaml");
+  for (const [key, value] of Object.entries(rpRemoteFile)) {
+    rpRemoteFile[key]["path"] = path.resolve(fileRemote, this.get(key, "yaml"));
   }
-  for (const [key, value] of Object.entries(ruleProvidersWithPersonalFile)) {
-    ruleProvidersWithPersonalFile[key]["path"] = localPersonal + this.get(key, "yaml");
+  for (const [key, value] of Object.entries(rpCustomizeFile)) {
+    rpCustomizeFile[key]["path"] = path.resolve(fileCustomize, this.get(key, "yaml"));
   }
 
-  // Create rule providers' deep copy by useing JSON.stringify() and JSON.parse().
-  const rawRuleProvidersHttp = JSON.stringify(ruleProvidersHttp);
-  const rawRuleProvidersFile = JSON.stringify(ruleProvidersFile);
-  const rawRuleProvidersWithPersonalHttp = JSON.stringify(ruleProvidersWithPersonalHttp);
-  const rawRuleProvidersWithPersonalFile = JSON.stringify(ruleProvidersWithPersonalFile);
+  // 深拷贝要使用JSON.stringify()和JSON.parse()方法
+  const rpRemoteHttpRaw = JSON.stringify(rpRemoteHttp);
+  const rpRemoteFileRaw = JSON.stringify(rpRemoteFile);
+  const rpCustomizeHttpRaw = JSON.stringify(rpCustomizeHttp);
+  const rpCustomizeFileRaw = JSON.stringify(rpCustomizeFile);
 
+  // 根据配置文件选择使用远程的Rule Providers，还是本地的Rule Providers
+  // 但该配置仅针对非自定义的规则，自定义规则只推荐使用本地的Rule Providers
   if (disableHttp) {
-    // User-defined rule providers will replace the original rule providers.
     obj["rule-providers"] = Object.assign(
-      // By default, remote rule providers and personal local access rule providers will be chosen.
-      // DEEP COPY!!!
-      JSON.parse(rawRuleProvidersFile), JSON.parse(rawRuleProvidersWithPersonalFile)
+      JSON.parse(rpRemoteFileRaw), JSON.parse(rpCustomizeFileRaw)
     );
   } else {
-    // User-defined rule providers will replace the original rule providers.
     obj["rule-providers"] = Object.assign(
-      // By default, remote rule providers and personal local access rule providers will be chosen.
-      // DEEP COPY!!!
-      JSON.parse(rawRuleProvidersHttp), JSON.parse(rawRuleProvidersWithPersonalFile)
+      JSON.parse(rpRemoteHttpRaw), JSON.parse(rpCustomizeFileRaw)
     );
   }
 
@@ -177,7 +169,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   const isEasternNetwork = JSON.stringify(url).match(/touhou/gm);
   const isColaCloud = JSON.stringify(url).match(/dingyuedizhi/gm);
 
-  // Setup for special subscription.
+  // Special group for Eastern Network.
   let proxyGroupJapan;
   if (isEasternNetwork) {
 
@@ -195,7 +187,6 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
 
   // Special group for Cola Cloud.
   let proxyGroupHongKongOverseas;
-  let proxyGroupLoadBalance;
   if (isColaCloud) {
     proxyGroupHongKongOverseas = {
       name: "🇭🇰 海外节点",
@@ -208,6 +199,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     proxyGroupMainUse.proxies.push("🇭🇰 海外节点");
     proxyGroupAISpecial.proxies.push("🇭🇰 海外节点");
 
+    // 本节点允许BT下载
     obj["rules"].shift();
     obj["rules"].unshift("PROCESS-NAME,BitComet.exe,🛣️ 科学上网");
   }
@@ -220,8 +212,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   // Add proxy to proxy groups.
   obj.proxies.forEach(ele => {
     let proxyName = ele.name;
-
-    // Filter out Cola Cloud's useless node.
+    // 本条正则用于过滤没用的节点，根据节点特性来选择是否需要判断
     if (proxyName.match(/^((?!套餐).)*$/gm)) {
       proxyGroupAllNodes.proxies.push(proxyName);
     }
@@ -269,7 +260,6 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   obj["proxy-groups"].push(proxyGroupAISpecial);
   obj["proxy-groups"].push(proxyGroupAllNodes);
   obj["proxy-groups"].push(proxyGroupHongKong);
-
   if (isEasternNetwork) {
     obj["proxy-groups"].push(proxyGroupJapan);
   } else if (isColaCloud) {
@@ -277,71 +267,70 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   }
   obj["proxy-groups"].push(proxyGroupOrderSwitching);
 
-  // Output file for Stash App.
-  let fileName = "Undefined";
-  const output = {
-    name: "",
-    desc: "Replace original config.",
-    "proxy-groups": obj["proxy-groups"],
-    rules: obj.rules,
-    "rule-providers": Object.assign(
-      JSON.parse(rawRuleProvidersHttp), JSON.parse(rawRuleProvidersWithPersonalHttp)
-    )
-  };
-
-  // Setup output["name"] and fileName.
-  if (isEasternNetwork) {
-    output["name"] = "Eastern Network";
-    fileName = "eastern";
-  } else if (isColaCloud) {
-    output["name"] = "Cola Cloud";
-    fileName = "cola";
-  }
-
-  // Convert to raw and replace some case in necessarily.
-  const str = yaml.stringify(output);
-  var finalOutput = str.replace("rules:", "rules: #!replace")
-    .replace("proxy-groups:", "proxy-groups: #!replace")
-    .replace("rule-providers:", "rule-providers: #!replace");
-
   // Final return config.
-  var finalReturn = yaml.stringify(obj);
+  let finalReturn = yaml.stringify(obj);
 
-  // Specialized groups.
-  if (isEasternNetwork) {
-    finalOutput = specializedEastern(finalOutput);
-    finalReturn = specializedEastern(finalReturn);
-  } else if (isColaCloud) {
-    finalOutput = specializedCola(finalOutput);
-    finalReturn = specializedCola(finalReturn);
+  // 选择是否将当前Clash的配置转换为Stash的配置
+  // 通过settings.yaml中的disableStashOutput参数控制
+  if (!disableStashOutput) {
+    let fileName = "Undefined";
+    const output = {
+      name: "",
+      desc: "Replace original config.",
+      "proxy-groups": obj["proxy-groups"],
+      rules: obj.rules,
+      "rule-providers": Object.assign(
+        JSON.parse(rpRemoteHttpRaw), JSON.parse(rpCustomizeHttpRaw)
+      )
+    };
+
+    if (isEasternNetwork) {
+      output["name"] = "Eastern Network";
+      fileName = "eastern";
+    } else if (isColaCloud) {
+      output["name"] = "Cola Cloud";
+      fileName = "cola";
+    }
+
+    const str = yaml.stringify(output);
+    let finalOutput = str.replace("rules:", "rules: #!replace")
+      .replace("proxy-groups:", "proxy-groups: #!replace")
+      .replace("rule-providers:", "rule-providers: #!replace");
+
+    // 为组别添加symbol以避免不同订阅下的组别重名
+    if (isEasternNetwork) {
+      finalOutput = specialized(finalOutput, "A");
+    } else if (isColaCloud) {
+      finalOutput = specialized(finalOutput, "B");
+    }
+
+    fs.writeFile(
+      path.resolve(__dirname, "..", "stash", fileName + ".stoverride"),
+      finalOutput,
+      (err) => { throw err; }
+    );
   }
 
-  // Output file.
-  fs.writeFile(path.resolve(__dirname, "..\\") + "\\stash\\" + fileName + ".stoverride", finalOutput, (err) => { throw err; });
-
-  // Output configuration.
+  // 为组别添加symbol以避免不同订阅下的组别重名
+  if (isEasternNetwork) {
+    finalReturn = specialized(finalReturn, "A");
+  } else if (isColaCloud) {
+    finalReturn = specialized(finalReturn, "B");
+  }
   return finalReturn;
 }
 
+// 本方法中的match()返回仅包含一个字符串的数组对象
+// 用pop()是为了将字符串提取出来以使用replace()方法
 module.exports.get = function getFileName(key, type) {
-  // Notice that obj.match() will return type Array, and array.pop() will return type String.
-  return key.match(/(-\w+)+/gm).pop().replace(/^-/gm, "").toLowerCase() + "." + type;
+  return key.match(/-[-\w]+/gm).pop().replace(/^-/gm, "").toLowerCase() + "." + type;
 }
 
-// Groups with same group name may cause problem when switch proxy node.
-// Below two methods are using for specializing proxy node's group.
-function specializedEastern(str) {
-  const groupNames = ["科学上网", "规则逃逸", "特殊控制", "目标节点", "香港节点", "日本节点", "故障切换"];
+// 不同订阅的分组建议不要同名，本方法用于为分组添加不同的symbol以避免重名
+function specialized(str, symbol) {
+  const groupNames = ["科学上网", "规则逃逸", "特殊控制", "目标节点", "香港节点", "日本节点", "故障切换", "海外节点"];
   for (var i = 0; i < groupNames.length; i++) {
-    str = str.replaceAll(groupNames[i], groupNames[i] + " A");
-  }
-  return str;
-}
-
-function specializedCola(str) {
-  const groupNames = ["科学上网", "规则逃逸", "特殊控制", "目标节点", "香港节点", "海外节点", "故障切换"];
-  for (var i = 0; i < groupNames.length; i++) {
-    str = str.replaceAll(groupNames[i], groupNames[i] + " B");
+    str = str.replaceAll(groupNames[i], groupNames[i] + " " + symbol);
   }
   return str;
 }
