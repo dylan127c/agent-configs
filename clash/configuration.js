@@ -84,7 +84,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     ruleProvidersHttp[key]["url"] = remote + this.get(key, "txt");
   }
   for (const [key, value] of Object.entries(ruleProvidersFile)) {
-    ruleProvidersFile[key]["path"] = path.resolve(__dirname) + "\\rules\\" + this.get(key, "yaml");
+    ruleProvidersFile[key]["path"] = path.resolve(__dirname) + "\\remote rules\\" + this.get(key, "yaml");
   }
   for (const [key, value] of Object.entries(ruleProvidersWithPersonalHttp)) {
     ruleProvidersWithPersonalHttp[key]["url"] = remotePersonal + this.get(key, "yaml");
