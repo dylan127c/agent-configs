@@ -9,6 +9,12 @@
   const settingsFile = fs.readFileSync(path.resolve(__dirname, "settings.yaml"), "utf8");
   const disableHttp = yaml.parse(settingsFile)["disableHttp"]; // 是否启用http方式获取规则列表
   const disableStashOutput = yaml.parse(settingsFile)["disableStashOutput"]; // 是否转换并导出stash配置文件
+  const dnsSettings = yaml.parse(settingsFile)["dns"]; // 获取自定义的DNS配置
+
+  // 替换订阅中的DNS配置，但无法确定是订阅中的DNS生效，还是Clash默认TUN Mode内的DNS生效
+  // 以防万一，可以将TUN Mode中的DNS配置修改为与自定义DNS配置一致，但不改也能用
+  // 使用TUN模式请关闭浏览器中的安全DNS功能，以防止DNS劫持失败
+  obj["dns"] = dnsSettings;
 
   // 构建Rule providers对象
   const httpClassical = { type: "http", behavior: "classical", interval: 86400 };
