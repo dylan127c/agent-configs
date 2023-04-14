@@ -3,6 +3,9 @@ payload:
   - '+.browser.events.data.msn.cn'
   - '+.browser.events.data.msn.com'
   - '+.sb.scorecardresearch.com'
+
+  # fake crack website full of virus
+  - '+.mixcrack.net'
   
   # else blocked websites
   - '+.beijingspring.com'
