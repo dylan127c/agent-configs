@@ -6,9 +6,10 @@ proxy-groups: #!replace
     proxies:
       - DIRECT
       - 🌟 目标节点 B
-      - 🌠 故障切换 B
+      - 🌠 稳定节点 B
       - 🇭🇰 香港节点 B
-      - 🇭🇰 海外节点 B
+      - 🇺🇳 其他节点 B
+      - 🇭🇰 香港海外 B
   - name: 🌊 规则逃逸 B
     type: select
     proxies:
@@ -19,9 +20,10 @@ proxy-groups: #!replace
     proxies:
       - REJECT
       - 🌟 目标节点 B
-      - 🌠 故障切换 B
+      - 🌠 稳定节点 B
       - 🇭🇰 香港节点 B
-      - 🇭🇰 海外节点 B
+      - 🇺🇳 其他节点 B
+      - 🇭🇰 香港海外 B
   - name: 🌟 目标节点 B
     type: select
     proxies:
@@ -97,7 +99,6 @@ proxy-groups: #!replace
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 600
-    lazy: true
     proxies:
       - 香港 01
       - 香港 02
@@ -111,11 +112,31 @@ proxy-groups: #!replace
       - 香港 10
       - 香港 11
       - 香港 12
-  - name: 🇭🇰 海外节点 B
+  - name: 🇺🇳 其他节点 B
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 600
-    lazy: true
+    proxies:
+      - 越南 01
+      - 越南 02
+      - 越南 03
+      - 越南 04
+      - 越南 05
+      - 越南 06
+      - 美國 01
+      - 美國 02
+      - 美國 03
+      - 美國 04
+      - 日本 01
+      - 日本 02
+      - 台灣 01
+      - 台灣 02
+      - 獅城 01
+      - 獅城 02
+  - name: 🇭🇰 香港海外 B
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 600
     proxies:
       - 香港01 海外用節點
       - 香港02 海外用節點
@@ -136,24 +157,19 @@ proxy-groups: #!replace
       - 香港58 海外用節點
       - 香港60 海外用節點
       - 香港64 海外用節點
-  - name: 🌠 故障切换 B
-    type: fallback
-    url: http://www.gstatic.com/generate_204
-    interval: 600
-    lazy: true
+  - name: 🌠 稳定节点 B
+    type: select
     proxies:
-      - 香港 01
-      - 香港 02
-      - 香港 03
-      - 香港 04
-      - 香港 05
-      - 香港 06
-      - 香港 07
-      - 香港 08
-      - 香港 09
-      - 香港 10
-      - 香港 11
-      - 香港 12
+      - 台灣 01
+      - 台灣 02
+      - 獅城 01
+      - 獅城 02
+      - 越南 01
+      - 越南 02
+      - 越南 03
+      - 越南 04
+      - 越南 05
+      - 越南 06
 rules: #!replace
   - PROCESS-NAME,BitComet.exe,🛣️ 科学上网 B
   - PROCESS-NAME,aria2c.exe,DIRECT

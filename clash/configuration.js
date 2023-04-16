@@ -150,8 +150,8 @@
   ];
 
   // Create proxy groups.
-  const proxyGroupMainUse = { name: "🛣️ 科学上网", type: "select", proxies: ["DIRECT", "🌟 目标节点", "🌠 故障切换", "🇭🇰 香港节点"] };
-  const proxyGroupAISpecial = { name: "🌤️ 特殊控制", type: "select", proxies: ["REJECT", "🌟 目标节点", "🌠 故障切换", "🇭🇰 香港节点"] };
+  const proxyGroupMainUse = { name: "🛣️ 科学上网", type: "select", proxies: ["DIRECT", "🌟 目标节点", "🌠 稳定节点", "🇭🇰 香港节点"] };
+  const proxyGroupAISpecial = { name: "🌤️ 特殊控制", type: "select", proxies: ["REJECT", "🌟 目标节点", "🌠 稳定节点", "🇭🇰 香港节点"] };
   const proxyGroupAllNodes = { name: "🌟 目标节点", type: "select", proxies: ["REJECT"] };
   const proxyGroupElesRequest = { name: "🌊 规则逃逸", type: "select", proxies: ["DIRECT", "🛣️ 科学上网"] };
   const proxyGroupHongKong = {
@@ -159,15 +159,14 @@
     type: "url-test",
     url: "http://www.gstatic.com/generate_204",
     interval: 600,
-    lazy: true,
     proxies: []
   };
-  const proxyGroupOrderSwitching = {
-    name: "🌠 故障切换",
-    type: "fallback",
-    url: "http://www.gstatic.com/generate_204",
-    interval: 600,
-    lazy: true,
+  const proxyGroupStable = {
+    name: "🌠 稳定节点",
+    type: "select",
+    // type: "fallback",
+    // url: "http://www.gstatic.com/generate_204",
+    // interval: 600,
     proxies: []
   };
 
@@ -184,7 +183,6 @@
       type: "url-test",
       url: "http://www.gstatic.com/generate_204",
       interval: 600,
-      lazy: true,
       proxies: []
     };
     proxyGroupMainUse.proxies.push("🇯🇵 日本节点");
@@ -193,27 +191,41 @@
 
   // Special group for Cola Cloud.
   let proxyGroupHongKongOverseas;
+  let proxyGroupExceptHK;
   if (isColaCloud) {
-    proxyGroupHongKongOverseas = {
-      name: "🇭🇰 海外节点",
+    proxyGroupExceptHK = {
+      name: "🇺🇳 其他节点",
       type: "url-test",
       url: "http://www.gstatic.com/generate_204",
       interval: 600,
-      lazy: true,
       proxies: []
     }
-    proxyGroupMainUse.proxies.push("🇭🇰 海外节点");
-    proxyGroupAISpecial.proxies.push("🇭🇰 海外节点");
+    proxyGroupMainUse.proxies.push("🇺🇳 其他节点");
+    proxyGroupAISpecial.proxies.push("🇺🇳 其他节点");
+
+    proxyGroupHongKongOverseas = {
+      name: "🇭🇰 香港海外",
+      type: "url-test",
+      url: "http://www.gstatic.com/generate_204",
+      interval: 600,
+      proxies: []
+    }
+    proxyGroupMainUse.proxies.push("🇭🇰 香港海外");
+    proxyGroupAISpecial.proxies.push("🇭🇰 香港海外");
 
     // 本节点允许BT下载
     obj["rules"].shift();
     obj["rules"].unshift("PROCESS-NAME,BitComet.exe,🛣️ 科学上网");
   }
 
-  // For sorting proxy, it will be used by proxyGroupOrderSwitching group.
+  // For sorting proxy, it will be used by proxyGroupStable group.
   const HKChinaTelecom = [];
   const HKChinaMobile = [];
   const JapanChinaTelecom = [];
+
+  const Singapore = [];
+  const Taiwan = [];
+  const Vietnam = [];
 
   // Add proxy to proxy groups.
   obj.proxies.forEach(ele => {
@@ -223,13 +235,25 @@
       proxyGroupAllNodes.proxies.push(proxyName);
     }
 
+    if (isColaCloud) {
+      if (proxyName.match(/^越南\s\d\d/gm)) {
+        Vietnam.push(proxyName);
+      } else if (proxyName.match(/^台灣\s\d\d/gm)) {
+        Taiwan.push(proxyName);
+      } else if (proxyName.match(/^獅城\s\d\d/gm)) {
+        Singapore.push(proxyName);
+      }
+    }
+
     if (proxyName.match(/香港\s\d\d/gm) && proxyName.match(/^((?!流媒体).)*$/gm)) {
       proxyGroupHongKong.proxies.push(proxyName);
 
       // Special group for Cola Cloud.
-      if (isColaCloud) {
-        proxyGroupOrderSwitching.proxies.push(proxyName);
-      }
+      // if (isColaCloud) {
+      //   proxyGroupStable.proxies.push(proxyName);
+      // }
+    } else if (isColaCloud && proxyName.match(/^((?!(海外用節點|套餐)).)*$/gm)) {
+      proxyGroupExceptHK.proxies.push(proxyName);
     }
 
     // Special group for Eastern Network.
@@ -254,9 +278,13 @@
     }
   });
 
-  // For eastern network, should sequentially add proxy into proxyGroupOrderSwitching group.
+  // For eastern network, should sequentially add proxy into proxyGroupStable group.
   if (isEasternNetwork) {
-    proxyGroupOrderSwitching.proxies = HKChinaMobile.concat(HKChinaTelecom, JapanChinaTelecom);
+    proxyGroupStable.proxies = HKChinaMobile.concat(HKChinaTelecom, JapanChinaTelecom);
+  }
+
+  if (isColaCloud) {
+    proxyGroupStable.proxies = Taiwan.concat(Singapore, Vietnam);
   }
 
   // Add proxy group into obj.
@@ -269,9 +297,10 @@
   if (isEasternNetwork) {
     obj["proxy-groups"].push(proxyGroupJapan);
   } else if (isColaCloud) {
+    obj["proxy-groups"].push(proxyGroupExceptHK);
     obj["proxy-groups"].push(proxyGroupHongKongOverseas);
   }
-  obj["proxy-groups"].push(proxyGroupOrderSwitching);
+  obj["proxy-groups"].push(proxyGroupStable);
 
   // Final return config.
   let finalReturn = yaml.stringify(obj);
@@ -334,7 +363,7 @@ module.exports.get = function getFileName(key, type) {
 
 // 不同订阅的分组建议不要同名，本方法用于为分组添加不同的symbol以避免重名
 function specialized(str, symbol) {
-  const groupNames = ["科学上网", "规则逃逸", "特殊控制", "目标节点", "香港节点", "日本节点", "故障切换", "海外节点"];
+  const groupNames = ["科学上网", "规则逃逸", "特殊控制", "目标节点", "香港节点", "日本节点", "稳定节点", "香港海外", "其他节点"];
   for (var i = 0; i < groupNames.length; i++) {
     str = str.replaceAll(groupNames[i], groupNames[i] + " " + symbol);
   }

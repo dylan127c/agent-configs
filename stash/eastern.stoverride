@@ -6,7 +6,7 @@ proxy-groups: #!replace
     proxies:
       - DIRECT
       - 🌟 目标节点 A
-      - 🌠 故障切换 A
+      - 🌠 稳定节点 A
       - 🇭🇰 香港节点 A
       - 🇯🇵 日本节点 A
   - name: 🌊 规则逃逸 A
@@ -19,7 +19,7 @@ proxy-groups: #!replace
     proxies:
       - REJECT
       - 🌟 目标节点 A
-      - 🌠 故障切换 A
+      - 🌠 稳定节点 A
       - 🇭🇰 香港节点 A
       - 🇯🇵 日本节点 A
   - name: 🌟 目标节点 A
@@ -71,7 +71,6 @@ proxy-groups: #!replace
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 600
-    lazy: true
     proxies:
       - 🇭🇰 香港 01 电信/深港专线（2.5倍率）
       - 🇭🇰 香港 02 电信/深港专线（2.5倍率）
@@ -85,7 +84,6 @@ proxy-groups: #!replace
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 600
-    lazy: true
     proxies:
       - 🇯🇵 日本 01 电信/沪日专线（3倍率）
       - 🇯🇵 日本 02 电信/沪日专线（3倍率）
@@ -99,11 +97,8 @@ proxy-groups: #!replace
       - 🇯🇵 日本 17 IIJ
       - 🇯🇵 日本 19 IIJ
       - 🇯🇵 日本 21 NTT
-  - name: 🌠 故障切换 A
-    type: fallback
-    url: http://www.gstatic.com/generate_204
-    interval: 600
-    lazy: true
+  - name: 🌠 稳定节点 A
+    type: select
     proxies:
       - 🇭🇰 香港 05 移动/深港专线（2倍率）
       - 🇭🇰 香港 06 移动/深港专线（2倍率）
