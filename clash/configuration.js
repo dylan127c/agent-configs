@@ -1,20 +1,105 @@
 ﻿module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url, interval, selected }) => {
   const obj = yaml.parse(raw);
 
-  // 引入必要模块
   const fs = require("fs");
   const path = require("path");
 
   // 读取当前目录下的settings.yaml配置文件
-  const settingsFile = fs.readFileSync(path.resolve(__dirname, "settings.yaml"), "utf8");
-  const disableHttp = yaml.parse(settingsFile)["disableHttp"]; // 是否启用http方式获取规则列表
-  const disableStashOutput = yaml.parse(settingsFile)["disableStashOutput"]; // 是否转换并导出stash配置文件
-  const dnsSettings = yaml.parse(settingsFile)["dns"]; // 获取自定义的DNS配置
+  const rawSettings = fs.readFileSync(path.resolve(__dirname, "settings.yaml"), "utf8");
+  const objSettings = yaml.parse(rawSettings);
+
+  const disableHttp = objSettings["disableHttp"]; // 是否启用http方式获取规则列表
+  const disableStashOutput = objSettings["disableStashOutput"]; // 是否转换并导出stash配置文件
 
   // 替换订阅中的DNS配置，但无法确定是订阅中的DNS生效，还是Clash默认TUN Mode内的DNS生效
   // 以防万一，可以将TUN Mode中的DNS配置修改为与自定义DNS配置一致，但不改也能用
   // 使用TUN模式请关闭浏览器中的安全DNS功能，以防止DNS劫持失败
-  obj["dns"] = dnsSettings;
+  obj["dns"] = objSettings["dns"];
+
+
+
+  /* ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 允许修改或添加配置 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ */
+
+  // Determine the current subscription link.
+  const isEasternNetwork = JSON.stringify(url).match(/touhou/gm);
+  const isColaCloud = JSON.stringify(url).match(/dingyuedizhi/gm);
+  
+  let suffix = ""; // 分组后缀
+  let outputName = ";" // 输出Stash配置文件的名称及别名
+
+  // 本数组用于检索现存分组名称，并在指定分组之后添加suffix后缀
+  const groupNames = ["科学上网", "规则逃逸", "特殊控制", "目标节点", "香港节点", "日本节点", "故障切换", "香港海外"];
+
+  const proxyGroups = [];
+  if (isEasternNetwork) {
+    suffix = "A";
+    outputName = "ORIENTAL_NETWORK";
+    
+    proxyGroups[0] = getProxyGroup("🛣️ 科学上网", "select", ["DIRECT", "🌟 目标节点", "🌠 故障切换", "🇭🇰 香港节点", "🇯🇵 日本节点"]);
+    proxyGroups[1] = getProxyGroup("🌊 规则逃逸", "select", ["DIRECT", "🛣️ 科学上网"]);
+    proxyGroups[2] = getProxyGroup("🌤️ 特殊控制", "select", ["REJECT", "🌟 目标节点", "🌠 故障切换", "🇭🇰 香港节点", "🇯🇵 日本节点"]);
+    proxyGroups[3] = getProxyGroup("🌟 目标节点", "select", ["REJECT"], /.+/gm);
+
+    proxyGroups[4] = getProxyGroup("🇭🇰 香港节点", "url-test", [], /香港\s\d\d ((?!流媒体).)*$/gm);
+    proxyGroups[5] = getProxyGroup("🇯🇵 日本节点", "url-test", [], /日本\s\d\d/gm)
+
+    proxyGroups[6] = getProxyGroup("🌠 故障切换", "fallback", [], /专线/gm);
+    proxyGroups[6].proxies.sort((a, b) => {
+      const sortRules = ["移动/深港", "电信/深港", "电信/沪日"];
+      const target = /.{2}\/.{2}/gm;
+      return sortRules.indexOf(a.match(target).pop()) - sortRules.indexOf(b.match(target).pop());
+    });
+  } else if (isColaCloud) {
+    suffix = "B";
+    outputName = "COLA_CLOUD";
+
+    proxyGroups[0] = getProxyGroup("🛣️ 科学上网", "select", ["DIRECT", "🌟 目标节点", "🌠 故障切换", "🇭🇰 香港节点", "🇭🇰 香港海外"]);
+    proxyGroups[1] = getProxyGroup("🌊 规则逃逸", "select", ["DIRECT", "🛣️ 科学上网"]);
+    proxyGroups[2] = getProxyGroup("🌤️ 特殊控制", "select", ["REJECT", "🌟 目标节点", "🌠 故障切换", "🇭🇰 香港节点", "🇭🇰 香港海外"]);
+    proxyGroups[3] = getProxyGroup("🌟 目标节点", "select", ["REJECT"], /^((?!套餐).)*$/gm);
+
+    proxyGroups[4] = getProxyGroup("🇭🇰 香港节点", "url-test", [], /香港\s\d\d/gm);
+    proxyGroups[5] = getProxyGroup("🇭🇰 香港海外", "url-test", [], /香港\d\d\s海外用節點/gm);
+
+    proxyGroups[6] = getProxyGroup("🌠 故障切换", "fallback", [], /(越南|獅城|台灣)\s\d\d/gm);
+    proxyGroups[6].proxies.sort((a, b) => {
+      const sortRules = ["台灣", "獅城", "越南"];
+      const target = /^.{2}/gm;
+      return sortRules.indexOf(a.match(target).pop()) - sortRules.indexOf(b.match(target).pop());
+    });
+  }
+
+  /* ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 允许修改或添加配置 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ */
+
+  
+  
+  function getProxyGroup(groupName, groupType, stableGroup, regex) {
+    const proxyGroup = {
+      name: groupName,
+      type: groupType,
+      url: "http://www.gstatic.com/generate_204",
+      interval: 600,
+      proxies: []
+    };
+
+    if (stableGroup.length != 0) {
+      proxyGroup.proxies = stableGroup;
+    }
+
+    if (regex !== undefined) {
+      const transfer = (regex + "").substring(1, (regex + "").length - 3);
+      regex = new RegExp("(?:" + transfer + ")");
+
+      obj.proxies.forEach(ele => {
+        var proxyName = ele.name;
+        if (proxyName.match(regex)) {
+          proxyGroup.proxies.push(proxyName);
+        }
+      });
+    }
+    return proxyGroup;
+  }
+  obj["proxy-groups"] = proxyGroups;
 
   // 构建Rule providers对象
   const httpClassical = { type: "http", behavior: "classical", interval: 86400 };
@@ -83,16 +168,16 @@
   const fileCustomize = path.resolve(__dirname, "customize rules");
 
   for (const [key, value] of Object.entries(rpRemoteHttp)) {
-    rpRemoteHttp[key]["url"] = httpRemote + this.get(key, "txt");
+    rpRemoteHttp[key]["url"] = httpRemote + getFileName(key, "txt");
   }
   for (const [key, value] of Object.entries(rpCustomizeHttp)) {
-    rpCustomizeHttp[key]["url"] = httpCustomize + this.get(key, "yaml");
+    rpCustomizeHttp[key]["url"] = httpCustomize + getFileName(key, "yaml");
   }
   for (const [key, value] of Object.entries(rpRemoteFile)) {
-    rpRemoteFile[key]["path"] = path.resolve(fileRemote, this.get(key, "yaml"));
+    rpRemoteFile[key]["path"] = path.resolve(fileRemote, getFileName(key, "yaml"));
   }
   for (const [key, value] of Object.entries(rpCustomizeFile)) {
-    rpCustomizeFile[key]["path"] = path.resolve(fileCustomize, this.get(key, "yaml"));
+    rpCustomizeFile[key]["path"] = path.resolve(fileCustomize, getFileName(key, "yaml"));
   }
 
   // 深拷贝要使用JSON.stringify()和JSON.parse()方法
@@ -149,168 +234,16 @@
     "MATCH,🌊 规则逃逸"
   ];
 
-  // Create proxy groups.
-  const proxyGroupMainUse = { name: "🛣️ 科学上网", type: "select", proxies: ["DIRECT", "🌟 目标节点", "🌠 稳定节点", "🇭🇰 香港节点"] };
-  const proxyGroupAISpecial = { name: "🌤️ 特殊控制", type: "select", proxies: ["REJECT", "🌟 目标节点", "🌠 稳定节点", "🇭🇰 香港节点"] };
-  const proxyGroupAllNodes = { name: "🌟 目标节点", type: "select", proxies: ["REJECT"] };
-  const proxyGroupElesRequest = { name: "🌊 规则逃逸", type: "select", proxies: ["DIRECT", "🛣️ 科学上网"] };
-  const proxyGroupHongKong = {
-    name: "🇭🇰 香港节点",
-    type: "url-test",
-    url: "http://www.gstatic.com/generate_204",
-    interval: 600,
-    proxies: []
-  };
-  const proxyGroupStable = {
-    name: "🌠 稳定节点",
-    type: "select",
-    // type: "fallback",
-    // url: "http://www.gstatic.com/generate_204",
-    // interval: 600,
-    proxies: []
-  };
-
-  // Determine the current subscription link.
-  const isEasternNetwork = JSON.stringify(url).match(/touhou/gm);
-  const isColaCloud = JSON.stringify(url).match(/dingyuedizhi/gm);
-
-  // Special group for Eastern Network.
-  let proxyGroupJapan;
-  if (isEasternNetwork) {
-
-    proxyGroupJapan = {
-      name: "🇯🇵 日本节点",
-      type: "url-test",
-      url: "http://www.gstatic.com/generate_204",
-      interval: 600,
-      proxies: []
-    };
-    proxyGroupMainUse.proxies.push("🇯🇵 日本节点");
-    proxyGroupAISpecial.proxies.push("🇯🇵 日本节点");
+  function addSuffix(str, suffix) {
+    for (var i = 0; i < groupNames.length; i++) {
+      str = str.replaceAll(groupNames[i], groupNames[i] + " " + suffix);
+    }
+    return str;
   }
 
-  // Special group for Cola Cloud.
-  let proxyGroupHongKongOverseas;
-  let proxyGroupExceptHK;
-  if (isColaCloud) {
-    proxyGroupExceptHK = {
-      name: "🇺🇳 其他节点",
-      type: "url-test",
-      url: "http://www.gstatic.com/generate_204",
-      interval: 600,
-      proxies: []
-    }
-    proxyGroupMainUse.proxies.push("🇺🇳 其他节点");
-    proxyGroupAISpecial.proxies.push("🇺🇳 其他节点");
-
-    proxyGroupHongKongOverseas = {
-      name: "🇭🇰 香港海外",
-      type: "url-test",
-      url: "http://www.gstatic.com/generate_204",
-      interval: 600,
-      proxies: []
-    }
-    proxyGroupMainUse.proxies.push("🇭🇰 香港海外");
-    proxyGroupAISpecial.proxies.push("🇭🇰 香港海外");
-
-    // 本节点允许BT下载
-    obj["rules"].shift();
-    obj["rules"].unshift("PROCESS-NAME,BitComet.exe,🛣️ 科学上网");
-  }
-
-  // For sorting proxy, it will be used by proxyGroupStable group.
-  const HKChinaTelecom = [];
-  const HKChinaMobile = [];
-  const JapanChinaTelecom = [];
-
-  const Singapore = [];
-  const Taiwan = [];
-  const Vietnam = [];
-
-  // Add proxy to proxy groups.
-  obj.proxies.forEach(ele => {
-    let proxyName = ele.name;
-    // 本条正则用于过滤没用的节点，根据节点特性来选择是否需要判断
-    if (proxyName.match(/^((?!套餐).)*$/gm)) {
-      proxyGroupAllNodes.proxies.push(proxyName);
-    }
-
-    if (isColaCloud) {
-      if (proxyName.match(/^越南\s\d\d/gm)) {
-        Vietnam.push(proxyName);
-      } else if (proxyName.match(/^台灣\s\d\d/gm)) {
-        Taiwan.push(proxyName);
-      } else if (proxyName.match(/^獅城\s\d\d/gm)) {
-        Singapore.push(proxyName);
-      }
-    }
-
-    if (proxyName.match(/香港\s\d\d/gm) && proxyName.match(/^((?!流媒体).)*$/gm)) {
-      proxyGroupHongKong.proxies.push(proxyName);
-
-      // Special group for Cola Cloud.
-      // if (isColaCloud) {
-      //   proxyGroupStable.proxies.push(proxyName);
-      // }
-    } else if (isColaCloud && proxyName.match(/^((?!(海外用節點|套餐)).)*$/gm)) {
-      proxyGroupExceptHK.proxies.push(proxyName);
-    }
-
-    // Special group for Eastern Network.
-    if (proxyName.match(/香港\d\d\s海外用節點/gm)) {
-      proxyGroupHongKongOverseas.proxies.push(proxyName);
-    }
-
-    // Special sort for Eastern Network.
-    if (isEasternNetwork) {
-      if (proxyName.match(/日本\s\d\d/gm)) {
-        proxyGroupJapan.proxies.push(proxyName)
-
-        if (proxyName.match(/电信\/沪日专线/gm)) {
-          JapanChinaTelecom.push(proxyName);
-        }
-      }
-      if (proxyName.match(/电信\/深港专线/gm)) {
-        HKChinaTelecom.push(proxyName);
-      } else if (proxyName.match(/移动\/深港专线/gm)) {
-        HKChinaMobile.push(proxyName);
-      }
-    }
-  });
-
-  // For eastern network, should sequentially add proxy into proxyGroupStable group.
-  if (isEasternNetwork) {
-    proxyGroupStable.proxies = HKChinaMobile.concat(HKChinaTelecom, JapanChinaTelecom);
-  }
-
-  if (isColaCloud) {
-    proxyGroupStable.proxies = Taiwan.concat(Singapore, Vietnam);
-  }
-
-  // Add proxy group into obj.
-  obj["proxy-groups"] = []; // This will help erase original proxy groups.
-  obj["proxy-groups"].push(proxyGroupMainUse);
-  obj["proxy-groups"].push(proxyGroupElesRequest);
-  obj["proxy-groups"].push(proxyGroupAISpecial);
-  obj["proxy-groups"].push(proxyGroupAllNodes);
-  obj["proxy-groups"].push(proxyGroupHongKong);
-  if (isEasternNetwork) {
-    obj["proxy-groups"].push(proxyGroupJapan);
-  } else if (isColaCloud) {
-    obj["proxy-groups"].push(proxyGroupExceptHK);
-    obj["proxy-groups"].push(proxyGroupHongKongOverseas);
-  }
-  obj["proxy-groups"].push(proxyGroupStable);
-
-  // Final return config.
-  let finalReturn = yaml.stringify(obj);
-
-  // 选择是否将当前Clash的配置转换为Stash的配置
-  // 通过settings.yaml中的disableStashOutput参数控制
-  if (!disableStashOutput) {
-    let fileName = "Undefined";
+  function outputStashConfig(outputName, suffix) {
     const output = {
-      name: "",
+      name: outputName,
       desc: "Replace original config.",
       "proxy-groups": obj["proxy-groups"],
       rules: obj.rules,
@@ -318,54 +251,24 @@
         JSON.parse(rpRemoteHttpRaw), JSON.parse(rpCustomizeHttpRaw)
       )
     };
-
-    if (isEasternNetwork) {
-      output["name"] = "Eastern Network";
-      fileName = "eastern";
-    } else if (isColaCloud) {
-      output["name"] = "Cola Cloud";
-      fileName = "cola";
-    }
-
     const str = yaml.stringify(output);
     let finalOutput = str.replace("rules:", "rules: #!replace")
       .replace("proxy-groups:", "proxy-groups: #!replace")
       .replace("rule-providers:", "rule-providers: #!replace");
 
-    // 为组别添加symbol以避免不同订阅下的组别重名
-    if (isEasternNetwork) {
-      finalOutput = specialized(finalOutput, "A");
-    } else if (isColaCloud) {
-      finalOutput = specialized(finalOutput, "B");
-    }
-
     fs.writeFile(
-      path.resolve(__dirname, "..", "stash", fileName + ".stoverride"),
-      finalOutput,
+      path.resolve(__dirname, "..", "stash", outputName + ".stoverride"),
+      addSuffix(finalOutput, suffix),
       (err) => { throw err; }
     );
   }
 
-  // 为组别添加symbol以避免不同订阅下的组别重名
-  if (isEasternNetwork) {
-    finalReturn = specialized(finalReturn, "A");
-  } else if (isColaCloud) {
-    finalReturn = specialized(finalReturn, "B");
+  if (!disableStashOutput) {
+      outputStashConfig(outputName, suffix);
   }
-  return finalReturn;
+  return addSuffix(yaml.stringify(obj), suffix);
 }
 
-// 本方法中的match()返回仅包含一个字符串的数组对象
-// 用pop()是为了将字符串提取出来以使用replace()方法
-module.exports.get = function getFileName(key, type) {
+function getFileName(key, type) {
   return key.match(/-[-\w]+/gm).pop().replace(/^-/gm, "").toLowerCase() + "." + type;
-}
-
-// 不同订阅的分组建议不要同名，本方法用于为分组添加不同的symbol以避免重名
-function specialized(str, symbol) {
-  const groupNames = ["科学上网", "规则逃逸", "特殊控制", "目标节点", "香港节点", "日本节点", "稳定节点", "香港海外", "其他节点"];
-  for (var i = 0; i < groupNames.length; i++) {
-    str = str.replaceAll(groupNames[i], groupNames[i] + " " + symbol);
-  }
-  return str;
 }
