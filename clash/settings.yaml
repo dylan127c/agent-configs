@@ -1,5 +1,5 @@
 disableHttp: true
-disableStashOutput: false
+disableStashOutput: true
 
 # 将默认用于覆盖订阅配置中的DNS配置
 dns:
