@@ -16,19 +16,14 @@
   // 使用TUN模式请关闭浏览器中的安全DNS功能，以防止DNS劫持失败
   obj["dns"] = objSettings["dns"];
 
-
-
   /* ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 允许修改或添加配置 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ */
 
   // Determine the current subscription link.
   const isEasternNetwork = JSON.stringify(url).match(/touhou/gm);
   const isColaCloud = JSON.stringify(url).match(/dingyuedizhi/gm);
   
-  let suffix = ""; // 分组后缀
-  let outputName = ";" // 输出Stash配置文件的名称及别名
-
-  // 本数组用于检索现存分组名称，并在指定分组之后添加suffix后缀
-  const groupNames = ["科学上网", "规则逃逸", "特殊控制", "目标节点", "香港节点", "日本节点", "故障切换", "香港海外"];
+  let suffix = ""; // 组别后缀
+  let outputName = ";" // Stash配置的输出文件名及.stoverride文件的别名
 
   const proxyGroups = [];
   if (isEasternNetwork) {
@@ -68,11 +63,55 @@
       return sortRules.indexOf(a.match(target).pop()) - sortRules.indexOf(b.match(target).pop());
     });
   }
+  obj["proxy-groups"] = proxyGroups;
+
+  // User-defined rules will replace original rules.
+  obj["rules"] = [
+    "PROCESS-NAME,BitComet.exe,DIRECT",
+    "PROCESS-NAME,aria2c.exe,DIRECT",
+    "PROCESS-NAME,Motrix.exe,DIRECT",
+    "RULE-SET,Customize-Reject,REJECT", // personal rules
+    "RULE-SET,Customize-Special,🌤️ 特殊控制", // personal rules (Special for ChatGPT)
+    "RULE-SET,Customize-Direct,DIRECT", // personal rules
+    "RULE-SET,Customize-Proxy,🛣️ 科学上网", // personal rules
+    "RULE-SET,Remote-Applications,DIRECT",
+    "RULE-SET,Remote-Apple,DIRECT",
+    "RULE-SET,Remote-iCloud,DIRECT",
+    "RULE-SET,Remote-Reject,REJECT", // ad filter
+    "RULE-SET,Remote-Proxy,🛣️ 科学上网",
+    "RULE-SET,Remote-GFW,🛣️ 科学上网",
+    "RULE-SET,Remote-Direct,DIRECT",
+    "RULE-SET,Remote-Private,DIRECT",
+    "RULE-SET,Remote-Greatfire,🛣️ 科学上网",
+    "RULE-SET,Remote-Tld-not-cn,🛣️ 科学上网",
+
+    // If DOMAIN not match and meet IP RULES, no-resolve option will protect DNS from leakage.
+    // But no-resolve mean IP RULES will not apply to DOMAIN, it means only IP access use IP RULES.
+    "RULE-SET,Remote-Telegramcidr,🛣️ 科学上网,no-resolve",
+    "RULE-SET,Remote-Cncidr,DIRECT,no-resolve",
+    "RULE-SET,Remote-Lancidr,DIRECT,no-resolve",
+
+    // GEOIP RULES.
+    "GEOIP,LAN,DIRECT,no-resolve",
+    "GEOIP,CN,DIRECT,no-resolve",
+
+    // By default blacklist mode is used. So at last, no matching DOMAIN will match the MATCH RULES.
+    // If DOMAIN was not inculded in DOMAIN RULES, please check log and add relevant domain into customize file.
+    // Customize rules are saved in (/customize rules) directory.
+    "MATCH,🌊 规则逃逸"
+  ];
 
   /* ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 允许修改或添加配置 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ */
-
   
-  
+  /**
+   * 用于创建节点组。
+   * 
+   * @param {string} groupName 组名
+   * @param {string} groupType 类型
+   * @param {Array} stableGroup 属于该分组的节点或组别 
+   * @param {RegExp} regex 正则表达式，用于筛选节点
+   * @returns 
+   */
   function getProxyGroup(groupName, groupType, stableGroup, regex) {
     const proxyGroup = {
       name: groupName,
@@ -99,7 +138,6 @@
     }
     return proxyGroup;
   }
-  obj["proxy-groups"] = proxyGroups;
 
   // 构建Rule providers对象
   const httpClassical = { type: "http", behavior: "classical", interval: 86400 };
@@ -198,42 +236,18 @@
     );
   }
 
-  // User-defined rules will replace original rules.
-  obj["rules"] = [
-    "PROCESS-NAME,BitComet.exe,DIRECT",
-    "PROCESS-NAME,aria2c.exe,DIRECT",
-    "PROCESS-NAME,Motrix.exe,DIRECT",
-    "RULE-SET,Customize-Reject,REJECT", // personal rules
-    "RULE-SET,Customize-Special,🌤️ 特殊控制", // personal rules (Special for ChatGPT)
-    "RULE-SET,Customize-Direct,DIRECT", // personal rules
-    "RULE-SET,Customize-Proxy,🛣️ 科学上网", // personal rules
-    "RULE-SET,Remote-Applications,DIRECT",
-    "RULE-SET,Remote-Apple,DIRECT",
-    "RULE-SET,Remote-iCloud,DIRECT",
-    "RULE-SET,Remote-Reject,REJECT", // ad filter
-    "RULE-SET,Remote-Proxy,🛣️ 科学上网",
-    "RULE-SET,Remote-GFW,🛣️ 科学上网",
-    "RULE-SET,Remote-Direct,DIRECT",
-    "RULE-SET,Remote-Private,DIRECT",
-    "RULE-SET,Remote-Greatfire,🛣️ 科学上网",
-    "RULE-SET,Remote-Tld-not-cn,🛣️ 科学上网",
-
-    // If DOMAIN not match and meet IP RULES, no-resolve option will protect DNS from leakage.
-    // But no-resolve mean IP RULES will not apply to DOMAIN, it means only IP access use IP RULES.
-    "RULE-SET,Remote-Telegramcidr,🛣️ 科学上网,no-resolve",
-    "RULE-SET,Remote-Cncidr,DIRECT,no-resolve",
-    "RULE-SET,Remote-Lancidr,DIRECT,no-resolve",
-
-    // GEOIP RULES.
-    "GEOIP,LAN,DIRECT,no-resolve",
-    "GEOIP,CN,DIRECT,no-resolve",
-
-    // By default blacklist mode is used. So at last, no matching DOMAIN will match the MATCH RULES.
-    // If DOMAIN was not inculded in DOMAIN RULES, please check log and add relevant domain into customize file.
-    // Customize rules are saved in (/customize rules) directory.
-    "MATCH,🌊 规则逃逸"
-  ];
-
+  // 由于Rules规则中也存在组名，单纯为组别添加后缀不可行，需要全局替换
+  const groupNames = [];
+  proxyGroups.forEach(proxyGroup => {
+    groupNames.push(proxyGroup.name);
+  })
+  /**
+   * 用于遍历当前已存在的所有组名数组，以添加组别的后缀信息
+   * 
+   * @param {string} str 订阅配置的string类型原文
+   * @param {string} suffix 后缀信息
+   * @returns 
+   */
   function addSuffix(str, suffix) {
     for (var i = 0; i < groupNames.length; i++) {
       str = str.replaceAll(groupNames[i], groupNames[i] + " " + suffix);
@@ -241,6 +255,12 @@
     return str;
   }
 
+  /**
+   * 用于输出Stash配置文件。
+   * 
+   * @param {string} outputName 输出文件名及.stoverride文件的别名
+   * @param {string} suffix 为组名添加的后缀信息
+   */
   function outputStashConfig(outputName, suffix) {
     const output = {
       name: outputName,
@@ -269,6 +289,13 @@
   return addSuffix(yaml.stringify(obj), suffix);
 }
 
+/**
+ * 用于提取并拼接目标规则文件的名称。
+ * 
+ * @param {string} key 
+ * @param {string} type 
+ * @returns 
+ */
 function getFileName(key, type) {
   return key.match(/-[-\w]+/gm).pop().replace(/^-/gm, "").toLowerCase() + "." + type;
 }
