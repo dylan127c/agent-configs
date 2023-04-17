@@ -10,6 +10,7 @@
 
   const disableHttp = objSettings["disableHttp"]; // 是否启用http方式获取规则列表
   const disableStashOutput = objSettings["disableStashOutput"]; // 是否转换并导出stash配置文件
+  const disableClashVergeOutput = objSettings["disableClashVergeOutput"]; // 是否将配置同步到clash-verge中
 
   // 替换订阅中的DNS配置，但无法确定是订阅中的DNS生效，还是Clash默认TUN Mode内的DNS生效
   // 以防万一，可以将TUN Mode中的DNS配置修改为与自定义DNS配置一致，但不改也能用
@@ -18,76 +19,29 @@
 
   /* ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 允许修改或添加配置 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ */
 
-  // Determine the current subscription link.
-  const isEasternNetwork = JSON.stringify(url).match(/touhou/gm);
-  const isColaCloud = JSON.stringify(url).match(/dingyuedizhi/gm);
-  
-  let suffix = ""; // 组别后缀
-  let outputName = ";" // Stash配置的输出文件名及.stoverride文件的别名
-
-  const proxyGroups = [];
-  if (isEasternNetwork) {
-    suffix = "A";
-    outputName = "ORIENTAL_NETWORK";
-    
-    proxyGroups[0] = getProxyGroup("🛣️ 科学上网", "select", ["DIRECT", "🌟 目标节点", "🌠 故障切换", "🇭🇰 香港节点", "🇯🇵 日本节点"]);
-    proxyGroups[1] = getProxyGroup("🌊 规则逃逸", "select", ["DIRECT", "🛣️ 科学上网"]);
-    proxyGroups[2] = getProxyGroup("🌤️ 特殊控制", "select", ["REJECT", "🌟 目标节点", "🌠 故障切换", "🇭🇰 香港节点", "🇯🇵 日本节点"]);
-    proxyGroups[3] = getProxyGroup("🌟 目标节点", "select", ["REJECT"], /.+/gm);
-
-    proxyGroups[4] = getProxyGroup("🇭🇰 香港节点", "url-test", [], /香港\s\d\d ((?!流媒体).)*$/gm);
-    proxyGroups[5] = getProxyGroup("🇯🇵 日本节点", "url-test", [], /日本\s\d\d/gm)
-
-    proxyGroups[6] = getProxyGroup("🌠 故障切换", "fallback", [], /专线/gm);
-    proxyGroups[6].proxies.sort((a, b) => {
-      const sortRules = ["移动/深港", "电信/深港", "电信/沪日"];
-      const target = /.{2}\/.{2}/gm;
-      return sortRules.indexOf(a.match(target).pop()) - sortRules.indexOf(b.match(target).pop());
-    });
-  } else if (isColaCloud) {
-    suffix = "B";
-    outputName = "COLA_CLOUD";
-
-    proxyGroups[0] = getProxyGroup("🛣️ 科学上网", "select", ["DIRECT", "🌟 目标节点", "🌠 故障切换", "🇭🇰 香港节点", "🇭🇰 香港海外"]);
-    proxyGroups[1] = getProxyGroup("🌊 规则逃逸", "select", ["DIRECT", "🛣️ 科学上网"]);
-    proxyGroups[2] = getProxyGroup("🌤️ 特殊控制", "select", ["REJECT", "🌟 目标节点", "🌠 故障切换", "🇭🇰 香港节点", "🇭🇰 香港海外"]);
-    proxyGroups[3] = getProxyGroup("🌟 目标节点", "select", ["REJECT"], /^((?!套餐).)*$/gm);
-
-    proxyGroups[4] = getProxyGroup("🇭🇰 香港节点", "url-test", [], /香港\s\d\d/gm);
-    proxyGroups[5] = getProxyGroup("🇭🇰 香港海外", "url-test", [], /香港\d\d\s海外用節點/gm);
-
-    proxyGroups[6] = getProxyGroup("🌠 故障切换", "fallback", [], /(越南|獅城|台灣)\s\d\d/gm);
-    proxyGroups[6].proxies.sort((a, b) => {
-      const sortRules = ["台灣", "獅城", "越南"];
-      const target = /^.{2}/gm;
-      return sortRules.indexOf(a.match(target).pop()) - sortRules.indexOf(b.match(target).pop());
-    });
-  }
-  obj["proxy-groups"] = proxyGroups;
-
   // User-defined rules will replace original rules.
   obj["rules"] = [
-    "PROCESS-NAME,BitComet.exe,DIRECT",
     "PROCESS-NAME,aria2c.exe,DIRECT",
     "PROCESS-NAME,Motrix.exe,DIRECT",
+    "PROCESS-NAME,BitComet.exe,DIRECT",
     "RULE-SET,Customize-Reject,REJECT", // personal rules
-    "RULE-SET,Customize-Special,🌤️ 特殊控制", // personal rules (Special for ChatGPT)
+    "RULE-SET,Customize-Special,特殊控制", // personal rules (Special for ChatGPT)
     "RULE-SET,Customize-Direct,DIRECT", // personal rules
-    "RULE-SET,Customize-Proxy,🛣️ 科学上网", // personal rules
+    "RULE-SET,Customize-Proxy,科学上网", // personal rules
     "RULE-SET,Remote-Applications,DIRECT",
     "RULE-SET,Remote-Apple,DIRECT",
     "RULE-SET,Remote-iCloud,DIRECT",
     "RULE-SET,Remote-Reject,REJECT", // ad filter
-    "RULE-SET,Remote-Proxy,🛣️ 科学上网",
-    "RULE-SET,Remote-GFW,🛣️ 科学上网",
+    "RULE-SET,Remote-Proxy,科学上网",
+    "RULE-SET,Remote-GFW,科学上网",
     "RULE-SET,Remote-Direct,DIRECT",
     "RULE-SET,Remote-Private,DIRECT",
-    "RULE-SET,Remote-Greatfire,🛣️ 科学上网",
-    "RULE-SET,Remote-Tld-not-cn,🛣️ 科学上网",
+    "RULE-SET,Remote-Greatfire,科学上网",
+    "RULE-SET,Remote-Tld-not-cn,科学上网",
 
     // If DOMAIN not match and meet IP RULES, no-resolve option will protect DNS from leakage.
     // But no-resolve mean IP RULES will not apply to DOMAIN, it means only IP access use IP RULES.
-    "RULE-SET,Remote-Telegramcidr,🛣️ 科学上网,no-resolve",
+    "RULE-SET,Remote-Telegramcidr,科学上网,no-resolve",
     "RULE-SET,Remote-Cncidr,DIRECT,no-resolve",
     "RULE-SET,Remote-Lancidr,DIRECT,no-resolve",
 
@@ -98,11 +52,63 @@
     // By default blacklist mode is used. So at last, no matching DOMAIN will match the MATCH RULES.
     // If DOMAIN was not inculded in DOMAIN RULES, please check log and add relevant domain into customize file.
     // Customize rules are saved in (/customize rules) directory.
-    "MATCH,🌊 规则逃逸"
+    "MATCH,规则逃逸"
   ];
 
+  // Determine the current subscription link.
+  const isEasternNetwork = JSON.stringify(url).match(/touhou/gm);
+  const isColaCloud = JSON.stringify(url).match(/dingyuedizhi/gm);
+
+  let prefix = ""; // 组别前缀
+  let outputName = ";" // Stash配置的输出文件名及.stoverride文件的别名
+
+  const proxyGroups = [];
+  if (isEasternNetwork) {
+    prefix = "🛤️";
+    outputName = "ORIENTAL_NETWORK";
+
+    proxyGroups[0] = getProxyGroup("科学上网", "select", ["DIRECT", "目标节点", "故障切换", "香港自动", "日本自动"]);
+    proxyGroups[1] = getProxyGroup("规则逃逸", "select", ["DIRECT", "科学上网"]);
+    proxyGroups[2] = getProxyGroup("特殊控制", "select", ["REJECT", "目标节点", "故障切换", "香港自动", "日本自动"]);
+    proxyGroups[3] = getProxyGroup("目标节点", "select", ["REJECT"], /.+/gm);
+
+    proxyGroups[4] = getProxyGroup("香港自动", "url-test", [], /香港\s\d\d ((?!流媒体).)*$/gm);
+    proxyGroups[5] = getProxyGroup("日本自动", "url-test", [], /日本\s\d\d/gm)
+
+    proxyGroups[6] = getProxyGroup("故障切换", "fallback", [], /专线/gm);
+    proxyGroups[6].proxies.sort((a, b) => {
+      const sortRules = ["移动/深港", "电信/深港", "电信/沪日"];
+      const target = /.{2}\/.{2}/gm;
+      return sortRules.indexOf(a.match(target).pop()) - sortRules.indexOf(b.match(target).pop());
+    });
+  } else if (isColaCloud) {
+    prefix = "🛣️";
+    outputName = "COLA_CLOUD";
+
+    proxyGroups[0] = getProxyGroup("科学上网", "select", ["DIRECT", "目标节点", "故障切换", "香港自动", "香港海外"]);
+    proxyGroups[1] = getProxyGroup("规则逃逸", "select", ["DIRECT", "科学上网"]);
+    proxyGroups[2] = getProxyGroup("特殊控制", "select", ["REJECT", "目标节点", "故障切换", "香港自动", "香港海外"]);
+    proxyGroups[3] = getProxyGroup("目标节点", "select", ["REJECT"], /^((?!套餐).)*$/gm);
+
+    proxyGroups[4] = getProxyGroup("香港自动", "url-test", [], /香港\s\d\d/gm);
+    proxyGroups[5] = getProxyGroup("香港海外", "url-test", [], /香港\d\d\s海外用節點/gm);
+
+    proxyGroups[6] = getProxyGroup("故障切换", "fallback", [], /(越南|獅城|台灣)\s\d\d/gm);
+    proxyGroups[6].proxies.sort((a, b) => {
+      const sortRules = ["台灣", "獅城", "越南"];
+      const target = /^.{2}/gm;
+      return sortRules.indexOf(a.match(target).pop()) - sortRules.indexOf(b.match(target).pop());
+    });
+
+    // 对于允许下载行为的代理，可以从规则中剔除对指定.exe程序的限制
+    obj["rules"].shift(); // 剔除对aria2c.exe的限制
+    obj["rules"].shift(); // 剔除对Motrix.exe的限制
+    obj["rules"].shift(); // 剔除对BitComet.exe的限制
+  }
+  obj["proxy-groups"] = proxyGroups;
+
   /* ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 允许修改或添加配置 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ */
-  
+
   /**
    * 用于创建节点组。
    * 
@@ -236,21 +242,21 @@
     );
   }
 
-  // 由于Rules规则中也存在组名，单纯为组别添加后缀不可行，需要全局替换
+  // 由于Rules规则中也存在组名，单纯为组别添加前缀不可行，需要全局替换
   const groupNames = [];
   proxyGroups.forEach(proxyGroup => {
     groupNames.push(proxyGroup.name);
   })
   /**
-   * 用于遍历当前已存在的所有组名数组，以添加组别的后缀信息
+   * 用于遍历当前已存在的所有组名数组，以添加组别的前缀信息
    * 
    * @param {string} str 订阅配置的string类型原文
-   * @param {string} suffix 后缀信息
+   * @param {string} prefix 前缀信息
    * @returns 
    */
-  function addSuffix(str, suffix) {
+  function addPrefix(str, prefix) {
     for (var i = 0; i < groupNames.length; i++) {
-      str = str.replaceAll(groupNames[i], groupNames[i] + " " + suffix);
+      str = str.replaceAll(groupNames[i], prefix + " " + groupNames[i]);
     }
     return str;
   }
@@ -259,9 +265,9 @@
    * 用于输出Stash配置文件。
    * 
    * @param {string} outputName 输出文件名及.stoverride文件的别名
-   * @param {string} suffix 为组名添加的后缀信息
+   * @param {string} prefix 为组名添加的前缀信息
    */
-  function outputStashConfig(outputName, suffix) {
+  function outputStashConfig(outputName, prefix) {
     const output = {
       name: outputName,
       desc: "Replace original config.",
@@ -278,15 +284,48 @@
 
     fs.writeFile(
       path.resolve(__dirname, "..", "stash", outputName + ".stoverride"),
-      addSuffix(finalOutput, suffix),
+      addPrefix(finalOutput, prefix),
       (err) => { throw err; }
     );
   }
 
-  if (!disableStashOutput) {
-      outputStashConfig(outputName, suffix);
+  /**
+   * 用于同步Clash Verge配置文件。
+   * 
+   * @returns 退出函数
+   */
+  function syncClashVergeConfig() {
+    const currentSubscription = JSON.stringify(url);
+    const configPath = objSettings["configPathForClashVerge"];
+
+    const configNames = objSettings["configNameForClashVerge"];
+    const regexMatchers = objSettings["configRegexMatcher"];
+
+    if (configNames.length !== regexMatchers.length || configNames.length === 0) {
+      return;
+    }
+
+    for (var i = 0; i < configNames.length; i++) {
+      if (currentSubscription.match(regexMatchers[i])) {
+        fs.writeFile(
+          path.resolve(configPath, configNames[i] + ".yaml"),
+          addPrefix(yaml.stringify(obj), prefix),
+          (err) => { throw err; }
+        );
+        return;
+      }
+    }
   }
-  return addSuffix(yaml.stringify(obj), suffix);
+
+  if (!disableStashOutput) {
+    outputStashConfig(outputName, prefix);
+  }
+
+  if (!disableClashVergeOutput) {
+    syncClashVergeConfig();
+  }
+
+  return addPrefix(yaml.stringify(obj), prefix);
 }
 
 /**

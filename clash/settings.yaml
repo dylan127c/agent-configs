@@ -1,6 +1,13 @@
 disableHttp: true
 disableStashOutput: true
 
+disableClashVergeOutput: false
+configPathForClashVerge: C:\Users\dylan\.config\clash-verge\profiles
+configNameForClashVerge: 
+  - l1pZIstxfiBV
+configRegexMatcher:
+  - c9add9
+
 # 将默认用于覆盖订阅配置中的DNS配置
 dns:
   enable: true

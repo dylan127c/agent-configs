@@ -1,34 +1,34 @@
 name: COLA_CLOUD
 desc: Replace original config.
 proxy-groups: #!replace
-  - name: 🛣️ 科学上网 B
+  - name: 🛣️ 科学上网
     type: select
     url: http://www.gstatic.com/generate_204
     interval: 600
     proxies:
       - DIRECT
-      - 🌟 目标节点 B
-      - 🌠 故障切换 B
-      - 🇭🇰 香港节点 B
-      - 🇭🇰 香港海外 B
-  - name: 🌊 规则逃逸 B
+      - 🛣️ 目标节点
+      - 🛣️ 故障切换
+      - 🛣️ 香港自动
+      - 🛣️ 香港海外
+  - name: 🛣️ 规则逃逸
     type: select
     url: http://www.gstatic.com/generate_204
     interval: 600
     proxies:
       - DIRECT
-      - 🛣️ 科学上网 B
-  - name: 🌤️ 特殊控制 B
+      - 🛣️ 科学上网
+  - name: 🛣️ 特殊控制
     type: select
     url: http://www.gstatic.com/generate_204
     interval: 600
     proxies:
       - REJECT
-      - 🌟 目标节点 B
-      - 🌠 故障切换 B
-      - 🇭🇰 香港节点 B
-      - 🇭🇰 香港海外 B
-  - name: 🌟 目标节点 B
+      - 🛣️ 目标节点
+      - 🛣️ 故障切换
+      - 🛣️ 香港自动
+      - 🛣️ 香港海外
+  - name: 🛣️ 目标节点
     type: select
     url: http://www.gstatic.com/generate_204
     interval: 600
@@ -101,7 +101,7 @@ proxy-groups: #!replace
       - 日本62 海外用節點
       - 日本63 海外用節點
       - 香港64 海外用節點
-  - name: 🇭🇰 香港节点 B
+  - name: 🛣️ 香港自动
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 600
@@ -118,7 +118,7 @@ proxy-groups: #!replace
       - 香港 10
       - 香港 11
       - 香港 12
-  - name: 🇭🇰 香港海外 B
+  - name: 🛣️ 香港海外
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 600
@@ -142,7 +142,7 @@ proxy-groups: #!replace
       - 香港58 海外用節點
       - 香港60 海外用節點
       - 香港64 海外用節點
-  - name: 🌠 故障切换 B
+  - name: 🛣️ 故障切换
     type: fallback
     url: http://www.gstatic.com/generate_204
     interval: 600
@@ -158,29 +158,26 @@ proxy-groups: #!replace
       - 越南 05
       - 越南 06
 rules: #!replace
-  - PROCESS-NAME,BitComet.exe,DIRECT
-  - PROCESS-NAME,aria2c.exe,DIRECT
-  - PROCESS-NAME,Motrix.exe,DIRECT
   - RULE-SET,Customize-Reject,REJECT
-  - RULE-SET,Customize-Special,🌤️ 特殊控制 B
+  - RULE-SET,Customize-Special,🛣️ 特殊控制
   - RULE-SET,Customize-Direct,DIRECT
-  - RULE-SET,Customize-Proxy,🛣️ 科学上网 B
+  - RULE-SET,Customize-Proxy,🛣️ 科学上网
   - RULE-SET,Remote-Applications,DIRECT
   - RULE-SET,Remote-Apple,DIRECT
   - RULE-SET,Remote-iCloud,DIRECT
   - RULE-SET,Remote-Reject,REJECT
-  - RULE-SET,Remote-Proxy,🛣️ 科学上网 B
-  - RULE-SET,Remote-GFW,🛣️ 科学上网 B
+  - RULE-SET,Remote-Proxy,🛣️ 科学上网
+  - RULE-SET,Remote-GFW,🛣️ 科学上网
   - RULE-SET,Remote-Direct,DIRECT
   - RULE-SET,Remote-Private,DIRECT
-  - RULE-SET,Remote-Greatfire,🛣️ 科学上网 B
-  - RULE-SET,Remote-Tld-not-cn,🛣️ 科学上网 B
-  - RULE-SET,Remote-Telegramcidr,🛣️ 科学上网 B,no-resolve
+  - RULE-SET,Remote-Greatfire,🛣️ 科学上网
+  - RULE-SET,Remote-Tld-not-cn,🛣️ 科学上网
+  - RULE-SET,Remote-Telegramcidr,🛣️ 科学上网,no-resolve
   - RULE-SET,Remote-Cncidr,DIRECT,no-resolve
   - RULE-SET,Remote-Lancidr,DIRECT,no-resolve
   - GEOIP,LAN,DIRECT,no-resolve
   - GEOIP,CN,DIRECT,no-resolve
-  - MATCH,🌊 规则逃逸 B
+  - MATCH,🛣️ 规则逃逸
 rule-providers: #!replace
   Remote-Reject:
     type: http
