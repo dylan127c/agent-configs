@@ -1,4 +1,5 @@
 payload:
+  - '+.raw.githubusercontent.com'
   - '+.listary.com'
   - '+.gitkraken.com'
   - '+.educba.com'

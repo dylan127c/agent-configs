@@ -135,10 +135,10 @@ rules: #!replace
   - RULE-SET,Remote-Greatfire,🛤️ 科学上网
   - RULE-SET,Remote-Tld-not-cn,🛤️ 科学上网
   - RULE-SET,Remote-Telegramcidr,🛤️ 科学上网,no-resolve
-  - RULE-SET,Remote-Cncidr,DIRECT,no-resolve
-  - RULE-SET,Remote-Lancidr,DIRECT,no-resolve
-  - GEOIP,LAN,DIRECT,no-resolve
-  - GEOIP,CN,DIRECT,no-resolve
+  - RULE-SET,Remote-Cncidr,DIRECT
+  - RULE-SET,Remote-Lancidr,DIRECT
+  - GEOIP,LAN,DIRECT
+  - GEOIP,CN,DIRECT
   - MATCH,🛤️ 规则逃逸
 rule-providers: #!replace
   Remote-Reject:

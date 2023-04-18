@@ -19,19 +19,22 @@
 
   /* ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 允许修改或添加配置 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ */
 
-  // User-defined rules will replace original rules.
+  // 规则可以让指定的程序或规则列表（Rule Providers）使用特定的模式
+  // 这里的模式一般只包含三种：指定的Proxy Group名称或DIRECT、REJECT
   obj["rules"] = [
     "PROCESS-NAME,aria2c.exe,DIRECT",
     "PROCESS-NAME,Motrix.exe,DIRECT",
     "PROCESS-NAME,BitComet.exe,DIRECT",
-    "RULE-SET,Customize-Reject,REJECT", // personal rules
-    "RULE-SET,Customize-Special,特殊控制", // personal rules (Special for ChatGPT)
-    "RULE-SET,Customize-Direct,DIRECT", // personal rules
-    "RULE-SET,Customize-Proxy,科学上网", // personal rules
+
+    "RULE-SET,Customize-Reject,REJECT",
+    "RULE-SET,Customize-Special,特殊控制", // for ChatGPT
+    "RULE-SET,Customize-Direct,DIRECT",
+    "RULE-SET,Customize-Proxy,科学上网",
+
     "RULE-SET,Remote-Applications,DIRECT",
     "RULE-SET,Remote-Apple,DIRECT",
     "RULE-SET,Remote-iCloud,DIRECT",
-    "RULE-SET,Remote-Reject,REJECT", // ad filter
+    "RULE-SET,Remote-Reject,REJECT",
     "RULE-SET,Remote-Proxy,科学上网",
     "RULE-SET,Remote-GFW,科学上网",
     "RULE-SET,Remote-Direct,DIRECT",
@@ -39,19 +42,21 @@
     "RULE-SET,Remote-Greatfire,科学上网",
     "RULE-SET,Remote-Tld-not-cn,科学上网",
 
-    // If DOMAIN not match and meet IP RULES, no-resolve option will protect DNS from leakage.
-    // But no-resolve mean IP RULES will not apply to DOMAIN, it means only IP access use IP RULES.
+    /**
+     * IP规则同时适用于黑、白名单模式。
+     * 
+     * 黑名单模式下，IP规则不解析国外域名，以避免DNS欺骗/污染或DNS泄露。
+     * 但代价是需要维护一个自定义的域名列表，用于匹配代理解锁限制。
+     * 
+     * 白名单模式下，本规则可最大程度保证无国内风险，但DNS欺骗/污染或DNS泄露不可避免。
+     * 如果确认无访问国内域名或IP地址，推荐选用全局模式，以避免DNS欺骗/污染或DNS泄露。
+     */
     "RULE-SET,Remote-Telegramcidr,科学上网,no-resolve",
-    "RULE-SET,Remote-Cncidr,DIRECT,no-resolve",
-    "RULE-SET,Remote-Lancidr,DIRECT,no-resolve",
+    "RULE-SET,Remote-Cncidr,DIRECT",
+    "RULE-SET,Remote-Lancidr,DIRECT",
+    "GEOIP,LAN,DIRECT",
+    "GEOIP,CN,DIRECT",
 
-    // GEOIP RULES.
-    "GEOIP,LAN,DIRECT,no-resolve",
-    "GEOIP,CN,DIRECT,no-resolve",
-
-    // By default blacklist mode is used. So at last, no matching DOMAIN will match the MATCH RULES.
-    // If DOMAIN was not inculded in DOMAIN RULES, please check log and add relevant domain into customize file.
-    // Customize rules are saved in (/customize rules) directory.
     "MATCH,规则逃逸"
   ];
 
