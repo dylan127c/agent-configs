@@ -5,8 +5,10 @@ disableClashVergeOutput: false
 configPathForClashVerge: C:\Users\dylan\.config\clash-verge\profiles
 configNameForClashVerge: 
   - l1pZIstxfiBV
+  - lOiKllfd4RWx
 configRegexMatcher:
   - c9add9
+  - SV8fXD
 
 # 将默认用于覆盖订阅配置中的DNS配置
 dns:
@@ -34,8 +36,8 @@ dns:
     - "*.msftconnecttest.com"
     - WORKGROUP
 
-# Clash for Windows本身支持直接配置TUN模式，且大多数订阅不提供TUN配置
-# 因此，默认情况下TUN配置不进行导入
+# Clash for Windows本身内置了TUN配置，因此大多数CFW的订阅也不提供TUN配置
+# 但如果使用Clash Verge，则需要在订阅配置中添加TUN配置
 tun:
   enable: true
   # 该模式需要添加防火墙规则（Add firewall rules）和安装服务模式（Service Mode）的支持

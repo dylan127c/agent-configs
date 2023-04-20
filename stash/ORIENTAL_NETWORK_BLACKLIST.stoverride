@@ -1,4 +1,4 @@
-name: ORIENTAL_NETWORK
+name: ORIENTAL_NETWORK_BLACKLIST
 desc: Replace original config.
 proxy-groups: #!replace
   - name: 🛤️ 科学上网
@@ -116,30 +116,6 @@ proxy-groups: #!replace
       - 🇭🇰 香港 02 电信/深港专线（2.5倍率）
       - 🇯🇵 日本 01 电信/沪日专线（3倍率）
       - 🇯🇵 日本 02 电信/沪日专线（3倍率）
-rules: #!replace
-  - PROCESS-NAME,aria2c.exe,DIRECT
-  - PROCESS-NAME,Motrix.exe,DIRECT
-  - PROCESS-NAME,BitComet.exe,DIRECT
-  - RULE-SET,Customize-Reject,REJECT
-  - RULE-SET,Customize-Special,🛤️ 特殊控制
-  - RULE-SET,Customize-Direct,DIRECT
-  - RULE-SET,Customize-Proxy,🛤️ 科学上网
-  - RULE-SET,Remote-Applications,DIRECT
-  - RULE-SET,Remote-Apple,DIRECT
-  - RULE-SET,Remote-iCloud,DIRECT
-  - RULE-SET,Remote-Reject,REJECT
-  - RULE-SET,Remote-Proxy,🛤️ 科学上网
-  - RULE-SET,Remote-GFW,🛤️ 科学上网
-  - RULE-SET,Remote-Direct,DIRECT
-  - RULE-SET,Remote-Private,DIRECT
-  - RULE-SET,Remote-Greatfire,🛤️ 科学上网
-  - RULE-SET,Remote-Tld-not-cn,🛤️ 科学上网
-  - RULE-SET,Remote-Telegramcidr,🛤️ 科学上网,no-resolve
-  - RULE-SET,Remote-Cncidr,DIRECT
-  - RULE-SET,Remote-Lancidr,DIRECT
-  - GEOIP,LAN,DIRECT
-  - GEOIP,CN,DIRECT
-  - MATCH,🛤️ 规则逃逸
 rule-providers: #!replace
   Remote-Reject:
     type: http
@@ -226,3 +202,21 @@ rule-providers: #!replace
     behavior: domain
     interval: 86400
     url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/proxy.yaml
+rules: #!replace
+  - PROCESS-NAME,aria2c.exe,DIRECT
+  - PROCESS-NAME,Motrix.exe,DIRECT
+  - PROCESS-NAME,BitComet.exe,DIRECT
+  - RULE-SET,Customize-Reject,REJECT
+  - RULE-SET,Customize-Special,🛤️ 特殊控制
+  - RULE-SET,Customize-Direct,DIRECT
+  - RULE-SET,Customize-Proxy,🛤️ 科学上网
+  - RULE-SET,Remote-Applications,DIRECT
+  - RULE-SET,Remote-Apple,DIRECT
+  - RULE-SET,Remote-iCloud,DIRECT
+  - RULE-SET,Remote-Reject,REJECT
+  - RULE-SET,Remote-Proxy,🛤️ 科学上网
+  - RULE-SET,Remote-GFW,🛤️ 科学上网
+  - RULE-SET,Remote-Greatfire,🛤️ 科学上网
+  - RULE-SET,Remote-Tld-not-cn,🛤️ 科学上网
+  - RULE-SET,Remote-Telegramcidr,🛤️ 科学上网,no-resolve
+  - MATCH,🛤️ 规则逃逸

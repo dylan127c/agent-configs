@@ -1,4 +1,4 @@
-name: COLA_CLOUD
+name: COLA_CLOUD_WHITELIST
 desc: Replace original config.
 proxy-groups: #!replace
   - name: 🛣️ 科学上网
@@ -157,27 +157,6 @@ proxy-groups: #!replace
       - 越南 04
       - 越南 05
       - 越南 06
-rules: #!replace
-  - RULE-SET,Customize-Reject,REJECT
-  - RULE-SET,Customize-Special,🛣️ 特殊控制
-  - RULE-SET,Customize-Direct,DIRECT
-  - RULE-SET,Customize-Proxy,🛣️ 科学上网
-  - RULE-SET,Remote-Applications,DIRECT
-  - RULE-SET,Remote-Apple,DIRECT
-  - RULE-SET,Remote-iCloud,DIRECT
-  - RULE-SET,Remote-Reject,REJECT
-  - RULE-SET,Remote-Proxy,🛣️ 科学上网
-  - RULE-SET,Remote-GFW,🛣️ 科学上网
-  - RULE-SET,Remote-Direct,DIRECT
-  - RULE-SET,Remote-Private,DIRECT
-  - RULE-SET,Remote-Greatfire,🛣️ 科学上网
-  - RULE-SET,Remote-Tld-not-cn,🛣️ 科学上网
-  - RULE-SET,Remote-Telegramcidr,🛣️ 科学上网,no-resolve
-  - RULE-SET,Remote-Cncidr,DIRECT
-  - RULE-SET,Remote-Lancidr,DIRECT
-  - GEOIP,LAN,DIRECT
-  - GEOIP,CN,DIRECT
-  - MATCH,🛣️ 规则逃逸
 rule-providers: #!replace
   Remote-Reject:
     type: http
@@ -264,3 +243,21 @@ rule-providers: #!replace
     behavior: domain
     interval: 86400
     url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/proxy.yaml
+rules: #!replace
+  - RULE-SET,Customize-Reject,REJECT
+  - RULE-SET,Customize-Special,🛣️ 特殊控制
+  - RULE-SET,Customize-Direct,DIRECT
+  - RULE-SET,Customize-Proxy,🛣️ 科学上网
+  - RULE-SET,Remote-Applications,DIRECT
+  - RULE-SET,Remote-Apple,DIRECT
+  - RULE-SET,Remote-iCloud,DIRECT
+  - RULE-SET,Remote-Reject,REJECT
+  - RULE-SET,Remote-Direct,DIRECT
+  - RULE-SET,Remote-Private,DIRECT
+  - RULE-SET,Remote-Tld-not-cn,🛣️ 科学上网
+  - RULE-SET,Remote-Telegramcidr,🛣️ 科学上网,no-resolve
+  - RULE-SET,Remote-Cncidr,DIRECT,no-resolve
+  - RULE-SET,Remote-Lancidr,DIRECT,no-resolve
+  - GEOIP,LAN,DIRECT,no-resolve
+  - GEOIP,CN,DIRECT,no-resolve
+  - MATCH,🛣️ 规则逃逸

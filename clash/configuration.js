@@ -19,43 +19,69 @@
 
   /* ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 允许修改或添加配置 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ */
 
-  // 规则可以让指定的程序或规则列表（Rule Providers）使用特定的模式
-  // 这里的模式一般只包含三种：指定的Proxy Group名称或DIRECT、REJECT
-  obj["rules"] = [
+  /**
+   * 规则可以让指定的程序或规则列表（Rule Providers）使用特定的模式，
+   * 这里的模式一般只包含三种：PROXY、DIRECT、REJECT。
+   */
+  const processlist = [
     "PROCESS-NAME,aria2c.exe,DIRECT",
     "PROCESS-NAME,Motrix.exe,DIRECT",
-    "PROCESS-NAME,BitComet.exe,DIRECT",
+    "PROCESS-NAME,BitComet.exe,DIRECT"
+  ];
 
+  const customizelist = [
     "RULE-SET,Customize-Reject,REJECT",
     "RULE-SET,Customize-Special,特殊控制", // for ChatGPT
     "RULE-SET,Customize-Direct,DIRECT",
-    "RULE-SET,Customize-Proxy,科学上网",
+    "RULE-SET,Customize-Proxy,科学上网"
+  ];
 
+  const blacklist = [
+    /**
+     * 黑名单模式下，无匹配域名或IP会使用DIRECT模式。
+     * 因此，规则列表中含较多规则的、使用DIRECT模式的RULE-SET可以注释掉。
+     */
     "RULE-SET,Remote-Applications,DIRECT",
     "RULE-SET,Remote-Apple,DIRECT",
     "RULE-SET,Remote-iCloud,DIRECT",
     "RULE-SET,Remote-Reject,REJECT",
     "RULE-SET,Remote-Proxy,科学上网",
     "RULE-SET,Remote-GFW,科学上网",
-    "RULE-SET,Remote-Direct,DIRECT",
-    "RULE-SET,Remote-Private,DIRECT",
+    // "RULE-SET,Remote-Direct,DIRECT",
+    // "RULE-SET,Remote-Private,DIRECT",
     "RULE-SET,Remote-Greatfire,科学上网",
     "RULE-SET,Remote-Tld-not-cn,科学上网",
 
-    /**
-     * IP规则同时适用于黑、白名单模式。
-     * 
-     * 黑名单模式下，IP规则不解析国外域名，以避免DNS欺骗/污染或DNS泄露。
-     * 但代价是需要维护一个自定义的域名列表，用于匹配代理解锁限制。
-     * 
-     * 白名单模式下，本规则可最大程度保证无国内风险，但DNS欺骗/污染或DNS泄露不可避免。
-     * 如果确认无访问国内域名或IP地址，推荐选用全局模式，以避免DNS欺骗/污染或DNS泄露。
-     */
     "RULE-SET,Remote-Telegramcidr,科学上网,no-resolve",
-    "RULE-SET,Remote-Cncidr,DIRECT",
-    "RULE-SET,Remote-Lancidr,DIRECT",
-    "GEOIP,LAN,DIRECT",
-    "GEOIP,CN,DIRECT",
+    // "RULE-SET,Remote-Cncidr,DIRECT",
+    // "RULE-SET,Remote-Lancidr,DIRECT",
+    // "GEOIP,LAN,DIRECT",
+    // "GEOIP,CN,DIRECT",
+
+    "MATCH,规则逃逸"
+  ];
+
+  const whitelist = [
+    /**
+     * 白名单模式下，无匹配域名或IP会使用PROXY模式。
+     * 因此，规则列表中含较多规则的、使用PROXY模式的RULE-SET可以注释掉。
+     */
+    "RULE-SET,Remote-Applications,DIRECT",
+    "RULE-SET,Remote-Apple,DIRECT",
+    "RULE-SET,Remote-iCloud,DIRECT",
+    "RULE-SET,Remote-Reject,REJECT",
+    // "RULE-SET,Remote-Proxy,科学上网",
+    // "RULE-SET,Remote-GFW,科学上网",
+    "RULE-SET,Remote-Direct,DIRECT",
+    "RULE-SET,Remote-Private,DIRECT",
+    // "RULE-SET,Remote-Greatfire,科学上网",
+    "RULE-SET,Remote-Tld-not-cn,科学上网",
+
+    "RULE-SET,Remote-Telegramcidr,科学上网,no-resolve",
+    "RULE-SET,Remote-Cncidr,DIRECT,no-resolve",
+    "RULE-SET,Remote-Lancidr,DIRECT,no-resolve",
+    "GEOIP,LAN,DIRECT,no-resolve",
+    "GEOIP,CN,DIRECT,no-resolve",
 
     "MATCH,规则逃逸"
   ];
@@ -71,6 +97,8 @@
   if (isEasternNetwork) {
     prefix = "🛤️";
     outputName = "ORIENTAL_NETWORK";
+
+    obj["rules"] = processlist.concat(customizelist);
 
     proxyGroups[0] = getProxyGroup("科学上网", "select", ["DIRECT", "目标节点", "故障切换", "香港自动", "日本自动"]);
     proxyGroups[1] = getProxyGroup("规则逃逸", "select", ["DIRECT", "科学上网"]);
@@ -90,6 +118,8 @@
     prefix = "🛣️";
     outputName = "COLA_CLOUD";
 
+    obj["rules"] = [...customizelist];
+
     proxyGroups[0] = getProxyGroup("科学上网", "select", ["DIRECT", "目标节点", "故障切换", "香港自动", "香港海外"]);
     proxyGroups[1] = getProxyGroup("规则逃逸", "select", ["DIRECT", "科学上网"]);
     proxyGroups[2] = getProxyGroup("特殊控制", "select", ["REJECT", "目标节点", "故障切换", "香港自动", "香港海外"]);
@@ -104,15 +134,10 @@
       const target = /^.{2}/gm;
       return sortRules.indexOf(a.match(target).pop()) - sortRules.indexOf(b.match(target).pop());
     });
-
-    // 对于允许下载行为的代理，可以从规则中剔除对指定.exe程序的限制
-    obj["rules"].shift(); // 剔除对aria2c.exe的限制
-    obj["rules"].shift(); // 剔除对Motrix.exe的限制
-    obj["rules"].shift(); // 剔除对BitComet.exe的限制
   }
-  obj["proxy-groups"] = proxyGroups;
 
   /* ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 允许修改或添加配置 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ */
+  obj["proxy-groups"] = proxyGroups;
 
   /**
    * 用于创建节点组。
@@ -273,23 +298,47 @@
    * @param {string} prefix 为组名添加的前缀信息
    */
   function outputStashConfig(outputName, prefix) {
+
+    const blacklistRules = obj["rules"].concat(blacklist);
+    const whitelistRules = obj["rules"].concat(whitelist);
+
     const output = {
-      name: outputName,
+      name: "",
       desc: "Replace original config.",
       "proxy-groups": obj["proxy-groups"],
-      rules: obj.rules,
       "rule-providers": Object.assign(
         JSON.parse(rpRemoteHttpRaw), JSON.parse(rpCustomizeHttpRaw)
       )
     };
-    const str = yaml.stringify(output);
-    let finalOutput = str.replace("rules:", "rules: #!replace")
+
+    output.name = outputName + "_BLACKLIST";
+    output.rules = blacklistRules;
+    const blacklistOutput = Object.assign({}, output);
+
+    output.name = outputName + "_WHITELIST";
+    output.rules = whitelistRules;
+    const whitelistOutput = Object.assign({}, output);
+
+    const blacklistStr = yaml.stringify(blacklistOutput);
+    const whitelistStr = yaml.stringify(whitelistOutput);
+
+    let finalOutputBlack = blacklistStr.replace("rules:", "rules: #!replace")
+      .replace("proxy-groups:", "proxy-groups: #!replace")
+      .replace("rule-providers:", "rule-providers: #!replace");
+
+    let finalOutputWhite = whitelistStr.replace("rules:", "rules: #!replace")
       .replace("proxy-groups:", "proxy-groups: #!replace")
       .replace("rule-providers:", "rule-providers: #!replace");
 
     fs.writeFile(
-      path.resolve(__dirname, "..", "stash", outputName + ".stoverride"),
-      addPrefix(finalOutput, prefix),
+      path.resolve(__dirname, "..", "stash", blacklistOutput.name + ".stoverride"),
+      addPrefix(finalOutputBlack, prefix),
+      (err) => { throw err; }
+    );
+
+    fs.writeFile(
+      path.resolve(__dirname, "..", "stash", whitelistOutput.name + ".stoverride"),
+      addPrefix(finalOutputWhite, prefix),
       (err) => { throw err; }
     );
   }
@@ -312,9 +361,14 @@
 
     for (var i = 0; i < configNames.length; i++) {
       if (currentSubscription.match(regexMatchers[i])) {
+        const current = Object.assign({}, obj);
+
+        current["tun"] = objSettings["tun"];
+        current["rules"] = current["rules"].concat(whitelist);
+
         fs.writeFile(
           path.resolve(configPath, configNames[i] + ".yaml"),
-          addPrefix(yaml.stringify(obj), prefix),
+          addPrefix(yaml.stringify(current), prefix),
           (err) => { throw err; }
         );
         return;
@@ -330,6 +384,7 @@
     syncClashVergeConfig();
   }
 
+  obj["rules"] = obj["rules"].concat(blacklist);
   return addPrefix(yaml.stringify(obj), prefix);
 }
 
