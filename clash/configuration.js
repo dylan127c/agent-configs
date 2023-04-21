@@ -69,6 +69,10 @@
 
   const proxyGroups = [];
   if (isEasternNetwork) {
+    // 目前出现的一个问题，即CFW无法识别~/.config/clash/config.yaml中的profile键
+    // 解决方式是在节点配置中直接添加，以支持clash-tracing项目的部署
+    obj["profile"] = {"tracing": true};
+
     prefix = "🛤️";
     outputName = "ORIENTAL_NETWORK";
 
