@@ -57,7 +57,7 @@
   ]
 
   const matchlist = [
-    "MATCH,DIRECT"
+    "MATCH,规则逃逸"
   ]
 
   // Determine the current subscription link.

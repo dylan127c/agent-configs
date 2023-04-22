@@ -23,7 +23,7 @@ rules: #!replace
   - RULE-SET,Remote-Cncidr,DIRECT,no-resolve
   - GEOIP,LAN,DIRECT,no-resolve
   - GEOIP,CN,DIRECT,no-resolve
-  - MATCH,DIRECT
+  - MATCH,🛤️ 规则逃逸
 proxy-groups: #!replace
   - name: 🛤️ 科学上网
     type: select
