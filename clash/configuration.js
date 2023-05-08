@@ -30,10 +30,10 @@
   ];
 
   const customizelist = [
+    "RULE-SET,Customize-Reject,REJECT",
     "RULE-SET,Customize-Direct,DIRECT",
     "RULE-SET,Customize-Special,特殊控制", // for ChatGPT
-    "RULE-SET,Customize-Proxy,科学上网",
-    "RULE-SET,Customize-Reject,REJECT"
+    "RULE-SET,Customize-Proxy,科学上网"
   ];
 
   const remotelist = [
