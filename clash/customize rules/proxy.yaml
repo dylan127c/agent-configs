@@ -1,4 +1,6 @@
 payload:
+  - '+.cdn.cookielaw.org'
+  - '+.docker.com'
   - '+.coolors.co'
   - '+.raw.githubusercontent.com'
   - '+.listary.com'
