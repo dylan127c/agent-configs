@@ -1,5 +1,5 @@
 disableHttp: true
-disableStashOutput: true
+disableStashOutput: false
 
 disableClashVergeOutput: false
 configPathForClashVerge: C:\Users\dylan\.config\clash-verge\profiles

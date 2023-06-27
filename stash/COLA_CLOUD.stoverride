@@ -31,7 +31,6 @@ proxy-groups: #!replace
       - 🛣️ 目标节点
       - 🛣️ 故障切换
       - 🛣️ 香港自动
-      - 🛣️ 香港海外
   - name: 🛣️ 规则逃逸
     type: select
     url: http://www.gstatic.com/generate_204
@@ -48,14 +47,12 @@ proxy-groups: #!replace
       - 🛣️ 目标节点
       - 🛣️ 故障切换
       - 🛣️ 香港自动
-      - 🛣️ 香港海外
   - name: 🛣️ 目标节点
     type: select
     url: http://www.gstatic.com/generate_204
     interval: 600
     proxies:
       - REJECT
-      - 剩余流量：273.02 GB
       - "[SS]香港 01"
       - "[SS]香港 02"
       - "[SS]香港 03"
@@ -105,16 +102,15 @@ proxy-groups: #!replace
       - "[SS]香港 07"
       - "[SS]香港 08"
       - "[SS]香港 09"
-  - name: 🛣️ 香港海外
-    type: url-test
-    url: http://www.gstatic.com/generate_204
-    interval: 600
-    proxies: []
   - name: 🛣️ 故障切换
     type: fallback
     url: http://www.gstatic.com/generate_204
     interval: 600
     proxies:
+      - "[SS]新加坡 01"
+      - "[SS]新加坡 02"
+      - "[SS]新加坡 03"
+      - "[SS]台灣 01"
       - "[SS]越南 01"
       - "[SS]越南 02"
       - "[SS]越南 03"
@@ -124,7 +120,6 @@ proxy-groups: #!replace
       - "[SS]越南 07"
       - "[SS]越南 08"
       - "[SS]越南 09"
-      - "[SS]台灣 01"
 rule-providers: #!replace
   Remote-Reject:
     type: http
