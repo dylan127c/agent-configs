@@ -4,10 +4,10 @@ rules: #!replace
   - PROCESS-NAME,aria2c.exe,DIRECT
   - PROCESS-NAME,Motrix.exe,DIRECT
   - PROCESS-NAME,BitComet.exe,DIRECT
+  - RULE-SET,Customize-Reject,REJECT
   - RULE-SET,Customize-Direct,DIRECT
   - RULE-SET,Customize-Special,🛤️ 特殊控制
   - RULE-SET,Customize-Proxy,🛤️ 科学上网
-  - RULE-SET,Customize-Reject,REJECT
   - RULE-SET,Remote-Applications,DIRECT
   - RULE-SET,Remote-Apple,DIRECT
   - RULE-SET,Remote-iCloud,DIRECT
