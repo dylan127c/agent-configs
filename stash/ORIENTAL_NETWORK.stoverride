@@ -59,8 +59,7 @@ proxy-groups: #!replace
     proxies:
       - REJECT
       - 🇷🇺 俄罗斯 01 RT IPv6
-      - 🇷🇺 俄罗斯 02 RT/TTK IPv6
-      - 🇷🇺 俄罗斯 03 CN2 IPv6（2.2倍率）
+      - 🇷🇺 俄罗斯 02 CN2 IPv6（2.2倍率）
       - 卢森堡 01 Cogent（0.5倍率/无版权）
       - 🇹🇼 台湾 01 HiNet
       - 🇹🇼 台湾 02 HiNet
@@ -94,11 +93,10 @@ proxy-groups: #!replace
       - 🇭🇰 香港 02 电信/深港专线（2.5倍率）
       - 🇭🇰 香港 05 移动/深港专线（2倍率）
       - 🇭🇰 香港 06 移动/深港专线（2倍率）
-      - 🇭🇰 香港 09 HKT商宽（0.5倍率）
-      - 🇭🇰 香港 10 HKT家宽（0.5倍率）
-      - 🇭🇰 香港 11 HKBN家宽（0.5倍率）
-      - 🇭🇰 香港 12 NTT IPv6
-      - 🇭🇰 香港 13 Cogent IPv6（流媒体）
+      - 🇭🇰 香港 09 HKT家宽（0.5倍率）
+      - 🇭🇰 香港 10 HKBN家宽（0.5倍率）
+      - 🇭🇰 香港 11 NTT IPv6
+      - 🇭🇰 香港 12 Cogent IPv6（流媒体）
   - name: 🛤️ 香港自动
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -108,10 +106,9 @@ proxy-groups: #!replace
       - 🇭🇰 香港 02 电信/深港专线（2.5倍率）
       - 🇭🇰 香港 05 移动/深港专线（2倍率）
       - 🇭🇰 香港 06 移动/深港专线（2倍率）
-      - 🇭🇰 香港 09 HKT商宽（0.5倍率）
-      - 🇭🇰 香港 10 HKT家宽（0.5倍率）
-      - 🇭🇰 香港 11 HKBN家宽（0.5倍率）
-      - 🇭🇰 香港 12 NTT IPv6
+      - 🇭🇰 香港 09 HKT家宽（0.5倍率）
+      - 🇭🇰 香港 10 HKBN家宽（0.5倍率）
+      - 🇭🇰 香港 11 NTT IPv6
   - name: 🛤️ 日本自动
     type: url-test
     url: http://www.gstatic.com/generate_204
