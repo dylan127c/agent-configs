@@ -84,11 +84,11 @@
     proxyGroups[3] = getProxyGroup("目标节点", "select", ["REJECT"], /.+/gm);
 
     proxyGroups[4] = getProxyGroup("香港自动", "url-test", [], /香港\s\d\d ((?!流媒体).)*$/gm);
-    proxyGroups[5] = getProxyGroup("日本自动", "url-test", [], /日本\s\d\d/gm)
+    proxyGroups[5] = getProxyGroup("日本自动", "fallback", [], /日本\s\d\d/gm)
 
     proxyGroups[6] = getProxyGroup("故障切换", "fallback", [], /专线/gm);
     proxyGroups[6].proxies.sort((a, b) => {
-      const sortRules = ["移动/深港", "电信/深港", "电信/沪日"];
+      const sortRules = ["移动/深港", "电信/沪港", "电信/沪日"];
       const target = /.{2}\/.{2}/gm;
       return sortRules.indexOf(a.match(target).pop()) - sortRules.indexOf(b.match(target).pop());
     });
