@@ -3,6 +3,7 @@ desc: Replace original config.
 rules: #!replace
   - PROCESS-NAME,aria2c.exe,DIRECT
   - PROCESS-NAME,Motrix.exe,DIRECT
+  - PROCESS-NAME,IDMan.exe,DIRECT
   - PROCESS-NAME,BitComet.exe,DIRECT
   - RULE-SET,Customize-Reject,REJECT
   - RULE-SET,Customize-Direct,DIRECT
@@ -32,7 +33,7 @@ proxy-groups: #!replace
     proxies:
       - DIRECT
       - 🛤️ 目标节点
-      - 🛤️ 故障切换
+      - 🛤️ 优选节点
       - 🛤️ 香港自动
       - 🛤️ 日本自动
   - name: 🛤️ 规则逃逸
@@ -49,7 +50,7 @@ proxy-groups: #!replace
     proxies:
       - REJECT
       - 🛤️ 目标节点
-      - 🛤️ 故障切换
+      - 🛤️ 优选节点
       - 🛤️ 香港自动
       - 🛤️ 日本自动
   - name: 🛤️ 目标节点
@@ -98,7 +99,7 @@ proxy-groups: #!replace
       - 🇭🇰 香港 11 NTT IPv6
       - 🇭🇰 香港 12 Cogent IPv6（流媒体）
   - name: 🛤️ 香港自动
-    type: url-test
+    type: fallback
     url: http://www.gstatic.com/generate_204
     interval: 600
     proxies:
@@ -126,7 +127,7 @@ proxy-groups: #!replace
       - 🇯🇵 日本 17 IIJ
       - 🇯🇵 日本 19 IIJ
       - 🇯🇵 日本 21 NTT
-  - name: 🛤️ 故障切换
+  - name: 🛤️ 优选节点
     type: fallback
     url: http://www.gstatic.com/generate_204
     interval: 600
