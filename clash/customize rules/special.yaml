@@ -7,3 +7,4 @@ payload:
   - '+.azurefd.net'
   - '+.openaicom.imgix.net'
   - '+.featuregates.org'
+  - '+.bard.google.com'
