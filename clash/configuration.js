@@ -72,7 +72,7 @@
   if (isEasternNetwork) {
     // 目前出现的一个问题，即CFW无法识别~/.config/clash/config.yaml中的profile键
     // 解决方式是在节点配置中直接添加，以支持clash-tracing项目的部署
-    obj["profile"] = {"tracing": true};
+    obj["profile"] = { "tracing": true };
 
     prefix = "🛤️";
     outputName = "ORIENTAL_NETWORK";
@@ -216,8 +216,10 @@
   };
 
   // Setup url or path for rule providers.
-  const httpRemote = "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/";
-  const httpCustomize = "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/";
+  // const httpRemote = "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/";
+  // const httpCustomize = "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/";
+  const httpRemote = "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/";
+  const httpCustomize = "https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/";
   const fileRemote = path.resolve(__dirname, "remote rules");
   const fileCustomize = path.resolve(__dirname, "customize rules");
 
