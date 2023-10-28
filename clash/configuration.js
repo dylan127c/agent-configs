@@ -63,7 +63,7 @@
 
   // Determine the current subscription link.
   const isEasternNetwork = JSON.stringify(url).match(/touhou/gm);
-  const isColaCloud = JSON.stringify(url).match(/dingyuedizhi/gm);
+  const isColaCloud = JSON.stringify(url).match(/subsoft/gm);
 
   let prefix = ""; // 组别前缀
   let outputName = ";" // Stash配置的输出文件名及.stoverride文件的别名
