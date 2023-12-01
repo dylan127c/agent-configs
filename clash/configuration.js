@@ -282,11 +282,16 @@
    * @param {string} prefix 为组名添加的前缀信息
    */
   function outputStashConfig(outputName, prefix) {
+    const copyProxyGroups = JSON.parse(JSON.stringify(obj["proxy-groups"])); // 深拷贝
+    if (outputName === "COLA_CLOUD") {
+      copyProxyGroups.pop(); // 临时方案：Cola Cloud 需要移除“订阅详情”分组
+    }
+
     const output = {
       name: outputName,
       desc: "Replace original config.",
       rules: obj["rules"],
-      "proxy-groups": obj["proxy-groups"],
+      "proxy-groups": copyProxyGroups,
       "rule-providers": Object.assign(
         JSON.parse(rpRemoteHttpRaw), JSON.parse(rpCustomizeHttpRaw)
       )

@@ -220,12 +220,6 @@ proxy-groups: #!replace
       - "[SS]美國 07"
       - "[SS]美國 08"
       - "[SS]美國 09"
-  - name: 🛣️ 订阅详情
-    type: select
-    url: http://www.gstatic.com/generate_204
-    interval: 600
-    proxies:
-      - 剩余流量：3170.57 GB
 rule-providers: #!replace
   Remote-Reject:
     type: http
