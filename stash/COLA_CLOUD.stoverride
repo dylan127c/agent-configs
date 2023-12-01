@@ -29,8 +29,9 @@ proxy-groups: #!replace
     proxies:
       - DIRECT
       - 🛣️ 目标节点
-      - 🛣️ 优选节点
-      - 🛣️ 香港自动
+      - 🛣️ 其他节点
+      - 🛣️ 香港其一
+      - 🛣️ 香港其二
   - name: 🛣️ 规则逃逸
     type: select
     url: http://www.gstatic.com/generate_204
@@ -45,8 +46,9 @@ proxy-groups: #!replace
     proxies:
       - REJECT
       - 🛣️ 目标节点
-      - 🛣️ 优选节点
-      - 🛣️ 香港自动
+      - 🛣️ 其他节点
+      - 🛣️ 香港其一
+      - 🛣️ 香港其二
   - name: 🛣️ 目标节点
     type: select
     url: http://www.gstatic.com/generate_204
@@ -96,6 +98,12 @@ proxy-groups: #!replace
       - "[SS]香港 27B"
       - "[SS]香港 28B"
       - "[SS]香港 29B"
+      - "[SS]香港 30B"
+      - "[SS]香港 31B"
+      - "[SS]香港 32B"
+      - "[SS]香港 33B"
+      - "[SS]香港 34B"
+      - "[SS]香港 35B"
       - "[SS]越南 01"
       - "[SS]越南 02"
       - "[SS]越南 03"
@@ -122,8 +130,8 @@ proxy-groups: #!replace
       - "[SS]新加坡 01"
       - "[SS]新加坡 02"
       - "[SS]新加坡 03"
-  - name: 🛣️ 香港自动
-    type: fallback
+  - name: 🛣️ 香港其一
+    type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 600
     proxies:
@@ -141,6 +149,11 @@ proxy-groups: #!replace
       - "[SS]香港 12"
       - "[SS]香港 13"
       - "[SS]香港 14"
+  - name: 🛣️ 香港其二
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+    proxies:
       - "[SS]香港 01B"
       - "[SS]香港 02B"
       - "[SS]香港 03B"
@@ -170,7 +183,13 @@ proxy-groups: #!replace
       - "[SS]香港 27B"
       - "[SS]香港 28B"
       - "[SS]香港 29B"
-  - name: 🛣️ 优选节点
+      - "[SS]香港 30B"
+      - "[SS]香港 31B"
+      - "[SS]香港 32B"
+      - "[SS]香港 33B"
+      - "[SS]香港 34B"
+      - "[SS]香港 35B"
+  - name: 🛣️ 其他节点
     type: fallback
     url: http://www.gstatic.com/generate_204
     interval: 600
@@ -188,6 +207,25 @@ proxy-groups: #!replace
       - "[SS]越南 07"
       - "[SS]越南 08"
       - "[SS]越南 09"
+      - "[SS]日本 01"
+      - "[SS]日本 02"
+      - "[SS]日本 03"
+      - "[SS]日本 04"
+      - "[SS]美國 01"
+      - "[SS]美國 02"
+      - "[SS]美國 03"
+      - "[SS]美國 04"
+      - "[SS]美國 05"
+      - "[SS]美國 06"
+      - "[SS]美國 07"
+      - "[SS]美國 08"
+      - "[SS]美國 09"
+  - name: 🛣️ 订阅详情
+    type: select
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+    proxies:
+      - 剩余流量：3170.57 GB
 rule-providers: #!replace
   Remote-Reject:
     type: http

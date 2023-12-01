@@ -79,15 +79,15 @@
 
     obj["rules"] = processlist.concat(customizelist, remotelist, matchlist);
 
-    proxyGroups[0] = getProxyGroup("科学上网", "select", ["DIRECT", "目标节点", "优选节点", "香港自动", "日本自动"]);
+    proxyGroups[0] = getProxyGroup("科学上网", "select", ["DIRECT", "目标节点", "专线节点", "香港普通", "日本普通"]);
     proxyGroups[1] = getProxyGroup("规则逃逸", "select", ["DIRECT", "科学上网"]);
-    proxyGroups[2] = getProxyGroup("特殊控制", "select", ["REJECT", "目标节点", "优选节点", "香港自动", "日本自动"]);
+    proxyGroups[2] = getProxyGroup("特殊控制", "select", ["REJECT", "目标节点", "专线节点", "香港普通", "日本普通"]);
     proxyGroups[3] = getProxyGroup("目标节点", "select", ["REJECT"], /.+/gm);
 
-    proxyGroups[4] = getProxyGroup("香港自动", "fallback", [], /香港\s\d\d ((?!流媒体).)*$/gm);
-    proxyGroups[5] = getProxyGroup("日本自动", "fallback", [], /日本\s\d\d/gm)
+    proxyGroups[4] = getProxyGroup("香港普通", "fallback", [], /香港\s\d\d [A-Z]((?!流媒体).)*$/gm);
+    proxyGroups[5] = getProxyGroup("日本普通", "fallback", [], /日本\s\d\d [A-Z]/gm)
 
-    proxyGroups[6] = getProxyGroup("优选节点", "fallback", [], /专线/gm);
+    proxyGroups[6] = getProxyGroup("专线节点", "select", [], /专线/gm);
     proxyGroups[6].proxies.sort((a, b) => {
       const sortRules = ["移动/深港", "电信/沪港", "电信/沪日"];
       const target = /.{2}\/.{2}/gm;
@@ -99,18 +99,20 @@
 
     obj["rules"] = customizelist.concat(remotelist, matchlist);
 
-    proxyGroups[0] = getProxyGroup("科学上网", "select", ["DIRECT", "目标节点", "优选节点", "香港自动"]);
+    proxyGroups[0] = getProxyGroup("科学上网", "select", ["DIRECT", "目标节点", "其他节点", "香港其一", "香港其二"]);
     proxyGroups[1] = getProxyGroup("规则逃逸", "select", ["DIRECT", "科学上网"]);
-    proxyGroups[2] = getProxyGroup("特殊控制", "select", ["REJECT", "目标节点", "优选节点", "香港自动"]);
+    proxyGroups[2] = getProxyGroup("特殊控制", "select", ["REJECT", "目标节点", "其他节点", "香港其一", "香港其二"]);
     proxyGroups[3] = getProxyGroup("目标节点", "select", [], /^((?!套餐).)*$/gm);
-    proxyGroups[3].proxies.shift(); // 临时方案：去除剩余流量选项
+    
+    proxyGroups[7] = getProxyGroup("订阅详情", "select", [proxyGroups[3].proxies.shift()]);// 临时方案：去除剩余流量选项
     proxyGroups[3].proxies.unshift("REJECT");
 
-    proxyGroups[4] = getProxyGroup("香港自动", "fallback", [], /香港\s\d\d/gm);
+    proxyGroups[4] = getProxyGroup("香港其一", "url-test", [], /香港\s\d\d$/gm);
+    proxyGroups[5] = getProxyGroup("香港其二", "url-test", [], /香港\s\d\d\w/gm);
 
-    proxyGroups[5] = getProxyGroup("优选节点", "fallback", [], /(越南|新加坡|台灣)\s\d\d/gm);
-    proxyGroups[5].proxies.sort((a, b) => {
-      const sortRules = ["[SS]台", "[SS]新", "[SS]越"];
+    proxyGroups[6] = getProxyGroup("其他节点", "fallback", [], /(越南|新加坡|台灣|美國|日本)\s\d\d/gm);
+    proxyGroups[6].proxies.sort((a, b) => {
+      const sortRules = ["[SS]台", "[SS]新", "[SS]越", "[SS]日", "[SS]美"];
       const target = /^.{5}/gm;
       return sortRules.indexOf(a.match(target).pop()) - sortRules.indexOf(b.match(target).pop());
     });

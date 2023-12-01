@@ -8,3 +8,5 @@ payload:
   - '+.openaicom.imgix.net'
   - '+.featuregates.org'
   - '+.bard.google.com'
+  - '+.statsigapi.net'
+  - '+.gravatar.com'
