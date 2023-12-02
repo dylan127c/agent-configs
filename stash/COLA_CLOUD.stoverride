@@ -28,27 +28,20 @@ proxy-groups: #!replace
     interval: 600
     proxies:
       - DIRECT
+      - 🛣️ 负载均衡 | 香港其一
+      - 🛣️ 负载均衡 | 香港其二
       - 🛣️ 目标节点
       - 🛣️ 其他节点
-      - 🛣️ 香港其一
-      - 🛣️ 香港其二
-  - name: 🛣️ 规则逃逸
-    type: select
-    url: http://www.gstatic.com/generate_204
-    interval: 600
-    proxies:
-      - DIRECT
-      - 🛣️ 科学上网
   - name: 🛣️ 特殊控制
     type: select
     url: http://www.gstatic.com/generate_204
     interval: 600
     proxies:
       - REJECT
+      - 🛣️ 负载均衡 | 香港其一
+      - 🛣️ 负载均衡 | 香港其二
       - 🛣️ 目标节点
       - 🛣️ 其他节点
-      - 🛣️ 香港其一
-      - 🛣️ 香港其二
   - name: 🛣️ 目标节点
     type: select
     url: http://www.gstatic.com/generate_204
@@ -130,8 +123,8 @@ proxy-groups: #!replace
       - "[SS]新加坡 01"
       - "[SS]新加坡 02"
       - "[SS]新加坡 03"
-  - name: 🛣️ 香港其一
-    type: url-test
+  - name: 🛣️ 负载均衡 | 香港其一
+    type: load-balance
     url: http://www.gstatic.com/generate_204
     interval: 600
     proxies:
@@ -149,8 +142,8 @@ proxy-groups: #!replace
       - "[SS]香港 12"
       - "[SS]香港 13"
       - "[SS]香港 14"
-  - name: 🛣️ 香港其二
-    type: url-test
+  - name: 🛣️ 负载均衡 | 香港其二
+    type: load-balance
     url: http://www.gstatic.com/generate_204
     interval: 600
     proxies:
@@ -220,6 +213,13 @@ proxy-groups: #!replace
       - "[SS]美國 07"
       - "[SS]美國 08"
       - "[SS]美國 09"
+  - name: 🛣️ 规则逃逸
+    type: select
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+    proxies:
+      - DIRECT
+      - 🛣️ 科学上网
 rule-providers: #!replace
   Remote-Reject:
     type: http

@@ -1,5 +1,5 @@
 ﻿module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url, interval, selected }) => {
-  
+
   /* ------------------------ convert format ------------------------- */
   
   // CFW需要先根据配置文件（String）来获取对应的JavaScript对象（JSON）
@@ -10,7 +10,7 @@
 
   // CFW可以通过辨别订阅链接的方式，来确定当前使用的网络供应商是什么
   const isEasternNetwork = JSON.stringify(url).match(/touhou/gm); /* CFW ACCEPTED */
-  const isColaCloud = JSON.stringify(url).match(/subsoft/gm); /* CFW ACCEPTED */
+  const isColaCloud = JSON.stringify(url).match(/sub/gm); /* CFW ACCEPTED */
 
   // CV使用routing-mark字段来确定当前使用的网络供应商是什么
   // 注意，需要在CV设置中的Clash字段内，勾选routing-mark字段后，以下代码才能生效
@@ -155,20 +155,25 @@
 
     params["rules"] = processlist.concat(customizelist, remotelist, matchlist);
 
-    proxyGroups[0] = getProxyGroup("科学上网", "select", ["DIRECT", "目标节点", "专线节点", "香港普通", "日本普通"]);
-    proxyGroups[1] = getProxyGroup("规则逃逸", "select", ["DIRECT", "科学上网"]);
-    proxyGroups[2] = getProxyGroup("特殊控制", "select", ["REJECT", "目标节点", "专线节点", "香港普通", "日本普通"]);
-    proxyGroups[3] = getProxyGroup("目标节点", "select", ["REJECT"], /.+/gm);
+    proxyGroups[0] = getProxyGroup("科学上网", "select", ["DIRECT", "网络专线", "负载均衡 | 深港/沪港专线", "负载均衡 | 沪日专线", "负载均衡 | 香港线路", "负载均衡 | 日本线路", "目标节点"]);
+    proxyGroups[1] = getProxyGroup("特殊控制", "select", ["REJECT", "网络专线", "负载均衡 | 深港/沪港专线", "负载均衡 | 沪日专线", "负载均衡 | 香港线路", "负载均衡 | 日本线路", "目标节点"]);
+    proxyGroups[2] = getProxyGroup("目标节点", "select", ["REJECT"], /.+/gm);
 
-    proxyGroups[4] = getProxyGroup("香港普通", "fallback", [], /香港\s\d\d [A-Z]((?!流媒体).)*$/gm);
-    proxyGroups[5] = getProxyGroup("日本普通", "fallback", [], /日本\s\d\d [A-Z]/gm)
-
-    proxyGroups[6] = getProxyGroup("专线节点", "select", [], /专线/gm);
-    proxyGroups[6].proxies.sort((a, b) => {
+    proxyGroups[3] = getProxyGroup("网络专线", "select", [], /专线/gm);
+    proxyGroups[3].proxies.sort((a, b) => {
       const sortRules = ["移动/深港", "电信/沪港", "电信/沪日"];
       const target = /.{2}\/.{2}/gm;
       return sortRules.indexOf(a.match(target).pop()) - sortRules.indexOf(b.match(target).pop());
     });
+    proxyGroups[3].proxies.unshift("REJECT");
+
+    proxyGroups[4] = getProxyGroup("负载均衡 | 深港/沪港专线", "load-balance", [], /香港 \d\d [^A-Z].+/gm);
+    proxyGroups[5] = getProxyGroup("负载均衡 | 沪日专线", "load-balance", [], /日本 \d\d [^A-Z].+/gm);
+
+    proxyGroups[6] = getProxyGroup("负载均衡 | 香港线路", "load-balance", [], /香港\s\d\d [A-Z].+$/gm);
+    proxyGroups[7] = getProxyGroup("负载均衡 | 日本线路", "load-balance", [], /日本\s\d\d [A-Z]/gm)
+    
+    proxyGroups[8] = getProxyGroup("规则逃逸", "select", ["DIRECT", "科学上网"]);
   }
 
   function fillProxyGroupColaCloud() {
@@ -177,23 +182,23 @@
 
     params["rules"] = customizelist.concat(remotelist, matchlist);
 
-    proxyGroups[0] = getProxyGroup("科学上网", "select", ["DIRECT", "目标节点", "其他节点", "香港其一", "香港其二"]);
-    proxyGroups[1] = getProxyGroup("规则逃逸", "select", ["DIRECT", "科学上网"]);
-    proxyGroups[2] = getProxyGroup("特殊控制", "select", ["REJECT", "目标节点", "其他节点", "香港其一", "香港其二"]);
-    proxyGroups[3] = getProxyGroup("目标节点", "select", [], /^((?!套餐).)*$/gm);
+    proxyGroups[0] = getProxyGroup("科学上网", "select", ["DIRECT", "负载均衡 | 香港其一", "负载均衡 | 香港其二", "目标节点", "其他节点"]);
+    proxyGroups[1] = getProxyGroup("特殊控制", "select", ["REJECT", "负载均衡 | 香港其一", "负载均衡 | 香港其二", "目标节点", "其他节点"]);
+    proxyGroups[2] = getProxyGroup("目标节点", "select", [], /^((?!套餐).)*$/gm);
 
-    proxyGroups[7] = getProxyGroup("订阅详情", "select", [proxyGroups[3].proxies.shift()]);// 临时方案：去除剩余流量选项
-    proxyGroups[3].proxies.unshift("REJECT");
+    proxyGroups[7] = getProxyGroup("订阅详情", "select", [proxyGroups[2].proxies.shift()]);// 临时方案：去除剩余流量选项
+    proxyGroups[2].proxies.unshift("REJECT");
 
-    proxyGroups[4] = getProxyGroup("香港其一", "url-test", [], /香港\s\d\d$/gm);
-    proxyGroups[5] = getProxyGroup("香港其二", "url-test", [], /香港\s\d\d\w/gm);
+    proxyGroups[3] = getProxyGroup("负载均衡 | 香港其一", "load-balance", [], /香港\s\d\d$/gm);
+    proxyGroups[4] = getProxyGroup("负载均衡 | 香港其二", "load-balance", [], /香港\s\d\d\w/gm);
 
-    proxyGroups[6] = getProxyGroup("其他节点", "fallback", [], /(越南|新加坡|台灣|美國|日本)\s\d\d/gm);
-    proxyGroups[6].proxies.sort((a, b) => {
+    proxyGroups[5] = getProxyGroup("其他节点", "fallback", [], /(越南|新加坡|台灣|美國|日本)\s\d\d/gm);
+    proxyGroups[5].proxies.sort((a, b) => {
       const sortRules = ["[SS]台", "[SS]新", "[SS]越", "[SS]日", "[SS]美"];
       const target = /^.{5}/gm;
       return sortRules.indexOf(a.match(target).pop()) - sortRules.indexOf(b.match(target).pop());
     });
+    proxyGroups[6] = getProxyGroup("规则逃逸", "select", ["DIRECT", "科学上网"]);
   }
 
   /**
