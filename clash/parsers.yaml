@@ -2,7 +2,10 @@
 # Please go to Setting => Profiles => Parsers.
 
 parsers:
-  - url: https://subscription.link/a-sub
+  - reg: ^http.+$
     file: "YOUR_PATH/configuration.js"
-  - url: https://subscription.link/b-sub
-    file: "YOUR_PATH/configuration.js"
+    yaml:
+      prepend-rules:
+        # some websites
+        - DOMAIN-SUFFIX,baidu.com,REJECT
+        - ...

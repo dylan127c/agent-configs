@@ -2,9 +2,7 @@ name: ORIENTAL_NETWORK
 desc: Replace original config.
 rules: #!replace
   - PROCESS-NAME,aria2c.exe,DIRECT
-  - PROCESS-NAME,Motrix.exe,DIRECT
   - PROCESS-NAME,IDMan.exe,DIRECT
-  - PROCESS-NAME,BitComet.exe,DIRECT
   - RULE-SET,Customize-Reject,REJECT
   - RULE-SET,Customize-Direct,DIRECT
   - RULE-SET,Customize-Special,🛤️ 特殊控制
