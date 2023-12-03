@@ -25,27 +25,27 @@ proxy-groups: #!replace
   - name: 🛣️ 科学上网
     type: select
     url: http://www.gstatic.com/generate_204
-    interval: 600
+    interval: 72
     proxies:
       - DIRECT
-      - 🛣️ 负载均衡 | 香港其一
-      - 🛣️ 负载均衡 | 香港其二
+      - 🛣️ 香港其一
+      - 🛣️ 香港其二
       - 🛣️ 目标节点
       - 🛣️ 其他节点
   - name: 🛣️ 特殊控制
     type: select
     url: http://www.gstatic.com/generate_204
-    interval: 600
+    interval: 72
     proxies:
       - REJECT
-      - 🛣️ 负载均衡 | 香港其一
-      - 🛣️ 负载均衡 | 香港其二
+      - 🛣️ 香港其一
+      - 🛣️ 香港其二
       - 🛣️ 目标节点
       - 🛣️ 其他节点
   - name: 🛣️ 目标节点
     type: select
     url: http://www.gstatic.com/generate_204
-    interval: 600
+    interval: 72
     proxies:
       - REJECT
       - "[SS]香港 01"
@@ -123,10 +123,10 @@ proxy-groups: #!replace
       - "[SS]新加坡 01"
       - "[SS]新加坡 02"
       - "[SS]新加坡 03"
-  - name: 🛣️ 负载均衡 | 香港其一
+  - name: 🛣️ 香港其一
     type: load-balance
     url: http://www.gstatic.com/generate_204
-    interval: 600
+    interval: 72
     proxies:
       - "[SS]香港 01"
       - "[SS]香港 02"
@@ -142,10 +142,10 @@ proxy-groups: #!replace
       - "[SS]香港 12"
       - "[SS]香港 13"
       - "[SS]香港 14"
-  - name: 🛣️ 负载均衡 | 香港其二
+  - name: 🛣️ 香港其二
     type: load-balance
     url: http://www.gstatic.com/generate_204
-    interval: 600
+    interval: 72
     proxies:
       - "[SS]香港 01B"
       - "[SS]香港 02B"
@@ -185,7 +185,7 @@ proxy-groups: #!replace
   - name: 🛣️ 其他节点
     type: fallback
     url: http://www.gstatic.com/generate_204
-    interval: 600
+    interval: 72
     proxies:
       - "[SS]台灣 01"
       - "[SS]新加坡 01"
@@ -216,7 +216,7 @@ proxy-groups: #!replace
   - name: 🛣️ 规则逃逸
     type: select
     url: http://www.gstatic.com/generate_204
-    interval: 600
+    interval: 72
     proxies:
       - DIRECT
       - 🛣️ 科学上网

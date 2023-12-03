@@ -1,8 +1,25 @@
 payload:
   # reasons why MS-Edge can't open website faster
-  - '+.browser.events.data.msn.cn'
-  - '+.browser.events.data.msn.com'
-  - '+.sb.scorecardresearch.com'
+  # - '+.msn.cn'
+  # - '+.pipe.aria.microsoft.cn'
+  # - '+.web.vortex.data.microsoft.cn'
+
+  # - '+.api.msn.com'
+  # - '+.pipe.aria.microsoft.com'
+  # - '+.ntp.msn.com'
+  # - '+.web.vortex.data.microsoft.com'
+  # - '+.browser.events.data.msn.com'
+  # - '+.www.msn.com'
+  # - '+.assets.msn.com'
+  # - '+.c.msn.com'
+  # - '+.api.msn.cn'
+  # - '+.pipe.aria.microsoft.cn'
+  # - '+.ntp.msn.cn'
+  # - '+.web.vortex.data.microsoft.cn'
+  # - '+.browser.events.data.msn.cn'
+  # - '+.www.msn.cn'
+  # - '+.assets.msn.cn'
+  # - '+.c.msn.cn'
 
   # fake crack website full of virus
   - '+.mixcrack.net'

@@ -174,10 +174,11 @@
 
     const proxyGroupsName = [
       "网络专线",
-      "负载均衡 | 深港/沪港专线",
-      "负载均衡 | 沪日专线",
-      "负载均衡 | 香港线路",
-      "负载均衡 | 日本线路",
+      "深港专线",
+      "沪港专线",
+      "沪日专线",
+      "香港线路",
+      "日本线路",
       "目标节点"
     ];
 
@@ -193,13 +194,14 @@
     });
     proxyGroups[3].proxies.unshift("REJECT");
 
-    proxyGroups[4] = getProxyGroup("负载均衡 | 深港/沪港专线", "load-balance", [], /香港 \d\d [^A-Z].+/gm);
-    proxyGroups[5] = getProxyGroup("负载均衡 | 沪日专线", "load-balance", [], /日本 \d\d [^A-Z].+/gm);
+    proxyGroups[4] = getProxyGroup("深港专线", "fallback", [], /香港 \d\d 移动.+/gm);
+    proxyGroups[5] = getProxyGroup("沪港专线", "fallback", [], /香港 \d\d 电信.+/gm);
+    proxyGroups[6] = getProxyGroup("沪日专线", "fallback", [], /日本 \d\d [^A-Z].+/gm);
 
-    proxyGroups[6] = getProxyGroup("负载均衡 | 香港线路", "load-balance", [], /香港\s\d\d [A-Z].+$/gm);
-    proxyGroups[7] = getProxyGroup("负载均衡 | 日本线路", "load-balance", [], /日本\s\d\d [A-Z]/gm)
+    proxyGroups[7] = getProxyGroup("香港线路", "load-balance", [], /香港\s\d\d [A-Z].+$/gm);
+    proxyGroups[8] = getProxyGroup("日本线路", "load-balance", [], /日本\s\d\d [A-Z]/gm)
 
-    proxyGroups[8] = getProxyGroup("规则逃逸", "select", ["DIRECT", "科学上网"]);
+    proxyGroups[9] = getProxyGroup("规则逃逸", "select", ["DIRECT", "科学上网"]);
   }
 
   function fillProxyGroupColaCloud() {
@@ -209,8 +211,8 @@
     obj["rules"] = customizelist.concat(remotelist, matchlist);
 
     const proxyGroupsName = [
-      "负载均衡 | 香港其一",
-      "负载均衡 | 香港其二",
+      "香港其一",
+      "香港其二",
       "目标节点",
       "其他节点"
     ];
@@ -222,8 +224,8 @@
     proxyGroups[7] = getProxyGroup("订阅详情", "select", [proxyGroups[2].proxies.shift()]);// 临时方案：去除剩余流量选项
     proxyGroups[2].proxies.unshift("REJECT");
 
-    proxyGroups[3] = getProxyGroup("负载均衡 | 香港其一", "load-balance", [], /香港\s\d\d$/gm);
-    proxyGroups[4] = getProxyGroup("负载均衡 | 香港其二", "load-balance", [], /香港\s\d\d\w/gm);
+    proxyGroups[3] = getProxyGroup("香港其一", "load-balance", [], /香港\s\d\d$/gm);
+    proxyGroups[4] = getProxyGroup("香港其二", "load-balance", [], /香港\s\d\d\w/gm);
 
     proxyGroups[5] = getProxyGroup("其他节点", "fallback", [], /(越南|新加坡|台灣|美國|日本)\s\d\d/gm);
     proxyGroups[5].proxies.sort((a, b) => {
@@ -248,7 +250,7 @@
       name: groupName,
       type: groupType,
       url: "http://www.gstatic.com/generate_204",
-      interval: 600,
+      interval: 72,
       proxies: []
     };
 

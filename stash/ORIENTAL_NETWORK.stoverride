@@ -27,31 +27,33 @@ proxy-groups: #!replace
   - name: 🛤️ 科学上网
     type: select
     url: http://www.gstatic.com/generate_204
-    interval: 600
+    interval: 72
     proxies:
       - DIRECT
       - 🛤️ 网络专线
-      - 🛤️ 负载均衡 | 深港/沪港专线
-      - 🛤️ 负载均衡 | 沪日专线
-      - 🛤️ 负载均衡 | 香港线路
-      - 🛤️ 负载均衡 | 日本线路
+      - 🛤️ 深港专线
+      - 🛤️ 沪港专线
+      - 🛤️ 沪日专线
+      - 🛤️ 香港线路
+      - 🛤️ 日本线路
       - 🛤️ 目标节点
   - name: 🛤️ 特殊控制
     type: select
     url: http://www.gstatic.com/generate_204
-    interval: 600
+    interval: 72
     proxies:
       - REJECT
       - 🛤️ 网络专线
-      - 🛤️ 负载均衡 | 深港/沪港专线
-      - 🛤️ 负载均衡 | 沪日专线
-      - 🛤️ 负载均衡 | 香港线路
-      - 🛤️ 负载均衡 | 日本线路
+      - 🛤️ 深港专线
+      - 🛤️ 沪港专线
+      - 🛤️ 沪日专线
+      - 🛤️ 香港线路
+      - 🛤️ 日本线路
       - 🛤️ 目标节点
   - name: 🛤️ 目标节点
     type: select
     url: http://www.gstatic.com/generate_204
-    interval: 600
+    interval: 72
     proxies:
       - REJECT
       - 🇷🇺 俄罗斯 01 RT IPv6
@@ -65,8 +67,8 @@ proxy-groups: #!replace
       - 🇩🇪 德国 03 Cogent/Tata IPv6
       - 🇸🇬 新加坡 01 Cogent IPv6（流媒体）
       - 🇸🇬 新加坡 02 PCCW（2.4倍率）
-      - 🇯🇵 日本 01 电信/沪日专线（3倍率）
-      - 🇯🇵 日本 02 电信/沪日专线（3倍率）
+      - 🇯🇵 日本 01 电信/🛤️ 沪日专线（3倍率）
+      - 🇯🇵 日本 02 电信/🛤️ 沪日专线（3倍率）
       - 🇯🇵 日本 05 NTT IPv6
       - 🇯🇵 日本 06 M247 IPv6
       - 🇯🇵 日本 07 IIJ
@@ -85,10 +87,10 @@ proxy-groups: #!replace
       - 🇦🇷 阿根廷 01 Telecom
       - 🇦🇷 阿根廷 02 Velocom
       - 🇰🇷 韩国 01 SK（2.7倍率）
-      - 🇭🇰 香港 01 电信/沪港专线（2.5倍率）
-      - 🇭🇰 香港 02 电信/沪港专线（2.5倍率）
-      - 🇭🇰 香港 05 移动/深港专线（2倍率）
-      - 🇭🇰 香港 06 移动/深港专线（2倍率）
+      - 🇭🇰 香港 01 电信/🛤️ 沪港专线（2.5倍率）
+      - 🇭🇰 香港 02 电信/🛤️ 沪港专线（2.5倍率）
+      - 🇭🇰 香港 05 移动/🛤️ 深港专线（2倍率）
+      - 🇭🇰 香港 06 移动/🛤️ 深港专线（2倍率）
       - 🇭🇰 香港 09 HKT家宽（0.5倍率）
       - 🇭🇰 香港 10 HKBN家宽（0.5倍率）
       - 🇭🇰 香港 11 NTT IPv6
@@ -96,44 +98,49 @@ proxy-groups: #!replace
   - name: 🛤️ 网络专线
     type: select
     url: http://www.gstatic.com/generate_204
-    interval: 600
+    interval: 72
     proxies:
       - REJECT
-      - 🇭🇰 香港 05 移动/深港专线（2倍率）
-      - 🇭🇰 香港 06 移动/深港专线（2倍率）
-      - 🇭🇰 香港 01 电信/沪港专线（2.5倍率）
-      - 🇭🇰 香港 02 电信/沪港专线（2.5倍率）
-      - 🇯🇵 日本 01 电信/沪日专线（3倍率）
-      - 🇯🇵 日本 02 电信/沪日专线（3倍率）
-  - name: 🛤️ 负载均衡 | 深港/沪港专线
-    type: load-balance
+      - 🇭🇰 香港 05 移动/🛤️ 深港专线（2倍率）
+      - 🇭🇰 香港 06 移动/🛤️ 深港专线（2倍率）
+      - 🇭🇰 香港 01 电信/🛤️ 沪港专线（2.5倍率）
+      - 🇭🇰 香港 02 电信/🛤️ 沪港专线（2.5倍率）
+      - 🇯🇵 日本 01 电信/🛤️ 沪日专线（3倍率）
+      - 🇯🇵 日本 02 电信/🛤️ 沪日专线（3倍率）
+  - name: 🛤️ 深港专线
+    type: fallback
     url: http://www.gstatic.com/generate_204
-    interval: 600
+    interval: 72
     proxies:
-      - 🇭🇰 香港 01 电信/沪港专线（2.5倍率）
-      - 🇭🇰 香港 02 电信/沪港专线（2.5倍率）
-      - 🇭🇰 香港 05 移动/深港专线（2倍率）
-      - 🇭🇰 香港 06 移动/深港专线（2倍率）
-  - name: 🛤️ 负载均衡 | 沪日专线
-    type: load-balance
+      - 🇭🇰 香港 05 移动/🛤️ 深港专线（2倍率）
+      - 🇭🇰 香港 06 移动/🛤️ 深港专线（2倍率）
+  - name: 🛤️ 沪港专线
+    type: fallback
     url: http://www.gstatic.com/generate_204
-    interval: 600
+    interval: 72
     proxies:
-      - 🇯🇵 日本 01 电信/沪日专线（3倍率）
-      - 🇯🇵 日本 02 电信/沪日专线（3倍率）
-  - name: 🛤️ 负载均衡 | 香港线路
+      - 🇭🇰 香港 01 电信/🛤️ 沪港专线（2.5倍率）
+      - 🇭🇰 香港 02 电信/🛤️ 沪港专线（2.5倍率）
+  - name: 🛤️ 沪日专线
+    type: fallback
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    proxies:
+      - 🇯🇵 日本 01 电信/🛤️ 沪日专线（3倍率）
+      - 🇯🇵 日本 02 电信/🛤️ 沪日专线（3倍率）
+  - name: 🛤️ 香港线路
     type: load-balance
     url: http://www.gstatic.com/generate_204
-    interval: 600
+    interval: 72
     proxies:
       - 🇭🇰 香港 09 HKT家宽（0.5倍率）
       - 🇭🇰 香港 10 HKBN家宽（0.5倍率）
       - 🇭🇰 香港 11 NTT IPv6
       - 🇭🇰 香港 12 Cogent IPv6（流媒体）
-  - name: 🛤️ 负载均衡 | 日本线路
+  - name: 🛤️ 日本线路
     type: load-balance
     url: http://www.gstatic.com/generate_204
-    interval: 600
+    interval: 72
     proxies:
       - 🇯🇵 日本 05 NTT IPv6
       - 🇯🇵 日本 06 M247 IPv6
@@ -148,7 +155,7 @@ proxy-groups: #!replace
   - name: 🛤️ 规则逃逸
     type: select
     url: http://www.gstatic.com/generate_204
-    interval: 600
+    interval: 72
     proxies:
       - DIRECT
       - 🛤️ 科学上网
