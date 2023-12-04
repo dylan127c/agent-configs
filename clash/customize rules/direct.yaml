@@ -2,3 +2,7 @@ payload:
   - '+.clash.razord.top'
   - '+.ihaxs.com'
   - '+.dushu.ru'
+
+  # !AdGuard: use proxy will cause network delays
+  - '+.injections.adguard.org'
+  - '+.local.adguard.org'

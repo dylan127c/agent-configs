@@ -174,9 +174,9 @@
 
     const proxyGroupsName = [
       "网络专线",
-      "深港专线",
-      "沪港专线",
-      "沪日专线",
+      "深港移动",
+      "沪港电信",
+      "沪日电信",
       "香港线路",
       "日本线路",
       "目标节点"
@@ -194,9 +194,9 @@
     });
     proxyGroups[3].proxies.unshift("REJECT");
 
-    proxyGroups[4] = getProxyGroup("深港专线", "fallback", [], /香港 \d\d 移动.+/gm);
-    proxyGroups[5] = getProxyGroup("沪港专线", "fallback", [], /香港 \d\d 电信.+/gm);
-    proxyGroups[6] = getProxyGroup("沪日专线", "fallback", [], /日本 \d\d [^A-Z].+/gm);
+    proxyGroups[4] = getProxyGroup("深港移动", "fallback", [], /香港 \d\d 移动.+/gm);
+    proxyGroups[5] = getProxyGroup("沪港电信", "fallback", [], /香港 \d\d 电信.+/gm);
+    proxyGroups[6] = getProxyGroup("沪日电信", "fallback", [], /日本 \d\d [^A-Z].+/gm);
 
     proxyGroups[7] = getProxyGroup("香港线路", "load-balance", [], /香港\s\d\d [A-Z].+$/gm);
     proxyGroups[8] = getProxyGroup("日本线路", "load-balance", [], /日本\s\d\d [A-Z]/gm)

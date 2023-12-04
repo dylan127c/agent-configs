@@ -1,30 +1,22 @@
 payload:
-  # reasons why MS-Edge can't open website faster
-  # - '+.msn.cn'
-  # - '+.pipe.aria.microsoft.cn'
-  # - '+.web.vortex.data.microsoft.cn'
+  # ? Might be the reasons that cause Edge loading new-tab slow.
+  - '+.assets.msn.cn'
+  - '+.assets2.msn.cn'
+  - '+.c.msn.cn'
+  - '+.api.msn.cn'
+  - '+.browser.events.data.msn.cn'
+  - '+.browser.events.data.msn.com'
+  - '+.ntp.msn.cn'
 
-  # - '+.api.msn.com'
-  # - '+.pipe.aria.microsoft.com'
-  # - '+.ntp.msn.com'
-  # - '+.web.vortex.data.microsoft.com'
-  # - '+.browser.events.data.msn.com'
-  # - '+.www.msn.com'
-  # - '+.assets.msn.com'
-  # - '+.c.msn.com'
-  # - '+.api.msn.cn'
-  # - '+.pipe.aria.microsoft.cn'
-  # - '+.ntp.msn.cn'
-  # - '+.web.vortex.data.microsoft.cn'
-  # - '+.browser.events.data.msn.cn'
-  # - '+.www.msn.cn'
-  # - '+.assets.msn.cn'
-  # - '+.c.msn.cn'
+  # ? The following domain names will prevent certain websites from loading, 
+  # ? regardless of whether using direct or proxy mode.
+  - '+.edge.microsoft.com'
 
-  # fake crack website full of virus
+  # ! Malicious websites
   - '+.mixcrack.net'
+  - '+.antiadblocksystems.com'
   
-  # else blocked websites
+  # ! Proxy server won't allow to access those following websites.
   - '+.beijingspring.com'
   - '+.chinaaffairs.com'
   - '+.chengmingmag.com'
@@ -159,4 +151,3 @@ payload:
   - '+.auth.com'
   - '+.native.np.ac.com'
   - '+.accounts.api.playstation.com'
-  - '+.antiadblocksystems.com'
