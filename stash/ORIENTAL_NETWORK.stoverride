@@ -5,7 +5,9 @@ rules: #!replace
   - PROCESS-NAME,IDMan.exe,DIRECT
   - RULE-SET,Customize-Reject,REJECT
   - RULE-SET,Customize-Direct,DIRECT
-  - RULE-SET,Customize-Special,🛤️ 特殊控制
+  - RULE-SET,Customize-OpenAI,🛤️ 特殊控制 | OpenAI
+  - RULE-SET,Customize-Brad,🛤️ 特殊控制 | Brad
+  - RULE-SET,Customize-Copilot,🛤️ 特殊控制 | Copilot
   - RULE-SET,Customize-Proxy,🛤️ 科学上网
   - RULE-SET,Remote-Applications,DIRECT
   - RULE-SET,Remote-Apple,DIRECT
@@ -30,26 +32,110 @@ proxy-groups: #!replace
     interval: 72
     proxies:
       - DIRECT
-      - 🛤️ 网络专线
-      - 🛤️ 深港移动
-      - 🛤️ 沪港电信
-      - 🛤️ 沪日电信
-      - 🛤️ 香港线路
-      - 🛤️ 日本线路
+      - 🛤️ 高速专线
+      - 🛤️ 故障切换 | 深港移动
+      - 🛤️ 故障切换 | 沪港电信
+      - 🛤️ 故障切换 | 沪日电信
+      - 🛤️ 负载均衡 | 香港
+      - 🛤️ 负载均衡 | 日本
       - 🛤️ 目标节点
-  - name: 🛤️ 特殊控制
+  - name: 🛤️ 特殊控制 | OpenAI
     type: select
     url: http://www.gstatic.com/generate_204
     interval: 72
     proxies:
       - REJECT
-      - 🛤️ 网络专线
-      - 🛤️ 深港移动
-      - 🛤️ 沪港电信
-      - 🛤️ 沪日电信
-      - 🛤️ 香港线路
-      - 🛤️ 日本线路
-      - 🛤️ 目标节点
+      - 🇷🇺 俄罗斯 01 RT IPv6
+      - 🇷🇺 俄罗斯 02 CN2 IPv6（2.2倍率）
+      - 卢森堡 01 Cogent（0.5倍率/无版权）
+      - 🇹🇼 台湾 01 HiNet
+      - 🇹🇼 台湾 02 HiNet
+      - 🇹🇷 土耳其 01 Cogent
+      - 🇧🇷 巴西 01 Ascenty
+      - 🇩🇪 德国 01 GIA CN2（1.9倍率）
+      - 🇩🇪 德国 03 Cogent/Tata IPv6
+      - 🇸🇬 新加坡 01 Cogent IPv6（流媒体）
+      - 🇸🇬 新加坡 02 PCCW（2.4倍率）
+      - 🇯🇵 日本 01 电信/沪日专线（3倍率）
+      - 🇯🇵 日本 02 电信/沪日专线（3倍率）
+      - 🇯🇵 日本 05 NTT IPv6
+      - 🇯🇵 日本 06 M247 IPv6
+      - 🇯🇵 日本 07 IIJ
+      - 🇯🇵 日本 09 IIJ
+      - 🇯🇵 日本 11 IIJ IPv6
+      - 🇯🇵 日本 13 IIJ IPv6
+      - 🇯🇵 日本 15 IIJ
+      - 🇯🇵 日本 17 IIJ
+      - 🇯🇵 日本 19 IIJ
+      - 🇯🇵 日本 21 NTT
+      - 🇦🇺 澳大利亚 01 NTT IPv6
+      - 🇺🇲 美国 01 GIA CN2 IPv6
+      - 🇺🇲 美国 03 GIA CN2 IPv6
+      - 🇺🇲 美国 05 Cogent IPv6（流媒体）
+      - 🇬🇧 英国 01 NTT/GTT
+      - 🇦🇷 阿根廷 01 Telecom
+      - 🇦🇷 阿根廷 02 Velocom
+      - 🇰🇷 韩国 01 SK（2.7倍率）
+      - 🇭🇰 香港 01 电信/沪港专线（2.5倍率）
+      - 🇭🇰 香港 02 电信/沪港专线（2.5倍率）
+      - 🇭🇰 香港 05 移动/深港专线（2倍率）
+      - 🇭🇰 香港 06 移动/深港专线（2倍率）
+      - 🇭🇰 香港 09 HKT家宽（0.5倍率）
+      - 🇭🇰 香港 10 HKBN家宽（0.5倍率）
+      - 🇭🇰 香港 11 NTT IPv6
+      - 🇭🇰 香港 12 Cogent IPv6（流媒体）
+  - name: 🛤️ 特殊控制 | Brad
+    type: select
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    proxies:
+      - REJECT
+      - 🇷🇺 俄罗斯 01 RT IPv6
+      - 🇷🇺 俄罗斯 02 CN2 IPv6（2.2倍率）
+      - 卢森堡 01 Cogent（0.5倍率/无版权）
+      - 🇹🇼 台湾 01 HiNet
+      - 🇹🇼 台湾 02 HiNet
+      - 🇹🇷 土耳其 01 Cogent
+      - 🇧🇷 巴西 01 Ascenty
+      - 🇩🇪 德国 01 GIA CN2（1.9倍率）
+      - 🇩🇪 德国 03 Cogent/Tata IPv6
+      - 🇸🇬 新加坡 01 Cogent IPv6（流媒体）
+      - 🇸🇬 新加坡 02 PCCW（2.4倍率）
+      - 🇯🇵 日本 01 电信/沪日专线（3倍率）
+      - 🇯🇵 日本 02 电信/沪日专线（3倍率）
+      - 🇯🇵 日本 05 NTT IPv6
+      - 🇯🇵 日本 06 M247 IPv6
+      - 🇯🇵 日本 07 IIJ
+      - 🇯🇵 日本 09 IIJ
+      - 🇯🇵 日本 11 IIJ IPv6
+      - 🇯🇵 日本 13 IIJ IPv6
+      - 🇯🇵 日本 15 IIJ
+      - 🇯🇵 日本 17 IIJ
+      - 🇯🇵 日本 19 IIJ
+      - 🇯🇵 日本 21 NTT
+      - 🇦🇺 澳大利亚 01 NTT IPv6
+      - 🇺🇲 美国 01 GIA CN2 IPv6
+      - 🇺🇲 美国 03 GIA CN2 IPv6
+      - 🇺🇲 美国 05 Cogent IPv6（流媒体）
+      - 🇬🇧 英国 01 NTT/GTT
+      - 🇦🇷 阿根廷 01 Telecom
+      - 🇦🇷 阿根廷 02 Velocom
+      - 🇰🇷 韩国 01 SK（2.7倍率）
+      - 🇭🇰 香港 01 电信/沪港专线（2.5倍率）
+      - 🇭🇰 香港 02 电信/沪港专线（2.5倍率）
+      - 🇭🇰 香港 05 移动/深港专线（2倍率）
+      - 🇭🇰 香港 06 移动/深港专线（2倍率）
+      - 🇭🇰 香港 09 HKT家宽（0.5倍率）
+      - 🇭🇰 香港 10 HKBN家宽（0.5倍率）
+      - 🇭🇰 香港 11 NTT IPv6
+      - 🇭🇰 香港 12 Cogent IPv6（流媒体）
+  - name: 🛤️ 特殊控制 | Copilot
+    type: select
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    proxies:
+      - DIRECT
+      - 🛤️ 科学上网
   - name: 🛤️ 目标节点
     type: select
     url: http://www.gstatic.com/generate_204
@@ -95,7 +181,7 @@ proxy-groups: #!replace
       - 🇭🇰 香港 10 HKBN家宽（0.5倍率）
       - 🇭🇰 香港 11 NTT IPv6
       - 🇭🇰 香港 12 Cogent IPv6（流媒体）
-  - name: 🛤️ 网络专线
+  - name: 🛤️ 高速专线
     type: select
     url: http://www.gstatic.com/generate_204
     interval: 72
@@ -107,28 +193,28 @@ proxy-groups: #!replace
       - 🇭🇰 香港 02 电信/沪港专线（2.5倍率）
       - 🇯🇵 日本 01 电信/沪日专线（3倍率）
       - 🇯🇵 日本 02 电信/沪日专线（3倍率）
-  - name: 🛤️ 深港移动
+  - name: 🛤️ 故障切换 | 深港移动
     type: fallback
     url: http://www.gstatic.com/generate_204
     interval: 72
     proxies:
       - 🇭🇰 香港 05 移动/深港专线（2倍率）
       - 🇭🇰 香港 06 移动/深港专线（2倍率）
-  - name: 🛤️ 沪港电信
+  - name: 🛤️ 故障切换 | 沪港电信
     type: fallback
     url: http://www.gstatic.com/generate_204
     interval: 72
     proxies:
       - 🇭🇰 香港 01 电信/沪港专线（2.5倍率）
       - 🇭🇰 香港 02 电信/沪港专线（2.5倍率）
-  - name: 🛤️ 沪日电信
+  - name: 🛤️ 故障切换 | 沪日电信
     type: fallback
     url: http://www.gstatic.com/generate_204
     interval: 72
     proxies:
       - 🇯🇵 日本 01 电信/沪日专线（3倍率）
       - 🇯🇵 日本 02 电信/沪日专线（3倍率）
-  - name: 🛤️ 香港线路
+  - name: 🛤️ 负载均衡 | 香港
     type: load-balance
     url: http://www.gstatic.com/generate_204
     interval: 72
@@ -137,7 +223,7 @@ proxy-groups: #!replace
       - 🇭🇰 香港 10 HKBN家宽（0.5倍率）
       - 🇭🇰 香港 11 NTT IPv6
       - 🇭🇰 香港 12 Cogent IPv6（流媒体）
-  - name: 🛤️ 日本线路
+  - name: 🛤️ 负载均衡 | 日本
     type: load-balance
     url: http://www.gstatic.com/generate_204
     interval: 72
@@ -225,11 +311,21 @@ rule-providers: #!replace
     behavior: domain
     interval: 86400
     url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt
-  Customize-Special:
+  Customize-OpenAI:
     type: http
     behavior: domain
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/special.yaml
+    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/openai.yaml
+  Customize-Brad:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/brad.yaml
+  Customize-Copilot:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/copilot.yaml
   Customize-Direct:
     type: http
     behavior: domain

@@ -1,4 +1,6 @@
-﻿module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url, interval, selected }) => {
+﻿// ! 请使用VSCode，并安装Better Comments插件以阅读高亮注释。
+
+module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url, interval, selected }) => {
 
   const currentClient = "CFW";
 
@@ -127,7 +129,9 @@
   const customizelist = [
     "RULE-SET,Customize-Reject,REJECT",
     "RULE-SET,Customize-Direct,DIRECT",
-    "RULE-SET,Customize-Special,特殊控制", // for ChatGPT
+    "RULE-SET,Customize-OpenAI,特殊控制 | OpenAI", // for ChatGPT
+    "RULE-SET,Customize-Brad,特殊控制 | Brad", // for Google Brad
+    "RULE-SET,Customize-Copilot,特殊控制 | Copilot", // for New Bing
     "RULE-SET,Customize-Proxy,科学上网"
   ];
 
@@ -144,6 +148,8 @@
     "RULE-SET,Remote-Tld-not-cn,科学上网",
     "RULE-SET,Remote-Reject,REJECT",
 
+    // ! 以下为IP规则，添加no-resolve可以避免使用本地DNS解析未匹配域名，
+    // ! 从而避免DNS泄露。但相应的未解析域名，将跳过IP规则直接匹配MATCH。
     "RULE-SET,Remote-Telegramcidr,科学上网,no-resolve",
     "RULE-SET,Remote-Lancidr,DIRECT,no-resolve",
     "RULE-SET,Remote-Cncidr,DIRECT,no-resolve",
@@ -173,35 +179,39 @@
     obj["rules"] = processlist.concat(customizelist, remotelist, matchlist);
 
     const proxyGroupsName = [
-      "网络专线",
-      "深港移动",
-      "沪港电信",
-      "沪日电信",
-      "香港线路",
-      "日本线路",
+      "高速专线",
+      "故障切换 | 深港移动",
+      "故障切换 | 沪港电信",
+      "故障切换 | 沪日电信",
+      "负载均衡 | 香港",
+      "负载均衡 | 日本",
       "目标节点"
     ];
 
     proxyGroups[0] = getProxyGroup("科学上网", "select", ["DIRECT"].concat(proxyGroupsName));
-    proxyGroups[1] = getProxyGroup("特殊控制", "select", ["REJECT"].concat(proxyGroupsName));
-    proxyGroups[2] = getProxyGroup("目标节点", "select", ["REJECT"], /.+/gm);
+    proxyGroups[1] = getProxyGroup("特殊控制 | OpenAI", "select", ["REJECT"], /.+/gm);
+    proxyGroups[2] = getProxyGroup("特殊控制 | Brad", "select", ["REJECT"], /.+/gm);
+    proxyGroups[3] = getProxyGroup("特殊控制 | Copilot", "select", ["DIRECT", "科学上网"]);
 
-    proxyGroups[3] = getProxyGroup("网络专线", "select", [], /专线/gm);
-    proxyGroups[3].proxies.sort((a, b) => {
+
+    proxyGroups[4] = getProxyGroup("目标节点", "select", ["REJECT"], /.+/gm);
+
+    proxyGroups[5] = getProxyGroup("高速专线", "select", [], /专线/gm);
+    proxyGroups[5].proxies.sort((a, b) => {
       const sortRules = ["移动/深港", "电信/沪港", "电信/沪日"];
       const target = /.{2}\/.{2}/gm;
       return sortRules.indexOf(a.match(target).pop()) - sortRules.indexOf(b.match(target).pop());
     });
-    proxyGroups[3].proxies.unshift("REJECT");
+    proxyGroups[5].proxies.unshift("REJECT");
 
-    proxyGroups[4] = getProxyGroup("深港移动", "fallback", [], /香港 \d\d 移动.+/gm);
-    proxyGroups[5] = getProxyGroup("沪港电信", "fallback", [], /香港 \d\d 电信.+/gm);
-    proxyGroups[6] = getProxyGroup("沪日电信", "fallback", [], /日本 \d\d [^A-Z].+/gm);
+    proxyGroups[6] = getProxyGroup("故障切换 | 深港移动", "fallback", [], /香港 \d\d 移动.+/gm);
+    proxyGroups[7] = getProxyGroup("故障切换 | 沪港电信", "fallback", [], /香港 \d\d 电信.+/gm);
+    proxyGroups[8] = getProxyGroup("故障切换 | 沪日电信", "fallback", [], /日本 \d\d [^A-Z].+/gm);
 
-    proxyGroups[7] = getProxyGroup("香港线路", "load-balance", [], /香港\s\d\d [A-Z].+$/gm);
-    proxyGroups[8] = getProxyGroup("日本线路", "load-balance", [], /日本\s\d\d [A-Z]/gm)
+    proxyGroups[9] = getProxyGroup("负载均衡 | 香港", "load-balance", [], /香港\s\d\d [A-Z].+$/gm);
+    proxyGroups[10] = getProxyGroup("负载均衡 | 日本", "load-balance", [], /日本\s\d\d [A-Z]/gm)
 
-    proxyGroups[9] = getProxyGroup("规则逃逸", "select", ["DIRECT", "科学上网"]);
+    proxyGroups[11] = getProxyGroup("规则逃逸", "select", ["DIRECT", "科学上网"]);
   }
 
   function fillProxyGroupColaCloud() {
@@ -211,29 +221,32 @@
     obj["rules"] = customizelist.concat(remotelist, matchlist);
 
     const proxyGroupsName = [
-      "香港其一",
-      "香港其二",
+      "负载均衡 | 香港 A",
+      "负载均衡 | 香港 B",
       "目标节点",
-      "其他节点"
+      "测试延迟 | 其他节点"
     ];
 
     proxyGroups[0] = getProxyGroup("科学上网", "select", ["DIRECT"].concat(proxyGroupsName));
-    proxyGroups[1] = getProxyGroup("特殊控制", "select", ["REJECT"].concat(proxyGroupsName));
-    proxyGroups[2] = getProxyGroup("目标节点", "select", [], /^((?!套餐).)*$/gm);
+    proxyGroups[1] = getProxyGroup("特殊控制 | OpenAI", "select", ["REJECT"], /.+/gm);
+    proxyGroups[2] = getProxyGroup("特殊控制 | Brad", "select", ["REJECT"], /.+/gm);
+    proxyGroups[3] = getProxyGroup("特殊控制 | Copilot", "select", ["DIRECT", "科学上网"]);
 
-    proxyGroups[7] = getProxyGroup("订阅详情", "select", [proxyGroups[2].proxies.shift()]);// 临时方案：去除剩余流量选项
-    proxyGroups[2].proxies.unshift("REJECT");
+    proxyGroups[4] = getProxyGroup("目标节点", "select", [], /^((?!套餐).)*$/gm);
 
-    proxyGroups[3] = getProxyGroup("香港其一", "load-balance", [], /香港\s\d\d$/gm);
-    proxyGroups[4] = getProxyGroup("香港其二", "load-balance", [], /香港\s\d\d\w/gm);
+    proxyGroups[9] = getProxyGroup("订阅详情", "select", [proxyGroups[4].proxies.shift()]);// 临时方案：去除剩余流量选项
+    proxyGroups[4].proxies.unshift("REJECT");
 
-    proxyGroups[5] = getProxyGroup("其他节点", "fallback", [], /(越南|新加坡|台灣|美國|日本)\s\d\d/gm);
-    proxyGroups[5].proxies.sort((a, b) => {
+    proxyGroups[5] = getProxyGroup("负载均衡 | 香港 A", "load-balance", [], /香港\s\d\d$/gm);
+    proxyGroups[6] = getProxyGroup("负载均衡 | 香港 B", "load-balance", [], /香港\s\d\d\w/gm);
+
+    proxyGroups[7] = getProxyGroup("测试延迟 | 其他节点", "fallback", [], /(越南|新加坡|台灣|美國|日本)\s\d\d/gm);
+    proxyGroups[7].proxies.sort((a, b) => {
       const sortRules = ["[SS]台", "[SS]新", "[SS]越", "[SS]日", "[SS]美"];
       const target = /^.{5}/gm;
       return sortRules.indexOf(a.match(target).pop()) - sortRules.indexOf(b.match(target).pop());
     });
-    proxyGroups[6] = getProxyGroup("规则逃逸", "select", ["DIRECT", "科学上网"]);
+    proxyGroups[8] = getProxyGroup("规则逃逸", "select", ["DIRECT", "科学上网"]);
   }
 
   /**
@@ -304,7 +317,9 @@
   // 远程自定义的规则文件 => https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/
   // 另一个获取规则的地址 => https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/
   const rpCustomizeHttp = {
-    "Customize-Special": { ...httpDomain },
+    "Customize-OpenAI": { ...httpDomain },
+    "Customize-Brad": { ...httpDomain },
+    "Customize-Copilot": { ...httpDomain },
     "Customize-Direct": { ...httpDomain },
     "Customize-Reject": { ...httpDomain },
     "Customize-Proxy": { ...httpDomain }
@@ -329,7 +344,9 @@
 
   // 本地自定义的规则文件 => path.resolve(__dirname, "customize rules")
   const rpCustomizeFile = {
-    "Customize-Special": { ...fileDomain },
+    "Customize-OpenAI": { ...fileDomain },
+    "Customize-Brad": { ...fileDomain },
+    "Customize-Copilot": { ...fileDomain },
     "Customize-Direct": { ...fileDomain },
     "Customize-Reject": { ...fileDomain },
     "Customize-Proxy": { ...fileDomain }

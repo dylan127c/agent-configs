@@ -3,7 +3,9 @@ desc: Replace original config.
 rules: #!replace
   - RULE-SET,Customize-Reject,REJECT
   - RULE-SET,Customize-Direct,DIRECT
-  - RULE-SET,Customize-Special,🛣️ 特殊控制
+  - RULE-SET,Customize-OpenAI,🛣️ 特殊控制 | OpenAI
+  - RULE-SET,Customize-Brad,🛣️ 特殊控制 | Brad
+  - RULE-SET,Customize-Copilot,🛣️ 特殊控制 | Copilot
   - RULE-SET,Customize-Proxy,🛣️ 科学上网
   - RULE-SET,Remote-Applications,DIRECT
   - RULE-SET,Remote-Apple,DIRECT
@@ -28,20 +30,183 @@ proxy-groups: #!replace
     interval: 72
     proxies:
       - DIRECT
-      - 🛣️ 香港其一
-      - 🛣️ 香港其二
+      - 🛣️ 负载均衡 | 香港 A
+      - 🛣️ 负载均衡 | 香港 B
       - 🛣️ 目标节点
-      - 🛣️ 其他节点
-  - name: 🛣️ 特殊控制
+      - 🛣️ 测试延迟 | 其他节点
+  - name: 🛣️ 特殊控制 | OpenAI
     type: select
     url: http://www.gstatic.com/generate_204
     interval: 72
     proxies:
       - REJECT
-      - 🛣️ 香港其一
-      - 🛣️ 香港其二
-      - 🛣️ 目标节点
-      - 🛣️ 其他节点
+      - 剩余流量：160.39 GB
+      - 套餐到期：长期有效
+      - "[SS]香港 01"
+      - "[SS]香港 02"
+      - "[SS]香港 03"
+      - "[SS]香港 04"
+      - "[SS]香港 05"
+      - "[SS]香港 06"
+      - "[SS]香港 07"
+      - "[SS]香港 08"
+      - "[SS]香港 09"
+      - "[SS]香港 10"
+      - "[SS]香港 11"
+      - "[SS]香港 12"
+      - "[SS]香港 13"
+      - "[SS]香港 14"
+      - "[SS]香港 01B"
+      - "[SS]香港 02B"
+      - "[SS]香港 03B"
+      - "[SS]香港 04B"
+      - "[SS]香港 05B"
+      - "[SS]香港 06B"
+      - "[SS]香港 07B"
+      - "[SS]香港 08B"
+      - "[SS]香港 09B"
+      - "[SS]香港 10B"
+      - "[SS]香港 11B"
+      - "[SS]香港 12B"
+      - "[SS]香港 13B"
+      - "[SS]香港 14B"
+      - "[SS]香港 15B"
+      - "[SS]香港 16B"
+      - "[SS]香港 17B"
+      - "[SS]香港 18B"
+      - "[SS]香港 19B"
+      - "[SS]香港 20B"
+      - "[SS]香港 21B"
+      - "[SS]香港 22B"
+      - "[SS]香港 23B"
+      - "[SS]香港 24B"
+      - "[SS]香港 25B"
+      - "[SS]香港 26B"
+      - "[SS]香港 27B"
+      - "[SS]香港 28B"
+      - "[SS]香港 29B"
+      - "[SS]香港 30B"
+      - "[SS]香港 31B"
+      - "[SS]香港 32B"
+      - "[SS]香港 33B"
+      - "[SS]香港 34B"
+      - "[SS]香港 35B"
+      - "[SS]越南 01"
+      - "[SS]越南 02"
+      - "[SS]越南 03"
+      - "[SS]越南 04"
+      - "[SS]越南 05"
+      - "[SS]越南 06"
+      - "[SS]越南 07"
+      - "[SS]越南 08"
+      - "[SS]越南 09"
+      - "[SS]美國 01"
+      - "[SS]美國 02"
+      - "[SS]美國 03"
+      - "[SS]美國 04"
+      - "[SS]美國 05"
+      - "[SS]美國 06"
+      - "[SS]美國 07"
+      - "[SS]美國 08"
+      - "[SS]美國 09"
+      - "[SS]日本 01"
+      - "[SS]日本 02"
+      - "[SS]日本 03"
+      - "[SS]日本 04"
+      - "[SS]台灣 01"
+      - "[SS]新加坡 01"
+      - "[SS]新加坡 02"
+      - "[SS]新加坡 03"
+  - name: 🛣️ 特殊控制 | Brad
+    type: select
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    proxies:
+      - REJECT
+      - 剩余流量：160.39 GB
+      - 套餐到期：长期有效
+      - "[SS]香港 01"
+      - "[SS]香港 02"
+      - "[SS]香港 03"
+      - "[SS]香港 04"
+      - "[SS]香港 05"
+      - "[SS]香港 06"
+      - "[SS]香港 07"
+      - "[SS]香港 08"
+      - "[SS]香港 09"
+      - "[SS]香港 10"
+      - "[SS]香港 11"
+      - "[SS]香港 12"
+      - "[SS]香港 13"
+      - "[SS]香港 14"
+      - "[SS]香港 01B"
+      - "[SS]香港 02B"
+      - "[SS]香港 03B"
+      - "[SS]香港 04B"
+      - "[SS]香港 05B"
+      - "[SS]香港 06B"
+      - "[SS]香港 07B"
+      - "[SS]香港 08B"
+      - "[SS]香港 09B"
+      - "[SS]香港 10B"
+      - "[SS]香港 11B"
+      - "[SS]香港 12B"
+      - "[SS]香港 13B"
+      - "[SS]香港 14B"
+      - "[SS]香港 15B"
+      - "[SS]香港 16B"
+      - "[SS]香港 17B"
+      - "[SS]香港 18B"
+      - "[SS]香港 19B"
+      - "[SS]香港 20B"
+      - "[SS]香港 21B"
+      - "[SS]香港 22B"
+      - "[SS]香港 23B"
+      - "[SS]香港 24B"
+      - "[SS]香港 25B"
+      - "[SS]香港 26B"
+      - "[SS]香港 27B"
+      - "[SS]香港 28B"
+      - "[SS]香港 29B"
+      - "[SS]香港 30B"
+      - "[SS]香港 31B"
+      - "[SS]香港 32B"
+      - "[SS]香港 33B"
+      - "[SS]香港 34B"
+      - "[SS]香港 35B"
+      - "[SS]越南 01"
+      - "[SS]越南 02"
+      - "[SS]越南 03"
+      - "[SS]越南 04"
+      - "[SS]越南 05"
+      - "[SS]越南 06"
+      - "[SS]越南 07"
+      - "[SS]越南 08"
+      - "[SS]越南 09"
+      - "[SS]美國 01"
+      - "[SS]美國 02"
+      - "[SS]美國 03"
+      - "[SS]美國 04"
+      - "[SS]美國 05"
+      - "[SS]美國 06"
+      - "[SS]美國 07"
+      - "[SS]美國 08"
+      - "[SS]美國 09"
+      - "[SS]日本 01"
+      - "[SS]日本 02"
+      - "[SS]日本 03"
+      - "[SS]日本 04"
+      - "[SS]台灣 01"
+      - "[SS]新加坡 01"
+      - "[SS]新加坡 02"
+      - "[SS]新加坡 03"
+  - name: 🛣️ 特殊控制 | Copilot
+    type: select
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    proxies:
+      - DIRECT
+      - 🛣️ 科学上网
   - name: 🛣️ 目标节点
     type: select
     url: http://www.gstatic.com/generate_204
@@ -123,7 +288,7 @@ proxy-groups: #!replace
       - "[SS]新加坡 01"
       - "[SS]新加坡 02"
       - "[SS]新加坡 03"
-  - name: 🛣️ 香港其一
+  - name: 🛣️ 负载均衡 | 香港 A
     type: load-balance
     url: http://www.gstatic.com/generate_204
     interval: 72
@@ -142,7 +307,7 @@ proxy-groups: #!replace
       - "[SS]香港 12"
       - "[SS]香港 13"
       - "[SS]香港 14"
-  - name: 🛣️ 香港其二
+  - name: 🛣️ 负载均衡 | 香港 B
     type: load-balance
     url: http://www.gstatic.com/generate_204
     interval: 72
@@ -182,7 +347,7 @@ proxy-groups: #!replace
       - "[SS]香港 33B"
       - "[SS]香港 34B"
       - "[SS]香港 35B"
-  - name: 🛣️ 其他节点
+  - name: 🛣️ 测试延迟 | 其他节点
     type: fallback
     url: http://www.gstatic.com/generate_204
     interval: 72
@@ -286,11 +451,21 @@ rule-providers: #!replace
     behavior: domain
     interval: 86400
     url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt
-  Customize-Special:
+  Customize-OpenAI:
     type: http
     behavior: domain
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/special.yaml
+    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/openai.yaml
+  Customize-Brad:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/brad.yaml
+  Customize-Copilot:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/copilot.yaml
   Customize-Direct:
     type: http
     behavior: domain
