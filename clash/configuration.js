@@ -480,7 +480,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
       )
     };
 
-    const outputStr = JSON.stringify(output);
+    const outputStr = yaml.stringify(output);
     let finalOutput = outputStr.replace("rules:", "rules: #!replace")
       .replace("proxy-groups:", "proxy-groups: #!replace")
       .replace("rule-providers:", "rule-providers: #!replace");
