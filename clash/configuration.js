@@ -61,14 +61,18 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   obj.dns.ipv6 = false;
   obj.dns["enhanced-mode"] = "fake-ip";
   obj.dns["fake-ip-range"] = "192.18.0.1/16";
+  
   obj.dns.nameserver = [
-    "119.29.29.29",
-    "223.5.5.5"
+    "119.29.29.29", // DNSPod Public
+    "119.28.28.28",
+    "223.5.5.5", // Ali
+    "223.6.6.6"
   ];
   obj.dns.fallback = [
-    "8.8.8.8",
-    "1.1.1.1",
-    "114.114.114.114"
+    "114.114.114.114", // 114
+    "8.8.8.8", // Google
+    "94.140.14.15", // AdGuard
+    "94.140.15.16"
   ];
   obj.dns["fake-ip-filter"] = [
     "+.stun.*.*",
@@ -129,6 +133,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   const customizelist = [
     "RULE-SET,Customize-Reject,REJECT",
     "RULE-SET,Customize-Direct,DIRECT",
+    "RULE-SET,Customize-Edge,特殊控制 | Edge", // for ChatGPT
     "RULE-SET,Customize-OpenAI,特殊控制 | OpenAI", // for ChatGPT
     "RULE-SET,Customize-Brad,特殊控制 | Brad", // for Google Brad
     "RULE-SET,Customize-Copilot,特殊控制 | Copilot", // for New Bing
@@ -148,8 +153,23 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     "RULE-SET,Remote-Tld-not-cn,科学上网",
     "RULE-SET,Remote-Reject,REJECT",
 
-    // ! 以下为IP规则，添加no-resolve可以避免使用本地DNS解析未匹配域名，
-    // ! 从而避免DNS泄露。但相应的未解析域名，将跳过IP规则直接匹配MATCH。
+    /**
+     * ! 以下为IP规则，添加no-resolve可以避免使用本地DNS解析未匹配域名，
+     * ! 从而避免DNS泄露。但相应的未解析域名，将跳过IP规则直接匹配MATCH。
+     * 
+     * * DNS_LEAKING_TEST：https://ipleak.net
+     * 
+     * * 测试需要保证以上网址的网络连通性，并同时仅使用同一个网络。
+     * * 如若测试中出现了你所在国家的IP地址，则表示发生了DNS泄露。
+     * 
+     * ? 选择使用类似于AdGuard Windows中的DNS Protection功能，
+     * ? 同时使用AdGuard DNS并启用DoQ协议，能有效地避免DNS泄露。
+     * ? 那么此时，对于IP规则来说，则无需额外添加no-resolve选项。
+     * 
+     * ! 需要注意，是否选择使用AdGuard DNS取决于该DNS
+     * ! 与你所在网络之间的网络连通性。
+     * ! 如果延迟过高，则不建议使用，保持本地解析建议添加no-resolve选项。
+     */
     "RULE-SET,Remote-Telegramcidr,科学上网,no-resolve",
     "RULE-SET,Remote-Lancidr,DIRECT,no-resolve",
     "RULE-SET,Remote-Cncidr,DIRECT,no-resolve",
@@ -189,29 +209,30 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     ];
 
     proxyGroups[0] = getProxyGroup("科学上网", "select", ["DIRECT"].concat(proxyGroupsName));
-    proxyGroups[1] = getProxyGroup("特殊控制 | OpenAI", "select", ["REJECT"], /.+/gm);
-    proxyGroups[2] = getProxyGroup("特殊控制 | Brad", "select", ["REJECT"], /.+/gm);
-    proxyGroups[3] = getProxyGroup("特殊控制 | Copilot", "select", ["DIRECT", "科学上网"]);
+    proxyGroups[1] = getProxyGroup("特殊控制 | Edge", "select", ["REJECT", "DIRECT", "科学上网"]);
+    proxyGroups[2] = getProxyGroup("特殊控制 | OpenAI", "select", ["REJECT"], /.+/gm);
+    proxyGroups[3] = getProxyGroup("特殊控制 | Brad", "select", ["REJECT"], /.+/gm);
+    proxyGroups[4] = getProxyGroup("特殊控制 | Copilot", "select", ["DIRECT", "科学上网"]);
 
 
-    proxyGroups[4] = getProxyGroup("目标节点", "select", ["REJECT"], /.+/gm);
+    proxyGroups[5] = getProxyGroup("目标节点", "select", ["REJECT"], /.+/gm);
 
-    proxyGroups[5] = getProxyGroup("高速专线", "select", [], /专线/gm);
-    proxyGroups[5].proxies.sort((a, b) => {
+    proxyGroups[6] = getProxyGroup("高速专线", "select", [], /专线/gm);
+    proxyGroups[6].proxies.sort((a, b) => {
       const sortRules = ["移动/深港", "电信/沪港", "电信/沪日"];
       const target = /.{2}\/.{2}/gm;
       return sortRules.indexOf(a.match(target).pop()) - sortRules.indexOf(b.match(target).pop());
     });
-    proxyGroups[5].proxies.unshift("REJECT");
+    proxyGroups[6].proxies.unshift("REJECT");
 
-    proxyGroups[6] = getProxyGroup("故障切换 | 深港移动", "fallback", [], /香港 \d\d 移动.+/gm);
-    proxyGroups[7] = getProxyGroup("故障切换 | 沪港电信", "fallback", [], /香港 \d\d 电信.+/gm);
-    proxyGroups[8] = getProxyGroup("故障切换 | 沪日电信", "fallback", [], /日本 \d\d [^A-Z].+/gm);
+    proxyGroups[7] = getProxyGroup("故障切换 | 深港移动", "fallback", [], /香港 \d\d 移动.+/gm);
+    proxyGroups[8] = getProxyGroup("故障切换 | 沪港电信", "fallback", [], /香港 \d\d 电信.+/gm);
+    proxyGroups[9] = getProxyGroup("故障切换 | 沪日电信", "fallback", [], /日本 \d\d [^A-Z].+/gm);
 
-    proxyGroups[9] = getProxyGroup("负载均衡 | 香港", "load-balance", [], /香港\s\d\d [A-Z].+$/gm);
-    proxyGroups[10] = getProxyGroup("负载均衡 | 日本", "load-balance", [], /日本\s\d\d [A-Z]/gm)
+    proxyGroups[10] = getProxyGroup("负载均衡 | 香港", "load-balance", [], /香港\s\d\d [A-Z].+$/gm);
+    proxyGroups[11] = getProxyGroup("负载均衡 | 日本", "load-balance", [], /日本\s\d\d [A-Z]/gm)
 
-    proxyGroups[11] = getProxyGroup("规则逃逸", "select", ["DIRECT", "科学上网"]);
+    proxyGroups[12] = getProxyGroup("规则逃逸", "select", ["DIRECT", "科学上网"]);
   }
 
   function fillProxyGroupColaCloud() {
@@ -228,25 +249,26 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     ];
 
     proxyGroups[0] = getProxyGroup("科学上网", "select", ["DIRECT"].concat(proxyGroupsName));
-    proxyGroups[1] = getProxyGroup("特殊控制 | OpenAI", "select", ["REJECT"], /.+/gm);
-    proxyGroups[2] = getProxyGroup("特殊控制 | Brad", "select", ["REJECT"], /.+/gm);
-    proxyGroups[3] = getProxyGroup("特殊控制 | Copilot", "select", ["DIRECT", "科学上网"]);
+    proxyGroups[1] = getProxyGroup("特殊控制 | Edge", "select", ["REJECT", "DIRECT", "科学上网"]);
+    proxyGroups[2] = getProxyGroup("特殊控制 | OpenAI", "select", ["REJECT"], /.+/gm); 
+    proxyGroups[3] = getProxyGroup("特殊控制 | Brad", "select", ["REJECT"], /.+/gm);
+    proxyGroups[4] = getProxyGroup("特殊控制 | Copilot", "select", ["DIRECT", "科学上网"]);
 
-    proxyGroups[4] = getProxyGroup("目标节点", "select", [], /^((?!套餐).)*$/gm);
+    proxyGroups[5] = getProxyGroup("目标节点", "select", [], /^((?!套餐).)*$/gm);
 
-    proxyGroups[9] = getProxyGroup("订阅详情", "select", [proxyGroups[4].proxies.shift()]);// 临时方案：去除剩余流量选项
-    proxyGroups[4].proxies.unshift("REJECT");
+    proxyGroups[10] = getProxyGroup("订阅详情", "select", [proxyGroups[5].proxies.shift()]);// 临时方案：去除剩余流量选项
+    proxyGroups[5].proxies.unshift("REJECT");
 
-    proxyGroups[5] = getProxyGroup("负载均衡 | 香港 A", "load-balance", [], /香港\s\d\d$/gm);
-    proxyGroups[6] = getProxyGroup("负载均衡 | 香港 B", "load-balance", [], /香港\s\d\d\w/gm);
+    proxyGroups[6] = getProxyGroup("负载均衡 | 香港 A", "load-balance", [], /香港\s\d\d$/gm);
+    proxyGroups[7] = getProxyGroup("负载均衡 | 香港 B", "load-balance", [], /香港\s\d\d\w/gm);
 
-    proxyGroups[7] = getProxyGroup("测试延迟 | 其他节点", "fallback", [], /(越南|新加坡|台灣|美國|日本)\s\d\d/gm);
-    proxyGroups[7].proxies.sort((a, b) => {
+    proxyGroups[8] = getProxyGroup("测试延迟 | 其他节点", "fallback", [], /(越南|新加坡|台灣|美國|日本)\s\d\d/gm);
+    proxyGroups[8].proxies.sort((a, b) => {
       const sortRules = ["[SS]台", "[SS]新", "[SS]越", "[SS]日", "[SS]美"];
       const target = /^.{5}/gm;
       return sortRules.indexOf(a.match(target).pop()) - sortRules.indexOf(b.match(target).pop());
     });
-    proxyGroups[8] = getProxyGroup("规则逃逸", "select", ["DIRECT", "科学上网"]);
+    proxyGroups[9] = getProxyGroup("规则逃逸", "select", ["DIRECT", "科学上网"]);
   }
 
   /**
@@ -317,6 +339,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   // 远程自定义的规则文件 => https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/
   // 另一个获取规则的地址 => https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/
   const rpCustomizeHttp = {
+    "Customize-Edge": { ...httpDomain },
     "Customize-OpenAI": { ...httpDomain },
     "Customize-Brad": { ...httpDomain },
     "Customize-Copilot": { ...httpDomain },
@@ -344,6 +367,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
 
   // 本地自定义的规则文件 => path.resolve(__dirname, "customize rules")
   const rpCustomizeFile = {
+    "Customize-Edge": { ...fileDomain },
     "Customize-OpenAI": { ...fileDomain },
     "Customize-Brad": { ...fileDomain },
     "Customize-Copilot": { ...fileDomain },

@@ -5,6 +5,7 @@ rules: #!replace
   - PROCESS-NAME,IDMan.exe,DIRECT
   - RULE-SET,Customize-Reject,REJECT
   - RULE-SET,Customize-Direct,DIRECT
+  - RULE-SET,Customize-Edge,🛤️ 特殊控制 | Edge
   - RULE-SET,Customize-OpenAI,🛤️ 特殊控制 | OpenAI
   - RULE-SET,Customize-Brad,🛤️ 特殊控制 | Brad
   - RULE-SET,Customize-Copilot,🛤️ 特殊控制 | Copilot
@@ -39,6 +40,14 @@ proxy-groups: #!replace
       - 🛤️ 负载均衡 | 香港
       - 🛤️ 负载均衡 | 日本
       - 🛤️ 目标节点
+  - name: 🛤️ 特殊控制 | Edge
+    type: select
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    proxies:
+      - REJECT
+      - DIRECT
+      - 🛤️ 科学上网
   - name: 🛤️ 特殊控制 | OpenAI
     type: select
     url: http://www.gstatic.com/generate_204
@@ -311,6 +320,11 @@ rule-providers: #!replace
     behavior: domain
     interval: 86400
     url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt
+  Customize-Edge:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/edge.yaml
   Customize-OpenAI:
     type: http
     behavior: domain
