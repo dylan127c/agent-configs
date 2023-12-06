@@ -8,7 +8,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   // !.service provider && configuration
 
   // 是否启用http方式获取规则列表
-  const disableHttp = true;
+  const disableHttp = false; // * remote_config_cfw
 
   let obj;
   let isEasternNetwork;
@@ -26,7 +26,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     isColaCloud = JSON.stringify(url).match(/sub/gm);
 
     // 是否转换并导出stash配置文件
-    disableStashOutput = false;
+    disableStashOutput = true; // * remote_config_cfw
   }
 
   // ?.CV ACCEPTED
@@ -398,8 +398,8 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
       JSON.parse(rpRemoteFileRaw), JSON.parse(rpCustomizeFileRaw)
     );
   } else {
-    obj["rule-providers"] = Object.assign( // 仅有非自定义规则从远程订阅，自定义规则仍旧从本地订阅
-      JSON.parse(rpRemoteHttpRaw), JSON.parse(rpCustomizeFileRaw)
+    obj["rule-providers"] = Object.assign(
+      JSON.parse(rpRemoteHttpRaw), JSON.parse(rpCustomizeHttpRaw) // * remote_config_cfw
     );
   }
 
