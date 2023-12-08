@@ -52,12 +52,20 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   /**
    * 用于新增或替换原始订阅中的DNS和TUN配置。
    * 
-   * 对于CFW来说，无法确定是CFW软件本身的配置生效，还是订阅文件中的配置生效，因为两者之间互不影响。
-   * 由于配置同时存在，以防万一，可以选择让CFW中的TUN配置保存与以下配置一致。
+   * 当dns.enable启用时，所有经过CFW或CV的流量都会使用DNS配置。
+   * 
+   * 对于CFW来说，TUN模式自带了DNS配置，同时该配置默认处于启用状态，且无法更改。
+   * 这意味着使用CFW开启TUN模式后，默认生效的DNS配置永远是TUN模式自带的DNS配置。
+   * 
+   * 位于此订阅文件内的DNS配置可以选择性开启或关闭。如果启用DNS配置，则所有经过CFW或CV的请求
+   * 都会用nameserver、fallback中的所有DNS服务器进行同时解析。
+   * 如不启用此配置（dns.enable = false），则意味着使用系统默认的DNS配置。
+   * 
+   * 对于CV来说，必须开启DNS、TUN字段，同时启用订阅文件的DNS配置才能使用TUN模式。
    */
   delete obj["dns"];
   obj["dns"] = {};
-  obj.dns.enable = true;
+  obj.dns.enable = true; // 不启用则默认使用系统的DNS配置
   obj.dns.ipv6 = false;
   obj.dns["enhanced-mode"] = "fake-ip";
   obj.dns["fake-ip-range"] = "192.18.0.1/16";
@@ -70,9 +78,13 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   ];
   obj.dns.fallback = [
     "114.114.114.114", // 114
+    "114.114.115.115",
+    "101.226.4.6", // 360
+    "218.30.118.6",
     "8.8.8.8", // Google
-    "94.140.14.15", // AdGuard
-    "94.140.15.16"
+    "94.140.14.15", // AdGuard Family
+    "94.140.15.16",
+    "1.1.1.1" // Cloudflare
   ];
   obj.dns["fake-ip-filter"] = [
     "+.stun.*.*",
@@ -192,7 +204,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   obj["proxy-groups"] = proxyGroups;
 
   function fillProxyGroupOrientalNetwork() {
-    serviceProvider = "ORIENTAL_NETWORK";
+    serviceProvider = "ON";
     obj["rules"] = processlist.concat(customizelist, remotelist, matchlist);
 
     const proxyGroupsName = [
@@ -222,7 +234,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   }
 
   function fillProxyGroupColaCloud() {
-    serviceProvider = "COLA_CLOUD";
+    serviceProvider = "CC";
     obj["rules"] = customizelist.concat(remotelist, matchlist);
 
     const proxyGroupsName = [
@@ -267,10 +279,14 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     const proxyGroup = {
       name: groupName,
       type: groupType,
-      url: "http://www.gstatic.com/generate_204",
-      interval: 72,
-      proxies: []
+      proxies:[]
     };
+
+    if (groupType !== "select") {
+      proxyGroup.url = "http://www.gstatic.com/generate_204";
+      proxyGroup.interval = 72;
+      proxyGroup.lazy = true;
+    }
 
     if (stableGroup.length) {
       proxyGroup.proxies = stableGroup;
@@ -422,11 +438,11 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
    * @returns 
    */
   function fixSomeFlag(str, serviceProvider) {
-    if (serviceProvider === "ORIENTAL_NETWORK") {
+    if (serviceProvider === "ON") {
       return str
         .replaceAll("🇹🇼", "🇨🇳")
         .replaceAll("卢森堡", "🇺🇳 卢森堡");
-    } else if (serviceProvider === "COLA_CLOUD") {
+    } else if (serviceProvider === "CC") {
       return str
         .replaceAll("[SS]香港", "🇭🇰 香港")
         .replaceAll("[SS]越南", "🇻🇳 越南")
@@ -466,7 +482,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
      * 这些配置已写死在stoverride文件内，它不会因为Stash的实时订阅内容而改变。
      */
     const copyProxyGroups = JSON.parse(JSON.stringify(obj["proxy-groups"])); // 深拷贝
-    if (serviceProvider === "COLA_CLOUD") {
+    if (serviceProvider === "CC") {
       copyProxyGroups.pop();
     }
 
@@ -487,7 +503,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
 
     fs.writeFile(
       path.resolve(__dirname, "..", "stash", serviceProvider + ".stoverride"),
-      fixSomeFlag(finalOutput, serviceProvider),
+      finalOutput,
       (err) => { throw err; }
     );
   }
@@ -497,7 +513,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
   // ?.CFW ACCEPTED
   if (currentClient === "CFW") {
     // *.CFW要求返回String类型的配置文件数据，非JSON类型
-    return fixSomeFlag(JSON.stringify(obj), serviceProvider);
+    return fixSomeFlag(yaml.stringify(obj), serviceProvider);
   }
 
   // ?.CV ACCEPTED

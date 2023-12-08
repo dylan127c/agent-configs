@@ -1,4 +1,4 @@
-name: ORIENTAL_NETWORK
+name: ON
 desc: Replace original config.
 rules: #!replace
   - PROCESS-NAME,aria2c.exe,DIRECT
@@ -29,8 +29,6 @@ rules: #!replace
 proxy-groups: #!replace
   - name: 🌌 科学上网
     type: select
-    url: http://www.gstatic.com/generate_204
-    interval: 72
     proxies:
       - DIRECT
       - 🌅 目标节点
@@ -41,16 +39,14 @@ proxy-groups: #!replace
       - 🌉 负载均衡 | 日本
   - name: 🌅 目标节点
     type: select
-    url: http://www.gstatic.com/generate_204
-    interval: 72
     proxies:
       - DIRECT
       - REJECT
       - 🇷🇺 俄罗斯 01 RT IPv6
       - 🇷🇺 俄罗斯 02 CN2 IPv6（2.2倍率）
-      - 🇺🇳 卢森堡 01 Cogent（0.5倍率/无版权）
-      - 🇨🇳 台湾 01 HiNet
-      - 🇨🇳 台湾 02 HiNet
+      - 卢森堡 01 Cogent（0.5倍率/无版权）
+      - 🇹🇼 台湾 01 HiNet
+      - 🇹🇼 台湾 02 HiNet
       - 🇹🇷 土耳其 01 Cogent
       - 🇧🇷 巴西 01 Ascenty
       - 🇩🇪 德国 01 GIA CN2（1.9倍率）
@@ -87,23 +83,19 @@ proxy-groups: #!replace
       - 🇭🇰 香港 12 Cogent IPv6（流媒体）
   - name: 🌄 特殊控制 | Edge
     type: select
-    url: http://www.gstatic.com/generate_204
-    interval: 72
     proxies:
       - REJECT
       - DIRECT
       - 🌌 科学上网
   - name: 🌄 特殊控制 | OpenAI
     type: select
-    url: http://www.gstatic.com/generate_204
-    interval: 72
     proxies:
       - REJECT
       - 🇷🇺 俄罗斯 01 RT IPv6
       - 🇷🇺 俄罗斯 02 CN2 IPv6（2.2倍率）
-      - 🇺🇳 卢森堡 01 Cogent（0.5倍率/无版权）
-      - 🇨🇳 台湾 01 HiNet
-      - 🇨🇳 台湾 02 HiNet
+      - 卢森堡 01 Cogent（0.5倍率/无版权）
+      - 🇹🇼 台湾 01 HiNet
+      - 🇹🇼 台湾 02 HiNet
       - 🇹🇷 土耳其 01 Cogent
       - 🇧🇷 巴西 01 Ascenty
       - 🇩🇪 德国 01 GIA CN2（1.9倍率）
@@ -140,15 +132,13 @@ proxy-groups: #!replace
       - 🇭🇰 香港 12 Cogent IPv6（流媒体）
   - name: 🌄 特殊控制 | Brad
     type: select
-    url: http://www.gstatic.com/generate_204
-    interval: 72
     proxies:
       - REJECT
       - 🇷🇺 俄罗斯 01 RT IPv6
       - 🇷🇺 俄罗斯 02 CN2 IPv6（2.2倍率）
-      - 🇺🇳 卢森堡 01 Cogent（0.5倍率/无版权）
-      - 🇨🇳 台湾 01 HiNet
-      - 🇨🇳 台湾 02 HiNet
+      - 卢森堡 01 Cogent（0.5倍率/无版权）
+      - 🇹🇼 台湾 01 HiNet
+      - 🇹🇼 台湾 02 HiNet
       - 🇹🇷 土耳其 01 Cogent
       - 🇧🇷 巴西 01 Ascenty
       - 🇩🇪 德国 01 GIA CN2（1.9倍率）
@@ -185,45 +175,45 @@ proxy-groups: #!replace
       - 🇭🇰 香港 12 Cogent IPv6（流媒体）
   - name: 🌄 特殊控制 | Copilot
     type: select
-    url: http://www.gstatic.com/generate_204
-    interval: 72
     proxies:
       - DIRECT
       - 🌌 科学上网
   - name: 🌃 故障切换 | 深港移动
     type: fallback
-    url: http://www.gstatic.com/generate_204
-    interval: 72
     proxies:
       - 🇭🇰 香港 05 移动/深港专线（2倍率）
       - 🇭🇰 香港 06 移动/深港专线（2倍率）
-  - name: 🌃 故障切换 | 沪港电信
-    type: fallback
     url: http://www.gstatic.com/generate_204
     interval: 72
+    lazy: true
+  - name: 🌃 故障切换 | 沪港电信
+    type: fallback
     proxies:
       - 🇭🇰 香港 01 电信/沪港专线（2.5倍率）
       - 🇭🇰 香港 02 电信/沪港专线（2.5倍率）
-  - name: 🌃 故障切换 | 沪日电信
-    type: fallback
     url: http://www.gstatic.com/generate_204
     interval: 72
+    lazy: true
+  - name: 🌃 故障切换 | 沪日电信
+    type: fallback
     proxies:
       - 🇯🇵 日本 01 电信/沪日专线（3倍率）
       - 🇯🇵 日本 02 电信/沪日专线（3倍率）
-  - name: 🌉 负载均衡 | 香港
-    type: load-balance
     url: http://www.gstatic.com/generate_204
     interval: 72
+    lazy: true
+  - name: 🌉 负载均衡 | 香港
+    type: load-balance
     proxies:
       - 🇭🇰 香港 09 HKT家宽（0.5倍率）
       - 🇭🇰 香港 10 HKBN家宽（0.5倍率）
       - 🇭🇰 香港 11 NTT IPv6
       - 🇭🇰 香港 12 Cogent IPv6（流媒体）
-  - name: 🌉 负载均衡 | 日本
-    type: load-balance
     url: http://www.gstatic.com/generate_204
     interval: 72
+    lazy: true
+  - name: 🌉 负载均衡 | 日本
+    type: load-balance
     proxies:
       - 🇯🇵 日本 05 NTT IPv6
       - 🇯🇵 日本 06 M247 IPv6
@@ -235,10 +225,11 @@ proxy-groups: #!replace
       - 🇯🇵 日本 17 IIJ
       - 🇯🇵 日本 19 IIJ
       - 🇯🇵 日本 21 NTT
-  - name: 🌠 规则逃逸
-    type: select
     url: http://www.gstatic.com/generate_204
     interval: 72
+    lazy: true
+  - name: 🌠 规则逃逸
+    type: select
     proxies:
       - DIRECT
       - 🌌 科学上网

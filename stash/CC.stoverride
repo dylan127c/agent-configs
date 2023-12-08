@@ -1,0 +1,487 @@
+name: CC
+desc: Replace original config.
+rules: #!replace
+  - RULE-SET,Customize-Reject,REJECT
+  - RULE-SET,Customize-Direct,DIRECT
+  - RULE-SET,Customize-Edge,🌄 特殊控制 | Edge
+  - RULE-SET,Customize-OpenAI,🌄 特殊控制 | OpenAI
+  - RULE-SET,Customize-Brad,🌄 特殊控制 | Brad
+  - RULE-SET,Customize-Copilot,🌄 特殊控制 | Copilot
+  - RULE-SET,Customize-Proxy,🌌 科学上网
+  - RULE-SET,Remote-Applications,DIRECT
+  - RULE-SET,Remote-Apple,DIRECT
+  - RULE-SET,Remote-iCloud,DIRECT
+  - RULE-SET,Remote-Private,DIRECT
+  - RULE-SET,Remote-Direct,DIRECT
+  - RULE-SET,Remote-Greatfire,🌌 科学上网
+  - RULE-SET,Remote-GFW,🌌 科学上网
+  - RULE-SET,Remote-Proxy,🌌 科学上网
+  - RULE-SET,Remote-Tld-not-cn,🌌 科学上网
+  - RULE-SET,Remote-Reject,REJECT
+  - RULE-SET,Remote-Telegramcidr,🌌 科学上网,no-resolve
+  - RULE-SET,Remote-Lancidr,DIRECT,no-resolve
+  - RULE-SET,Remote-Cncidr,DIRECT,no-resolve
+  - GEOIP,LAN,DIRECT,no-resolve
+  - GEOIP,CN,DIRECT,no-resolve
+  - MATCH,🌠 规则逃逸
+proxy-groups: #!replace
+  - name: 🌌 科学上网
+    type: select
+    proxies:
+      - DIRECT
+      - 🌅 目标节点
+      - 🌉 负载均衡 | 香港 A
+      - 🌉 负载均衡 | 香港 B
+      - 🌁 测试延迟 | 其他节点
+  - name: 🌅 目标节点
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - "[SS]香港 01"
+      - "[SS]香港 02"
+      - "[SS]香港 03"
+      - "[SS]香港 04"
+      - "[SS]香港 05"
+      - "[SS]香港 06"
+      - "[SS]香港 07"
+      - "[SS]香港 08"
+      - "[SS]香港 09"
+      - "[SS]香港 10"
+      - "[SS]香港 11"
+      - "[SS]香港 12"
+      - "[SS]香港 13"
+      - "[SS]香港 14"
+      - "[SS]香港 01B"
+      - "[SS]香港 02B"
+      - "[SS]香港 03B"
+      - "[SS]香港 04B"
+      - "[SS]香港 05B"
+      - "[SS]香港 06B"
+      - "[SS]香港 07B"
+      - "[SS]香港 08B"
+      - "[SS]香港 09B"
+      - "[SS]香港 10B"
+      - "[SS]香港 11B"
+      - "[SS]香港 12B"
+      - "[SS]香港 13B"
+      - "[SS]香港 14B"
+      - "[SS]香港 15B"
+      - "[SS]香港 16B"
+      - "[SS]香港 17B"
+      - "[SS]香港 18B"
+      - "[SS]香港 19B"
+      - "[SS]香港 20B"
+      - "[SS]香港 21B"
+      - "[SS]香港 22B"
+      - "[SS]香港 23B"
+      - "[SS]香港 24B"
+      - "[SS]香港 25B"
+      - "[SS]香港 26B"
+      - "[SS]香港 27B"
+      - "[SS]香港 28B"
+      - "[SS]香港 29B"
+      - "[SS]香港 30B"
+      - "[SS]香港 31B"
+      - "[SS]香港 32B"
+      - "[SS]香港 33B"
+      - "[SS]香港 34B"
+      - "[SS]香港 35B"
+      - "[SS]越南 01"
+      - "[SS]越南 02"
+      - "[SS]越南 03"
+      - "[SS]越南 04"
+      - "[SS]越南 05"
+      - "[SS]越南 06"
+      - "[SS]越南 07"
+      - "[SS]越南 08"
+      - "[SS]越南 09"
+      - "[SS]美國 01"
+      - "[SS]美國 02"
+      - "[SS]美國 03"
+      - "[SS]美國 04"
+      - "[SS]美國 05"
+      - "[SS]美國 06"
+      - "[SS]美國 07"
+      - "[SS]美國 08"
+      - "[SS]美國 09"
+      - "[SS]日本 01"
+      - "[SS]日本 02"
+      - "[SS]日本 03"
+      - "[SS]日本 04"
+      - "[SS]台灣 01"
+      - "[SS]新加坡 01"
+      - "[SS]新加坡 02"
+      - "[SS]新加坡 03"
+  - name: 🌄 特殊控制 | Edge
+    type: select
+    proxies:
+      - REJECT
+      - DIRECT
+      - 🌌 科学上网
+  - name: 🌄 特殊控制 | OpenAI
+    type: select
+    proxies:
+      - REJECT
+      - 剩余流量：160.06 GB
+      - 套餐到期：长期有效
+      - "[SS]香港 01"
+      - "[SS]香港 02"
+      - "[SS]香港 03"
+      - "[SS]香港 04"
+      - "[SS]香港 05"
+      - "[SS]香港 06"
+      - "[SS]香港 07"
+      - "[SS]香港 08"
+      - "[SS]香港 09"
+      - "[SS]香港 10"
+      - "[SS]香港 11"
+      - "[SS]香港 12"
+      - "[SS]香港 13"
+      - "[SS]香港 14"
+      - "[SS]香港 01B"
+      - "[SS]香港 02B"
+      - "[SS]香港 03B"
+      - "[SS]香港 04B"
+      - "[SS]香港 05B"
+      - "[SS]香港 06B"
+      - "[SS]香港 07B"
+      - "[SS]香港 08B"
+      - "[SS]香港 09B"
+      - "[SS]香港 10B"
+      - "[SS]香港 11B"
+      - "[SS]香港 12B"
+      - "[SS]香港 13B"
+      - "[SS]香港 14B"
+      - "[SS]香港 15B"
+      - "[SS]香港 16B"
+      - "[SS]香港 17B"
+      - "[SS]香港 18B"
+      - "[SS]香港 19B"
+      - "[SS]香港 20B"
+      - "[SS]香港 21B"
+      - "[SS]香港 22B"
+      - "[SS]香港 23B"
+      - "[SS]香港 24B"
+      - "[SS]香港 25B"
+      - "[SS]香港 26B"
+      - "[SS]香港 27B"
+      - "[SS]香港 28B"
+      - "[SS]香港 29B"
+      - "[SS]香港 30B"
+      - "[SS]香港 31B"
+      - "[SS]香港 32B"
+      - "[SS]香港 33B"
+      - "[SS]香港 34B"
+      - "[SS]香港 35B"
+      - "[SS]越南 01"
+      - "[SS]越南 02"
+      - "[SS]越南 03"
+      - "[SS]越南 04"
+      - "[SS]越南 05"
+      - "[SS]越南 06"
+      - "[SS]越南 07"
+      - "[SS]越南 08"
+      - "[SS]越南 09"
+      - "[SS]美國 01"
+      - "[SS]美國 02"
+      - "[SS]美國 03"
+      - "[SS]美國 04"
+      - "[SS]美國 05"
+      - "[SS]美國 06"
+      - "[SS]美國 07"
+      - "[SS]美國 08"
+      - "[SS]美國 09"
+      - "[SS]日本 01"
+      - "[SS]日本 02"
+      - "[SS]日本 03"
+      - "[SS]日本 04"
+      - "[SS]台灣 01"
+      - "[SS]新加坡 01"
+      - "[SS]新加坡 02"
+      - "[SS]新加坡 03"
+  - name: 🌄 特殊控制 | Brad
+    type: select
+    proxies:
+      - REJECT
+      - 剩余流量：160.06 GB
+      - 套餐到期：长期有效
+      - "[SS]香港 01"
+      - "[SS]香港 02"
+      - "[SS]香港 03"
+      - "[SS]香港 04"
+      - "[SS]香港 05"
+      - "[SS]香港 06"
+      - "[SS]香港 07"
+      - "[SS]香港 08"
+      - "[SS]香港 09"
+      - "[SS]香港 10"
+      - "[SS]香港 11"
+      - "[SS]香港 12"
+      - "[SS]香港 13"
+      - "[SS]香港 14"
+      - "[SS]香港 01B"
+      - "[SS]香港 02B"
+      - "[SS]香港 03B"
+      - "[SS]香港 04B"
+      - "[SS]香港 05B"
+      - "[SS]香港 06B"
+      - "[SS]香港 07B"
+      - "[SS]香港 08B"
+      - "[SS]香港 09B"
+      - "[SS]香港 10B"
+      - "[SS]香港 11B"
+      - "[SS]香港 12B"
+      - "[SS]香港 13B"
+      - "[SS]香港 14B"
+      - "[SS]香港 15B"
+      - "[SS]香港 16B"
+      - "[SS]香港 17B"
+      - "[SS]香港 18B"
+      - "[SS]香港 19B"
+      - "[SS]香港 20B"
+      - "[SS]香港 21B"
+      - "[SS]香港 22B"
+      - "[SS]香港 23B"
+      - "[SS]香港 24B"
+      - "[SS]香港 25B"
+      - "[SS]香港 26B"
+      - "[SS]香港 27B"
+      - "[SS]香港 28B"
+      - "[SS]香港 29B"
+      - "[SS]香港 30B"
+      - "[SS]香港 31B"
+      - "[SS]香港 32B"
+      - "[SS]香港 33B"
+      - "[SS]香港 34B"
+      - "[SS]香港 35B"
+      - "[SS]越南 01"
+      - "[SS]越南 02"
+      - "[SS]越南 03"
+      - "[SS]越南 04"
+      - "[SS]越南 05"
+      - "[SS]越南 06"
+      - "[SS]越南 07"
+      - "[SS]越南 08"
+      - "[SS]越南 09"
+      - "[SS]美國 01"
+      - "[SS]美國 02"
+      - "[SS]美國 03"
+      - "[SS]美國 04"
+      - "[SS]美國 05"
+      - "[SS]美國 06"
+      - "[SS]美國 07"
+      - "[SS]美國 08"
+      - "[SS]美國 09"
+      - "[SS]日本 01"
+      - "[SS]日本 02"
+      - "[SS]日本 03"
+      - "[SS]日本 04"
+      - "[SS]台灣 01"
+      - "[SS]新加坡 01"
+      - "[SS]新加坡 02"
+      - "[SS]新加坡 03"
+  - name: 🌄 特殊控制 | Copilot
+    type: select
+    proxies:
+      - DIRECT
+      - 🌌 科学上网
+  - name: 🌉 负载均衡 | 香港 A
+    type: load-balance
+    proxies:
+      - "[SS]香港 01"
+      - "[SS]香港 02"
+      - "[SS]香港 03"
+      - "[SS]香港 04"
+      - "[SS]香港 05"
+      - "[SS]香港 06"
+      - "[SS]香港 07"
+      - "[SS]香港 08"
+      - "[SS]香港 09"
+      - "[SS]香港 10"
+      - "[SS]香港 11"
+      - "[SS]香港 12"
+      - "[SS]香港 13"
+      - "[SS]香港 14"
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
+  - name: 🌉 负载均衡 | 香港 B
+    type: load-balance
+    proxies:
+      - "[SS]香港 01B"
+      - "[SS]香港 02B"
+      - "[SS]香港 03B"
+      - "[SS]香港 04B"
+      - "[SS]香港 05B"
+      - "[SS]香港 06B"
+      - "[SS]香港 07B"
+      - "[SS]香港 08B"
+      - "[SS]香港 09B"
+      - "[SS]香港 10B"
+      - "[SS]香港 11B"
+      - "[SS]香港 12B"
+      - "[SS]香港 13B"
+      - "[SS]香港 14B"
+      - "[SS]香港 15B"
+      - "[SS]香港 16B"
+      - "[SS]香港 17B"
+      - "[SS]香港 18B"
+      - "[SS]香港 19B"
+      - "[SS]香港 20B"
+      - "[SS]香港 21B"
+      - "[SS]香港 22B"
+      - "[SS]香港 23B"
+      - "[SS]香港 24B"
+      - "[SS]香港 25B"
+      - "[SS]香港 26B"
+      - "[SS]香港 27B"
+      - "[SS]香港 28B"
+      - "[SS]香港 29B"
+      - "[SS]香港 30B"
+      - "[SS]香港 31B"
+      - "[SS]香港 32B"
+      - "[SS]香港 33B"
+      - "[SS]香港 34B"
+      - "[SS]香港 35B"
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
+  - name: 🌁 测试延迟 | 其他节点
+    type: fallback
+    proxies:
+      - "[SS]台灣 01"
+      - "[SS]新加坡 01"
+      - "[SS]新加坡 02"
+      - "[SS]新加坡 03"
+      - "[SS]越南 01"
+      - "[SS]越南 02"
+      - "[SS]越南 03"
+      - "[SS]越南 04"
+      - "[SS]越南 05"
+      - "[SS]越南 06"
+      - "[SS]越南 07"
+      - "[SS]越南 08"
+      - "[SS]越南 09"
+      - "[SS]日本 01"
+      - "[SS]日本 02"
+      - "[SS]日本 03"
+      - "[SS]日本 04"
+      - "[SS]美國 01"
+      - "[SS]美國 02"
+      - "[SS]美國 03"
+      - "[SS]美國 04"
+      - "[SS]美國 05"
+      - "[SS]美國 06"
+      - "[SS]美國 07"
+      - "[SS]美國 08"
+      - "[SS]美國 09"
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
+  - name: 🌠 规则逃逸
+    type: select
+    proxies:
+      - DIRECT
+      - 🌌 科学上网
+rule-providers: #!replace
+  Remote-Reject:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt
+  Remote-Proxy:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/proxy.txt
+  Remote-Direct:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/direct.txt
+  Remote-Private:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt
+  Remote-GFW:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt
+  Remote-Greatfire:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/greatfire.txt
+  Remote-Tld-not-cn:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/tld-not-cn.txt
+  Remote-Telegramcidr:
+    type: http
+    behavior: ipcidr
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt
+  Remote-Cncidr:
+    type: http
+    behavior: ipcidr
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt
+  Remote-Lancidr:
+    type: http
+    behavior: ipcidr
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt
+  Remote-Applications:
+    type: http
+    behavior: classical
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt
+  Remote-iCloud:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt
+  Remote-Apple:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt
+  Customize-Edge:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/edge.yaml
+  Customize-OpenAI:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/openai.yaml
+  Customize-Brad:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/brad.yaml
+  Customize-Copilot:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/copilot.yaml
+  Customize-Direct:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/direct.yaml
+  Customize-Reject:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/reject.yaml
+  Customize-Proxy:
+    type: http
+    behavior: domain
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/proxy.yaml
