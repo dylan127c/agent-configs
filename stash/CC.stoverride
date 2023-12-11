@@ -1,26 +1,26 @@
 name: CC
-desc: Replace original config.
+desc: Replace original configuration file.
 rules: #!replace
-  - RULE-SET,Customize-Reject,REJECT
-  - RULE-SET,Customize-Direct,DIRECT
-  - RULE-SET,Customize-Edge,🌄 特殊控制 | Edge
-  - RULE-SET,Customize-OpenAI,🌄 特殊控制 | OpenAI
-  - RULE-SET,Customize-Brad,🌄 特殊控制 | Brad
-  - RULE-SET,Customize-Copilot,🌄 特殊控制 | Copilot
-  - RULE-SET,Customize-Proxy,🌌 科学上网
-  - RULE-SET,Remote-Applications,DIRECT
-  - RULE-SET,Remote-Apple,DIRECT
-  - RULE-SET,Remote-iCloud,DIRECT
-  - RULE-SET,Remote-Private,DIRECT
-  - RULE-SET,Remote-Direct,DIRECT
-  - RULE-SET,Remote-Greatfire,🌌 科学上网
-  - RULE-SET,Remote-GFW,🌌 科学上网
-  - RULE-SET,Remote-Proxy,🌌 科学上网
-  - RULE-SET,Remote-Tld-not-cn,🌌 科学上网
-  - RULE-SET,Remote-Reject,REJECT
-  - RULE-SET,Remote-Telegramcidr,🌌 科学上网,no-resolve
-  - RULE-SET,Remote-Lancidr,DIRECT,no-resolve
-  - RULE-SET,Remote-Cncidr,DIRECT,no-resolve
+  - RULE-SET,customize-reject,REJECT
+  - RULE-SET,customize-direct,DIRECT
+  - RULE-SET,customize-edge,🌄 特殊控制 | Edge
+  - RULE-SET,customize-openai,🌄 特殊控制 | OpenAI
+  - RULE-SET,customize-brad,🌄 特殊控制 | Brad
+  - RULE-SET,customize-copilot,🌄 特殊控制 | Copilot
+  - RULE-SET,customize-proxy,🌌 科学上网
+  - RULE-SET,default-applications,DIRECT
+  - RULE-SET,default-apple,DIRECT
+  - RULE-SET,default-icloud,DIRECT
+  - RULE-SET,default-private,DIRECT
+  - RULE-SET,default-direct,DIRECT
+  - RULE-SET,default-greatfire,🌌 科学上网
+  - RULE-SET,default-gfw,🌌 科学上网
+  - RULE-SET,default-proxy,🌌 科学上网
+  - RULE-SET,default-tld-not-cn,🌌 科学上网
+  - RULE-SET,default-reject,REJECT
+  - RULE-SET,default-telegramcidr,🌌 科学上网,no-resolve
+  - RULE-SET,default-lancidr,DIRECT,no-resolve
+  - RULE-SET,default-cncidr,DIRECT,no-resolve
   - GEOIP,LAN,DIRECT,no-resolve
   - GEOIP,CN,DIRECT,no-resolve
   - MATCH,🌠 规则逃逸
@@ -123,8 +123,6 @@ proxy-groups: #!replace
     type: select
     proxies:
       - REJECT
-      - 剩余流量：160.06 GB
-      - 套餐到期：长期有效
       - "[SS]香港 01"
       - "[SS]香港 02"
       - "[SS]香港 03"
@@ -204,8 +202,6 @@ proxy-groups: #!replace
     type: select
     proxies:
       - REJECT
-      - 剩余流量：160.06 GB
-      - 套餐到期：长期有效
       - "[SS]香港 01"
       - "[SS]香港 02"
       - "[SS]香港 03"
@@ -350,10 +346,6 @@ proxy-groups: #!replace
   - name: 🌁 测试延迟 | 其他节点
     type: fallback
     proxies:
-      - "[SS]台灣 01"
-      - "[SS]新加坡 01"
-      - "[SS]新加坡 02"
-      - "[SS]新加坡 03"
       - "[SS]越南 01"
       - "[SS]越南 02"
       - "[SS]越南 03"
@@ -363,10 +355,6 @@ proxy-groups: #!replace
       - "[SS]越南 07"
       - "[SS]越南 08"
       - "[SS]越南 09"
-      - "[SS]日本 01"
-      - "[SS]日本 02"
-      - "[SS]日本 03"
-      - "[SS]日本 04"
       - "[SS]美國 01"
       - "[SS]美國 02"
       - "[SS]美國 03"
@@ -376,6 +364,14 @@ proxy-groups: #!replace
       - "[SS]美國 07"
       - "[SS]美國 08"
       - "[SS]美國 09"
+      - "[SS]日本 01"
+      - "[SS]日本 02"
+      - "[SS]日本 03"
+      - "[SS]日本 04"
+      - "[SS]台灣 01"
+      - "[SS]新加坡 01"
+      - "[SS]新加坡 02"
+      - "[SS]新加坡 03"
     url: http://www.gstatic.com/generate_204
     interval: 72
     lazy: true
@@ -385,103 +381,103 @@ proxy-groups: #!replace
       - DIRECT
       - 🌌 科学上网
 rule-providers: #!replace
-  Remote-Reject:
-    type: http
-    behavior: domain
-    interval: 86400
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt
-  Remote-Proxy:
-    type: http
-    behavior: domain
-    interval: 86400
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/proxy.txt
-  Remote-Direct:
-    type: http
-    behavior: domain
-    interval: 86400
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/direct.txt
-  Remote-Private:
-    type: http
-    behavior: domain
-    interval: 86400
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt
-  Remote-GFW:
-    type: http
-    behavior: domain
-    interval: 86400
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt
-  Remote-Greatfire:
-    type: http
-    behavior: domain
-    interval: 86400
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/greatfire.txt
-  Remote-Tld-not-cn:
-    type: http
-    behavior: domain
-    interval: 86400
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/tld-not-cn.txt
-  Remote-Telegramcidr:
-    type: http
-    behavior: ipcidr
-    interval: 86400
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt
-  Remote-Cncidr:
-    type: http
-    behavior: ipcidr
-    interval: 86400
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt
-  Remote-Lancidr:
-    type: http
-    behavior: ipcidr
-    interval: 86400
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt
-  Remote-Applications:
+  default-applications:
     type: http
     behavior: classical
-    interval: 86400
     url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt
-  Remote-iCloud:
+    interval: 86400
+  default-apple:
     type: http
     behavior: domain
-    interval: 86400
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt
-  Remote-Apple:
-    type: http
-    behavior: domain
-    interval: 86400
     url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt
-  Customize-Edge:
+    interval: 86400
+  default-icloud:
     type: http
     behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/edge.yaml
-  Customize-OpenAI:
+  default-private:
     type: http
     behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/openai.yaml
-  Customize-Brad:
+  default-direct:
     type: http
     behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/direct.txt
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/brad.yaml
-  Customize-Copilot:
+  default-greatfire:
     type: http
     behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/greatfire.txt
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/copilot.yaml
-  Customize-Direct:
+  default-gfw:
     type: http
     behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/direct.yaml
-  Customize-Reject:
+  default-proxy:
     type: http
     behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/proxy.txt
     interval: 86400
+  default-tld-not-cn:
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/tld-not-cn.txt
+    interval: 86400
+  default-reject:
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt
+    interval: 86400
+  default-telegramcidr:
+    type: http
+    behavior: ipcidr
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt
+    interval: 86400
+  default-lancidr:
+    type: http
+    behavior: ipcidr
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt
+    interval: 86400
+  default-cncidr:
+    type: http
+    behavior: ipcidr
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt
+    interval: 86400
+  "[object Object]reject":
+    type: http
+    behavior: domain
     url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/reject.yaml
-  Customize-Proxy:
+    interval: 86400
+  "[object Object]direct":
     type: http
     behavior: domain
+    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/direct.yaml
     interval: 86400
+  "[object Object]edge":
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/edge.yaml
+    interval: 86400
+  "[object Object]openai":
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/openai.yaml
+    interval: 86400
+  "[object Object]brad":
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/brad.yaml
+    interval: 86400
+  "[object Object]copilot":
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/copilot.yaml
+    interval: 86400
+  "[object Object]proxy":
+    type: http
+    behavior: domain
     url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/proxy.yaml
+    interval: 86400
