@@ -108,7 +108,6 @@ const configurationA = () => {
   ];
 
   return {
-    stashFileName: "EN",
     isForbidHttp: true,
     groups: groups,
     endRules: endRules,
@@ -195,7 +194,6 @@ const configurationB = () => {
   ];
 
   return {
-    stashFileName: "CC",
     isForbidHttp: true,
     groups: groups,
     endRules: endRules,
@@ -419,7 +417,7 @@ function get(originalConfiguration, forceHttpRuleProviders = false) {
   } else {
     newConfiguration["rule-providers"] = Object.assign(
       getRuleProviders(profile.defaultRules, profile.defaultRuleHttp, profile.defaultRulePrefix),
-      getRuleProviders(profile.customizeRules, profile.customizeRuleHttp, profile.customizeRuleHttp)
+      getRuleProviders(profile.customizeRules, profile.customizeRuleHttp, profile.customizeRulePrefix)
     );
   }
   function getRuleProviders(rules, ruleSource, rulePrefix) {

@@ -446,37 +446,37 @@ rule-providers: #!replace
     behavior: ipcidr
     url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt
     interval: 86400
-  "[object Object]reject":
+  customize-reject:
     type: http
     behavior: domain
     url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/reject.yaml
     interval: 86400
-  "[object Object]direct":
+  customize-direct:
     type: http
     behavior: domain
     url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/direct.yaml
     interval: 86400
-  "[object Object]edge":
+  customize-edge:
     type: http
     behavior: domain
     url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/edge.yaml
     interval: 86400
-  "[object Object]openai":
+  customize-openai:
     type: http
     behavior: domain
     url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/openai.yaml
     interval: 86400
-  "[object Object]brad":
+  customize-brad:
     type: http
     behavior: domain
     url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/brad.yaml
     interval: 86400
-  "[object Object]copilot":
+  customize-copilot:
     type: http
     behavior: domain
     url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/copilot.yaml
     interval: 86400
-  "[object Object]proxy":
+  customize-proxy:
     type: http
     behavior: domain
     url: https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules/proxy.yaml
