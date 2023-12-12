@@ -1,24 +1,21 @@
-﻿const client = "CFW";
+﻿// function main(params) {
+//   return JSON.parse(get(params));
+// }
 module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url, interval, selected }) => {
-
-  switch (client) {
-    case "CFW": {
-      defaultRulesUpdateCheck();
-      outputStashConfig(get(yaml.parse(raw), true));
-
-      const configCFW = get(yaml.parse(raw));
-      return yaml.stringify(JSON.parse(configCFW));
-    }
-    case "CV":
-      const configCV = get(params);
-      return JSON.parse(configCV);
-    default: return "";
+  try {
+    delete require.cache[require.resolve('./output')];
+    const output = require('./output');
+    output.run(yaml, get(yaml.parse(raw), true));
+  } catch (error) {
+    console.log("Stash output configuration file does not exist, export canceled.\n");
   }
+  defaultRulesUpdateCheck();
+  return yaml.stringify(JSON.parse(get(yaml.parse(raw))));
 
   /**
    * 本方法用于检查是否需要更新默认规则（default rules）文件。
    * 
-   * 如果时间戳文件不存在，则进行更新。否则检查该时间与当前时间的间隔是否大于一周，
+   * 如果时间戳文件不存在，则进行更新；否则检查该时间与当前时间的间隔是否大于一周。
    * 如果时间间隔大于一周，则进行文件更新；否则将跳过更新并输出上次文件更新的日期。
    */
   function defaultRulesUpdateCheck() {
@@ -41,91 +38,59 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
             defaultRulesUpdate();
             updateTimestamp();
           } else {
-            // 这里的对象new Date(savedTimestamp)必须以拼接字符串的方式输出，否则时区信息会出错
-            console.log("No update required. Last updated: " + new Date(savedTimestamp));
+            console.log("No update required for default rule.\nLast updated:", new Date(savedTimestamp).toString(), "\n");
           }
         }
       });
+
+    /**
+     * 本方法用于更新默认规则（default rules）文件。
+     * 
+     * 由于并不能确定是否能得到目标地址的响应，因此axios保持异步请求即可。
+     * 在连接超时的情况下，仅作错误信息的记录，这样不会阻塞配置文件的更新。
+     */
+    function defaultRulesUpdate() {
+      const fileNames = ["apple", "applications", "cncidr", "direct", "gfw", "greatfire",
+        "icloud", "lancidr", "private", "proxy", "reject", "telegramcidr", "tld-not-cn"];
+      const domainHttp = "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/";
+
+      fileNames.forEach(fileName => {
+        axios({
+          method: "get",
+          url: domainHttp + fileName + ".txt",
+        }).then(res => {
+          fs.writeFile(
+            path.resolve(__dirname, "default rules", fileName + ".yaml"),
+            res.data,
+            (err) => { throw err }
+          );
+          console.log('The default rule is up to date:', fileName);
+        }).catch(err => {
+          console.log("Update default rule file failure:", fileName);
+          console.log(err);
+        });
+      });
+    }
+
+    /**
+     * 本方法用于更新时间戳（timestamp.txt）文件。
+     * 
+     * 控制台中的new Date(savedTimestamp)对象调用toString()方法时，
+     * 方法会根据实际运行环境来转换时间戳，得到符合当前时区的日期字符串。
+     */
     function updateTimestamp() {
       const currentTimestamp = Date.now();
       fs.writeFile(path.resolve(__dirname, "default rules", "timestamp.txt"),
         currentTimestamp.toString(),
         (err) => {
           if (err) {
-            console.error("Timestamp update failure: ", err);
+            console.error("Timestamp update failure:", err, "\n");
           } else {
-            console.log("The timestamp has been updated: " + new Date(currentTimestamp));
+            console.log("The timestamp has been updated:", new Date(currentTimestamp).toString(), "\n");
           }
         });
     }
   }
-
-  /**
-   * 本方法用于更新默认规则（default rules）文件。
-   * 
-   * 由于并不能确定是否能得到目标地址的响应，因此axios保持异步请求即可。
-   * 在连接超时的情况下，仅作错误信息的记录，这样不会阻塞配置文件的更新。
-   */
-  function defaultRulesUpdate() {
-    const fs = require("fs");
-    const path = require("path");
-
-    const fileNames = ["apple", "applications", "cncidr", "direct", "gfw", "greatfire",
-      "icloud", "lancidr", "private", "proxy", "reject", "telegramcidr", "tld-not-cn"];
-    const domainHttp = "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/";
-
-    fileNames.forEach(fileName => {
-      axios({
-        method: "get",
-        url: domainHttp + fileName + ".txt",
-      }).then(res => {
-        fs.writeFile(
-          path.resolve(__dirname, "default rules", fileName + ".yaml"),
-          res.data,
-          (err) => { throw err }
-        );
-        console.log('The default rule is up to date: ', fileName);
-      }).catch(err => {
-        console.log("Update default rule file failure: ", fileName);
-        console.log(err);
-      });
-    });
-  }
-
-  function outputStashConfig(rawAfter) {
-    const configuration = yaml.parse(rawAfter);
-
-    let symbol = "ON";
-
-    const stashProxyGroups = Object.assign(configuration["proxy-groups"]);
-    const index = stashProxyGroups.findLastIndex(ele => ele.name.includes("订阅详情"));
-    if (index >= 0) {
-      stashProxyGroups.splice(index, 1);
-      symbol = "CC";
-    }
-
-    const outputStr = yaml.stringify({
-      name: symbol,
-      desc: "Replace original configuration file.",
-      rules: configuration.rules,
-      "proxy-groups": stashProxyGroups,
-      "rule-providers": configuration["rule-providers"]
-    });
-
-    const outputFinal = outputStr
-      .replace("rules:", "rules: #!replace")
-      .replace("proxy-groups:", "proxy-groups: #!replace")
-      .replace("rule-providers:", "rule-providers: #!replace");
-
-    const fs = require("fs");
-    const path = require("path");
-    fs.writeFile(
-      path.resolve(__dirname, "..", "stash", symbol + ".stoverride"),
-      outputFinal,
-      (err) => { throw err; }
-    );
-  }
-
 }
 
 const configurationA = () => {
