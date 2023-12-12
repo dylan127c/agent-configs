@@ -1,11 +1,11 @@
-﻿// ! 请使用VSCode，并安装Better Comments插件以阅读高亮注释。
-
-const client = "CFW";
+﻿const client = "CFW";
 module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url, interval, selected }) => {
 
   switch (client) {
     case "CFW": {
+      defaultRulesUpdateCheck();
       outputStashConfig(get(yaml.parse(raw), true));
+
       const configCFW = get(yaml.parse(raw));
       return yaml.stringify(JSON.parse(configCFW));
     }
@@ -15,8 +15,85 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     default: return "";
   }
 
-  function outputStashConfig(raw) {
-    const configuration = yaml.parse(raw);
+  /**
+   * 本方法用于检查是否需要更新默认规则（default rules）文件。
+   * 
+   * 如果时间戳文件不存在，则进行更新。否则检查该时间与当前时间的间隔是否大于一周，
+   * 如果时间间隔大于一周，则进行文件更新；否则将跳过更新并输出上次文件更新的日期。
+   */
+  function defaultRulesUpdateCheck() {
+    const fs = require("fs");
+    const path = require("path");
+
+    fs.readFile(path.resolve(__dirname, "default rules", "timestamp.txt"),
+      'utf8',
+      (err, data) => {
+        if (err) {
+          defaultRulesUpdate();
+          updateTimestamp();
+        } else {
+          const savedTimestamp = parseInt(data);
+          const currentTimestamp = Date.now();
+
+          const intervalInHours = (currentTimestamp - savedTimestamp) / (1000 * 60 * 60);
+
+          if (intervalInHours >= 168) {
+            defaultRulesUpdate();
+            updateTimestamp();
+          } else {
+            // 这里的对象new Date(savedTimestamp)必须以拼接字符串的方式输出，否则时区信息会出错
+            console.log("No update required. Last updated: " + new Date(savedTimestamp));
+          }
+        }
+      });
+    function updateTimestamp() {
+      const currentTimestamp = Date.now();
+      fs.writeFile(path.resolve(__dirname, "default rules", "timestamp.txt"),
+        currentTimestamp.toString(),
+        (err) => {
+          if (err) {
+            console.error("Timestamp update failure: ", err);
+          } else {
+            console.log("The timestamp has been updated: " + new Date(currentTimestamp));
+          }
+        });
+    }
+  }
+
+  /**
+   * 本方法用于更新默认规则（default rules）文件。
+   * 
+   * 由于并不能确定是否能得到目标地址的响应，因此axios保持异步请求即可。
+   * 在连接超时的情况下，仅作错误信息的记录，这样不会阻塞配置文件的更新。
+   */
+  function defaultRulesUpdate() {
+    const fs = require("fs");
+    const path = require("path");
+
+    const fileNames = ["apple", "applications", "cncidr", "direct", "gfw", "greatfire",
+      "icloud", "lancidr", "private", "proxy", "reject", "telegramcidr", "tld-not-cn"];
+    const domainHttp = "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/";
+
+    fileNames.forEach(fileName => {
+      axios({
+        method: "get",
+        url: domainHttp + fileName + ".txt",
+      }).then(res => {
+        fs.writeFile(
+          path.resolve(__dirname, "default rules", fileName + ".yaml"),
+          res.data,
+          (err) => { throw err }
+        );
+        console.log('The default rule is up to date: ', fileName);
+      }).catch(err => {
+        console.log("Update default rule file failure: ", fileName);
+        console.log(err);
+      });
+    });
+  }
+
+  function outputStashConfig(rawAfter) {
+    const configuration = yaml.parse(rawAfter);
 
     let symbol = "ON";
 
@@ -42,13 +119,13 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
 
     const fs = require("fs");
     const path = require("path");
-
     fs.writeFile(
       path.resolve(__dirname, "..", "stash", symbol + ".stoverride"),
       outputFinal,
       (err) => { throw err; }
     );
   }
+
 }
 
 const configurationA = () => {
