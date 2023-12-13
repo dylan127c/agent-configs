@@ -236,67 +236,67 @@ rule-providers: #!replace
   default-applications:
     type: http
     behavior: classical
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/applications.txt
     interval: 86400
   default-apple:
     type: http
     behavior: domain
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/apple.txt
     interval: 86400
   default-icloud:
     type: http
     behavior: domain
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/icloud.txt
     interval: 86400
   default-private:
     type: http
     behavior: domain
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt
     interval: 86400
   default-direct:
     type: http
     behavior: domain
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/direct.txt
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/direct.txt
     interval: 86400
   default-greatfire:
     type: http
     behavior: domain
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/greatfire.txt
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/greatfire.txt
     interval: 86400
   default-gfw:
     type: http
     behavior: domain
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/gfw.txt
     interval: 86400
   default-proxy:
     type: http
     behavior: domain
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/proxy.txt
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/proxy.txt
     interval: 86400
   default-tld-not-cn:
     type: http
     behavior: domain
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/tld-not-cn.txt
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/tld-not-cn.txt
     interval: 86400
   default-reject:
     type: http
     behavior: domain
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt
     interval: 86400
   default-telegramcidr:
     type: http
     behavior: ipcidr
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/telegramcidr.txt
     interval: 86400
   default-lancidr:
     type: http
     behavior: ipcidr
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/lancidr.txt
     interval: 86400
   default-cncidr:
     type: http
     behavior: ipcidr
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/cncidr.txt
     interval: 86400
   customize-applications:
     type: http

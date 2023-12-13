@@ -1,16 +1,58 @@
 ﻿// function main(params) {
-//   return JSON.parse(get(params));
+
+//   let configuration;
+//   const count = params["proxy-groups"].length
+//   if (count === 11) {
+//     configuration = configurationA;
+//   } else if (count === 15) {
+//     configuration = configurationB;
+//   }
+//   const mode = [1, 2];
+//   return JSON.parse(get(params, mode, configuration));
 // }
+
+/**
+ * 本脚本用于解析Clash for Windows中相关订阅的配置文件。
+ * 
+ * 脚本同时支持解析Clash Verge订阅的配置文件：将parse方法删除或注释，并取消上述main方法的注释。
+ * 
+ * @param {string} raw  原始配置文件
+ * @param {object} yaml YAML解析器
+ * @returns 
+ */
 module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url, interval, selected }) => {
+
+  let configuration;
+  if (url.match(/touhou/gm)) {
+    configuration = configurationA;
+  } else if (url.match(/sub/gm)) {
+    configuration = configurationB;
+  }
+
+  const mode = [0, 0];
   try {
     delete require.cache[require.resolve('./output')];
     const output = require('./output');
-    output.run(yaml, get(yaml.parse(raw), true));
+    output.run(yaml, get(yaml.parse(raw), mode, configuration, true));
   } catch (error) {
     console.log("Stash output configuration file does not exist, export canceled.\n");
   }
-  defaultRulesUpdateCheck();
-  return yaml.stringify(JSON.parse(get(yaml.parse(raw))));
+
+  const fs = require("fs");
+  try {
+    fs.accessSync(profileGlobal.defaultRulePath.link, fs.constants.F_OK);
+    defaultRulesUpdateCheck();
+    mode[0] = 1;
+  } catch (error) {
+    mode[0] = 0;
+  }
+  try {
+    fs.accessSync(profileGlobal.customizeRulePath.link, fs.constants.F_OK);
+    mode[1] = 2;
+  } catch (error) {
+    mode[1] = 0;
+  }
+  return yaml.stringify(JSON.parse(get(yaml.parse(raw), mode, configuration)));
 
   /**
    * 本方法用于检查是否需要更新默认规则（default rules）文件。
@@ -19,10 +61,9 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
    * 如果时间间隔大于一周，则进行文件更新；否则将跳过更新并输出上次文件更新的日期。
    */
   function defaultRulesUpdateCheck() {
-    const fs = require("fs");
     const path = require("path");
 
-    fs.readFile(path.resolve(__dirname, "default rules", "timestamp.txt"),
+    fs.readFile(path.resolve(profileGlobal.defaultRulePath.link, "timestamp.txt"),
       'utf8',
       (err, data) => {
         if (err) {
@@ -52,21 +93,27 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     function defaultRulesUpdate() {
       const fileNames = ["apple", "applications", "cncidr", "direct", "gfw", "greatfire",
         "icloud", "lancidr", "private", "proxy", "reject", "telegramcidr", "tld-not-cn"];
-      const domainHttp = "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/";
+      const domainHttp = profileGlobal.defaultRuleHttp.link;
 
       fileNames.forEach(fileName => {
         axios({
           method: "get",
-          url: domainHttp + fileName + ".txt",
+          url: domainHttp + "/" + fileName + ".txt",
         }).then(res => {
           fs.writeFile(
             path.resolve(__dirname, "default rules", fileName + ".yaml"),
-            res.data,
-            (err) => { throw err }
+            res.data, 'utf8',
+            (err) => {
+              if (err) {
+                console.log("Update default rule file failure:", fileName);
+                console.log(err);
+              } else {
+                console.log('The default rule is up to date:', fileName);
+              }
+            }
           );
-          console.log('The default rule is up to date:', fileName);
         }).catch(err => {
-          console.log("Update default rule file failure:", fileName);
+          console.log("File writing failed and some exception occurred:", fileName);
           console.log(err);
         });
       });
@@ -92,6 +139,19 @@ module.exports.parse = async (raw, { axios, yaml, notify, console }, { name, url
     }
   }
 }
+
+/**
+ * 如果不提供某规则的任意访问形式，除了移除以下变量内的对应规则外，还需要在个人配置的返回值中移除对应的项。
+ * 
+ * 例如：如果不需要使用customizeRule规则，首先需要将profileGlobal中的customizeRulePath、customizeRuleHttp等项移除或注释，
+ * 之后，还需要移除或注释configuration函数的返回值中的customizeRules、customizeRulePrefix等项。
+ */
+const profileGlobal = {
+  defaultRulePath: { link: "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/default rules", type: "yaml" },
+  customizeRulePath: { link: "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/customize rules", type: "yaml" },
+  defaultRuleHttp: { link: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release", type: "txt" },
+  customizeRuleHttp: { link: "https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules", type: "yaml" }
+};
 
 const configurationA = () => {
   const mainGroups = [
@@ -153,29 +213,10 @@ const configurationA = () => {
     isForbidHttp: true,
     groups: groups,
     endRules: endRules,
-
     customizeRules: customizeRules,
     customizeRulePrefix: "customize-",
-    customizeRuleHttp: {
-      link: "https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules",
-      type: "yaml"
-    },
-    customizeRulePath: {
-      link: "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/customize rules",
-      type: "yaml"
-    },
-
     defaultRules: defaultRules,
     defaultRulePrefix: "default-",
-    defaultRuleHttp: {
-      link: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release",
-      type: "txt"
-    },
-    defaultRulePath: {
-      link: "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/default rules",
-      type: "yaml"
-    },
-
     replacement: {
       "🇹🇼": "🇨🇳",
       "卢森堡": "🇺🇳 卢森堡"
@@ -239,29 +280,10 @@ const configurationB = () => {
     isForbidHttp: true,
     groups: groups,
     endRules: endRules,
-
     customizeRules: customizeRules,
     customizeRulePrefix: "customize-",
-    customizeRuleHttp: {
-      link: "https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules",
-      type: "yaml"
-    },
-    customizeRulePath: {
-      link: "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/customize rules",
-      type: "yaml"
-    },
-
     defaultRules: defaultRules,
     defaultRulePrefix: "default-",
-    defaultRuleHttp: {
-      link: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release",
-      type: "txt"
-    },
-    defaultRulePath: {
-      link: "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/default rules",
-      type: "yaml"
-    },
-
     replacement: {
       "[SS]香港": "🇭🇰 香港",
       "[SS]越南": "🇻🇳 越南",
@@ -273,16 +295,18 @@ const configurationB = () => {
   }
 }
 
-const profileSelector = {
-  11: configurationA(),
-  15: configurationB()
-}
+function get(originalConfiguration, signal, configuration, isConfigStash) {
 
-function get(originalConfiguration, forceHttpRuleProviders = false) {
+  const sum = (numbers) => {
+    return numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  }
+
+  const finalSignal = sum(signal);
 
   // !.service provider && configuration
 
-  const profile = profileSelector[originalConfiguration["proxy-groups"].length];
+  const profile = configuration();
+  // const profile = profileSelector[originalConfiguration["proxy-groups"].length];
 
 
   // ! 初始化配置文件
@@ -399,6 +423,10 @@ function get(originalConfiguration, forceHttpRuleProviders = false) {
   );
   function addRulePrefix(rulePrefix, ...ruleArrays) {
     let arr = [];
+    if (!ruleArrays || ruleArrays.toString() === "") {
+      return arr;
+    }
+
     ruleArrays.forEach(ruleArray => {
       const provisionalArr = ruleArray.map(ele => ele.replace(",", "," + rulePrefix));
       arr = arr.concat(provisionalArr);
@@ -444,25 +472,38 @@ function get(originalConfiguration, forceHttpRuleProviders = false) {
   }
 
   // !.rule providers
-  if (!forceHttpRuleProviders) {
-    if (profile.isForbidHttp) {
+  switch (finalSignal) {
+    case 0:
       newConfiguration["rule-providers"] = Object.assign(
-        getRuleProviders(profile.defaultRules, profile.defaultRulePath, profile.defaultRulePrefix),
-        getRuleProviders(profile.customizeRules, profile.customizeRulePath, profile.customizeRulePrefix)
+        getRuleProviders(profile.defaultRules, profileGlobal.defaultRuleHttp, profile.defaultRulePrefix),
+        getRuleProviders(profile.customizeRules, profileGlobal.customizeRuleHttp, profile.customizeRulePrefix)
       );
-    } else {
+      break;
+    case 1:
       newConfiguration["rule-providers"] = Object.assign(
-        getRuleProviders(profile.defaultRules, profile.defaultRuleHttp, profile.defaultRulePrefix),
-        getRuleProviders(profile.customizeRules, profile.customizeRulePath, profile.customizeRulePrefix)
+        getRuleProviders(profile.defaultRules, profileGlobal.defaultRulePath, profile.defaultRulePrefix),
+        getRuleProviders(profile.customizeRules, profileGlobal.customizeRuleHttp, profile.customizeRulePrefix)
       );
-    }
-  } else {
-    newConfiguration["rule-providers"] = Object.assign(
-      getRuleProviders(profile.defaultRules, profile.defaultRuleHttp, profile.defaultRulePrefix),
-      getRuleProviders(profile.customizeRules, profile.customizeRuleHttp, profile.customizeRulePrefix)
-    );
+      break;
+    case 2:
+      newConfiguration["rule-providers"] = Object.assign(
+        getRuleProviders(profile.defaultRules, profileGlobal.defaultRuleHttp, profile.defaultRulePrefix),
+        getRuleProviders(profile.customizeRules, profileGlobal.customizeRulePath, profile.customizeRulePrefix)
+      );
+      break;
+    case 3:
+      newConfiguration["rule-providers"] = Object.assign(
+        getRuleProviders(profile.defaultRules, profileGlobal.defaultRulePath, profile.defaultRulePrefix),
+        getRuleProviders(profile.customizeRules, profileGlobal.customizeRulePath, profile.customizeRulePrefix)
+      );
+      break;
+    default: break;
   }
   function getRuleProviders(rules, ruleSource, rulePrefix) {
+    let ruleProviders = {};
+    if (!ruleSource || ruleSource.link === "") {
+      return {};
+    }
 
     const ruleNames = getRuleNames(rules);
     function getRuleNames(...ruleArrays) {
@@ -474,7 +515,6 @@ function get(originalConfiguration, forceHttpRuleProviders = false) {
       return arr;
     }
 
-    let ruleProviders = {};
 
     const getType = (ruleSource) => {
       return ruleSource.link.includes("https") ? "http" : "file";
@@ -515,7 +555,7 @@ function get(originalConfiguration, forceHttpRuleProviders = false) {
 
   // !.return result
 
-  return forceHttpRuleProviders ?
+  return isConfigStash ?
     JSON.stringify(newConfiguration) :
     outputClashConfig(newConfiguration, profile.replacement);
   function outputClashConfig(configuration, replacement) {
