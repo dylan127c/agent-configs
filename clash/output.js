@@ -13,12 +13,14 @@ module.exports.run = (yaml, rawAfter) => {
     const outputStr = yaml.stringify({
         name: symbol,
         desc: "Replace original configuration file.",
+        dns: configuration.dns,
         rules: configuration.rules,
         "proxy-groups": stashProxyGroups,
         "rule-providers": configuration["rule-providers"]
     });
 
     const outputFinal = outputStr
+        .replace("dns:", "dns: #!replace")
         .replace("rules:", "rules: #!replace")
         .replace("proxy-groups:", "proxy-groups: #!replace")
         .replace("rule-providers:", "rule-providers: #!replace");
