@@ -54,7 +54,7 @@ const profileGlobal = {
     defaultRulePath: { link: "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/default rules", type: "yaml" },
     customizeRulePath: { link: "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/customize rules", type: "yaml" },
     defaultRuleHttp: { link: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release", type: "txt" },
-    customizeRuleHttp: { link: "https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/clash/customize%20rules", type: "yaml" }
+    customizeRuleHttp: { link: "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules", type: "yaml" }
 };
 
 /** Configuration A  */
