@@ -14,7 +14,10 @@ module.exports.parse = async (raw, { axios, yaml, notify, console },
     { name, url, interval, selected }) => {
 
     const mode = [0, 0];
-    outputStashConfig(mode, raw, yaml, console, url);
+    outputStash(mode, raw, yaml, console, url);
+    if (url.match(/touhou/gm)) {
+        outputShadowrocket(console);
+    }
 
     return yaml.stringify(JSON.parse(get(
         yaml.parse(raw),
@@ -209,13 +212,26 @@ const configurationB = () => {
  * @param {object} console 控制台调试
  * @param {string} url 订阅地址
  */
-function outputStashConfig(mode, raw, yaml, console, url) {
+function outputStash(mode, raw, yaml, console, url) {
     try {
         delete require.cache[require.resolve('./output')];
         const output = require('./output');
-        output.run(yaml, get(yaml.parse(raw), mode, configurationSelector(url), true));
+        output.runStash(yaml, get(yaml.parse(raw), mode, configurationSelector(url), true));
     } catch (error) {
         console.log("Stash output configuration file does not exist, export canceled.\n");
+    }
+}
+
+function outputShadowrocket(console) {
+    const fs = require("fs");
+
+    try {
+        fs.accessSync("H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket", fs.constants.F_OK);
+        delete require.cache[require.resolve('./output')];
+        const output = require('./output');
+        output.runShadowrocket(console)
+    } catch (error) {
+        console.log("Shadowrocket output configuration file does not exist, export canceled.\n");
     }
 }
 
@@ -298,8 +314,8 @@ function defaultRulesUpdateCheck(console) {
                 const intervalInHours = (currentTimestamp - savedTimestamp) / (1000 * 60 * 60);
 
                 if (intervalInHours >= 168) {
-                    defaultRulesUpdate();
-                    updateTimestamp();
+                    defaultRulesUpdate(console);
+                    updateTimestamp(console);
                 } else {
                     console.log("No update required for default rule.\nLast updated:",
                         new Date(savedTimestamp).toString(), "\n");
@@ -327,7 +343,7 @@ function defaultRulesUpdate(console) {
             url: domainHttp + "/" + fileName + ".txt",
         }).then(res => {
             fs.writeFile(
-                path.resolve(__dirname, "default rules", fileName + ".yaml"),
+                path.resolve(profileGlobal.defaultRulePath.link, fileName + ".yaml"),
                 res.data, 'utf8',
                 (err) => {
                     if (err) {
@@ -353,8 +369,11 @@ function defaultRulesUpdate(console) {
  * @param {object} console 控制台调试对象
  */
 function updateTimestamp(console) {
+    const fs = require("fs");
+    const path = require("path");
+
     const currentTimestamp = Date.now();
-    fs.writeFile(path.resolve(__dirname, "default rules", "timestamp.txt"),
+    fs.writeFile(path.resolve(profileGlobal.defaultRulePath.link, "timestamp.txt"),
         currentTimestamp.toString(),
         (err) => {
             if (err) {

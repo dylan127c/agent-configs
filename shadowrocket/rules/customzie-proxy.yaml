@@ -10,28 +10,27 @@
 
 # 自定义规则匹配顺序：reject.yaml => direct.yaml => ... => proxy.yaml 
 
-payload:
-  # Google
-  - '+.google.com'
+# Google
+DOMAIN-SUFFIX,google.com
   
-  # GitHub && Git
-  - '+.github.com'
-  - '+.github.io'
-  - '+.raw.githubusercontent.com'
-  - '+.gitkraken.com'
+# GitHub && Git
+DOMAIN-SUFFIX,github.com
+DOMAIN-SUFFIX,github.io
+DOMAIN-SUFFIX,raw.githubusercontent.com
+DOMAIN-SUFFIX,gitkraken.com
 
-  # Frameworks && Toolkits
-  - '+.docker.com'
-  - '+.listary.com'
-  - '+.gigabyte.com'
-  - '+.telerik.com'
-  - '+.api.insight.sitefinity.com'
+# Frameworks && Toolkits
+DOMAIN-SUFFIX,docker.com
+DOMAIN-SUFFIX,listary.com
+DOMAIN-SUFFIX,gigabyte.com
+DOMAIN-SUFFIX,telerik.com
+DOMAIN-SUFFIX,api.insight.sitefinity.com
   
-  # Cloud Providers
-  - '+.keleofficial.com'
-  - '+.touhou.tel'
-  - '+.stash.wiki'
+# Cloud Providers
+DOMAIN-SUFFIX,keleofficial.com
+DOMAIN-SUFFIX,touhou.tel
+DOMAIN-SUFFIX,stash.wiki
   
-  # 其他域名
-  - '+.fluidplayer.com'
-  - '+.ng.ul4k.com'
+# 其他域名
+DOMAIN-SUFFIX,fluidplayer.com
+DOMAIN-SUFFIX,ng.ul4k.com

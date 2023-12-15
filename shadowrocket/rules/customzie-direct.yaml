@@ -10,28 +10,18 @@
 
 # 自定义规则匹配顺序：reject.yaml => direct.yaml => ... => proxy.yaml 
 
-payload:
-  # Google
-  - '+.google.com'
-  
-  # GitHub && Git
-  - '+.github.com'
-  - '+.github.io'
-  - '+.raw.githubusercontent.com'
-  - '+.gitkraken.com'
+# 以下某些域名会影响Edge浏览器新标签页的加载，但国内可以直连。
+DOMAIN-SUFFIX,go.microsoft.com
+DOMAIN-SUFFIX,edge.microsoft.com
 
-  # Frameworks && Toolkits
-  - '+.docker.com'
-  - '+.listary.com'
-  - '+.gigabyte.com'
-  - '+.telerik.com'
-  - '+.api.insight.sitefinity.com'
-  
-  # Cloud Providers
-  - '+.keleofficial.com'
-  - '+.touhou.tel'
-  - '+.stash.wiki'
-  
-  # 其他域名
-  - '+.fluidplayer.com'
-  - '+.ng.ul4k.com'
+# AdGuard Windows用以下域名完成广告过滤，使用直连模式即可。
+DOMAIN-SUFFIX,injections.adguard.org
+
+# 远程代理规则让以下域名使用代理模式是错误的。
+# 参考：https://adguard.com/kb/zh-CN/general/https-filtering/local-adguard-com-domain/
+DOMAIN-SUFFIX,local.adguard.org
+
+# 其他域名
+DOMAIN-SUFFIX,clash.razord.top
+DOMAIN-SUFFIX,ihaxs.com
+DOMAIN-SUFFIX,kanshuv.com
