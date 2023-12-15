@@ -52,7 +52,7 @@ module.exports.runShadowrocket = (yaml, rawAfter, console) => {
     configuration.rules.forEach(ele => {
         if (ele.includes("RULE-SET")) {
             shadowrocketRule += ele.replace(/RULE-SET,/gm, "RULE-SET," + url + "/")
-                .replace(/,(?=\w+$)/gm, ".yaml,") + "\n";
+                .replace(/(?<!T),(?!n)/gm, ".yaml,") + "\n";
         } else {
             shadowrocketRule += ele + "\n"
         }
