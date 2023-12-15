@@ -63,7 +63,7 @@ module.exports.runShadowrocket = (yaml, rawAfter, console) => {
         shadowrocketProxyGroup += ele.name + " = " + ele.type + ",";
         ele.proxies.forEach(proxy => {
             if (symbol === "on" && proxy.match(/\d\d/gm)) {
-                shadowrocketProxyGroup += proxy.replace(/^.+? /gm,"") + ","
+                shadowrocketProxyGroup += proxy.replace(/^\W+? (?!\d)/gm,"") + ","
             } else {
                 shadowrocketProxyGroup += proxy + ","
             }
