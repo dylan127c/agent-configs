@@ -5,3 +5,4 @@ payload:
   - '+.sentry.io'
   - '+.imgix.net'
   - '+.openaiapi-site.azureedge.net'
+  - '+.api.statsig.com'

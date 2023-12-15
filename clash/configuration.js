@@ -15,9 +15,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console },
 
     const mode = [0, 0];
     outputStash(mode, raw, yaml, console, url);
-    if (url.match(/touhou/gm)) {
-        outputShadowrocket(console);
-    }
+    outputShadowrocket(mode, raw, yaml, console, url);
 
     return yaml.stringify(JSON.parse(get(
         yaml.parse(raw),
@@ -222,14 +220,14 @@ function outputStash(mode, raw, yaml, console, url) {
     }
 }
 
-function outputShadowrocket(console) {
+function outputShadowrocket(mode, raw, yaml, console, url) {
     const fs = require("fs");
 
     try {
         fs.accessSync("H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket", fs.constants.F_OK);
         delete require.cache[require.resolve('./output')];
         const output = require('./output');
-        output.runShadowrocket(console)
+        output.runShadowrocket(yaml, get(yaml.parse(raw), mode, configurationSelector(url), true), console);
     } catch (error) {
         console.log("Shadowrocket output configuration file does not exist, export canceled.\n");
     }

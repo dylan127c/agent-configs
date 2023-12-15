@@ -34,39 +34,83 @@ module.exports.runStash = (yaml, rawAfter) => {
     );
 }
 
-module.exports.runShadowrocket = (console) => {
+module.exports.runShadowrocket = (yaml, rawAfter, console) => {
+
+    const configuration = yaml.parse(rawAfter);
+
+    let symbol = "on";
+
+    const stashProxyGroups = Object.assign(configuration["proxy-groups"]);
+    const index = stashProxyGroups.findLastIndex(ele => ele.name.includes("订阅详情"));
+    if (index >= 0) {
+        stashProxyGroups.splice(index, 1);
+        symbol = "cc";
+    }
+
+    let shadowrocketRule = "[Rule]\n";
+    const url = "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/shadowrocket/rules"
+    configuration.rules.forEach(ele => {
+        if (ele.includes("RULE-SET")) {
+            shadowrocketRule += ele.replace(/RULE-SET,/gm, "RULE-SET," + url + "/")
+                .replace(/,(?=\w+$)/gm, ".yaml,") + "\n";
+        } else {
+            shadowrocketRule += ele + "\n"
+        }
+    });
+
+    let shadowrocketProxyGroup = "[Proxy Group]\n";
+    stashProxyGroups.forEach(ele => {
+        shadowrocketProxyGroup += ele.name + " = " + ele.type + ",";
+        ele.proxies.forEach(proxy => {
+            shadowrocketProxyGroup += proxy + ","
+        });
+        shadowrocketProxyGroup += "interval=600,timeout=5,select=0,url=http://www.gstatic.com/generate_204\n";
+    });
 
     const fs = require("fs");
-    const destination = "H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket/rules";
+    const input = "H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket/sr_rules_init.conf"
+    const initContent = fs.readFileSync(input, 'utf-8');
 
-    const defaultRulePath = "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/default rules";
-    const customizeRulePath = "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/customize rules";
+    const output = "H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket/sr_rules_" + symbol + ".conf";
+    const outputContent = initContent
+        .replace(/\[Rule\]/g, shadowrocketRule)
+        .replace(/\[Proxy Group\]/g, shadowrocketProxyGroup);
 
-    const mode = {
-        default: "",
-        customize: ""
-    };
-    try {
-        fs.accessSync(defaultRulePath, fs.constants.F_OK);
-        mode.default = defaultRulePath;
-    } catch (error) {
-        console.log("Rules default is not exist.")
-    }
+    fs.writeFileSync(output, outputContent, "utf-8");
 
-    try {
-        fs.accessSync(customizeRulePath, fs.constants.F_OK);
-        mode.customize = customizeRulePath;
-    } catch (error) {
-        console.log("Rules customize is not exist.")
-    }
 
-    // 如果clash中的default rule和customize rule都不存在，那么就不需要进行复制了
-    if (!mode.default && !mode.customize) {
-        return;
-    }
+
+
+    // const destination = "H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket/rules";
+
+    // const defaultRulePath = "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/default rules";
+    // const customizeRulePath = "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/customize rules";
+
+    // const mode = {
+    //     default: "",
+    //     customize: ""
+    // };
+    // try {
+    //     fs.accessSync(defaultRulePath, fs.constants.F_OK);
+    //     mode.default = defaultRulePath;
+    // } catch (error) {
+    //     console.log("Rules default is not exist.")
+    // }
+
+    // try {
+    //     fs.accessSync(customizeRulePath, fs.constants.F_OK);
+    //     mode.customize = customizeRulePath;
+    // } catch (error) {
+    //     console.log("Rules customize is not exist.")
+    // }
+
+    // // 如果clash中的default rule和customize rule都不存在，那么就不需要进行复制了
+    // if (!mode.default && !mode.customize) {
+    //     return;
+    // }
 
     // 检查时间戳，因为目标文件夹只有一个，因此不能够在确认要复制的时候检查时间戳
-    shadowrocketRulesUpdateCheck(console, destination, mode);
+    shadowrocketRulesUpdateCheck(console);
 
 }
 
@@ -78,15 +122,17 @@ module.exports.runShadowrocket = (console) => {
  * 
  * @param {object} console 控制台调试对象
  */
-function shadowrocketRulesUpdateCheck(console, destination, mode) {
+function shadowrocketRulesUpdateCheck(console) {
     const fs = require("fs");
     const path = require("path");
+
+    const destination = "H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket/rules";
 
     fs.readFile(path.resolve(destination, "timestamp.txt"),
         'utf8',
         (err, data) => {
             if (err) {
-                shadowrocketRulesUpdate(console, destination, mode);
+                // shadowrocketRulesUpdate(console);
                 updateTimestamp(console, destination);
             } else {
                 const savedTimestamp = parseInt(data);
@@ -95,7 +141,7 @@ function shadowrocketRulesUpdateCheck(console, destination, mode) {
                 const intervalInHours = (currentTimestamp - savedTimestamp) / (1000 * 60 * 60);
 
                 if (intervalInHours >= 168) {
-                    shadowrocketRulesUpdate(console, destination, mode);
+                    // shadowrocketRulesUpdate(console);
                     updateTimestamp(console, destination);
                 } else {
                     console.log("No update required for default rule.\nLast updated:",
@@ -105,7 +151,7 @@ function shadowrocketRulesUpdateCheck(console, destination, mode) {
         });
 }
 
-function shadowrocketRulesUpdate(console, destination, mode) {
+function shadowrocketRulesUpdate(console) {
 
 
     const fs = require("fs");
@@ -154,13 +200,11 @@ function shadowrocketRulesUpdate(console, destination, mode) {
     // const destination = "H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket/rules";
     const url = "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/shadowrocket/rules"
 
-    const endStrRules = "RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/AppleNews/AppleNews.list,PROXY\n" +
-        "GEOIP,LAN,DIRECT,no-resolve\n" +
+    const endStrRules = "GEOIP,LAN,DIRECT,no-resolve\n" +
         "GEOIP,CN,DIRECT,no-resolve\n" +
-        "FINAL,PROXY";
+        "FINAL,FINAL-CHOOSE";
 
-    const output = "H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket/sr_rules.conf";
-    const fileContent = fs.readFileSync(output, 'utf-8');
+    // const fileContent = fs.readFileSync(output, 'utf-8');
 
 
 
@@ -216,7 +260,12 @@ function shadowrocketRulesUpdate(console, destination, mode) {
         return startRules;
     }
 
-    fs.writeFileSync(output, fileContent.replace(new RegExp(/\[Rule\](.|\n)+/, "g"), "[Rule]\n" + startStrRulse + endStrRules), "utf-8");
+    const input = "H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket/sr_rules_init.conf"
+    const initContent = fs.readFileSync(input, 'utf-8');
+
+    const output = "H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket/sr_rules.conf";
+    const outputContent = initContent.replace(new RegExp(/\[Rule\]/, "g"), "[Rule]\n" + startStrRulse + endStrRules)
+    fs.writeFileSync(output, outputContent, "utf-8");
 }
 
 /**
@@ -224,8 +273,8 @@ function shadowrocketRulesUpdate(console, destination, mode) {
  * 
  * 当Date对象调用toString方法时，JS会根据实际运行环境来转换时间戳，得到符合当前时区的日期字符串。
  * 
- * @param {object} console 控制台调试对象
- */
+* @param {object} console 控制台调试对象
+*/
 function updateTimestamp(console, destination) {
     const fs = require("fs");
     const path = require("path");
