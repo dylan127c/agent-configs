@@ -62,7 +62,11 @@ module.exports.runShadowrocket = (yaml, rawAfter, console) => {
     stashProxyGroups.forEach(ele => {
         shadowrocketProxyGroup += ele.name + " = " + ele.type + ",";
         ele.proxies.forEach(proxy => {
-            shadowrocketProxyGroup += proxy + ","
+            if (symbol === "on" && proxy.match(/\d\d/gm)) {
+                shadowrocketProxyGroup += proxy.replace(/^.+? /gm,"") + ","
+            } else {
+                shadowrocketProxyGroup += proxy + ","
+            }
         });
         shadowrocketProxyGroup += "interval=600,timeout=5,select=0,url=http://www.gstatic.com/generate_204\n";
     });
