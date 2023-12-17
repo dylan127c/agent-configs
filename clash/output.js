@@ -174,7 +174,7 @@ function shadowrocketRulesUpdate(console) {
         },
         {
             path: "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/customize rules",
-            prefix: "customzie-",
+            prefix: "customize-",
             search: {
                 "applications": "PROCESS-NAME",
                 "reject": "DOMAIN-SUFFIX",
