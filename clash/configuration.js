@@ -54,7 +54,7 @@ function main(params) {
 const profileGlobal = {
     defaultRulePath: { link: "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/default rules", type: "yaml" },
     customizeRulePath: { link: "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/customize rules", type: "yaml" },
-    defaultRuleHttp: { link: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release", type: "txt" },
+    defaultRuleHttp: { link: "ahttps://raw.githubusercontent.com/Loyalsoldier/clash-rules/release", type: "txt" },
     customizeRuleHttp: { link: "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules", type: "yaml" }
 };
 
@@ -115,7 +115,6 @@ const configurationA = () => {
     ];
 
     return {
-        isForbidHttp: true,
         groups: groups,
         endRules: endRules,
         customizeRules: customizeRules,
@@ -182,7 +181,6 @@ const configurationB = () => {
     ];
 
     return {
-        isForbidHttp: true,
         groups: groups,
         endRules: endRules,
         customizeRules: customizeRules,
@@ -212,9 +210,10 @@ const configurationB = () => {
  */
 function outputStash(mode, raw, yaml, console, url) {
     try {
+        fs.accessSync("H:/OneDrive/Documents/Repositories/Proxy Rules/stash", fs.constants.F_OK);
         delete require.cache[require.resolve('./output')];
         const output = require('./output');
-        output.runStash(yaml, get(yaml.parse(raw), mode, configurationSelector(url), true));
+        output.runStash(yaml, get(yaml.parse(raw), mode, configurationSelector(url), true), console);
     } catch (error) {
         console.log("Stash output configuration file does not exist, export canceled.\n");
     }

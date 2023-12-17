@@ -1,4 +1,10 @@
-module.exports.runStash = (yaml, rawAfter) => {
+/**
+ * 
+ * @param {*} yaml YAML框架
+ * @param {*} rawAfter 已处理完毕的配置信息
+ * @param {object} console 控制台调试对象
+ */
+module.exports.runStash = (yaml, rawAfter, console) => {
     const configuration = yaml.parse(rawAfter);
 
     let symbol = "ON";
@@ -34,16 +40,22 @@ module.exports.runStash = (yaml, rawAfter) => {
     );
 }
 
+/**
+ * 
+ * @param {*} yaml YAML框架
+ * @param {*} rawAfter 已处理完毕的配置信息
+ * @param {object} console 控制台调试对象
+ */
 module.exports.runShadowrocket = (yaml, rawAfter, console) => {
 
     const configuration = yaml.parse(rawAfter);
 
     let symbol = "on";
 
-    const stashProxyGroups = Object.assign(configuration["proxy-groups"]);
-    const index = stashProxyGroups.findLastIndex(ele => ele.name.includes("订阅详情"));
+    const initProxyGroups = Object.assign(configuration["proxy-groups"]);
+    const index = initProxyGroups.findLastIndex(ele => ele.name.includes("订阅详情"));
     if (index >= 0) {
-        stashProxyGroups.splice(index, 1);
+        initProxyGroups.splice(index, 1);
         symbol = "cc";
     }
 
@@ -52,25 +64,39 @@ module.exports.runShadowrocket = (yaml, rawAfter, console) => {
     configuration.rules.forEach(ele => {
         if (ele.includes("RULE-SET")) {
             shadowrocketRule += ele.replace(/RULE-SET,/gm, "RULE-SET," + url + "/")
-                .replace(/(?<!T),(?!n)/gm, ".yaml,") + "\n";
+                .replace(/(?<!T),(?!n)/gm, ".list,") + "\n";
         } else {
             shadowrocketRule += ele + "\n"
         }
     });
 
     let shadowrocketProxyGroup = "[Proxy Group]\n";
-    stashProxyGroups.forEach(ele => {
+    initProxyGroups.forEach(ele => {
         shadowrocketProxyGroup += ele.name + " = " + ele.type + ",";
         ele.proxies.forEach(proxy => {
             if (symbol === "on" && proxy.match(/\d\d/gm)) {
-                shadowrocketProxyGroup += proxy.replace(/^\W+? (?!\d)/gm,"") + ","
+                /*
+                 * Shadowrocket中的分组不支持显示Emoji表情，
+                 * 这里采用正则表达式来去除某些分组名称中的Emoji表情。
+                 */
+                shadowrocketProxyGroup += proxy.replace(/^\W+? (?!\d)/gm, "") + ","
             } else {
                 shadowrocketProxyGroup += proxy + ","
             }
         });
+        /**
+         * Shadowrocket中无论分组中的Type类型是什么，都需要添加以下条目。
+         * 处于某些分组类型时，Shadowrocket会忽略条目中的某些键值。
+         */
         shadowrocketProxyGroup += "interval=600,timeout=5,select=0,url=http://www.gstatic.com/generate_204\n";
     });
 
+    /*
+     * Shadowrocket中规则集已经和规则融合在一起了，只要规则和分组详情获取完毕，就可以输出到文件。
+     * 
+     * 目录下存在一个初始的配置文件：sr_rules_init.conf。
+     * 通过覆盖初始配置文件的[Rule]和[Proxy Group]内容，即可得到最终的Shadowrocket配置文件。
+     */
     const fs = require("fs");
     const input = "H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket/sr_rules_init.conf"
     const initContent = fs.readFileSync(input, 'utf-8');
@@ -82,45 +108,14 @@ module.exports.runShadowrocket = (yaml, rawAfter, console) => {
 
     fs.writeFileSync(output, outputContent, "utf-8");
 
-
-
-
-    // const destination = "H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket/rules";
-
-    // const defaultRulePath = "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/default rules";
-    // const customizeRulePath = "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/customize rules";
-
-    // const mode = {
-    //     default: "",
-    //     customize: ""
-    // };
-    // try {
-    //     fs.accessSync(defaultRulePath, fs.constants.F_OK);
-    //     mode.default = defaultRulePath;
-    // } catch (error) {
-    //     console.log("Rules default is not exist.")
-    // }
-
-    // try {
-    //     fs.accessSync(customizeRulePath, fs.constants.F_OK);
-    //     mode.customize = customizeRulePath;
-    // } catch (error) {
-    //     console.log("Rules customize is not exist.")
-    // }
-
-    // // 如果clash中的default rule和customize rule都不存在，那么就不需要进行复制了
-    // if (!mode.default && !mode.customize) {
-    //     return;
-    // }
-
-    // 检查时间戳，因为目标文件夹只有一个，因此不能够在确认要复制的时候检查时间戳
+    /* 规则更新 */
     shadowrocketRulesUpdateCheck(console);
-
 }
 
 /**
- * 本方法用于检查是否需要更新默认规则目录（default rules）下的文件。
+ * 本方法用于检查是否需要更新规则目录（rules）下的文件。
  * 
+ * - 更新只依赖Clash的规则目录，直接读取其中的文件并将其转换为Shadowrocket支持的规则。
  * - 如果时间戳文件不存在，则进行更新；否则检查该时间与当前时间的间隔是否大于一周。
  * - 如果时间间隔大于一周，则进行文件更新；否则将跳过更新并输出上次文件更新的日期。
  * 
@@ -136,7 +131,7 @@ function shadowrocketRulesUpdateCheck(console) {
         'utf8',
         (err, data) => {
             if (err) {
-                // shadowrocketRulesUpdate(console);
+                shadowrocketRulesUpdate(console);
                 updateTimestamp(console, destination);
             } else {
                 const savedTimestamp = parseInt(data);
@@ -145,7 +140,7 @@ function shadowrocketRulesUpdateCheck(console) {
                 const intervalInHours = (currentTimestamp - savedTimestamp) / (1000 * 60 * 60);
 
                 if (intervalInHours >= 168) {
-                    // shadowrocketRulesUpdate(console);
+                    shadowrocketRulesUpdate(console);
                     updateTimestamp(console, destination);
                 } else {
                     console.log("No update required for default rule.\nLast updated:",
@@ -157,119 +152,99 @@ function shadowrocketRulesUpdateCheck(console) {
 
 function shadowrocketRulesUpdate(console) {
 
+    const sources = [
+        {
+            path: "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/default rules",
+            prefix: "default-",
+            search: {
+                "applications": "PROCESS-NAME",
+                "apple": "DOMAIN-SUFFIX",
+                "icloud": "DOMAIN-SUFFIX",
+                "private": "DOMAIN-SUFFIX",
+                "direct": "DOMAIN-SUFFIX",
+                "greatfire": "DOMAIN-SUFFIX",
+                "gfw": "DOMAIN-SUFFIX",
+                "proxy": "DOMAIN-SUFFIX",
+                "tld-not-cn": "DOMAIN-SUFFIX",
+                "reject": "DOMAIN-SUFFIX",
+                "telegramcidr": "IP-CIDR",
+                "lancidr": "IP-CIDR",
+                "cncidr": "IP-CIDR",
+            }
+        },
+        {
+            path: "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/customize rules",
+            prefix: "customzie-",
+            search: {
+                "applications": "PROCESS-NAME",
+                "reject": "DOMAIN-SUFFIX",
+                "direct": "DOMAIN-SUFFIX",
+                "edge": "DOMAIN-SUFFIX",
+                "openai": "DOMAIN-SUFFIX",
+                "brad": "DOMAIN-SUFFIX",
+                "copilot": "DOMAIN-SUFFIX",
+                "proxy": "DOMAIN-SUFFIX",
+            }
+        }
+    ]
+    const destination = "H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket/rules";
+
+    const replacelist = {
+        "PROCESS-NAME": {
+            "^payload:\n": "",
+            "^  #": "#",
+            "^  - ": ""
+        },
+        "DOMAIN-SUFFIX": {
+            "^payload:\n": "",
+            "^  #": "#",
+            "^.+?'\\+?\\.?": "DOMAIN-SUFFIX,",
+            "'$": ""
+        },
+        "IP-CIDR": {
+            "^payload:\n": "",
+            "^  #": "#",
+            "^  - '": "IP-CIDR,",
+            "'$": ""
+        }
+    }
 
     const fs = require("fs");
     const path = require("path");
 
-    const defaultSearch = {
-        "applications": { type: "PROCESS-NAME", mode: "DIRECT" },
-        "apple": { type: "DOMAIN-SUFFIX", mode: "DIRECT" },
-        "icloud": { type: "DOMAIN-SUFFIX", mode: "DIRECT" },
-        "private": { type: "DOMAIN-SUFFIX", mode: "DIRECT" },
-        "direct": { type: "DOMAIN-SUFFIX", mode: "DIRECT" },
-        "greatfire": { type: "DOMAIN-SUFFIX", mode: "PROXY-BETTER" },
-        "gfw": { type: "DOMAIN-SUFFIX", mode: "PROXY-BETTER" },
-        "proxy": { type: "DOMAIN-SUFFIX", mode: "PROXY-BETTER" },
-        "tld-not-cn": { type: "DOMAIN-SUFFIX", mode: "PROXY-BETTER" },
-        "reject": { type: "DOMAIN-SUFFIX", mode: "REJECT" },
-        "telegramcidr": { type: "IP-CIDR", mode: "PROXY-BETTER" },
-        "lancidr": { type: "IP-CIDR", mode: "DIRECT" },
-        "cncidr": { type: "IP-CIDR", mode: "DIRECT" },
-    }
+    syncRuleFiles(sources, destination, replacelist);
 
-    const customizeSearch = {
-        "applications": { type: "PROCESS-NAME", mode: "DIRECT" },
-        "reject": { type: "DOMAIN-SUFFIX", mode: "REJECT" },
-        "direct": { type: "DOMAIN-SUFFIX", mode: "DIRECT" },
-        "edge": { type: "DOMAIN-SUFFIX", mode: "PROXY-EDGE" },
-        "openai": { type: "DOMAIN-SUFFIX", mode: "PROXY-OPENAI" },
-        "brad": { type: "DOMAIN-SUFFIX", mode: "PROXY-BRAD" },
-        "copilot": { type: "DOMAIN-SUFFIX", mode: "PROXY-COPILOT" },
-        "proxy": { type: "DOMAIN-SUFFIX", mode: "PROXY-BETTER" },
-    }
-
-    const source = {
-        default: {
-            path: "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/default rules",
-            prefix: "default-",
-            search: defaultSearch
-        },
-        customize: {
-            path: "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/customize rules",
-            prefix: "customzie-",
-            search: customizeSearch
-        }
-    }
-
-    // const destination = "H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket/rules";
-    const url = "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/shadowrocket/rules"
-
-    const endStrRules = "GEOIP,LAN,DIRECT,no-resolve\n" +
-        "GEOIP,CN,DIRECT,no-resolve\n" +
-        "FINAL,FINAL-CHOOSE";
-
-    // const fileContent = fs.readFileSync(output, 'utf-8');
-
-
-
-    let defaultStrRules = "";
-    let customizeStrRules = "";
-    if (mode.default) {
-        // do replace and copy and rename default
-        // fs.readFile(path.resolve(mode.default));
-        defaultStrRules = copyFolderSync(source.default, destination);
-    }
-
-    if (mode.customize) {
-        // do replace and copy and rename  customize
-        customizeStrRules = copyFolderSync(source.customize, destination);
-    }
-
-    const startStrRulse = customizeStrRules + defaultStrRules;
-
-    function copyFolderSync(source, destination) {
+    function syncRuleFiles(sources, destination, replacelist) {
+        // 不存在destination目录就创建它
         if (!fs.existsSync(destination)) {
             fs.mkdirSync(destination);
         }
 
-        const sourceFiles = fs.readdirSync(source.path);
-
-        let startRules = "";
-
-        sourceFiles.forEach(sourceFile => {
-            if (sourceFile !== "timestamp.txt") {
-                const sourcePath = path.join(source.path, sourceFile);
-                const destinationPath = path.join(destination, source.prefix + sourceFile);
-
-                if (fs.lstatSync(sourcePath).isDirectory()) {
-                    copyFolderSync(sourcePath, destinationPath);
-                } else {
-                    const fileContent = fs.readFileSync(sourcePath, 'utf-8');
-
-                    const fileName = sourceFile.replace(".yaml", "");
-                    const modificationContent = fileContent
-                        .replace(new RegExp(/^payload:\n/, "gm"), "")
-                        .replace(new RegExp(/^.+?'\+\./, "gm"), source.search[fileName].type + ",")
-                        .replace(new RegExp(/^  - '/, "gm"), source.search[fileName].type + ",")
-                        .replace(new RegExp(/^.+?PROCESS-NAME,/, "gm"), source.search[fileName].type + ",")
-                        .replace(new RegExp(/'$/, "gm"), "")
-                        // .replace(new RegExp(/(?<=^[\d\w\.,-/:]+)$/, "gm"), "," + source.search[fileName].mode)
-                        .replace(new RegExp(/  #/, "gm"), "#");
-                    fs.writeFileSync(destinationPath, modificationContent, "utf-8");
-
-                    startRules += "RULE-SET," + url + "/" + source.prefix + sourceFile + "," + source.search[fileName].mode + "\n"
-                }
+        sources.forEach(source => {
+            // clash规则目录不存在，就结束当前循环，进入下一个循环
+            if (!fs.existsSync(source.path)) {
+                return;
             }
+            const sourceFiles = fs.readdirSync(source.path);
+            sourceFiles.forEach(sourceFile => {
+                if (sourceFile !== "timestamp.txt") {
+                    const inputPath = path.join(source.path, sourceFile);
+                    const outputPath = path.join(destination, source.prefix + sourceFile.replace(/\..+$/gm, "") + ".list" );
+
+                    if (fs.lstatSync(inputPath).isDirectory()) {
+                        copyFolderSync(inputPath, outputPath);
+                    } else {
+                        let fileContent = fs.readFileSync(inputPath, "utf-8");
+                        const fileName = sourceFile.replace(/\..+$/gm, "");
+                        for (const [search, replace] of Object.entries(replacelist[source.search[fileName]])) {
+                            fileContent = fileContent.replace(new RegExp(search, "gm"), replace);
+                        }
+                        fs.writeFileSync(outputPath, fileContent, "utf-8");
+                    }
+                }
+            });
         });
-        return startRules;
     }
-
-    const input = "H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket/sr_rules_init.conf"
-    const initContent = fs.readFileSync(input, 'utf-8');
-
-    const output = "H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket/sr_rules.conf";
-    const outputContent = initContent.replace(new RegExp(/\[Rule\]/, "g"), "[Rule]\n" + startStrRulse + endStrRules)
-    fs.writeFileSync(output, outputContent, "utf-8");
 }
 
 /**
