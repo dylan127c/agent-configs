@@ -7,5 +7,5 @@ parsers:
     yaml:
       prepend-rules:
         # some websites
-        - DOMAIN-SUFFIX,baidu.com,REJECT
+        - DOMAIN-SUFFIX,example.com,REJECT
         - ...

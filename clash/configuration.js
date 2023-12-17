@@ -54,7 +54,7 @@ function main(params) {
 const profileGlobal = {
     defaultRulePath: { link: "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/default rules", type: "yaml" },
     customizeRulePath: { link: "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/customize rules", type: "yaml" },
-    defaultRuleHttp: { link: "ahttps://raw.githubusercontent.com/Loyalsoldier/clash-rules/release", type: "txt" },
+    defaultRuleHttp: { link: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release", type: "txt" },
     customizeRuleHttp: { link: "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules", type: "yaml" }
 };
 
@@ -209,6 +209,7 @@ const configurationB = () => {
  * @param {string} url 订阅地址
  */
 function outputStash(mode, raw, yaml, console, url) {
+    const fs = require("fs");
     try {
         fs.accessSync("H:/OneDrive/Documents/Repositories/Proxy Rules/stash", fs.constants.F_OK);
         delete require.cache[require.resolve('./output')];
@@ -221,7 +222,6 @@ function outputStash(mode, raw, yaml, console, url) {
 
 function outputShadowrocket(mode, raw, yaml, console, url) {
     const fs = require("fs");
-
     try {
         fs.accessSync("H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket", fs.constants.F_OK);
         delete require.cache[require.resolve('./output')];
