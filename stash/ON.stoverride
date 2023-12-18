@@ -267,105 +267,105 @@ rule-providers: #!replace
   default-applications:
     type: http
     behavior: classical
-    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/applications.txt
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/default%20rules/applications.yaml
     interval: 86400
   default-apple:
     type: http
     behavior: domain
-    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/apple.txt
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/default%20rules/apple.yaml
     interval: 86400
   default-icloud:
     type: http
     behavior: domain
-    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/icloud.txt
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/default%20rules/icloud.yaml
     interval: 86400
   default-private:
     type: http
     behavior: domain
-    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/default%20rules/private.yaml
     interval: 86400
   default-direct:
     type: http
     behavior: domain
-    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/direct.txt
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/default%20rules/direct.yaml
     interval: 86400
   default-greatfire:
     type: http
     behavior: domain
-    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/greatfire.txt
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/default%20rules/greatfire.yaml
     interval: 86400
   default-gfw:
     type: http
     behavior: domain
-    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/gfw.txt
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/default%20rules/gfw.yaml
     interval: 86400
   default-proxy:
     type: http
     behavior: domain
-    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/proxy.txt
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/default%20rules/proxy.yaml
     interval: 86400
   default-tld-not-cn:
     type: http
     behavior: domain
-    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/tld-not-cn.txt
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/default%20rules/tld-not-cn.yaml
     interval: 86400
   default-reject:
     type: http
     behavior: domain
-    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/default%20rules/reject.yaml
     interval: 86400
   default-telegramcidr:
     type: http
     behavior: ipcidr
-    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/telegramcidr.txt
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/default%20rules/telegramcidr.yaml
     interval: 86400
   default-lancidr:
     type: http
     behavior: ipcidr
-    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/lancidr.txt
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/default%20rules/lancidr.yaml
     interval: 86400
   default-cncidr:
     type: http
     behavior: ipcidr
-    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/cncidr.txt
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/default%20rules/cncidr.yaml
     interval: 86400
   customize-applications:
     type: http
     behavior: classical
-    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/applications.yaml
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/customize%20rules/applications.yaml
     interval: 86400
   customize-reject:
     type: http
     behavior: domain
-    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/reject.yaml
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/customize%20rules/reject.yaml
     interval: 86400
   customize-direct:
     type: http
     behavior: domain
-    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/direct.yaml
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/customize%20rules/direct.yaml
     interval: 86400
   customize-edge:
     type: http
     behavior: domain
-    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/edge.yaml
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/customize%20rules/edge.yaml
     interval: 86400
   customize-openai:
     type: http
     behavior: domain
-    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/openai.yaml
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/customize%20rules/openai.yaml
     interval: 86400
   customize-brad:
     type: http
     behavior: domain
-    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/brad.yaml
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/customize%20rules/brad.yaml
     interval: 86400
   customize-copilot:
     type: http
     behavior: domain
-    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/copilot.yaml
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/customize%20rules/copilot.yaml
     interval: 86400
   customize-proxy:
     type: http
     behavior: domain
-    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules/proxy.yaml
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/customize%20rules/proxy.yaml
     interval: 86400

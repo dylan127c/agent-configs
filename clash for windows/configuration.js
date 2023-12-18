@@ -1,4 +1,21 @@
-﻿/**
+const PATH = "H:/OneDrive/Documents/Repositories/Proxy Rules/clash for windows/";
+const URL = "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/";
+
+const SOURCES = {
+    defaultFile: PATH + "default rules",
+    customizeFile: PATH + "customize rules",
+    defaultHttp: URL + "default%20rules",
+    customizeHttp: URL + "customize%20rules"
+};
+const STASH_FOLDER = "H:/OneDrive/Documents/Repositories/Proxy Rules/stash";
+const SHADOWROCKET_FOLDER = "H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket";
+
+const RULE_UPDATE_HTTP = "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release";
+const RULE_UPDATE_NAMES = ["apple", "applications", "cncidr", "direct", "gfw", "greatfire",
+    "icloud", "lancidr", "private", "proxy", "reject", "telegramcidr", "tld-not-cn"];
+const RULE_UPDATE_TYPE = "txt";
+
+/**
  * 本方法用于解析CFW相关的订阅配置。
  * 
  * - CFW使用此脚本不需要移除或注释main方法。
@@ -13,222 +30,121 @@
 module.exports.parse = async (raw, { axios, yaml, notify, console },
     { name, url, interval, selected }) => {
 
+    console.log("[ INFO] configuration.parse =>", "Get config.");
+    const configuration = getConfig(url, console);
+    if (configuration === undefined) {
+        console.log("[ INFO] configuration.parse =>",
+            "The default configuration will be returned")
+        return raw;
+    }
     const mode = [0, 0];
-    outputStash(mode, raw, yaml, console, url);
-    outputShadowrocket(mode, raw, yaml, console, url);
+    console.log("[ INFO] configuration.parse =>", "Current combination mode:", mode, "\n");
 
-    return yaml.stringify(JSON.parse(get(
+    console.log("[ INFO] configuration.parse =>", "Export Stash config.");
+    outputStash(mode, raw, yaml, console, configuration);
+
+    console.log("[ INFO] configuration.parse =>", "Export Shadowrocket config.");
+    outputShadowrocket(mode, raw, yaml, console, configuration);
+
+    console.log("[ INFO] configuration.parse =>", "Main parse start.");
+    const result = yaml.stringify(JSON.parse(get(
+        console,
         yaml.parse(raw),
-        getMode(mode, console),
-        configurationSelector(url)
+        getMode(mode, axios, console),
+        configuration
     )));
+    console.log("[ INFO] configuration.parse =>", "Parsing main configuration successful.\n");
+    return result;
 }
 
 /**
- * 本方法用于解析CV相关的订阅配置。
+ * 本方法用于判断当前使用的配置文件。
  * 
- * - CV使用此脚本请务必移除或注释parse方法。
+ * 注：可根据实际情况调整此方法的内容。
  * 
- * @param {object} params 原始配置文件对象
- * @returns {object} 已处理完毕的配置信息
+ * @param {any} condition 判断条件
+ * @returns {Function} 具体的配置文件
  */
-function main(params) {
-
-    let configuration;
-    const count = params["proxy-groups"].length
-    if (count === 11) {
-        configuration = configurationA;
-    } else if (count === 15) {
-        configuration = configurationB;
-    }
-    const mode = [1, 2];
-    return JSON.parse(get(params, mode, configuration));
-}
-
-/**
- * 如果不提供某规则的任意访问形式，除了移除以下变量内的对应规则外，还需要在个人配置的返回值中移除对应的项。
- * 
- * 例如：如果不需要使用customizeRule规则，首先需要将profileGlobal中的customizeRulePath、customizeRuleHttp等项移除或注释，
- * 之后，还需要移除或注释configuration函数的返回值中的customizeRules、customizeRulePrefix等项。
- */
-const profileGlobal = {
-    defaultRulePath: { link: "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/default rules", type: "yaml" },
-    customizeRulePath: { link: "H:/OneDrive/Documents/Repositories/Proxy Rules/clash/customize rules", type: "yaml" },
-    defaultRuleHttp: { link: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release", type: "txt" },
-    customizeRuleHttp: { link: "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash/customize%20rules", type: "yaml" }
-};
-
-/** Configuration A  */
-const configurationA = () => {
-    const mainGroups = [
-        "🌅 目标节点",
-        "🌃 故障切换 | 深港移动",
-        "🌃 故障切换 | 沪港电信",
-        "🌃 故障切换 | 沪日电信",
-        "🌉 负载均衡 | 香港",
-        "🌉 负载均衡 | 日本"
-    ];
-    const groups = [
-        { name: "🌌 科学上网", type: "select", proxies: ["DIRECT"].concat(mainGroups) },
-        { name: "🌅 目标节点", type: "select", proxies: ["DIRECT", "REJECT"], append: /.+/gm },
-        { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["REJECT", "DIRECT", "🌌 科学上网"] },
-        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
-        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
-        { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["DIRECT", "🌌 科学上网"] },
-        { name: "🌃 故障切换 | 深港移动", type: "fallback", proxies: [], append: /香港 \d\d 移动.+/gm },
-        { name: "🌃 故障切换 | 沪港电信", type: "fallback", proxies: [], append: /香港 \d\d 电信.+/gm },
-        { name: "🌃 故障切换 | 沪日电信", type: "fallback", proxies: [], append: /日本 \d\d [^A-Z].+/gm },
-        { name: "🌉 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港\s\d\d [A-Z].+$/gm },
-        { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本\s\d\d [A-Z]/gm },
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网"] }
-    ];
-
-    const customizeRules = [
-        "RULE-SET,applications,DIRECT",
-        "RULE-SET,reject,REJECT",
-        "RULE-SET,direct,DIRECT",
-        "RULE-SET,edge,🌄 特殊控制 | Edge",
-        "RULE-SET,openai,🌄 特殊控制 | OpenAI",
-        "RULE-SET,brad,🌄 特殊控制 | Brad",
-        "RULE-SET,copilot,🌄 特殊控制 | Copilot",
-        "RULE-SET,proxy,🌌 科学上网"
-    ];
-    const defaultRules = [
-        "RULE-SET,applications,DIRECT",
-        "RULE-SET,apple,DIRECT",
-        "RULE-SET,icloud,DIRECT",
-        "RULE-SET,private,DIRECT",
-        "RULE-SET,direct,DIRECT",
-        "RULE-SET,greatfire,🌌 科学上网",
-        "RULE-SET,gfw,🌌 科学上网",
-        "RULE-SET,proxy,🌌 科学上网",
-        "RULE-SET,tld-not-cn,🌌 科学上网",
-        "RULE-SET,reject,REJECT",
-        "RULE-SET,telegramcidr,🌌 科学上网,no-resolve",
-        "RULE-SET,lancidr,DIRECT,no-resolve",
-        "RULE-SET,cncidr,DIRECT,no-resolve"
-    ];
-    const endRules = [
-        "GEOIP,LAN,DIRECT,no-resolve",
-        "GEOIP,CN,DIRECT,no-resolve",
-        "MATCH,🌠 规则逃逸"
-    ];
-
-    return {
-        groups: groups,
-        endRules: endRules,
-        customizeRules: customizeRules,
-        customizeRulePrefix: "customize-",
-        defaultRules: defaultRules,
-        defaultRulePrefix: "default-",
-        replacement: {
-            "🇹🇼": "🇨🇳",
-            "卢森堡": "🇺🇳 卢森堡"
+function getConfig(condition, console) {
+    if (condition.match(/touhou/gm)) {
+        try {
+            delete require.cache[require.resolve("./config-on")];
+            const moduleConfig = require("./config-on");
+            console.log("[ INFO] configuration.getConfig =>",
+                "Configuration file config-on.js has been loaded.\n");
+            return moduleConfig.configurationOn;
+        } catch (error) {
+            console.log("[ INFO] configuration.getConfig =>",
+                "Configuration file config-on.js doesn't exist.\n");
+            return;
+        }
+    } else if (condition.match(/sub/gm)) {
+        try {
+            delete require.cache[require.resolve("./config-cc")];
+            const moduleConfig = require("./config-cc");
+            console.log("[ INFO] configuration.getConfig =>",
+                "Configuration file config-cc.js has been loaded.\n");
+            return moduleConfig.configurationCc;
+        } catch (error) {
+            console.log("[ INFO] configuration.getConfig =>",
+                "Configuration file config-cc.js doesn't exist.\n");
+            return;
         }
     }
-}
-
-/** Configuration B */
-const configurationB = () => {
-    const mainGroups = [
-        "🌅 目标节点",
-        "🌉 负载均衡 | 香港 A",
-        "🌉 负载均衡 | 香港 B",
-        "🌁 测试延迟 | 其他节点"
-    ];
-    const groups = [
-        { name: "🌌 科学上网", type: "select", proxies: ["DIRECT"].concat(mainGroups) },
-        { name: "🌅 目标节点", type: "select", proxies: ["DIRECT", "REJECT"], append: /\[.+/gm },
-        { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["REJECT", "DIRECT", "🌌 科学上网"] },
-        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /\[.+/gm },
-        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /\[.+/gm },
-        { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["DIRECT", "🌌 科学上网"] },
-        { name: "🌉 负载均衡 | 香港 A", type: "load-balance", proxies: [], append: /香港\s\d\d$/gm },
-        { name: "🌉 负载均衡 | 香港 B", type: "load-balance", proxies: [], append: /香港\s\d\d\w/gm },
-        { name: "🌁 测试延迟 | 其他节点", type: "fallback", proxies: [], append: /(越南|新加坡|台灣|美國|日本)\s\d\d/gm },
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网"] },
-        { name: "🏞️ 订阅详情", type: "select", proxies: [], append: /剩余流量/gm }
-    ]
-
-    const customizeRules = [
-        "RULE-SET,reject,REJECT",
-        "RULE-SET,direct,DIRECT",
-        "RULE-SET,edge,🌄 特殊控制 | Edge",
-        "RULE-SET,openai,🌄 特殊控制 | OpenAI",
-        "RULE-SET,brad,🌄 特殊控制 | Brad",
-        "RULE-SET,copilot,🌄 特殊控制 | Copilot",
-        "RULE-SET,proxy,🌌 科学上网"
-    ];
-    const defaultRules = [
-        "RULE-SET,applications,DIRECT",
-        "RULE-SET,apple,DIRECT",
-        "RULE-SET,icloud,DIRECT",
-        "RULE-SET,private,DIRECT",
-        "RULE-SET,direct,DIRECT",
-        "RULE-SET,greatfire,🌌 科学上网",
-        "RULE-SET,gfw,🌌 科学上网",
-        "RULE-SET,proxy,🌌 科学上网",
-        "RULE-SET,tld-not-cn,🌌 科学上网",
-        "RULE-SET,reject,REJECT",
-        "RULE-SET,telegramcidr,🌌 科学上网,no-resolve",
-        "RULE-SET,lancidr,DIRECT,no-resolve",
-        "RULE-SET,cncidr,DIRECT,no-resolve"
-    ];
-    const endRules = [
-        "GEOIP,LAN,DIRECT,no-resolve",
-        "GEOIP,CN,DIRECT,no-resolve",
-        "MATCH,🌠 规则逃逸"
-    ];
-
-    return {
-        groups: groups,
-        endRules: endRules,
-        customizeRules: customizeRules,
-        customizeRulePrefix: "customize-",
-        defaultRules: defaultRules,
-        defaultRulePrefix: "default-",
-        replacement: {
-            "[SS]香港": "🇭🇰 香港",
-            "[SS]越南": "🇻🇳 越南",
-            "[SS]美國": "🇺🇸 美國",
-            "[SS]日本": "🇯🇵 日本",
-            "[SS]台灣": "🇨🇳 台灣",
-            "[SS]新加坡": "🇸🇬 新加坡"
-        }
-    }
+    console.log("[ INFO] configuration.getConfig =>", "No configuration files have been found.");
 }
 
 /**
  * 本方法用于判断是否需要输出相关的Stash配置文件。
  * 
- * 如果目录下存在output.js文件，则表明需要输出Stash配置文件。
+ * - 如果Stash输出目录不存在，即表示不需要输出Stash配置文件；
+ * - 如果输出目录存在，但不存在output.js文件，这也表明不需要输出Stash配置文件。
  * 
  * @param {string} raw 原始配置文件
  * @param {object} yaml yaml框架
  * @param {object} console 控制台调试
  * @param {string} url 订阅地址
  */
-function outputStash(mode, raw, yaml, console, url) {
+function outputStash(mode, raw, yaml, console, configuration) {
     const fs = require("fs");
     try {
-        fs.accessSync("H:/OneDrive/Documents/Repositories/Proxy Rules/stash", fs.constants.F_OK);
-        delete require.cache[require.resolve('./output')];
-        const output = require('./output');
-        output.runStash(yaml, get(yaml.parse(raw), mode, configurationSelector(url), true), console);
+        fs.accessSync(STASH_FOLDER, fs.constants.F_OK);
+        delete require.cache[require.resolve("./output-stash")];
+        const output = require("./output-stash");
+        console.log("[ INFO] configuration.outputStash =>", "Parsing start.");
+        output.runStash(yaml, get(console, yaml.parse(raw), mode, configuration, true), console);
+        console.log("[ INFO] configuration.outputStash =>",
+            "Stash configuration exported.\n");
     } catch (error) {
-        console.log("Stash output configuration file does not exist, export canceled.\n");
+        console.log("[ INFO] configuration.outputStash =>",
+            "Stash folder or configuration file doesn't exist.\n");
     }
 }
 
-function outputShadowrocket(mode, raw, yaml, console, url) {
+/**
+ * 本方法用于判断是否需要输出相关的Shadowrocket配置文件。
+ * 
+ * - 如果Shadowrocket输出目录不存在，即表示不需要输出Shadowrocket配置文件；
+ * - 如果输出目录存在，但不存在output.js文件，这也表明不需要输出Shadowrocket配置文件。
+ * 
+ * @param {string} raw 原始配置文件
+ * @param {object} yaml yaml框架
+ * @param {object} console 控制台调试
+ * @param {string} url 订阅地址
+ */
+function outputShadowrocket(mode, raw, yaml, console, configuration) {
     const fs = require("fs");
     try {
-        fs.accessSync("H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket", fs.constants.F_OK);
-        delete require.cache[require.resolve('./output')];
-        const output = require('./output');
-        output.runShadowrocket(yaml, get(yaml.parse(raw), mode, configurationSelector(url), true), console);
+        fs.accessSync(SHADOWROCKET_FOLDER, fs.constants.F_OK);
+        delete require.cache[require.resolve("./output-shadowrocket")];
+        const output = require("./output-shadowrocket");
+        console.log("[ INFO] configuration.outputShadowrocket =>", "Parsing start.");
+        output.runShadowrocket(yaml, get(console, yaml.parse(raw), mode, configuration, true), console);
+        console.log("[ INFO] configuration.outputShadowrocket =>",
+            "Shadowrocket configuration exported.\n");
     } catch (error) {
-        console.log("Shadowrocket output configuration file does not exist, export canceled.\n");
+        console.log("[ INFO] configuration.outputShadowrocket =>",
+            "Shadowrocket folder or configuration file doesn't exist.\n");
     }
 }
 
@@ -251,39 +167,24 @@ function outputShadowrocket(mode, raw, yaml, console, url) {
  * @param {object} console 控制台调试对象
  * @returns {Array<number>} 已检查组合
  */
-function getMode(mode, console) {
+function getMode(mode, axios, console) {
     const fs = require("fs");
+    console.log("[ INFO] configuration.getMode =>", "Start to get the combination mode.");
     try {
-        fs.accessSync(profileGlobal.defaultRulePath.link, fs.constants.F_OK);
-        defaultRulesUpdateCheck(console);
+        fs.accessSync(SOURCES.defaultFile, fs.constants.F_OK);
+        updateCheck(axios, console);
         mode[0] = 1;
     } catch (error) {
         mode[0] = 0;
     }
     try {
-        fs.accessSync(profileGlobal.customizeRulePath.link, fs.constants.F_OK);
-        mode[1] = 2;
+        fs.accessSync(SOURCES.customizeFile, fs.constants.F_OK);
+        mode[1] = 1;
     } catch (error) {
         mode[1] = 0;
     }
+    console.log("[ INFO] configuration.getMode =>", "Current combination mode:", mode);
     return mode;
-}
-
-/**
- * 本方法用于判断当前使用的配置文件。
- * 
- * 注：可根据实际情况调整此方法的内容。
- * 
- * @param {any} condition 判断条件
- * @returns {Function} 具体的配置文件
- */
-function configurationSelector(condition) {
-    if (condition.match(/touhou/gm)) {
-        return configurationA;
-    } else if (condition.match(/sub/gm)) {
-        return configurationB;
-    }
-    throw new Error("No link match, parsing failure.")
 }
 
 /**
@@ -294,16 +195,17 @@ function configurationSelector(condition) {
  * 
  * @param {object} console 控制台调试对象
  */
-function defaultRulesUpdateCheck(console) {
+function updateCheck(axios, console) {
     const fs = require("fs");
     const path = require("path");
 
-    fs.readFile(path.resolve(profileGlobal.defaultRulePath.link, "timestamp.txt"),
-        'utf8',
+    fs.readFile(path.resolve(SOURCES.defaultFile, "..", "default-rule-timestamp.log"),
+        "utf-8",
         (err, data) => {
             if (err) {
-                defaultRulesUpdate(console);
-                updateTimestamp(console);
+                console.log("[ INFO] configuration.updateCheck =>",
+                    "Init default rules.");
+                updateRules(axios, console);
             } else {
                 const savedTimestamp = parseInt(data);
                 const currentTimestamp = Date.now();
@@ -311,11 +213,13 @@ function defaultRulesUpdateCheck(console) {
                 const intervalInHours = (currentTimestamp - savedTimestamp) / (1000 * 60 * 60);
 
                 if (intervalInHours >= 168) {
-                    defaultRulesUpdate(console);
-                    updateTimestamp(console);
+                    console.log("[ INFO] configuration.updateCheck =>",
+                        "Start update default rules.");
+                    updateRules(axios, console);
                 } else {
-                    console.log("No update required for default rule.\nLast updated:",
-                        new Date(savedTimestamp).toString(), "\n");
+                    console.log("[ INFO] configuration.updateCheck =>",
+                        "Update time has not arrived yet.",
+                        "Last updated:", getFormatDate(new Date(savedTimestamp)));
                 }
             }
         });
@@ -329,33 +233,49 @@ function defaultRulesUpdateCheck(console) {
  * 
  * @param {object} console 控制台调试对象
  */
-function defaultRulesUpdate(console) {
-    const fileNames = ["apple", "applications", "cncidr", "direct", "gfw", "greatfire",
-        "icloud", "lancidr", "private", "proxy", "reject", "telegramcidr", "tld-not-cn"];
-    const domainHttp = profileGlobal.defaultRuleHttp.link;
+function updateRules(axios, console) {
+    const fs = require("fs");
+    const path = require("path");
 
-    fileNames.forEach(fileName => {
-        axios({
+    const promises = RULE_UPDATE_NAMES.map(fileName => {
+        return axios({
             method: "get",
-            url: domainHttp + "/" + fileName + ".txt",
+            url: RULE_UPDATE_HTTP + "/" + fileName + "." + RULE_UPDATE_TYPE,
         }).then(res => {
-            fs.writeFile(
-                path.resolve(profileGlobal.defaultRulePath.link, fileName + ".yaml"),
-                res.data, 'utf8',
-                (err) => {
-                    if (err) {
-                        console.log("Update default rule file failure:", fileName);
-                        console.log(err);
-                    } else {
-                        console.log('The default rule is up to date:', fileName);
+            return new Promise((resolve, reject) => {
+                fs.writeFile(
+                    path.resolve(SOURCES.defaultFile, fileName + ".yaml"),
+                    res.data, 'utf8',
+                    (err) => {
+                        if (err) {
+                            console.log("[ERROR] configuration.updateRules =>",
+                                "Update rule file failure:", fileName + ".yaml");
+                            console.log("[ERROR] configuration.updateRules =>", err);
+                            reject(err);
+                        } else {
+                            console.log("[ INFO] configuration.updateRules =>",
+                                "Rule file is up to date:", fileName + ".yaml");
+                            resolve();
+                        }
                     }
-                }
-            );
+                );
+            });
         }).catch(err => {
-            console.log("File writing failed and some exception occurred:", fileName);
-            console.log(err);
+            console.log("[ERROR] configuration.updateRules =>",
+                "File writing failed, or some exceptions occurred:", fileName + ".yaml");
+            console.log("[ERROR] configuration.updateRules =>", err);
+            return Promise.resolve();
         });
     });
+
+    Promise.all(promises)
+        .then(() => {
+            console.log("[ INFO] configuration.updateRules =>", "Start update timestamp file.");
+            updateTimestamp(console);
+        })
+        .catch(err => {
+            console.log("[ERROR] configuration.updateRules =>", err);
+        });
 }
 
 /**
@@ -370,17 +290,30 @@ function updateTimestamp(console) {
     const path = require("path");
 
     const currentTimestamp = Date.now();
-    fs.writeFile(path.resolve(profileGlobal.defaultRulePath.link, "timestamp.txt"),
+    fs.writeFile(path.resolve(SOURCES.defaultFile, "..", "default-rule-timestamp.log"),
         currentTimestamp.toString(),
         (err) => {
             if (err) {
-                console.log("Timestamp update failure:", err, "\n");
+                console.log("[ERROR] configuration.updateTimestamp =>",
+                    "Timestamp file update failure:", err, "\n");
             } else {
                 console.log(
-                    "The timestamp has been updated:",
-                    new Date(currentTimestamp).toString(), "\n");
+                    "[ INFO] configuration.updateTimestamp =>",
+                    "The timestamp file has been updated:", getFormatDate(new Date(currentTimestamp)), "\n");
             }
         });
+}
+
+function getFormatDate(date) {
+    return new Intl.DateTimeFormat('zh-CN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        timeZone: 'Asia/Shanghai'
+    }).format(date);
 }
 
 /**
@@ -392,7 +325,7 @@ function updateTimestamp(console) {
  * @param {boolean} isConfigStash 指示当前是否为输出Stash配置模式
  * @returns {string} 已解析并重构的配置文件信息
  */
-function get(originalConfiguration, mode, configuration, isConfigStash) {
+function get(console, originalConfiguration, mode, configuration, isConfigStash) {
 
     const newConfiguration = init(originalConfiguration);
     const profile = configuration();
@@ -413,30 +346,31 @@ function get(originalConfiguration, mode, configuration, isConfigStash) {
         defaultSaver = getRuleProviders(
             profile.defaultRules,
             profile.defaultRulePrefix,
-            profileGlobal.defaultRulePath
+            SOURCES.defaultFile
         );
     } else {
         defaultSaver = getRuleProviders(
             profile.defaultRules,
             profile.defaultRulePrefix,
-            profileGlobal.defaultRuleHttp
+            SOURCES.defaultHttp
         );
     }
     if (mode[1]) {
         customizeSaver = getRuleProviders(
             profile.customizeRules,
             profile.customizeRulePrefix,
-            profileGlobal.customizeRulePath
+            SOURCES.customizeFile
         );
     } else {
         customizeSaver = getRuleProviders(
             profile.customizeRules,
             profile.customizeRulePrefix,
-            profileGlobal.customizeRuleHttp
+            SOURCES.customizeHttp
         );
     }
     newConfiguration["rule-providers"] = Object.assign(defaultSaver, customizeSaver);
 
+    console.log("[ INFO] configuration.get =>", "Parsing successful.");
     /* final configuration */
     return isConfigStash ?
         JSON.stringify(newConfiguration) :
@@ -620,14 +554,13 @@ function getProxyGroups(details, proxies) {
  */
 function getRuleProviders(rules, rulePrefix, ruleSource) {
     let ruleProviders = {};
-    if (!ruleSource || ruleSource.link === "") {
+    if (!ruleSource || ruleSource === "") {
         return {};
     }
-
     const ruleNames = rules.map(ele => ele.replace(/^.+?,/gm, "").replace(/,.+$/gm, ""));;
 
     const getType = (ruleSource) => {
-        return ruleSource.link.includes("https") ? "http" : "file";
+        return ruleSource.includes("http") ? "http" : "file";
     }
     const getBehavior = (ruleName) => {
         if (ruleName === "applications") {
@@ -644,7 +577,7 @@ function getRuleProviders(rules, rulePrefix, ruleSource) {
             ruleProviders[rulePrefix + name] = {
                 type: "http",
                 behavior: getBehavior(name),
-                url: ruleSource.link + "/" + name + "." + ruleSource.type,
+                url: ruleSource + "/" + name + ".yaml",
                 interval: 86400
             }
         })
@@ -654,7 +587,7 @@ function getRuleProviders(rules, rulePrefix, ruleSource) {
             ruleProviders[rulePrefix + name] = {
                 type: "file",
                 behavior: getBehavior(name),
-                path: ruleSource.link + "/" + name + "." + ruleSource.type
+                path: ruleSource + "/" + name + ".yaml"
             }
         })
     }
