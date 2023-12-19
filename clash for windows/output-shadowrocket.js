@@ -59,6 +59,7 @@ const REPLACELIST = {
 }
 
 /**
+ * 本方法用于输出Shadowrocket配置文件。
  * 
  * @param {*} yaml YAML框架
  * @param {*} rawAfter 已处理完毕的配置信息
@@ -96,25 +97,22 @@ module.exports.runShadowrocket = (yaml, rawAfter, console) => {
         shadowrocketProxyGroup += ele.name + " = " + ele.type + ",";
         ele.proxies.forEach(proxy => {
             if (symbol === "on" && proxy.match(/\d\d/gm)) {
-                /*
-                 * Shadowrocket中的分组不支持显示Emoji表情，
-                 * 这里采用正则表达式来去除某些分组名称中的Emoji表情。
-                 */
-                shadowrocketProxyGroup += proxy.replace(/^\W+? (?!\d)/gm, "") + ","
+                /* Shadowrocket的分组内的节点名称不支持Emoji表情。
+                 * 这的正则表达式用来去除某些节点名称中的Emoji表情。*/
+                shadowrocketProxyGroup += proxy.replace(/^\W+?\s(?!\d)/gm, "") + ","
             } else {
                 shadowrocketProxyGroup += proxy + ","
             }
         });
-        /**
-         * Shadowrocket中无论分组中的Type类型是什么，都需要添加以下条目。
-         * 处于某些分组类型时，Shadowrocket会忽略条目中的某些键值。
-         */
+
+        /*Shadowrocket配置文件的分组无论属于什么Type类型，都可以添加以下条目。
+         * 当类型本身不需要这些选项时，Shadowrocket会自动忽略条目中已给出的某些键值。*/
         shadowrocketProxyGroup += "interval=600,timeout=5,select=0,url=http://www.gstatic.com/generate_204\n";
     });
     console.log("[ INFO] output-shadowrocket.runShadowrocket =>", "Proxy Group constructed.");
 
     /*
-     * Shadowrocket中规则集已经和规则融合在一起了，只要规则和分组详情获取完毕，就可以输出到文件。
+     * Shadowrocket的规则集已经和规则融合在一起了，只要规则和分组详情获取完毕，就可以输出到文件。
      * 
      * 目录下存在一个初始的配置文件：sr_rules_init.conf。
      * 通过覆盖初始配置文件的[Rule]和[Proxy Group]内容，即可得到最终的Shadowrocket配置文件。
@@ -144,7 +142,7 @@ module.exports.runShadowrocket = (yaml, rawAfter, console) => {
 /**
  * 本方法用于检查是否需要更新规则目录（rules）下的文件。
  * 
- * - 更新只依赖Clash的规则目录，直接读取其中的文件并将其转换为Shadowrocket支持的规则。
+ * - 更新只依赖Clash的规则目录，直接读取其中的文件并将其转换为Shadowrocket支持的规则；
  * - 如果时间戳文件不存在，则进行更新；否则检查该时间与当前时间的间隔是否大于一周。
  * - 如果时间间隔大于一周，则进行文件更新；否则将跳过更新并输出上次文件更新的日期。
  * 
@@ -175,6 +173,13 @@ function updateCheckShadowrocket(console) {
     }
 }
 
+/**
+ * 本方法用于转换Clash规则文件为Shadowrocket规则文件。
+ * 
+ * 所有Clash规则会通过本地获取，不需要请求网络。但前提是，本地需要存在Clash规则文件。
+ * 
+ * @param {object} console 
+ */
 function transformClashRules(console) {
     const fs = require("fs");
     const path = require("path");
@@ -203,7 +208,9 @@ function transformClashRules(console) {
                     copyFolderSync(inputPath, outputPath);
                 } else {
                     let fileContent = fs.readFileSync(inputPath, "utf-8");
-                    const fileName = sourceFile.replace(/\..+$/gm, "");
+                    /* 这里主要是为了去掉文件名的后缀信息。
+                     * 不推荐使用/\..+$/gm匹配，以避免文件名中存在多个“.”符号。*/
+                    const fileName = sourceFile.replace(/\.[a-zA-Z]+$/gm, "");
                     for (const [search, replace] of Object.entries(REPLACELIST[source.search[fileName]])) {
                         fileContent = fileContent.replace(new RegExp(search, "gm"), replace);
                     }
@@ -219,10 +226,10 @@ function transformClashRules(console) {
 /**
  * 本方法用于更新时间戳rule-timestamp.log文件。
  * 
- * 当Date对象调用toString方法时，JS会根据实际运行环境来转换时间戳，得到符合当前时区的日期字符串。
+ * 小知识：Date对象调用toString方法，JS会根据实际运行环境来转换时间戳，得到符合当前时区的日期字符串。
  * 
-* @param {object} console 控制台调试对象
-*/
+ * @param {object} console 控制台调试对象
+ */
 function updateTimestamp(console) {
     const fs = require("fs");
     const path = require("path");
@@ -242,6 +249,14 @@ function updateTimestamp(console) {
     }
 }
 
+/**
+ * 格式化输出日期。
+ * 
+ * => yyyy/MM/dd HH:mm:ss
+ * 
+ * @param {Date} date 日期对象
+ * @returns {string} 格式化的日期字符串
+ */
 function getFormatDate(date) {
     return new Intl.DateTimeFormat('zh-CN', {
         year: 'numeric',

@@ -1,4 +1,5 @@
 /**
+ * 本方法用于输出Stash配置文件。
  * 
  * @param {*} yaml YAML框架
  * @param {*} rawAfter 已处理完毕的配置信息

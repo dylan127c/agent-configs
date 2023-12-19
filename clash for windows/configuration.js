@@ -304,6 +304,14 @@ function updateTimestamp(console) {
         });
 }
 
+/**
+ * 格式化输出日期。
+ * 
+ * => yyyy/MM/dd HH:mm:ss
+ * 
+ * @param {Date} date 日期对象
+ * @returns {string} 格式化的日期字符串
+ */
 function getFormatDate(date) {
     return new Intl.DateTimeFormat('zh-CN', {
         year: 'numeric',
