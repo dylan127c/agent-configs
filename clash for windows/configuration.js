@@ -330,10 +330,10 @@ function getFormatDate(date) {
  * @param {object} originalConfiguration 原始的配置文件对象
  * @param {Array<number>} mode 存储规则组合的数组
  * @param {Function} configuration 存储配置信息的函数
- * @param {boolean} isConfigStash 指示当前是否为输出Stash配置模式
+ * @param {boolean} isConfigRemote 指示当前是否为输出Stash配置模式
  * @returns {string} 已解析并重构的配置文件信息
  */
-function get(console, originalConfiguration, mode, configuration, isConfigStash) {
+function get(console, originalConfiguration, mode, configuration, isConfigRemote) {
 
     const newConfiguration = init(originalConfiguration);
     const profile = configuration();
@@ -380,7 +380,7 @@ function get(console, originalConfiguration, mode, configuration, isConfigStash)
 
     console.log("[ INFO] configuration.get =>", "Parsing successful.");
     /* final configuration */
-    return isConfigStash ?
+    return isConfigRemote ?
         JSON.stringify(newConfiguration) :
         outputClashConfig(newConfiguration, profile.replacement);
 }

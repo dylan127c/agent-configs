@@ -34,6 +34,7 @@ dns: #!replace
 rules: #!replace
   - RULE-SET,customize-reject,REJECT
   - RULE-SET,customize-direct,DIRECT
+  - RULE-SET,customize-nodejs,🌄 特殊控制 | Node.js
   - RULE-SET,customize-edge,🌄 特殊控制 | Edge
   - RULE-SET,customize-openai,🌄 特殊控制 | OpenAI
   - RULE-SET,customize-brad,🌄 特殊控制 | Brad
@@ -144,6 +145,11 @@ proxy-groups: #!replace
       - "[SS]新加坡 01"
       - "[SS]新加坡 02"
       - "[SS]新加坡 03"
+  - name: 🌄 特殊控制 | Node.js
+    type: select
+    proxies:
+      - DIRECT
+      - 🌌 科学上网
   - name: 🌄 特殊控制 | Edge
     type: select
     proxies:
@@ -486,6 +492,11 @@ rule-providers: #!replace
     type: http
     behavior: domain
     url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/customize%20rules/direct.yaml
+    interval: 86400
+  customize-nodejs:
+    type: http
+    behavior: domain
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/customize%20rules/nodejs.yaml
     interval: 86400
   customize-edge:
     type: http

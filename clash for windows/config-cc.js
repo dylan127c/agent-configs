@@ -8,6 +8,7 @@ module.exports.configurationCc = () => {
     const groups = [
         { name: "🌌 科学上网", type: "select", proxies: ["DIRECT"].concat(mainGroups) },
         { name: "🌅 目标节点", type: "select", proxies: ["DIRECT", "REJECT"], append: /\[.+/gm },
+        { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网"] },
         { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["REJECT", "DIRECT", "🌌 科学上网"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /\[.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /\[.+/gm },
@@ -22,6 +23,7 @@ module.exports.configurationCc = () => {
     const customizeRules = [
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
+        "RULE-SET,nodejs,🌄 特殊控制 | Node.js",
         "RULE-SET,edge,🌄 特殊控制 | Edge",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
         "RULE-SET,brad,🌄 特殊控制 | Brad",
