@@ -35,11 +35,11 @@ rules: #!replace
   - RULE-SET,customize-applications,DIRECT
   - RULE-SET,customize-reject,REJECT
   - RULE-SET,customize-direct,DIRECT
-  - RULE-SET,customize-nodejs,🌄 特殊控制 | Node.js
-  - RULE-SET,customize-edge,🌄 特殊控制 | Edge
   - RULE-SET,customize-openai,🌄 特殊控制 | OpenAI
   - RULE-SET,customize-brad,🌄 特殊控制 | Brad
   - RULE-SET,customize-copilot,🌄 特殊控制 | Copilot
+  - RULE-SET,customize-edge,🌄 特殊控制 | Edge
+  - RULE-SET,customize-nodejs,🌄 特殊控制 | Node.js
   - RULE-SET,customize-proxy,🌌 科学上网
   - RULE-SET,default-applications,DIRECT
   - RULE-SET,default-apple,DIRECT
@@ -68,6 +68,11 @@ proxy-groups: #!replace
       - 🌃 故障切换 | 沪日电信
       - 🌉 负载均衡 | 香港
       - 🌉 负载均衡 | 日本
+  - name: 🌠 规则逃逸
+    type: select
+    proxies:
+      - DIRECT
+      - 🌌 科学上网
   - name: 🌅 目标节点
     type: select
     proxies:
@@ -112,17 +117,6 @@ proxy-groups: #!replace
       - 🇭🇰 香港 10 HKBN家宽（0.5倍率）
       - 🇭🇰 香港 11 NTT IPv6
       - 🇭🇰 香港 12 Cogent IPv6（流媒体）
-  - name: 🌄 特殊控制 | Node.js
-    type: select
-    proxies:
-      - DIRECT
-      - 🌌 科学上网
-  - name: 🌄 特殊控制 | Edge
-    type: select
-    proxies:
-      - DIRECT
-      - REJECT
-      - 🌌 科学上网
   - name: 🌄 特殊控制 | OpenAI
     type: select
     proxies:
@@ -214,6 +208,17 @@ proxy-groups: #!replace
     proxies:
       - DIRECT
       - 🌌 科学上网
+  - name: 🌄 特殊控制 | Edge
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - 🌌 科学上网
+  - name: 🌄 特殊控制 | Node.js
+    type: select
+    proxies:
+      - DIRECT
+      - 🌌 科学上网
   - name: 🌃 故障切换 | 深港移动
     type: fallback
     proxies:
@@ -264,11 +269,6 @@ proxy-groups: #!replace
     url: http://www.gstatic.com/generate_204
     interval: 72
     lazy: true
-  - name: 🌠 规则逃逸
-    type: select
-    proxies:
-      - DIRECT
-      - 🌌 科学上网
 rule-providers: #!replace
   default-applications:
     type: http
@@ -350,16 +350,6 @@ rule-providers: #!replace
     behavior: domain
     url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/customize%20rules/direct.yaml
     interval: 86400
-  customize-nodejs:
-    type: http
-    behavior: domain
-    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/customize%20rules/nodejs.yaml
-    interval: 86400
-  customize-edge:
-    type: http
-    behavior: domain
-    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/customize%20rules/edge.yaml
-    interval: 86400
   customize-openai:
     type: http
     behavior: domain
@@ -374,6 +364,16 @@ rule-providers: #!replace
     type: http
     behavior: domain
     url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/customize%20rules/copilot.yaml
+    interval: 86400
+  customize-edge:
+    type: http
+    behavior: domain
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/customize%20rules/edge.yaml
+    interval: 86400
+  customize-nodejs:
+    type: http
+    behavior: domain
+    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/customize%20rules/nodejs.yaml
     interval: 86400
   customize-proxy:
     type: http

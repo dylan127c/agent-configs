@@ -171,29 +171,29 @@ const configurationOn = () => {
     ];
     const groups = [
         { name: "🌌 科学上网", type: "select", proxies: ["DIRECT"].concat(mainGroups) },
+        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网"] },
         { name: "🌅 目标节点", type: "select", proxies: ["DIRECT", "REJECT"], append: /.+/gm },
-        { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网"] },
-        { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["DIRECT", "🌌 科学上网"] },
+        { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网"] },
+        { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网"] },
         { name: "🌃 故障切换 | 深港移动", type: "fallback", proxies: [], append: /香港 \d\d 移动.+/gm },
         { name: "🌃 故障切换 | 沪港电信", type: "fallback", proxies: [], append: /香港 \d\d 电信.+/gm },
         { name: "🌃 故障切换 | 沪日电信", type: "fallback", proxies: [], append: /日本 \d\d [^A-Z].+/gm },
         { name: "🌉 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港\s\d\d [A-Z].+$/gm },
         { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本\s\d\d [A-Z]/gm },
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网"] }
     ];
 
     const customizeRules = [
         "RULE-SET,applications,DIRECT",
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
-        "RULE-SET,nodejs,🌄 特殊控制 | Node.js",
-        "RULE-SET,edge,🌄 特殊控制 | Edge",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
         "RULE-SET,brad,🌄 特殊控制 | Brad",
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
+        "RULE-SET,edge,🌄 特殊控制 | Edge",
+        "RULE-SET,nodejs,🌄 特殊控制 | Node.js",
         "RULE-SET,proxy,🌌 科学上网"
     ];
     const defaultRules = [
@@ -240,27 +240,27 @@ const configurationCc = () => {
     ];
     const groups = [
         { name: "🌌 科学上网", type: "select", proxies: ["DIRECT"].concat(mainGroups) },
+        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网"] },
         { name: "🌅 目标节点", type: "select", proxies: ["DIRECT", "REJECT"], append: /\[.+/gm },
-        { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网"] },
-        { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["REJECT", "DIRECT", "🌌 科学上网"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /\[.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /\[.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["DIRECT", "🌌 科学上网"] },
+        { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网"] },
+        { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网"] },
         { name: "🌉 负载均衡 | 香港 A", type: "load-balance", proxies: [], append: /香港\s\d\d$/gm },
         { name: "🌉 负载均衡 | 香港 B", type: "load-balance", proxies: [], append: /香港\s\d\d\w/gm },
         { name: "🌁 测试延迟 | 其他节点", type: "fallback", proxies: [], append: /(越南|新加坡|台灣|美國|日本)\s\d\d/gm },
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网"] },
-        { name: "🏞️ 订阅详情", type: "select", proxies: [], append: /剩余流量/gm }
+        { name: "🏞️ 订阅详情", type: "select", proxies: [], append: /剩余流量/gm },
     ]
 
     const customizeRules = [
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
-        "RULE-SET,nodejs,🌄 特殊控制 | Node.js",
-        "RULE-SET,edge,🌄 特殊控制 | Edge",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
         "RULE-SET,brad,🌄 特殊控制 | Brad",
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
+        "RULE-SET,edge,🌄 特殊控制 | Edge",
+        "RULE-SET,nodejs,🌄 特殊控制 | Node.js",
         "RULE-SET,proxy,🌌 科学上网"
     ];
     const defaultRules = [
@@ -311,7 +311,7 @@ function main(params) {
     } else if (count === 15) {
         configuration = configurationCc;
     }
-    const mode = [1, 2];
+    const mode = [1, 1];
     return JSON.parse(get(
         console,
         params,

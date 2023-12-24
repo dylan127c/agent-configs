@@ -32,6 +32,7 @@ const SOURCES = [
             "direct": "DOMAIN-SUFFIX",
             "edge": "DOMAIN-SUFFIX",
             "openai": "DOMAIN-SUFFIX",
+            "nodejs": "DOMAIN-SUFFIX",
             "brad": "DOMAIN-SUFFIX",
             "copilot": "DOMAIN-SUFFIX",
             "proxy": "DOMAIN-SUFFIX",
@@ -143,8 +144,8 @@ module.exports.runShadowrocket = (yaml, rawAfter, console) => {
  * 本方法用于检查是否需要更新规则目录（rules）下的文件。
  * 
  * - 更新只依赖Clash的规则目录，直接读取其中的文件并将其转换为Shadowrocket支持的规则；
- * - 如果时间戳文件不存在，则进行更新；否则检查该时间与当前时间的间隔是否大于一周。
- * - 如果时间间隔大于一周，则进行文件更新；否则将跳过更新并输出上次文件更新的日期。
+ * - 如果时间戳文件不存在，则进行更新；否则检查该时间与当前时间的间隔是否大于二十四小时。
+ * - 如果时间间隔大于二十四小时，则进行文件更新；否则将跳过更新并输出上次文件更新的日期。
  * 
  * @param {object} console 控制台调试对象
  */
@@ -152,13 +153,14 @@ function updateCheckShadowrocket(console) {
     const fs = require("fs");
     const path = require("path");
 
+    /* 根据时间戳文件来决定是否要更新规则文件。*/
     try {
-        const data = fs.readFileSync(path.resolve(RULE_FOLDER, "..", "rule-timestamp.log"), "utf-8");
+        const data = fs.readFileSync(path.resolve(DESTINATION_PATH, "rule-timestamp.log"), "utf-8");
         const savedTimestamp = parseInt(data);
         const currentTimestamp = Date.now();
 
         const intervalInHours = (currentTimestamp - savedTimestamp) / (1000 * 60 * 60);
-        if (intervalInHours >= 168) {
+        if (intervalInHours >= 24) {
             console.log("[ INFO] output-shadowrocket.updateCheckShadowrocket =>",
                 "Start transform rules.");
             transformClashRules(console);
@@ -168,6 +170,8 @@ function updateCheckShadowrocket(console) {
                 "Last updated:", getFormatDate(new Date(savedTimestamp)));
         }
     } catch (error) {
+        /* 这里采取同步的方式来读取rule-timestamp.log文件。
+         * 如果指定的时间戳文件不存在，异常就会被catch代码块抓取，以下是初始化时间戳文件的代码。*/
         console.log("[ INFO] output-shadowrocket.updateCheckShadowrocket =>", "Init rules.");
         transformClashRules(console);
     }
