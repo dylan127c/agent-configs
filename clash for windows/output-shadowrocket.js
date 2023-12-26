@@ -116,10 +116,10 @@ module.exports.runShadowrocket = (yaml, rawAfter, console) => {
     /*
      * Shadowrocket 的规则集已经和规则融合在一起了，只要规则和分组详情获取完毕，就可以输出到文件。
      * 
-     * 目录下存在一个初始的配置文件：sr_rules_init.conf。
+     * 目录下存在一个初始的配置文件：init.conf。
      * 通过覆盖初始配置文件的 [Rule] 和 [Proxy Group] 内容，即可得到最终的 Shadowrocket 配置文件。
      */
-    const inputFileName = "sr_rules_init.conf";
+    const inputFileName = "init.conf";
     const inputFilePath = DESTINATION_PATH + inputFileName;
 
     const outputFileName = "sr_rules_" + symbol + ".conf"
