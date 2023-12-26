@@ -32,7 +32,7 @@ const SOURCES = [
             "direct": "DOMAIN-SUFFIX",
             "edge": "DOMAIN-SUFFIX",
             "openai": "DOMAIN-SUFFIX",
-            "nodejs": "DOMAIN-SUFFIX",
+            "nodejs": "PROCESS-NAME",
             "brad": "DOMAIN-SUFFIX",
             "copilot": "DOMAIN-SUFFIX",
             "proxy": "DOMAIN-SUFFIX",
@@ -68,7 +68,8 @@ const REPLACELIST = {
  */
 module.exports.runShadowrocket = (yaml, rawAfter, console) => {
 
-    updateCheckShadowrocket(console);
+    // updateCheckShadowrocket(console); 不再检查更新，而是直接更新
+    transformClashRules(console);
 
     console.log("[ INFO] output-shadowrocket.runShadowrocket =>", "Start output shadowrocket config.");
     const configuration = yaml.parse(rawAfter);
@@ -141,43 +142,6 @@ module.exports.runShadowrocket = (yaml, rawAfter, console) => {
 }
 
 /**
- * 本方法用于检查是否需要更新规则目录 rules 下的文件。
- * 
- * 更新只依赖 Clash 的规则目录，方法会直接读取目录中的文件并将其转换为 Shadowrocket 所支持的规则文件：
- * - 如果时间戳文件不存在，则进行更新；否则检查该时间与当前时间的间隔是否大于 24 小时。
- * - 如果时间间隔大于 24 小时，则进行文件更新；否则将跳过更新并输出上次文件更新的日期。
- * 
- * @param {object} console 控制台调试对象
- */
-function updateCheckShadowrocket(console) {
-    const fs = require("fs");
-    const path = require("path");
-
-    /* 根据时间戳文件来决定是否要更新规则文件。*/
-    try {
-        const data = fs.readFileSync(path.resolve(DESTINATION_PATH, "rule-timestamp.log"), "utf-8");
-        const savedTimestamp = parseInt(data);
-        const currentTimestamp = Date.now();
-
-        const intervalInHours = (currentTimestamp - savedTimestamp) / (1000 * 60 * 60);
-        if (intervalInHours >= 24) {
-            console.log("[ INFO] output-shadowrocket.updateCheckShadowrocket =>",
-                "Start transform rules.");
-            transformClashRules(console);
-        } else {
-            console.log("[ INFO] output-shadowrocket.updateCheckShadowrocket =>",
-                "Update time has not arrived yet.",
-                "Last updated:", getFormatDate(new Date(savedTimestamp)));
-        }
-    } catch (error) {
-        /* 这里采取同步的方式来读取 rule-timestamp.log 文件。
-         * 如果指定的时间戳文件不存在，异常就会被 catch 代码块抓取，以下是初始化时间戳文件的代码。*/
-        console.log("[ INFO] output-shadowrocket.updateCheckShadowrocket =>", "Init rules.");
-        transformClashRules(console);
-    }
-}
-
-/**
  * 本方法用于转换 Clash 规则文件为 Shadowrocket 规则文件。
  * 
  * 所有 Clash 规则会通过本地获取，不需要请求网络。但前提是，本地需要存在 Clash 规则文件。
@@ -224,7 +188,45 @@ function transformClashRules(console) {
         });
     });
     console.log("[ INFO] output-shadowrocket.transformClashRules =>", "Rule files transformed.")
-    updateTimestamp(console);
+    // updateTimestamp(console); 由于不需要检查更新，这里的时间戳文件可以不输出
+}
+
+/**
+ * 本方法用于检查是否需要更新规则目录 rules 下的文件。
+ * 
+ * 更新只依赖 Clash 的规则目录，方法会直接读取目录中的文件并将其转换为 Shadowrocket 所支持的规则文件：
+ * - 如果时间戳文件不存在，则进行更新；否则检查该时间与当前时间的间隔是否大于 24 小时。
+ * - 如果时间间隔大于 24 小时，则进行文件更新；否则将跳过更新并输出上次文件更新的日期。
+ * 
+ * @deprecated
+ * @param {object} console 控制台调试对象
+ */
+function updateCheckShadowrocket(console) {
+    const fs = require("fs");
+    const path = require("path");
+
+    /* 根据时间戳文件来决定是否要更新规则文件。*/
+    try {
+        const data = fs.readFileSync(path.resolve(DESTINATION_PATH, "rule-timestamp.log"), "utf-8");
+        const savedTimestamp = parseInt(data);
+        const currentTimestamp = Date.now();
+
+        const intervalInHours = (currentTimestamp - savedTimestamp) / (1000 * 60 * 60);
+        if (intervalInHours >= 24) {
+            console.log("[ INFO] output-shadowrocket.updateCheckShadowrocket =>",
+                "Start transform rules.");
+            transformClashRules(console);
+        } else {
+            console.log("[ INFO] output-shadowrocket.updateCheckShadowrocket =>",
+                "Update time has not arrived yet.",
+                "Last updated:", getFormatDate(new Date(savedTimestamp)));
+        }
+    } catch (error) {
+        /* 这里采取同步的方式来读取 rule-timestamp.log 文件。
+         * 如果指定的时间戳文件不存在，异常就会被 catch 代码块抓取，以下是初始化时间戳文件的代码。*/
+        console.log("[ INFO] output-shadowrocket.updateCheckShadowrocket =>", "Init rules.");
+        transformClashRules(console);
+    }
 }
 
 /**
@@ -232,6 +234,7 @@ function transformClashRules(console) {
  * 
  * 小知识：Date 对象调用 toString 方法，JS 会根据实际运行环境来转换时间戳，得到符合当前时区的日期字符串。
  * 
+ * @deprecated
  * @param {object} console 控制台调试对象
  */
 function updateTimestamp(console) {
@@ -258,6 +261,7 @@ function updateTimestamp(console) {
  * 
  * => yyyy/MM/dd HH:mm:ss
  * 
+ * @deprecated
  * @param {Date} date 日期对象
  * @returns {string} 格式化的日期字符串
  */
