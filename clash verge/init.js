@@ -1,5 +1,4 @@
 function main(params) {
-
     let configuration;
     const count = params["proxy-groups"].length
     if (count === 11) {

@@ -1,7 +1,15 @@
-# proxy-rules
+# PROXY RULES
 
-Create for Clash & Stash. Only for personal use.
+Create for Proxy Tools. Only for personal use.
 
-Stash jsDelivr link:
-- Cola：https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/stash/CC.stoverride
-- Oriental：https://cdn.jsdelivr.net/gh/dylan127c/proxy-rules@main/stash/ON.stoverride
+| TOOL         | SERVICE | LINK                                                         |
+| :------------: | :-------: | :------------------------------------------------------------: |
+| STASH        | CC      | https://raw.githubusercontent.com/dylan127c/proxy-rules/main/stash/CC.stoverride |
+| STASH        | ON      | https://raw.githubusercontent.com/dylan127c/proxy-rules/main/stash/ON.stoverride |
+| SHADOWROCKET | CC      | https://raw.githubusercontent.com/dylan127c/proxy-rules/main/shadowrocket/sr_rules_cc.conf |
+| SHADOWROCKET | ON      | https://raw.githubusercontent.com/dylan127c/proxy-rules/main/shadowrocket/sr_rules_on.conf |
+
+
+
+
+

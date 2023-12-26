@@ -3,6 +3,8 @@ module.exports.configurationCc = () => {
         "🌅 目标节点",
         "🌉 负载均衡 | 香港 A",
         "🌉 负载均衡 | 香港 B",
+        "🌉 负载均衡 | 美国",
+        "🌉 负载均衡 | 日本",
         "🌁 测试延迟 | 其他节点"
     ];
     const groups = [
@@ -16,7 +18,9 @@ module.exports.configurationCc = () => {
         { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网"] },
         { name: "🌉 负载均衡 | 香港 A", type: "load-balance", proxies: [], append: /香港\s\d\d$/gm },
         { name: "🌉 负载均衡 | 香港 B", type: "load-balance", proxies: [], append: /香港\s\d\d\w/gm },
-        { name: "🌁 测试延迟 | 其他节点", type: "fallback", proxies: [], append: /(越南|新加坡|台灣|美國|日本)\s\d\d/gm },
+        { name: "🌉 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美國\s\d\d$/gm },
+        { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本\s\d\d$/gm },
+        { name: "🌁 测试延迟 | 其他节点", type: "fallback", proxies: [], append: /(越南|新加坡|台灣)\s\d\d/gm },
         { name: "🏞️ 订阅详情", type: "select", proxies: [], append: /剩余流量/gm },
     ]
 

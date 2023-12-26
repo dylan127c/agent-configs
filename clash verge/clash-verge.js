@@ -1,16 +1,11 @@
-const PATH = "H:/OneDrive/Documents/Repositories/Proxy Rules/clash for windows/";
-const URL = "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/";
+const CFW_FOLDER = "H:/OneDrive/Documents/Repositories/Proxy Rules/clash for windows/";
+const REMOTE_URL = "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/";
 const SOURCES = {
-  defaultFile: PATH + "default rules",
-  customizeFile: PATH + "customize rules",
-  defaultHttp: URL + "default%20rules",
-  customizeHttp: URL + "customize%20rules"
+  defaultFile: CFW_FOLDER + "default rules",
+  customizeFile: CFW_FOLDER + "customize rules",
+  defaultHttp: REMOTE_URL + "default%20rules",
+  customizeHttp: REMOTE_URL + "customize%20rules"
 };
-const STASH_FOLDER = "H:/OneDrive/Documents/Repositories/Proxy Rules/stash";
-const SHADOWROCKET_FOLDER = "H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket";
-const RULE_UPDATE_HTTP = "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release";
-const RULE_UPDATE_NAMES = ["apple", "applications", "cncidr", "direct", "gfw", "greatfire", "icloud", "lancidr", "private", "proxy", "reject", "telegramcidr", "tld-not-cn"];
-const RULE_UPDATE_TYPE = "txt";
 
 function get(console, originalConfiguration, mode, configuration, isConfigRemote) {
   const newConfiguration = init(originalConfiguration);
@@ -236,6 +231,8 @@ const configurationCc = () => {
         "🌅 目标节点",
         "🌉 负载均衡 | 香港 A",
         "🌉 负载均衡 | 香港 B",
+        "🌉 负载均衡 | 美国",
+        "🌉 负载均衡 | 日本",
         "🌁 测试延迟 | 其他节点"
     ];
     const groups = [
@@ -249,7 +246,9 @@ const configurationCc = () => {
         { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网"] },
         { name: "🌉 负载均衡 | 香港 A", type: "load-balance", proxies: [], append: /香港\s\d\d$/gm },
         { name: "🌉 负载均衡 | 香港 B", type: "load-balance", proxies: [], append: /香港\s\d\d\w/gm },
-        { name: "🌁 测试延迟 | 其他节点", type: "fallback", proxies: [], append: /(越南|新加坡|台灣|美國|日本)\s\d\d/gm },
+        { name: "🌉 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美國\s\d\d$/gm },
+        { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本\s\d\d$/gm },
+        { name: "🌁 测试延迟 | 其他节点", type: "fallback", proxies: [], append: /(越南|新加坡|台灣)\s\d\d/gm },
         { name: "🏞️ 订阅详情", type: "select", proxies: [], append: /剩余流量/gm },
     ]
 
@@ -303,7 +302,6 @@ const configurationCc = () => {
 }
 
 function main(params) {
-
     let configuration;
     const count = params["proxy-groups"].length
     if (count === 11) {

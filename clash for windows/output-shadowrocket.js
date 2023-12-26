@@ -60,9 +60,9 @@ const REPLACELIST = {
 }
 
 /**
- * 本方法用于输出Shadowrocket配置文件。
+ * 本方法用于输出 Shadowrocket 配置文件。
  * 
- * @param {*} yaml YAML框架
+ * @param {*} yaml yaml 框架
  * @param {*} rawAfter 已处理完毕的配置信息
  * @param {object} console 控制台调试对象
  */
@@ -98,25 +98,25 @@ module.exports.runShadowrocket = (yaml, rawAfter, console) => {
         shadowrocketProxyGroup += ele.name + " = " + ele.type + ",";
         ele.proxies.forEach(proxy => {
             if (symbol === "on" && proxy.match(/\d\d/gm)) {
-                /* Shadowrocket的分组内的节点名称不支持Emoji表情。
-                 * 这的正则表达式用来去除某些节点名称中的Emoji表情。*/
+                /* Shadowrocket 分组节点的名称不支持 Emoji 表情。
+                 * 以下的正则表达式可去除某些节点名称中的 Emoji 表情。*/
                 shadowrocketProxyGroup += proxy.replace(/^\W+?\s(?!\d)/gm, "") + ","
             } else {
                 shadowrocketProxyGroup += proxy + ","
             }
         });
 
-        /*Shadowrocket配置文件的分组无论属于什么Type类型，都可以添加以下条目。
-         * 当类型本身不需要这些选项时，Shadowrocket会自动忽略条目中已给出的某些键值。*/
+        /* Shadowrocket 配置文件的分组无论属于什么 Type 类型，都可以添加以下条目。
+         * 当类型本身不需要这些选项时，Shadowrocket 会自动忽略条目中已给出的某些键值。*/
         shadowrocketProxyGroup += "interval=600,timeout=5,select=0,url=http://www.gstatic.com/generate_204\n";
     });
     console.log("[ INFO] output-shadowrocket.runShadowrocket =>", "Proxy Group constructed.");
 
     /*
-     * Shadowrocket的规则集已经和规则融合在一起了，只要规则和分组详情获取完毕，就可以输出到文件。
+     * Shadowrocket 的规则集已经和规则融合在一起了，只要规则和分组详情获取完毕，就可以输出到文件。
      * 
      * 目录下存在一个初始的配置文件：sr_rules_init.conf。
-     * 通过覆盖初始配置文件的[Rule]和[Proxy Group]内容，即可得到最终的Shadowrocket配置文件。
+     * 通过覆盖初始配置文件的 [Rule] 和 [Proxy Group] 内容，即可得到最终的 Shadowrocket 配置文件。
      */
     const inputFileName = "sr_rules_init.conf";
     const inputFilePath = DESTINATION_PATH + inputFileName;
@@ -141,11 +141,11 @@ module.exports.runShadowrocket = (yaml, rawAfter, console) => {
 }
 
 /**
- * 本方法用于检查是否需要更新规则目录（rules）下的文件。
+ * 本方法用于检查是否需要更新规则目录 rules 下的文件。
  * 
- * - 更新只依赖Clash的规则目录，直接读取其中的文件并将其转换为Shadowrocket支持的规则；
- * - 如果时间戳文件不存在，则进行更新；否则检查该时间与当前时间的间隔是否大于二十四小时。
- * - 如果时间间隔大于二十四小时，则进行文件更新；否则将跳过更新并输出上次文件更新的日期。
+ * 更新只依赖 Clash 的规则目录，方法会直接读取目录中的文件并将其转换为 Shadowrocket 所支持的规则文件：
+ * - 如果时间戳文件不存在，则进行更新；否则检查该时间与当前时间的间隔是否大于 24 小时。
+ * - 如果时间间隔大于 24 小时，则进行文件更新；否则将跳过更新并输出上次文件更新的日期。
  * 
  * @param {object} console 控制台调试对象
  */
@@ -170,17 +170,17 @@ function updateCheckShadowrocket(console) {
                 "Last updated:", getFormatDate(new Date(savedTimestamp)));
         }
     } catch (error) {
-        /* 这里采取同步的方式来读取rule-timestamp.log文件。
-         * 如果指定的时间戳文件不存在，异常就会被catch代码块抓取，以下是初始化时间戳文件的代码。*/
+        /* 这里采取同步的方式来读取 rule-timestamp.log 文件。
+         * 如果指定的时间戳文件不存在，异常就会被 catch 代码块抓取，以下是初始化时间戳文件的代码。*/
         console.log("[ INFO] output-shadowrocket.updateCheckShadowrocket =>", "Init rules.");
         transformClashRules(console);
     }
 }
 
 /**
- * 本方法用于转换Clash规则文件为Shadowrocket规则文件。
+ * 本方法用于转换 Clash 规则文件为 Shadowrocket 规则文件。
  * 
- * 所有Clash规则会通过本地获取，不需要请求网络。但前提是，本地需要存在Clash规则文件。
+ * 所有 Clash 规则会通过本地获取，不需要请求网络。但前提是，本地需要存在 Clash 规则文件。
  * 
  * @param {object} console 
  */
@@ -228,9 +228,9 @@ function transformClashRules(console) {
 }
 
 /**
- * 本方法用于更新时间戳rule-timestamp.log文件。
+ * 本方法用于更新时间戳 rule-timestamp.log 文件。
  * 
- * 小知识：Date对象调用toString方法，JS会根据实际运行环境来转换时间戳，得到符合当前时区的日期字符串。
+ * 小知识：Date 对象调用 toString 方法，JS 会根据实际运行环境来转换时间戳，得到符合当前时区的日期字符串。
  * 
  * @param {object} console 控制台调试对象
  */
@@ -256,7 +256,7 @@ function updateTimestamp(console) {
 /**
  * 格式化输出日期。
  * 
- * => yyyy/MM/dd HH:mm:ss
+ * => yyyy/MM/dd HH:mm:ss
  * 
  * @param {Date} date 日期对象
  * @returns {string} 格式化的日期字符串

@@ -1,28 +1,42 @@
-const PATH = "H:/OneDrive/Documents/Repositories/Proxy Rules/clash for windows/";
-const URL = "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/";
-
-const SOURCES = {
-    defaultFile: PATH + "default rules",
-    customizeFile: PATH + "customize rules",
-    defaultHttp: URL + "default%20rules",
-    customizeHttp: URL + "customize%20rules"
-};
-const STASH_FOLDER = "H:/OneDrive/Documents/Repositories/Proxy Rules/stash";
-const SHADOWROCKET_FOLDER = "H:/OneDrive/Documents/Repositories/Proxy Rules/shadowrocket";
-
-const RULE_UPDATE_HTTP = "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release";
-const RULE_UPDATE_NAMES = ["apple", "applications", "cncidr", "direct", "gfw", "greatfire",
-    "icloud", "lancidr", "private", "proxy", "reject", "telegramcidr", "tld-not-cn"];
-const RULE_UPDATE_TYPE = "txt";
+const fs = require("fs");
+const path = require("path");
 
 /**
- * 本方法用于解析CFW相关的订阅配置。
+ * 本地目录。
  * 
- * - CFW使用此脚本不需要移除或注释main方法。
+ * @constant {@link SOURCES}
+ */
+const CFW_FOLDER = __dirname + "/";
+
+/** 
+ * 远程目录。
+ * 
+ * @constant {@link SOURCES}
+ */
+const REMOTE_URL = "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/";
+
+/**
+ * 本常量在以下方法中被引用。
+ * 
+ * @method {@link getMode}
+ * @method {@link updateCheck}
+ * @method {@link updateRules}
+ * @method {@link updateTimestamp}
+ * @method {@link get}
+ */
+const SOURCES = {
+    defaultFile: CFW_FOLDER + "default rules",
+    customizeFile: CFW_FOLDER + "customize rules",
+    defaultHttp: REMOTE_URL + "default%20rules",
+    customizeHttp: REMOTE_URL + "customize%20rules"
+};
+
+/**
+ * 本方法用于解析 CFW 相关的订阅配置。
  * 
  * @param {string} raw 原始配置文件信息
- * @param {object} axios 网络请求框架
- * @param {object} yaml yaml框架
+ * @param {function} axios 网络请求框架
+ * @param {object} yaml yaml 框架
  * @param {object} console 控制台调试对象
  * @param {string} url 订阅地址
  * @returns {string} 已处理完毕的配置信息
@@ -58,12 +72,11 @@ module.exports.parse = async (raw, { axios, yaml, notify, console },
 }
 
 /**
- * 本方法用于判断当前使用的配置文件。
- * 
- * 注：可根据实际情况调整此方法的内容。
+ * 本方法用于判断当前使用的配置文件，需要根据实际的配置情况对方法进行调整。
  * 
  * @param {any} condition 判断条件
- * @returns {Function} 具体的配置文件
+ * @param {object} console 控制台调试对象
+ * @returns {function} 具体的配置文件
  */
 function getConfig(condition, console) {
     if (condition.match(/touhou/gm)) {
@@ -95,18 +108,19 @@ function getConfig(condition, console) {
 }
 
 /**
- * 本方法用于判断是否需要输出相关的Stash配置文件。
+ * 本方法用于判断是否需要输出相关的 Stash 配置文件。
  * 
- * - 如果Stash输出目录不存在，即表示不需要输出Stash配置文件；
- * - 如果输出目录存在，但不存在output.js文件，这也表明不需要输出Stash配置文件。
+ * - 如果 Stash 输出目录不存在，即表示不需要输出 Stash 配置文件；
+ * - 如果输出目录存在，但不存在 output.js 文件，这也表明不需要输出 Stash 配置文件。
  * 
+ * @param {number[]} mode
  * @param {string} raw 原始配置文件
- * @param {object} yaml yaml框架
+ * @param {object} yaml yaml 框架
  * @param {object} console 控制台调试
- * @param {string} url 订阅地址
+ * @param {function} configuration 具体订阅的配置信息
  */
 function outputStash(mode, raw, yaml, console, configuration) {
-    const fs = require("fs");
+    const STASH_FOLDER = path.resolve(__dirname, "..", "stash");
     try {
         fs.accessSync(STASH_FOLDER, fs.constants.F_OK);
         delete require.cache[require.resolve("./output-stash")];
@@ -122,18 +136,19 @@ function outputStash(mode, raw, yaml, console, configuration) {
 }
 
 /**
- * 本方法用于判断是否需要输出相关的Shadowrocket配置文件。
+ * 本方法用于判断是否需要输出相关的 Shadowrocket 配置文件。
  * 
- * - 如果Shadowrocket输出目录不存在，即表示不需要输出Shadowrocket配置文件；
- * - 如果输出目录存在，但不存在output.js文件，这也表明不需要输出Shadowrocket配置文件。
+ * - 如果 Shadowrocket 输出目录不存在，即表示不需要输出 Shadowrocket 配置文件；
+ * - 如果输出目录存在，但不存在 output.js 文件，这也表明不需要输出 Shadowrocket 配置文件。
  * 
+ * @param {number[]} mode
  * @param {string} raw 原始配置文件
- * @param {object} yaml yaml框架
+ * @param {object} yaml yaml 框架
  * @param {object} console 控制台调试
- * @param {string} url 订阅地址
+ * @param {function} configuration 具体订阅的配置信息
  */
 function outputShadowrocket(mode, raw, yaml, console, configuration) {
-    const fs = require("fs");
+    const SHADOWROCKET_FOLDER = path.resolve(__dirname, "..", "shadowrocket");
     try {
         fs.accessSync(SHADOWROCKET_FOLDER, fs.constants.F_OK);
         delete require.cache[require.resolve("./output-shadowrocket")];
@@ -149,26 +164,26 @@ function outputShadowrocket(mode, raw, yaml, console, configuration) {
 }
 
 /**
- * 本方法用于判断default rules/customize rules来源于网络还是本地文件。
+ * 本方法用于判断规则文件来源于网络 HTTP 还是本地文件 FILE。
  * 
- * 如果本地存在default rules/customize rules目录，则表明规则来源于本地，其中：
+ * 如果本地存在 default rules | customize rules 目录，则表明规则来源于本地，其中：
  * 
- * - default rules：如果存在，则mode[0]计数为1；否则mode[0]计数为0；
- * - customize rules：如果存在，则mode[1]计数为2；否则mode[1]计数为0.
+ * - default rules：如果存在，则 mode[0] 计数为 1；否则 mode[0] 计数为 0；
+ * - customize rules：如果存在，则 mode[1] 计数为 1；否则 mode[1] 计数为 0.
  * 
- * 那么，数组mode中的元素即存在四种不同的状态：
+ * 那么，数组 mode 中的元素即存在四种不同的状态：
  * 
- * - [0, 0]：网络（default rules）| 网络（customize rules）
- * - [1, 0]：本地（default rules）| 网络（customize rules）
- * - [0, 2]：网络（default rules）| 本地（customize rules）
- * - [1, 2]：本地（default rules）| 本地（customize rules）
+ * - [0, 0]：网络（default rules）| 网络（customize rules）
+ * - [1, 0]：本地（default rules）| 网络（customize rules）
+ * - [0, 1]：网络（default rules）| 本地（customize rules）
+ * - [1, 1]：本地（default rules）| 本地（customize rules）
  * 
- * @param {Array<number>} mode 初始化组合
+ * @param {number[]} mode 初始化组合
+ * @param {function} axios 网络请求框架
  * @param {object} console 控制台调试对象
- * @returns {Array<number>} 已检查组合
+ * @returns {number[]} 已检查组合
  */
 function getMode(mode, axios, console) {
-    const fs = require("fs");
     console.log("[ INFO] configuration.getMode =>", "Start to get the combination mode.");
     try {
         fs.accessSync(SOURCES.defaultFile, fs.constants.F_OK);
@@ -188,17 +203,16 @@ function getMode(mode, axios, console) {
 }
 
 /**
- * 本方法用于检查是否需要更新默认规则目录（default rules）下的文件。
+ * 本方法用于检查是否需要更新默认规则目录 default rules 下的文件。
  * 
  * - 如果时间戳文件不存在，则进行更新；否则检查该时间与当前时间的间隔是否大于一周。
  * - 如果时间间隔大于一周，则进行文件更新；否则将跳过更新并输出上次文件更新的日期。
  * 
+ * @async
+ * @param {function} axios 网络请求框架
  * @param {object} console 控制台调试对象
  */
 function updateCheck(axios, console) {
-    const fs = require("fs");
-    const path = require("path");
-
     fs.readFile(path.resolve(SOURCES.defaultFile, "..", "default-rule-timestamp.log"),
         "utf-8",
         (err, data) => {
@@ -226,16 +240,20 @@ function updateCheck(axios, console) {
 }
 
 /**
- * 本方法用于更新默认规则目录（default rules）下的文件。
+ * 本方法用于更新默认规则目录 default rules 下的文件。
  * 
- * - 由于目标地址不一定响应，因此axios可以保持异步请求，超时仅需要输出错误信息；
+ * - 由于目标地址不一定响应，因此 axios 可以保持异步请求，超时仅需要输出错误信息；
  * - 关于固定的文件名称，除非维护规则文件更新的作者修改了文件名称，否则不需要修改它们。
  * 
+ * @async
+ * @param {function} axios 网络请求框架
  * @param {object} console 控制台调试对象
  */
 function updateRules(axios, console) {
-    const fs = require("fs");
-    const path = require("path");
+    const RULE_UPDATE_HTTP = "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release";
+    const RULE_UPDATE_NAMES = ["apple", "applications", "cncidr", "direct", "gfw", "greatfire",
+        "icloud", "lancidr", "private", "proxy", "reject", "telegramcidr", "tld-not-cn"];
+    const RULE_UPDATE_TYPE = "txt";
 
     const promises = RULE_UPDATE_NAMES.map(fileName => {
         return axios({
@@ -267,7 +285,6 @@ function updateRules(axios, console) {
             return Promise.resolve();
         });
     });
-
     Promise.all(promises)
         .then(() => {
             console.log("[ INFO] configuration.updateRules =>", "Start update timestamp file.");
@@ -279,15 +296,14 @@ function updateRules(axios, console) {
 }
 
 /**
- * 本方法用于更新时间戳（timestamp.txt）文件。
+ * 本方法用于更新时间戳 timestamp.txt 文件。
  * 
- * 当Date对象调用toString方法时，JS会根据实际运行环境来转换时间戳，得到符合当前时区的日期字符串。
+ * 当 Date 对象调用 toString 方法时，JS 会根据实际运行环境来转换时间戳，得到符合当前时区的日期字符串。
  * 
+ * @async
  * @param {object} console 控制台调试对象
  */
 function updateTimestamp(console) {
-    const fs = require("fs");
-    const path = require("path");
 
     const currentTimestamp = Date.now();
     fs.writeFile(path.resolve(SOURCES.defaultFile, "..", "default-rule-timestamp.log"),
@@ -307,7 +323,7 @@ function updateTimestamp(console) {
 /**
  * 格式化输出日期。
  * 
- * => yyyy/MM/dd HH:mm:ss
+ * => yyyy/MM/dd HH:mm:ss
  * 
  * @param {Date} date 日期对象
  * @returns {string} 格式化的日期字符串
@@ -327,10 +343,11 @@ function getFormatDate(date) {
 /**
  * 本方法用于解析并重构配置文件。
  * 
+ * @param {object} console 控制台调试对象
  * @param {object} originalConfiguration 原始的配置文件对象
- * @param {Array<number>} mode 存储规则组合的数组
- * @param {Function} configuration 存储配置信息的函数
- * @param {boolean} isConfigRemote 指示当前是否为输出Stash配置模式
+ * @param {number[]} mode 存储规则组合的数组
+ * @param {function} configuration 存储配置信息的函数
+ * @param {boolean} isConfigRemote 指示当前是否为输出 Stash 配置模式
  * @returns {string} 已解析并重构的配置文件信息
  */
 function get(console, originalConfiguration, mode, configuration, isConfigRemote) {
@@ -346,7 +363,7 @@ function get(console, originalConfiguration, mode, configuration, isConfigRemote
     /* proxy-groups */
     newConfiguration["proxy-groups"] = getProxyGroups(profile.groups, originalConfiguration.proxies);
 
-    /* rule providers */
+    /* rule providers */
     let defaultSaver;
     let customizeSaver;
 
@@ -379,7 +396,7 @@ function get(console, originalConfiguration, mode, configuration, isConfigRemote
     newConfiguration["rule-providers"] = Object.assign(defaultSaver, customizeSaver);
 
     console.log("[ INFO] configuration.get =>", "Parsing successful.");
-    /* final configuration */
+    /* final configuration */
     return isConfigRemote ?
         JSON.stringify(newConfiguration) :
         outputClashConfig(newConfiguration, profile.replacement);
@@ -393,10 +410,10 @@ function get(console, originalConfiguration, mode, configuration, isConfigRemote
  */
 function init(configuration) {
 
-    /* initialize */
+    /* INITIALIZE */
     let initConfiguration = {};
 
-    /* basic configuration */
+    /* BASIC CONFIGURATION */
     initConfiguration["mixed-port"] = 7890;
     initConfiguration["allow-lan"] = false;
     initConfiguration["bind-address"] = "*";
@@ -407,18 +424,18 @@ function init(configuration) {
     initConfiguration.secret = "";
 
     /*
-     * dns
+     * DNS
      * 
-     * 当dns.enable启用时，所有经过CFW或CV的流量都会使用DNS配置。
+     * 当 dns.enable 启用时，所有经过 CFW 或 CV 的流量都会使用 DNS 配置。
      * 
-     * 对于CFW来说，TUN模式自带了DNS配置，且该配置默认处于启用状态，并无法更改。
-     * 这意味着使用CFW开启TUN模式后，默认生效的DNS配置永远是TUN模式自带的DNS配置。
+     * 对于 CFW 来说，TUN 模式自带了 DNS 配置，且该配置默认处于启用状态，并无法更改。
+     * 这意味着使用 CFW 开启 TUN 模式后，默认生效的 DNS 配置永远是 TUN 模式自带的 DNS 配置。
      * 
-     * 配置文件内的DNS配置可以选择性开启或关闭。如果开启DNS配置，则所有经过CFW/CV的请求
-     * 都会用nameserver、fallback中的DNS服务器进行解析（同时解析）。
-     * 如果关闭DNS配置（dns.enable = false），则意味CFW/CV会使用系统默认的DNS解析服务。
+     * 配置文件内的 DNS 配置可以选择性开启或关闭。如果开启 DNS 配置，则所有经过 CFW/CV 的请求
+     * 都会用 nameserver、fallback 中的 DNS 服务器进行解析（同时解析）。
+     * 如果关闭 DNS 配置（dns.enable = false），则意味 CFW/CV 会使用系统默认的 DNS 解析服务。
      * 
-     * 对于CV来说，需在设置中勾选DNS/TUN字段同时启用DNS配置后，才能正常使用TUN模式。
+     * 对于 CV 来说，需在设置中勾选 DNS/TUN 字段同时启用 DNS 配置后，才能正常使用 TUN 模式。
      */
     initConfiguration["dns"] = {};
     initConfiguration.dns.enable = true;
@@ -456,20 +473,20 @@ function init(configuration) {
     ];
 
     /*
-     * tun
+     * TUN
      *
-     * 大部分浏览器默认开启“安全DNS”功能，此功能会影响TUN模式劫持DNS请求导致反推域名失败，
-     * 请在浏览器设置中关闭此功能以保证TUN模式正常运行。
+     * 大部分浏览器默认开启 “安全 DNS” 功能，此功能会影响 TUN 模式劫持 DNS 请求导致反推域名失败，
+     * 请在浏览器设置中关闭此功能以保证 TUN 模式正常运行。
      * 
-     * 注意，在tun.enable=true时，CFW会在完成配置更新时自动打开TUN模式，这显然不合理。
-     * 而对于CV来说，无论tun.enable的值是什么，TUN模式都不会被自动打开。
+     * 注意，在 tun.enable = true 时，CFW 会在完成配置更新时自动打开 TUN 模式，这显然不合理。
+     * 而对于 CV 来说，无论 tun.enable 的值是什么，TUN 模式都不会被自动打开。
      * 
-     * 因此，建议tun.enable保持false状态，在需要使用到TUN模式时，再手动代开。
+     * 因此，建议 tun.enable 保持 false 状态，在需要使用到 TUN 模式时，再手动代开。
      * 
-     * 另外，tun.stack默认为gvisor模式，但该模式兼容性欠佳，因此建议改为system模式。
+     * 另外，tun.stack 默认为 gvisor 模式，但该模式兼容性欠佳，因此建议改为 system 模式。
      * 
-     * 但需要注意，使用system模式需要先添加防火墙规则（Add firewall rules），
-     * 同时还要安装、启用服务模式（Service Mode）。
+     * 但需要注意，使用 system 模式需要先添加防火墙规则 Add firewall rules，
+     * 同时还要安装、启用服务模式 Service Mode。
      */
     initConfiguration["tun"] = {
         enable: false,
@@ -480,17 +497,19 @@ function init(configuration) {
     };
 
     /*
-     * profile
+     * PROFILE
      *
-     * 遗留问题：使用clash-tracing项目监控CFW流量时，则需要在~/.config/clash/config.yaml中添加profile配置。
-     * 但目前CFW并无法正确识别该配置，即便将配置写入config.yaml中也不会生效。
+     * 遗留问题：使用 clash-tracing 项目监控 CFW 流量时，则需要在 ~/.config/clash/config.yaml 中添加 profile 配置。
+     * 但目前 CFW 并无法正确识别该配置，即便将配置写入 config.yaml 中也不会生效。
      * 
-     * 解决方法：直接在配置中添加profile信息，这样就可以使用clash-tracing项目来监控CFW流量了。
+     * 解决方法：直接在配置中添加 profile 信息，这样就可以使用 clash-tracing 项目来监控 CFW 流量了。
      */
     initConfiguration["profile"] = { "tracing": true };
 
-    /* proxies */
+    /* PROXIES */
     initConfiguration.proxies = configuration.proxies;
+
+    /* RETURN NEW CONFIGURATION */
     return initConfiguration;
 }
 
@@ -498,8 +517,8 @@ function init(configuration) {
  * 本方法用于为规则数组中的文件名称添加前缀信息。
  * 
  * @param {string} rulePrefix 需要添加的前缀信息
- * @param  {Array<string> | Array<string>[]} ruleArrays 存储规则字符串的数组
- * @returns {Array<string>} 已添加前缀信息规则数组
+ * @param  {string | string[]} ruleArrays 存储规则字符串的数组
+ * @returns {string[]} 已添加前缀信息规则数组
  */
 function addRulePrefix(rulePrefix, ...ruleArrays) {
     let arr = [];
@@ -517,9 +536,9 @@ function addRulePrefix(rulePrefix, ...ruleArrays) {
 /**
  * 本方法用于构建具体的分组信息。
  * 
- * @param {Array<object>} details 存储分组信息的对象数组
- * @param {Array<object>} proxies 存储所有节点信息的对象数组
- * @returns {Array<object>} 已完成分组的对象数组 
+ * @param {object[]} details 存储分组信息的对象数组
+ * @param {object[]} proxies 存储所有节点信息的对象数组
+ * @returns {object[]} 已完成分组的对象数组 
  */
 function getProxyGroups(details, proxies) {
     const arr = [];
@@ -555,7 +574,7 @@ function getProxyGroups(details, proxies) {
 /**
  * 本方法用于构建规则集的具体获取方式。
  * 
- * @param {Array<string>} rules 存储规则信息的数组
+ * @param {string[]} rules 存储规则信息的数组
  * @param {string} rulePrefix 规则文件的前缀信息
  * @param {object} ruleSource 存储规则集的来源信息
  * @returns {object} 具体的规则集对象
@@ -603,10 +622,7 @@ function getRuleProviders(rules, rulePrefix, ruleSource) {
 }
 
 /**
- * 本方法用于获取解析完毕的配置信息。其中，函数返回的配置信息为String类型：
- * 
- * - 对于CFW来说，建议使用yaml.parse将其格式化为标准的JSON格式；
- * - 对于CV来说，需要使用JSON.parse将其转换为JSON对象。
+ * 本方法用于获取解析完毕的配置信息。
  * 
  * @param {object} configuration 已解析并重构的配置文件对象
  * @param {object} replacement 需替换的配置信息对象

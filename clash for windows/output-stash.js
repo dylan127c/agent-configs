@@ -1,8 +1,9 @@
 /**
- * 本方法用于输出Stash配置文件。
+ * 本方法用于输出 Stash 配置文件。
  * 
- * @param {*} yaml YAML框架
- * @param {*} rawAfter 已处理完毕的配置信息
+ * @async
+ * @param {object} yaml yaml 框架
+ * @param {string} rawAfter 已处理完毕的配置信息
  * @param {object} console 控制台调试对象
  */
 module.exports.runStash = (yaml, rawAfter, console) => {
