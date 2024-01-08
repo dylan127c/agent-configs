@@ -1,2 +1,4 @@
 payload:
   - PROCESS-NAME,IDMan.exe
+  - PROCESS-NAME,DownloadServer.exe
+  - PROCESS-NAME,PikPak

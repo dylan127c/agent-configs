@@ -30,6 +30,9 @@ DOMAIN-SUFFIX,api.insight.sitefinity.com
 DOMAIN-SUFFIX,keleofficial.com
 DOMAIN-SUFFIX,touhou.tel
 DOMAIN-SUFFIX,stash.wiki
+
+# PikPak
+DOMAIN-SUFFIX,mypikpak.com
   
 # 其他域名
 DOMAIN-SUFFIX,fluidplayer.com

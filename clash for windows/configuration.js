@@ -168,8 +168,8 @@ function outputShadowrocket(mode, raw, yaml, console, configuration) {
  * 
  * 如果本地存在 default rules | customize rules 目录，则表明规则来源于本地，其中：
  * 
- * - default rules：如果存在，则 mode[0] 计数为 1；否则 mode[0] 计数为 0；
- * - customize rules：如果存在，则 mode[1] 计数为 1；否则 mode[1] 计数为 0.
+ * - default rules：如果存在，则 mode[0] 计数为 1；否则 mode[0] 计数为 0；
+ * - customize rules：如果存在，则 mode[1] 计数为 1；否则 mode[1] 计数为 0.
  * 
  * 那么，数组 mode 中的元素即存在四种不同的状态：
  * 

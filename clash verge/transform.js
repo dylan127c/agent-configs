@@ -72,7 +72,7 @@ const transform = () => {
 
   fs.writeFileSync(outputFile, outputCode, "utf-8");
 
-  const autoReplaceConfigFile = "C:/Users/dylan/.config/clash-verge/profiles/sYIbECUXS8H8.js";
+  const autoReplaceConfigFile = "C:/Users/dylan/.config/clash-verge/profiles/sjWWJPGyS5p0.js";
   fs.writeFileSync(autoReplaceConfigFile, outputCode, "utf-8");
 }
 

@@ -31,6 +31,9 @@ payload:
   - '+.keleofficial.com'
   - '+.touhou.tel'
   - '+.stash.wiki'
+
+  # PikPak
+  - '+.mypikpak.com'
   
   # 其他域名
   - '+.fluidplayer.com'

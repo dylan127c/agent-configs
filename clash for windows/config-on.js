@@ -32,7 +32,7 @@ module.exports.configurationOn = () => {
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
         "RULE-SET,edge,🌄 特殊控制 | Edge",
         "RULE-SET,nodejs,🌄 特殊控制 | Node.js",
-        "RULE-SET,proxy,🌌 科学上网"
+        "RULE-SET,proxy,🌌 科学上网",
     ];
     const defaultRules = [
         "RULE-SET,applications,DIRECT",
