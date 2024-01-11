@@ -57,15 +57,20 @@ const transform = () => {
     /* 移除 require 全局方法。*/
     .replace(/^.+require.+$\n/gm, "")
     /* 替换 __dirname 内置常量。*/
-    .replace(/__dirname.+?(?=;)/gm, "\"" + inputPath + "\"");
+    .replace(/__dirname.+?(?=;)/gm, "\"" + inputPath + "\"")
+    /* 移除所有 console.log 代码行。*/
+    .replace(/console.log\(.+$\n/gm, "");
 
-  const newCodeFile = [inputPath + "config-on.js", inputPath + "config-cc.js", inputPath + "config-cl.js", outputPath + "init.js"];
+  const configsPosition = inputPath + "configs/";
+  const configs = fs.readdirSync(configsPosition);
 
   /* 读取必要的 .js 配置并合并在一起。*/
   let newCode = "";
-  newCodeFile.forEach(file => {
-    newCode = newCode + fs.readFileSync(file, "utf-8") + "\n\n";
+  configs.forEach(fileName => {
+    newCode += fs.readFileSync(configsPosition + fileName, "utf-8").replace("configuration", fileName.replace(".js", "")) + "\n\n";
   });
+  const initPosition = outputPath + "configs/init.js";
+  newCode += fs.readFileSync(initPosition, "utf-8") + "\n\n";
   newCode = newCode.replace(/module.exports\./gm, "const ");
 
   const outputCode = formatTransformedCode + "\n\n" + newCode;

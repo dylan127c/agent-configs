@@ -1,4 +1,4 @@
-name: cl
+name: clover
 desc: Replace original configuration file.
 dns: #!replace
   enable: true
@@ -39,44 +39,46 @@ rules: #!replace
   - RULE-SET,customize-copilot,🌄 特殊控制 | Copilot
   - RULE-SET,customize-edge,🌄 特殊控制 | Edge
   - RULE-SET,customize-nodejs,🌄 特殊控制 | Node.js
-  - RULE-SET,customize-proxy,🌌 科学上网
+  - RULE-SET,customize-proxy,🌌 科学上网 | CLOVER
   - RULE-SET,default-applications,DIRECT
   - RULE-SET,default-apple,DIRECT
   - RULE-SET,default-icloud,DIRECT
   - RULE-SET,default-private,DIRECT
   - RULE-SET,default-direct,DIRECT
-  - RULE-SET,default-greatfire,🌌 科学上网
-  - RULE-SET,default-gfw,🌌 科学上网
-  - RULE-SET,default-proxy,🌌 科学上网
-  - RULE-SET,default-tld-not-cn,🌌 科学上网
+  - RULE-SET,default-greatfire,🌌 科学上网 | CLOVER
+  - RULE-SET,default-gfw,🌌 科学上网 | CLOVER
+  - RULE-SET,default-proxy,🌌 科学上网 | CLOVER
+  - RULE-SET,default-tld-not-cn,🌌 科学上网 | CLOVER
   - RULE-SET,default-reject,REJECT
-  - RULE-SET,default-telegramcidr,🌌 科学上网,no-resolve
+  - RULE-SET,default-telegramcidr,🌌 科学上网 | CLOVER,no-resolve
   - RULE-SET,default-lancidr,DIRECT,no-resolve
   - RULE-SET,default-cncidr,DIRECT,no-resolve
   - GEOIP,LAN,DIRECT,no-resolve
   - GEOIP,CN,DIRECT,no-resolve
   - MATCH,🌠 规则逃逸
 proxy-groups: #!replace
-  - name: 🌌 科学上网
+  - name: 🌌 科学上网 | CLOVER
     type: select
     proxies:
-      - DIRECT
-      - 🌅 目标节点
       - 🌉 负载均衡 | 香港
+      - 🌉 负载均衡 | 新加坡
+      - 🌉 负载均衡 | 台湾
+      - 🌉 负载均衡 | 印度
       - 🌉 负载均衡 | 日本
       - 🌉 负载均衡 | 美国
       - 🌉 负载均衡 | 韩国
-      - 🌉 负载均衡 | 新加坡
+      - 🌅 目标节点
+      - DIRECT
   - name: 🌠 规则逃逸
     type: select
     proxies:
       - DIRECT
-      - 🌌 科学上网
+      - 🌌 科学上网 | CLOVER
   - name: 🌅 目标节点
     type: select
     proxies:
-      - DIRECT
       - REJECT
+      - DIRECT
       - 🇭🇰香港01
       - 🇭🇰香港 02
       - 🇭🇰香港 03
@@ -221,18 +223,18 @@ proxy-groups: #!replace
     type: select
     proxies:
       - DIRECT
-      - 🌌 科学上网
+      - 🌌 科学上网 | CLOVER
   - name: 🌄 特殊控制 | Edge
     type: select
     proxies:
       - DIRECT
       - REJECT
-      - 🌌 科学上网
+      - 🌌 科学上网 | CLOVER
   - name: 🌄 特殊控制 | Node.js
     type: select
     proxies:
       - DIRECT
-      - 🌌 科学上网
+      - 🌌 科学上网 | CLOVER
   - name: 🌉 负载均衡 | 香港
     type: load-balance
     proxies:
@@ -240,6 +242,35 @@ proxy-groups: #!replace
       - 🇭🇰香港 02
       - 🇭🇰香港 03
       - 🇭🇰香港 04
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
+  - name: 🌉 负载均衡 | 新加坡
+    type: load-balance
+    proxies:
+      - 🇸🇬新加坡 01
+      - 🇸🇬新加坡 02
+      - 🇸🇬新加坡 03
+      - 🇸🇬新加坡 04
+      - 🇸🇬新加坡 05
+      - 🇸🇬新加坡 06
+      - 🇸🇬新加坡 07
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
+  - name: 🌉 负载均衡 | 台湾
+    type: load-balance
+    proxies:
+      - 🇹🇼台湾 01
+      - 🇹🇼台湾 02
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
+  - name: 🌉 负载均衡 | 印度
+    type: load-balance
+    proxies:
+      - 🇮🇳印度 01
+      - 🇮🇳印度 02
     url: http://www.gstatic.com/generate_204
     interval: 72
     lazy: true
@@ -270,19 +301,6 @@ proxy-groups: #!replace
       - 🇰🇷韩国 04
       - 🇰🇷韩国 05
       - 🇰🇷韩国 06
-    url: http://www.gstatic.com/generate_204
-    interval: 72
-    lazy: true
-  - name: 🌉 负载均衡 | 新加坡
-    type: load-balance
-    proxies:
-      - 🇸🇬新加坡 01
-      - 🇸🇬新加坡 02
-      - 🇸🇬新加坡 03
-      - 🇸🇬新加坡 04
-      - 🇸🇬新加坡 05
-      - 🇸🇬新加坡 06
-      - 🇸🇬新加坡 07
     url: http://www.gstatic.com/generate_204
     interval: 72
     lazy: true

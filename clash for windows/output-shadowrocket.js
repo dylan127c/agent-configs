@@ -66,7 +66,9 @@ const REPLACELIST = {
  * @param {*} rawAfter 已处理完毕的配置信息
  * @param {object} console 控制台调试对象
  */
-module.exports.runShadowrocket = (yaml, rawAfter, console, symbol) => {
+module.exports.runShadowrocket = (yaml, rawAfter, console, name) => {
+
+    const symbol = name.split("_")[0].toLowerCase();
 
     // updateCheckShadowrocket(console); 不再检查更新，而是直接更新
     transformClashRules(console);
@@ -74,13 +76,10 @@ module.exports.runShadowrocket = (yaml, rawAfter, console, symbol) => {
     console.log("[ INFO] output-shadowrocket.runShadowrocket =>", "Start output shadowrocket config.");
     const configuration = yaml.parse(rawAfter);
 
-    // let symbol = "on";
-
     const initProxyGroups = Object.assign(configuration["proxy-groups"]);
     const index = initProxyGroups.findLastIndex(ele => ele.name.includes("订阅详情"));
     if (index >= 0) {
         initProxyGroups.splice(index, 1);
-        // symbol = "cc";
     }
 
     let shadowrocketRule = "[Rule]\n";
@@ -98,7 +97,7 @@ module.exports.runShadowrocket = (yaml, rawAfter, console, symbol) => {
     initProxyGroups.forEach(ele => {
         shadowrocketProxyGroup += ele.name + " = " + ele.type + ",";
         ele.proxies.forEach(proxy => {
-            if (symbol === "on" && proxy.match(/\d\d/gm)) {
+            if (symbol === "orient" && proxy.match(/\d\d/gm)) {
                 /* Shadowrocket 中非 SS 节点的组名不支持 Emoji 表情。
                  * 注意：由于某些节点名称不包含 Emoji，不推荐使用 /^\W{4}/gm 替换，这样会导致中文字符被替换。*/
                 shadowrocketProxyGroup += proxy.replace(/^\W+?\s(?!\d)/gm, "") + ","

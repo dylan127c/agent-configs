@@ -1,4 +1,4 @@
-name: cc
+name: kele
 desc: Replace original configuration file.
 dns: #!replace
   enable: true
@@ -39,44 +39,43 @@ rules: #!replace
   - RULE-SET,customize-copilot,🌄 特殊控制 | Copilot
   - RULE-SET,customize-edge,🌄 特殊控制 | Edge
   - RULE-SET,customize-nodejs,🌄 特殊控制 | Node.js
-  - RULE-SET,customize-proxy,🌌 科学上网
+  - RULE-SET,customize-proxy,🌌 科学上网 | KELECLOUD
   - RULE-SET,default-applications,DIRECT
   - RULE-SET,default-apple,DIRECT
   - RULE-SET,default-icloud,DIRECT
   - RULE-SET,default-private,DIRECT
   - RULE-SET,default-direct,DIRECT
-  - RULE-SET,default-greatfire,🌌 科学上网
-  - RULE-SET,default-gfw,🌌 科学上网
-  - RULE-SET,default-proxy,🌌 科学上网
-  - RULE-SET,default-tld-not-cn,🌌 科学上网
+  - RULE-SET,default-greatfire,🌌 科学上网 | KELECLOUD
+  - RULE-SET,default-gfw,🌌 科学上网 | KELECLOUD
+  - RULE-SET,default-proxy,🌌 科学上网 | KELECLOUD
+  - RULE-SET,default-tld-not-cn,🌌 科学上网 | KELECLOUD
   - RULE-SET,default-reject,REJECT
-  - RULE-SET,default-telegramcidr,🌌 科学上网,no-resolve
+  - RULE-SET,default-telegramcidr,🌌 科学上网 | KELECLOUD,no-resolve
   - RULE-SET,default-lancidr,DIRECT,no-resolve
   - RULE-SET,default-cncidr,DIRECT,no-resolve
   - GEOIP,LAN,DIRECT,no-resolve
   - GEOIP,CN,DIRECT,no-resolve
   - MATCH,🌠 规则逃逸
 proxy-groups: #!replace
-  - name: 🌌 科学上网
+  - name: 🌌 科学上网 | KELECLOUD
     type: select
     proxies:
-      - DIRECT
-      - 🌅 目标节点
       - 🌉 负载均衡 | 香港 A
       - 🌉 负载均衡 | 香港 B
       - 🌉 负载均衡 | 美国
       - 🌉 负载均衡 | 日本
-      - 🌁 测试延迟 | 其他节点
+      - 🌅 目标节点
+      - DIRECT
   - name: 🌠 规则逃逸
     type: select
     proxies:
       - DIRECT
-      - 🌌 科学上网
+      - 🌌 科学上网 | KELECLOUD
   - name: 🌅 目标节点
     type: select
     proxies:
-      - DIRECT
       - REJECT
+      - DIRECT
       - "[SS]香港 01"
       - "[SS]香港 02"
       - "[SS]香港 03"
@@ -314,39 +313,19 @@ proxy-groups: #!replace
     type: select
     proxies:
       - DIRECT
-      - 🌌 科学上网
+      - 🌌 科学上网 | KELECLOUD
   - name: 🌄 特殊控制 | Edge
     type: select
     proxies:
       - DIRECT
       - REJECT
-      - 🌌 科学上网
+      - 🌌 科学上网 | KELECLOUD
   - name: 🌄 特殊控制 | Node.js
     type: select
     proxies:
       - DIRECT
-      - 🌌 科学上网
+      - 🌌 科学上网 | KELECLOUD
   - name: 🌉 负载均衡 | 香港 A
-    type: load-balance
-    proxies:
-      - "[SS]香港 01"
-      - "[SS]香港 02"
-      - "[SS]香港 03"
-      - "[SS]香港 04"
-      - "[SS]香港 05"
-      - "[SS]香港 06"
-      - "[SS]香港 07"
-      - "[SS]香港 08"
-      - "[SS]香港 09"
-      - "[SS]香港 10"
-      - "[SS]香港 11"
-      - "[SS]香港 12"
-      - "[SS]香港 13"
-      - "[SS]香港 14"
-    url: http://www.gstatic.com/generate_204
-    interval: 72
-    lazy: true
-  - name: 🌉 负载均衡 | 香港 B
     type: load-balance
     proxies:
       - "[SS]香港 01B"
@@ -387,6 +366,26 @@ proxy-groups: #!replace
     url: http://www.gstatic.com/generate_204
     interval: 72
     lazy: true
+  - name: 🌉 负载均衡 | 香港 B
+    type: load-balance
+    proxies:
+      - "[SS]香港 01"
+      - "[SS]香港 02"
+      - "[SS]香港 03"
+      - "[SS]香港 04"
+      - "[SS]香港 05"
+      - "[SS]香港 06"
+      - "[SS]香港 07"
+      - "[SS]香港 08"
+      - "[SS]香港 09"
+      - "[SS]香港 10"
+      - "[SS]香港 11"
+      - "[SS]香港 12"
+      - "[SS]香港 13"
+      - "[SS]香港 14"
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
   - name: 🌉 负载均衡 | 美国
     type: load-balance
     proxies:
@@ -409,25 +408,6 @@ proxy-groups: #!replace
       - "[SS]日本 02"
       - "[SS]日本 03"
       - "[SS]日本 04"
-    url: http://www.gstatic.com/generate_204
-    interval: 72
-    lazy: true
-  - name: 🌁 测试延迟 | 其他节点
-    type: fallback
-    proxies:
-      - "[SS]越南 01"
-      - "[SS]越南 02"
-      - "[SS]越南 03"
-      - "[SS]越南 04"
-      - "[SS]越南 05"
-      - "[SS]越南 06"
-      - "[SS]越南 07"
-      - "[SS]越南 08"
-      - "[SS]越南 09"
-      - "[SS]台灣 01"
-      - "[SS]新加坡 01"
-      - "[SS]新加坡 02"
-      - "[SS]新加坡 03"
     url: http://www.gstatic.com/generate_204
     interval: 72
     lazy: true

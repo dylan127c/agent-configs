@@ -1,4 +1,4 @@
-name: on
+name: orient
 desc: Replace original configuration file.
 dns: #!replace
   enable: true
@@ -40,44 +40,44 @@ rules: #!replace
   - RULE-SET,customize-copilot,🌄 特殊控制 | Copilot
   - RULE-SET,customize-edge,🌄 特殊控制 | Edge
   - RULE-SET,customize-nodejs,🌄 特殊控制 | Node.js
-  - RULE-SET,customize-proxy,🌌 科学上网
+  - RULE-SET,customize-proxy,🌌 科学上网 | ORIENTAL
   - RULE-SET,default-applications,DIRECT
   - RULE-SET,default-apple,DIRECT
   - RULE-SET,default-icloud,DIRECT
   - RULE-SET,default-private,DIRECT
   - RULE-SET,default-direct,DIRECT
-  - RULE-SET,default-greatfire,🌌 科学上网
-  - RULE-SET,default-gfw,🌌 科学上网
-  - RULE-SET,default-proxy,🌌 科学上网
-  - RULE-SET,default-tld-not-cn,🌌 科学上网
+  - RULE-SET,default-greatfire,🌌 科学上网 | ORIENTAL
+  - RULE-SET,default-gfw,🌌 科学上网 | ORIENTAL
+  - RULE-SET,default-proxy,🌌 科学上网 | ORIENTAL
+  - RULE-SET,default-tld-not-cn,🌌 科学上网 | ORIENTAL
   - RULE-SET,default-reject,REJECT
-  - RULE-SET,default-telegramcidr,🌌 科学上网,no-resolve
+  - RULE-SET,default-telegramcidr,🌌 科学上网 | ORIENTAL,no-resolve
   - RULE-SET,default-lancidr,DIRECT,no-resolve
   - RULE-SET,default-cncidr,DIRECT,no-resolve
   - GEOIP,LAN,DIRECT,no-resolve
   - GEOIP,CN,DIRECT,no-resolve
   - MATCH,🌠 规则逃逸
 proxy-groups: #!replace
-  - name: 🌌 科学上网
+  - name: 🌌 科学上网 | ORIENTAL
     type: select
     proxies:
-      - DIRECT
-      - 🌅 目标节点
       - 🌃 故障切换 | 深港移动
       - 🌃 故障切换 | 沪港电信
       - 🌃 故障切换 | 沪日电信
       - 🌉 负载均衡 | 香港
       - 🌉 负载均衡 | 日本
+      - 🌅 目标节点
+      - DIRECT
   - name: 🌠 规则逃逸
     type: select
     proxies:
       - DIRECT
-      - 🌌 科学上网
+      - 🌌 科学上网 | ORIENTAL
   - name: 🌅 目标节点
     type: select
     proxies:
-      - DIRECT
       - REJECT
+      - DIRECT
       - 🇷🇺 俄罗斯 01 RT IPv6
       - 🇷🇺 俄罗斯 02 CN2 IPv6（2.2倍率）
       - 卢森堡 01 Cogent（0.5倍率/无版权）
@@ -207,18 +207,18 @@ proxy-groups: #!replace
     type: select
     proxies:
       - DIRECT
-      - 🌌 科学上网
+      - 🌌 科学上网 | ORIENTAL
   - name: 🌄 特殊控制 | Edge
     type: select
     proxies:
       - DIRECT
       - REJECT
-      - 🌌 科学上网
+      - 🌌 科学上网 | ORIENTAL
   - name: 🌄 特殊控制 | Node.js
     type: select
     proxies:
       - DIRECT
-      - 🌌 科学上网
+      - 🌌 科学上网 | ORIENTAL
   - name: 🌃 故障切换 | 深港移动
     type: fallback
     proxies:
