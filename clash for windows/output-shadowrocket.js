@@ -99,13 +99,9 @@ module.exports.runShadowrocket = (yaml, rawAfter, console, symbol) => {
         shadowrocketProxyGroup += ele.name + " = " + ele.type + ",";
         ele.proxies.forEach(proxy => {
             if (symbol === "on" && proxy.match(/\d\d/gm)) {
-                /* Shadowrocket 分组节点的名称不支持 Emoji 表情。
-                 * 以下的正则表达式可去除某些节点名称中的 Emoji 表情。*/
+                /* Shadowrocket 中非 SS 节点的组名不支持 Emoji 表情。
+                 * 注意：由于某些节点名称不包含 Emoji，不推荐使用 /^\W{4}/gm 替换，这样会导致中文字符被替换。*/
                 shadowrocketProxyGroup += proxy.replace(/^\W+?\s(?!\d)/gm, "") + ","
-            } else if (symbol === "cl" && proxy.match(/\d\d/gm)) {
-                /* Shadowrocket 分组节点的名称不支持 Emoji 表情。
-                 * 以下的正则表达式可去除某些节点名称中的 Emoji 表情。*/
-                shadowrocketProxyGroup += proxy.replace(/^\W{4}/gm, "") + ","
             } else {
                 shadowrocketProxyGroup += proxy + ","
             }
