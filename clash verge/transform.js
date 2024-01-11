@@ -59,7 +59,7 @@ const transform = () => {
     /* 替换 __dirname 内置常量。*/
     .replace(/__dirname.+?(?=;)/gm, "\"" + inputPath + "\"");
 
-  const newCodeFile = [inputPath + "config-on.js", inputPath + "config-cc.js", outputPath + "init.js"];
+  const newCodeFile = [inputPath + "config-on.js", inputPath + "config-cc.js", inputPath + "config-cl.js", outputPath + "init.js"];
 
   /* 读取必要的 .js 配置并合并在一起。*/
   let newCode = "";

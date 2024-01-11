@@ -6,18 +6,18 @@
  * @param {string} rawAfter 已处理完毕的配置信息
  * @param {object} console 控制台调试对象
  */
-module.exports.runStash = (yaml, rawAfter, console) => {
+module.exports.runStash = (yaml, rawAfter, console, symbol) => {
 
     console.log("[ INFO] output-stash.runStash =>", "Start output stash config.");
     const configuration = yaml.parse(rawAfter);
 
-    let symbol = "ON";
+    // let symbol = "ON";
 
     const stashProxyGroups = Object.assign(configuration["proxy-groups"]);
     const index = stashProxyGroups.findLastIndex(ele => ele.name.includes("订阅详情"));
     if (index >= 0) {
         stashProxyGroups.splice(index, 1);
-        symbol = "CC";
+        // symbol = "CC";
     }
 
     const outputStr = yaml.stringify({

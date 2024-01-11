@@ -1,4 +1,4 @@
-name: on
+name: cl
 desc: Replace original configuration file.
 dns: #!replace
   enable: true
@@ -32,7 +32,6 @@ dns: #!replace
     - "*.msftconnecttest.com"
     - WORKGROUP
 rules: #!replace
-  - RULE-SET,customize-applications,DIRECT
   - RULE-SET,customize-reject,REJECT
   - RULE-SET,customize-direct,DIRECT
   - RULE-SET,customize-openai,🌄 特殊控制 | OpenAI
@@ -63,11 +62,11 @@ proxy-groups: #!replace
     proxies:
       - DIRECT
       - 🌅 目标节点
-      - 🌃 故障切换 | 深港移动
-      - 🌃 故障切换 | 沪港电信
-      - 🌃 故障切换 | 沪日电信
       - 🌉 负载均衡 | 香港
       - 🌉 负载均衡 | 日本
+      - 🌉 负载均衡 | 美国
+      - 🌉 负载均衡 | 韩国
+      - 🌉 负载均衡 | 新加坡
   - name: 🌠 规则逃逸
     type: select
     proxies:
@@ -78,131 +77,146 @@ proxy-groups: #!replace
     proxies:
       - DIRECT
       - REJECT
-      - 🇷🇺 俄罗斯 01 RT IPv6
-      - 🇷🇺 俄罗斯 02 CN2 IPv6（2.2倍率）
-      - 卢森堡 01 Cogent（0.5倍率/无版权）
-      - 🇹🇼 台湾 01 HiNet
-      - 🇹🇼 台湾 02 HiNet
-      - 🇹🇷 土耳其 01 Cogent
-      - 🇧🇷 巴西 01 Ascenty
-      - 🇩🇪 德国 01 GIA CN2（1.9倍率）
-      - 🇩🇪 德国 03 Cogent/Tata IPv6
-      - 🇸🇬 新加坡 01 Cogent IPv6（流媒体）
-      - 🇸🇬 新加坡 02 PCCW（2.4倍率）
-      - 🇯🇵 日本 01 电信/沪日专线（3倍率）
-      - 🇯🇵 日本 02 电信/沪日专线（3倍率）
-      - 🇯🇵 日本 05 NTT IPv6
-      - 🇯🇵 日本 06 M247 IPv6
-      - 🇯🇵 日本 07 IIJ
-      - 🇯🇵 日本 09 IIJ
-      - 🇯🇵 日本 11 IIJ IPv6
-      - 🇯🇵 日本 13 IIJ IPv6
-      - 🇯🇵 日本 15 IIJ
-      - 🇯🇵 日本 17 IIJ
-      - 🇯🇵 日本 19 IIJ
-      - 🇯🇵 日本 21 NTT
-      - 🇦🇺 澳大利亚 01 NTT IPv6
-      - 🇺🇲 美国 01 GIA CN2 IPv6
-      - 🇺🇲 美国 03 GIA CN2 IPv6
-      - 🇺🇲 美国 05 Cogent IPv6（流媒体）
-      - 🇬🇧 英国 01 NTT/GTT
-      - 🇦🇷 阿根廷 01 Telecom
-      - 🇦🇷 阿根廷 02 Velocom
-      - 🇰🇷 韩国 01 SK（2.7倍率）
-      - 🇭🇰 香港 01 电信/沪港专线（2.5倍率）
-      - 🇭🇰 香港 02 电信/沪港专线（2.5倍率）
-      - 🇭🇰 香港 05 移动/深港专线（2倍率）
-      - 🇭🇰 香港 06 移动/深港专线（2倍率）
-      - 🇭🇰 香港 09 HKT家宽（0.5倍率）
-      - 🇭🇰 香港 10 HKBN家宽（0.5倍率）
-      - 🇭🇰 香港 11 NTT IPv6
-      - 🇭🇰 香港 12 Cogent IPv6（流媒体）
+      - 🇭🇰香港01
+      - 🇭🇰香港 02
+      - 🇭🇰香港 03
+      - 🇭🇰香港 04
+      - 🇸🇬新加坡 01
+      - 🇸🇬新加坡 02
+      - 🇸🇬新加坡 03
+      - 🇸🇬新加坡 04
+      - 🇸🇬新加坡 05
+      - 🇸🇬新加坡 06
+      - 🇸🇬新加坡 07
+      - 🇯🇵日本 01
+      - 🇯🇵日本 02
+      - 🇯🇵日本 03
+      - 🇯🇵日本 04
+      - 🇺🇸美国 01
+      - 🇺🇸美国 02
+      - 🇰🇷韩国 01
+      - 🇰🇷韩国 02
+      - 🇰🇷韩国 03
+      - 🇰🇷韩国 04
+      - 🇰🇷韩国 05
+      - 🇰🇷韩国 06
+      - 🇮🇳印度 01
+      - 🇮🇳印度 02
+      - 🇹🇼台湾 01
+      - 🇹🇼台湾 02
+      - 🇲🇾马来西亚 01
+      - 🇫🇷法国 01
+      - 🇦🇺澳大利亚 01
+      - 🇷🇺俄罗斯 01
+      - 🇨🇦加拿大 01
+      - 🇹🇷土耳其 01
+      - 🇧🇷巴西 01
+      - 🇩🇪德国 01
+      - 🇮🇹意大利 01
+      - 🇹🇭泰国 01
+      - 🇮🇪爱尔兰 01
+      - 🇸🇪瑞典 01
+      - 🇬🇧英国 01
+      - 🇬🇧英国 02
+      - 🇵🇭菲律宾 01
+      - 🇦🇪迪拜 01
+      - 🇦🇷阿根廷 01
   - name: 🌄 特殊控制 | OpenAI
     type: select
     proxies:
       - REJECT
-      - 🇷🇺 俄罗斯 01 RT IPv6
-      - 🇷🇺 俄罗斯 02 CN2 IPv6（2.2倍率）
-      - 卢森堡 01 Cogent（0.5倍率/无版权）
-      - 🇹🇼 台湾 01 HiNet
-      - 🇹🇼 台湾 02 HiNet
-      - 🇹🇷 土耳其 01 Cogent
-      - 🇧🇷 巴西 01 Ascenty
-      - 🇩🇪 德国 01 GIA CN2（1.9倍率）
-      - 🇩🇪 德国 03 Cogent/Tata IPv6
-      - 🇸🇬 新加坡 01 Cogent IPv6（流媒体）
-      - 🇸🇬 新加坡 02 PCCW（2.4倍率）
-      - 🇯🇵 日本 01 电信/沪日专线（3倍率）
-      - 🇯🇵 日本 02 电信/沪日专线（3倍率）
-      - 🇯🇵 日本 05 NTT IPv6
-      - 🇯🇵 日本 06 M247 IPv6
-      - 🇯🇵 日本 07 IIJ
-      - 🇯🇵 日本 09 IIJ
-      - 🇯🇵 日本 11 IIJ IPv6
-      - 🇯🇵 日本 13 IIJ IPv6
-      - 🇯🇵 日本 15 IIJ
-      - 🇯🇵 日本 17 IIJ
-      - 🇯🇵 日本 19 IIJ
-      - 🇯🇵 日本 21 NTT
-      - 🇦🇺 澳大利亚 01 NTT IPv6
-      - 🇺🇲 美国 01 GIA CN2 IPv6
-      - 🇺🇲 美国 03 GIA CN2 IPv6
-      - 🇺🇲 美国 05 Cogent IPv6（流媒体）
-      - 🇬🇧 英国 01 NTT/GTT
-      - 🇦🇷 阿根廷 01 Telecom
-      - 🇦🇷 阿根廷 02 Velocom
-      - 🇰🇷 韩国 01 SK（2.7倍率）
-      - 🇭🇰 香港 01 电信/沪港专线（2.5倍率）
-      - 🇭🇰 香港 02 电信/沪港专线（2.5倍率）
-      - 🇭🇰 香港 05 移动/深港专线（2倍率）
-      - 🇭🇰 香港 06 移动/深港专线（2倍率）
-      - 🇭🇰 香港 09 HKT家宽（0.5倍率）
-      - 🇭🇰 香港 10 HKBN家宽（0.5倍率）
-      - 🇭🇰 香港 11 NTT IPv6
-      - 🇭🇰 香港 12 Cogent IPv6（流媒体）
+      - 🇭🇰香港01
+      - 🇭🇰香港 02
+      - 🇭🇰香港 03
+      - 🇭🇰香港 04
+      - 🇸🇬新加坡 01
+      - 🇸🇬新加坡 02
+      - 🇸🇬新加坡 03
+      - 🇸🇬新加坡 04
+      - 🇸🇬新加坡 05
+      - 🇸🇬新加坡 06
+      - 🇸🇬新加坡 07
+      - 🇯🇵日本 01
+      - 🇯🇵日本 02
+      - 🇯🇵日本 03
+      - 🇯🇵日本 04
+      - 🇺🇸美国 01
+      - 🇺🇸美国 02
+      - 🇰🇷韩国 01
+      - 🇰🇷韩国 02
+      - 🇰🇷韩国 03
+      - 🇰🇷韩国 04
+      - 🇰🇷韩国 05
+      - 🇰🇷韩国 06
+      - 🇮🇳印度 01
+      - 🇮🇳印度 02
+      - 🇹🇼台湾 01
+      - 🇹🇼台湾 02
+      - 🇲🇾马来西亚 01
+      - 🇫🇷法国 01
+      - 🇦🇺澳大利亚 01
+      - 🇷🇺俄罗斯 01
+      - 🇨🇦加拿大 01
+      - 🇹🇷土耳其 01
+      - 🇧🇷巴西 01
+      - 🇩🇪德国 01
+      - 🇮🇹意大利 01
+      - 🇹🇭泰国 01
+      - 🇮🇪爱尔兰 01
+      - 🇸🇪瑞典 01
+      - 🇬🇧英国 01
+      - 🇬🇧英国 02
+      - 🇵🇭菲律宾 01
+      - 🇦🇪迪拜 01
+      - 🇦🇷阿根廷 01
   - name: 🌄 特殊控制 | Brad
     type: select
     proxies:
       - REJECT
-      - 🇷🇺 俄罗斯 01 RT IPv6
-      - 🇷🇺 俄罗斯 02 CN2 IPv6（2.2倍率）
-      - 卢森堡 01 Cogent（0.5倍率/无版权）
-      - 🇹🇼 台湾 01 HiNet
-      - 🇹🇼 台湾 02 HiNet
-      - 🇹🇷 土耳其 01 Cogent
-      - 🇧🇷 巴西 01 Ascenty
-      - 🇩🇪 德国 01 GIA CN2（1.9倍率）
-      - 🇩🇪 德国 03 Cogent/Tata IPv6
-      - 🇸🇬 新加坡 01 Cogent IPv6（流媒体）
-      - 🇸🇬 新加坡 02 PCCW（2.4倍率）
-      - 🇯🇵 日本 01 电信/沪日专线（3倍率）
-      - 🇯🇵 日本 02 电信/沪日专线（3倍率）
-      - 🇯🇵 日本 05 NTT IPv6
-      - 🇯🇵 日本 06 M247 IPv6
-      - 🇯🇵 日本 07 IIJ
-      - 🇯🇵 日本 09 IIJ
-      - 🇯🇵 日本 11 IIJ IPv6
-      - 🇯🇵 日本 13 IIJ IPv6
-      - 🇯🇵 日本 15 IIJ
-      - 🇯🇵 日本 17 IIJ
-      - 🇯🇵 日本 19 IIJ
-      - 🇯🇵 日本 21 NTT
-      - 🇦🇺 澳大利亚 01 NTT IPv6
-      - 🇺🇲 美国 01 GIA CN2 IPv6
-      - 🇺🇲 美国 03 GIA CN2 IPv6
-      - 🇺🇲 美国 05 Cogent IPv6（流媒体）
-      - 🇬🇧 英国 01 NTT/GTT
-      - 🇦🇷 阿根廷 01 Telecom
-      - 🇦🇷 阿根廷 02 Velocom
-      - 🇰🇷 韩国 01 SK（2.7倍率）
-      - 🇭🇰 香港 01 电信/沪港专线（2.5倍率）
-      - 🇭🇰 香港 02 电信/沪港专线（2.5倍率）
-      - 🇭🇰 香港 05 移动/深港专线（2倍率）
-      - 🇭🇰 香港 06 移动/深港专线（2倍率）
-      - 🇭🇰 香港 09 HKT家宽（0.5倍率）
-      - 🇭🇰 香港 10 HKBN家宽（0.5倍率）
-      - 🇭🇰 香港 11 NTT IPv6
-      - 🇭🇰 香港 12 Cogent IPv6（流媒体）
+      - 🇭🇰香港01
+      - 🇭🇰香港 02
+      - 🇭🇰香港 03
+      - 🇭🇰香港 04
+      - 🇸🇬新加坡 01
+      - 🇸🇬新加坡 02
+      - 🇸🇬新加坡 03
+      - 🇸🇬新加坡 04
+      - 🇸🇬新加坡 05
+      - 🇸🇬新加坡 06
+      - 🇸🇬新加坡 07
+      - 🇯🇵日本 01
+      - 🇯🇵日本 02
+      - 🇯🇵日本 03
+      - 🇯🇵日本 04
+      - 🇺🇸美国 01
+      - 🇺🇸美国 02
+      - 🇰🇷韩国 01
+      - 🇰🇷韩国 02
+      - 🇰🇷韩国 03
+      - 🇰🇷韩国 04
+      - 🇰🇷韩国 05
+      - 🇰🇷韩国 06
+      - 🇮🇳印度 01
+      - 🇮🇳印度 02
+      - 🇹🇼台湾 01
+      - 🇹🇼台湾 02
+      - 🇲🇾马来西亚 01
+      - 🇫🇷法国 01
+      - 🇦🇺澳大利亚 01
+      - 🇷🇺俄罗斯 01
+      - 🇨🇦加拿大 01
+      - 🇹🇷土耳其 01
+      - 🇧🇷巴西 01
+      - 🇩🇪德国 01
+      - 🇮🇹意大利 01
+      - 🇹🇭泰国 01
+      - 🇮🇪爱尔兰 01
+      - 🇸🇪瑞典 01
+      - 🇬🇧英国 01
+      - 🇬🇧英国 02
+      - 🇵🇭菲律宾 01
+      - 🇦🇪迪拜 01
+      - 🇦🇷阿根廷 01
   - name: 🌄 特殊控制 | Copilot
     type: select
     proxies:
@@ -219,53 +233,56 @@ proxy-groups: #!replace
     proxies:
       - DIRECT
       - 🌌 科学上网
-  - name: 🌃 故障切换 | 深港移动
-    type: fallback
-    proxies:
-      - 🇭🇰 香港 05 移动/深港专线（2倍率）
-      - 🇭🇰 香港 06 移动/深港专线（2倍率）
-    url: http://www.gstatic.com/generate_204
-    interval: 72
-    lazy: true
-  - name: 🌃 故障切换 | 沪港电信
-    type: fallback
-    proxies:
-      - 🇭🇰 香港 01 电信/沪港专线（2.5倍率）
-      - 🇭🇰 香港 02 电信/沪港专线（2.5倍率）
-    url: http://www.gstatic.com/generate_204
-    interval: 72
-    lazy: true
-  - name: 🌃 故障切换 | 沪日电信
-    type: fallback
-    proxies:
-      - 🇯🇵 日本 01 电信/沪日专线（3倍率）
-      - 🇯🇵 日本 02 电信/沪日专线（3倍率）
-    url: http://www.gstatic.com/generate_204
-    interval: 72
-    lazy: true
   - name: 🌉 负载均衡 | 香港
     type: load-balance
     proxies:
-      - 🇭🇰 香港 09 HKT家宽（0.5倍率）
-      - 🇭🇰 香港 10 HKBN家宽（0.5倍率）
-      - 🇭🇰 香港 11 NTT IPv6
-      - 🇭🇰 香港 12 Cogent IPv6（流媒体）
+      - 🇭🇰香港01
+      - 🇭🇰香港 02
+      - 🇭🇰香港 03
+      - 🇭🇰香港 04
     url: http://www.gstatic.com/generate_204
     interval: 72
     lazy: true
   - name: 🌉 负载均衡 | 日本
     type: load-balance
     proxies:
-      - 🇯🇵 日本 05 NTT IPv6
-      - 🇯🇵 日本 06 M247 IPv6
-      - 🇯🇵 日本 07 IIJ
-      - 🇯🇵 日本 09 IIJ
-      - 🇯🇵 日本 11 IIJ IPv6
-      - 🇯🇵 日本 13 IIJ IPv6
-      - 🇯🇵 日本 15 IIJ
-      - 🇯🇵 日本 17 IIJ
-      - 🇯🇵 日本 19 IIJ
-      - 🇯🇵 日本 21 NTT
+      - 🇯🇵日本 01
+      - 🇯🇵日本 02
+      - 🇯🇵日本 03
+      - 🇯🇵日本 04
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
+  - name: 🌉 负载均衡 | 美国
+    type: load-balance
+    proxies:
+      - 🇺🇸美国 01
+      - 🇺🇸美国 02
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
+  - name: 🌉 负载均衡 | 韩国
+    type: load-balance
+    proxies:
+      - 🇰🇷韩国 01
+      - 🇰🇷韩国 02
+      - 🇰🇷韩国 03
+      - 🇰🇷韩国 04
+      - 🇰🇷韩国 05
+      - 🇰🇷韩国 06
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
+  - name: 🌉 负载均衡 | 新加坡
+    type: load-balance
+    proxies:
+      - 🇸🇬新加坡 01
+      - 🇸🇬新加坡 02
+      - 🇸🇬新加坡 03
+      - 🇸🇬新加坡 04
+      - 🇸🇬新加坡 05
+      - 🇸🇬新加坡 06
+      - 🇸🇬新加坡 07
     url: http://www.gstatic.com/generate_204
     interval: 72
     lazy: true
@@ -334,11 +351,6 @@ rule-providers: #!replace
     type: http
     behavior: ipcidr
     url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/default%20rules/cncidr.yaml
-    interval: 86400
-  customize-applications:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/customize%20rules/applications.yaml
     interval: 86400
   customize-reject:
     type: http

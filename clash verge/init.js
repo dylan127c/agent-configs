@@ -5,6 +5,8 @@ function main(params) {
         configuration = configurationOn;
     } else if (count === 15) {
         configuration = configurationCc;
+    } else if (count === 3) {
+        configuration = configurationCl;
     }
     const mode = [1, 1];
     return JSON.parse(get(

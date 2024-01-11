@@ -46,9 +46,9 @@ module.exports.parse = async (raw, { axios, yaml, notify, console },
 
     console.log("[ INFO] configuration.parse =>", "Get config.");
     const configuration = getConfig(url, console);
-    if (configuration === undefined) {
-        console.log("[ INFO] configuration.parse =>",
-            "The default configuration will be returned")
+    if (configuration.run === undefined) {
+        console.log("[ WARN] configuration.parse =>",
+            "The default configuration will be returned.")
         return raw;
     }
     const mode = [0, 0];
@@ -65,7 +65,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console },
         console,
         yaml.parse(raw),
         getMode(mode, axios, console),
-        configuration
+        configuration.run
     )));
     console.log("[ INFO] configuration.parse =>", "Parsing main configuration successful.\n");
     return result;
@@ -85,22 +85,46 @@ function getConfig(condition, console) {
             const moduleConfig = require("./config-on");
             console.log("[ INFO] configuration.getConfig =>",
                 "Configuration file config-on.js has been loaded.\n");
-            return moduleConfig.configurationOn;
+            // return moduleConfig.configurationOn;
+            return {
+                symbol: "on",
+                run: moduleConfig.configurationOn
+            }
         } catch (error) {
             console.log("[ INFO] configuration.getConfig =>",
                 "Configuration file config-on.js doesn't exist.\n");
             return;
         }
-    } else if (condition.match(/sub/gm)) {
+    } else if (condition.match(/subsub/gm)) {
         try {
             delete require.cache[require.resolve("./config-cc")];
             const moduleConfig = require("./config-cc");
             console.log("[ INFO] configuration.getConfig =>",
                 "Configuration file config-cc.js has been loaded.\n");
-            return moduleConfig.configurationCc;
+            // return moduleConfig.configurationCc;
+            return {
+                symbol: "cc",
+                run: moduleConfig.configurationCc
+            }
         } catch (error) {
             console.log("[ INFO] configuration.getConfig =>",
                 "Configuration file config-cc.js doesn't exist.\n");
+            return;
+        }
+    } else if (condition.match(/clover/gm)) {
+        try {
+            delete require.cache[require.resolve("./config-cl")];
+            const moduleConfig = require("./config-cl");
+            console.log("[ INFO] configuration.getConfig =>",
+                "Configuration file config-cl.js has been loaded.\n");
+            // return moduleConfig.configurationCl;
+            return {
+                symbol: "cl",
+                run: moduleConfig.configurationCl
+            }
+        } catch (error) {
+            console.log("[ INFO] configuration.getConfig =>",
+                "Configuration file config-cl.js doesn't exist.\n");
             return;
         }
     }
@@ -126,7 +150,7 @@ function outputStash(mode, raw, yaml, console, configuration) {
         delete require.cache[require.resolve("./output-stash")];
         const output = require("./output-stash");
         console.log("[ INFO] configuration.outputStash =>", "Parsing start.");
-        output.runStash(yaml, get(console, yaml.parse(raw), mode, configuration, true), console);
+        output.runStash(yaml, get(console, yaml.parse(raw), mode, configuration.run, true), console, configuration.symbol);
         console.log("[ INFO] configuration.outputStash =>",
             "Stash configuration exported.\n");
     } catch (error) {
@@ -154,7 +178,7 @@ function outputShadowrocket(mode, raw, yaml, console, configuration) {
         delete require.cache[require.resolve("./output-shadowrocket")];
         const output = require("./output-shadowrocket");
         console.log("[ INFO] configuration.outputShadowrocket =>", "Parsing start.");
-        output.runShadowrocket(yaml, get(console, yaml.parse(raw), mode, configuration, true), console);
+        output.runShadowrocket(yaml, get(console, yaml.parse(raw), mode, configuration.run, true), console, configuration.symbol);
         console.log("[ INFO] configuration.outputShadowrocket =>",
             "Shadowrocket configuration exported.\n");
     } catch (error) {

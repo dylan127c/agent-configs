@@ -1,4 +1,4 @@
-name: CC
+name: cc
 desc: Replace original configuration file.
 dns: #!replace
   enable: true
