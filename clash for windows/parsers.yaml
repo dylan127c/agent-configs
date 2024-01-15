@@ -2,10 +2,5 @@
 # Please go to Setting => Profiles => Parsers.
 
 parsers:
-  - reg: ^http.+$
+  - reg: https:.+(?:=1|3f|95)$
     file: "YOUR_PATH/configuration.js"
-    yaml:
-      prepend-rules:
-        # some websites
-        - DOMAIN-SUFFIX,example.com,REJECT
-        - ...

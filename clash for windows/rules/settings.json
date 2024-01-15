@@ -1,0 +1,23 @@
+{
+    "server": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release",
+    "type": "txt",
+    "files": [
+        "apple",
+        "applications",
+        "cncidr",
+        "direct",
+        "gfw",
+        "greatfire",
+        "icloud",
+        "lancidr",
+        "private",
+        "proxy",
+        "reject",
+        "telegramcidr",
+        "tld-not-cn"
+    ],
+    "savePath": "H:/OneDrive/Repositories/Proxy Rules/clash for windows/rules/original",
+    "saveType": "yaml",
+    "timestamp": "H:/OneDrive/Repositories/Proxy Rules/clash for windows/rules/updateTimestamp.log",
+    "interval": 168
+}

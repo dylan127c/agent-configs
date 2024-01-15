@@ -1,0 +1,31 @@
+{
+    "rules": "./rules",
+    "remote": "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/shadowrocket/rules",
+    "outputs": "./outputs",
+    "prefix": "sr_rules_",
+    "suffix": ".conf",
+    "configs": "./configs",
+    "init": "init.conf",
+    "replacement": {
+        "PROCESS-NAME": {
+            "^payload:\n": "",
+            "^  #": "#",
+            "^  - ": ""
+        },
+        "DOMAIN-SUFFIX": {
+            "^payload:\n": "",
+            "^  #": "#",
+            "^.+?'\\+?\\.?": "DOMAIN-SUFFIX,",
+            "'$": ""
+        },
+        "IP-CIDR": {
+            "^payload:\n": "",
+            "^  #": "#",
+            "^  - '": "IP-CIDR,",
+            "'$": ""
+        }
+    },
+    "classical": "PROCESS-NAME",
+    "domain": "DOMAIN-SUFFIX",
+    "ipcidr": "IP-CIDR"
+}

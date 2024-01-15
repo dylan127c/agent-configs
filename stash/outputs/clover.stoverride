@@ -1,0 +1,422 @@
+name: clover
+desc: Replace original configuration file.
+dns: #!replace
+  enable: true
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 192.18.0.1/16
+  nameserver:
+    - 119.29.29.29
+    - 119.28.28.28
+    - 223.5.5.5
+    - 223.6.6.6
+  fallback:
+    - 114.114.114.114
+    - 114.114.115.115
+    - 101.226.4.6
+    - 218.30.118.6
+    - 8.8.8.8
+    - 94.140.14.15
+    - 94.140.15.16
+    - 1.1.1.1
+  fake-ip-filter:
+    - +.stun.*.*
+    - +.stun.*.*.*
+    - +.stun.*.*.*.*
+    - +.stun.*.*.*.*.*
+    - "*.n.n.srv.nintendo.net"
+    - +.stun.playstation.net
+    - xbox.*.*.microsoft.com
+    - "*.*.xboxlive.com"
+    - "*.msftncsi.com"
+    - "*.msftconnecttest.com"
+    - WORKGROUP
+rules: #!replace
+  - RULE-SET,addition-download,🌁 数据下载
+  - RULE-SET,addition-reject,REJECT
+  - RULE-SET,addition-direct,DIRECT
+  - RULE-SET,addition-openai,🌄 特殊控制 | OpenAI
+  - RULE-SET,addition-brad,🌄 特殊控制 | Brad
+  - RULE-SET,addition-copilot,🌄 特殊控制 | Copilot
+  - RULE-SET,addition-edge,🌄 特殊控制 | Edge
+  - RULE-SET,addition-nodejs,🌄 特殊控制 | Node.js
+  - RULE-SET,addition-proxy,🌌 科学上网 | CLOVER
+  - RULE-SET,original-applications,DIRECT
+  - RULE-SET,original-apple,DIRECT
+  - RULE-SET,original-icloud,DIRECT
+  - RULE-SET,original-private,DIRECT
+  - RULE-SET,original-direct,DIRECT
+  - RULE-SET,original-greatfire,🌌 科学上网 | CLOVER
+  - RULE-SET,original-gfw,🌌 科学上网 | CLOVER
+  - RULE-SET,original-proxy,🌌 科学上网 | CLOVER
+  - RULE-SET,original-tld-not-cn,🌌 科学上网 | CLOVER
+  - RULE-SET,original-reject,REJECT
+  - RULE-SET,original-telegramcidr,🌌 科学上网 | CLOVER,no-resolve
+  - RULE-SET,original-lancidr,DIRECT,no-resolve
+  - RULE-SET,original-cncidr,DIRECT,no-resolve
+  - GEOIP,LAN,DIRECT,no-resolve
+  - GEOIP,CN,DIRECT,no-resolve
+  - MATCH,🌠 规则逃逸
+proxy-groups: #!replace
+  - name: 🌌 科学上网 | CLOVER
+    type: select
+    proxies:
+      - 🌉 负载均衡 | 香港
+      - 🌉 负载均衡 | 新加坡
+      - 🌉 负载均衡 | 台湾
+      - 🌉 负载均衡 | 印度
+      - 🌉 负载均衡 | 日本
+      - 🌉 负载均衡 | 美国
+      - 🌉 负载均衡 | 韩国
+      - 🌅 目标节点
+      - DIRECT
+  - name: 🌁 数据下载
+    type: select
+    proxies:
+      - DIRECT
+      - 🌌 科学上网 | CLOVER
+  - name: 🌄 特殊控制 | OpenAI
+    type: select
+    proxies:
+      - REJECT
+      - 🇭🇰香港01
+      - 🇭🇰香港 02
+      - 🇭🇰香港 03
+      - 🇭🇰香港 04
+      - 🇸🇬新加坡 01
+      - 🇸🇬新加坡 02
+      - 🇸🇬新加坡 03
+      - 🇸🇬新加坡 04
+      - 🇸🇬新加坡 05
+      - 🇸🇬新加坡 06
+      - 🇸🇬新加坡 07
+      - 🇯🇵日本 01
+      - 🇯🇵日本 02
+      - 🇯🇵日本 03
+      - 🇯🇵日本 04
+      - 🇺🇸美国 01
+      - 🇺🇸美国 02
+      - 🇰🇷韩国 01
+      - 🇰🇷韩国 02
+      - 🇰🇷韩国 03
+      - 🇰🇷韩国 04
+      - 🇰🇷韩国 05
+      - 🇰🇷韩国 06
+      - 🇮🇳印度 01
+      - 🇮🇳印度 02
+      - 🇹🇼台湾 01
+      - 🇹🇼台湾 02
+      - 🇲🇾马来西亚 01
+      - 🇫🇷法国 01
+      - 🇦🇺澳大利亚 01
+      - 🇷🇺俄罗斯 01
+      - 🇨🇦加拿大 01
+      - 🇹🇷土耳其 01
+      - 🇧🇷巴西 01
+      - 🇩🇪德国 01
+      - 🇮🇹意大利 01
+      - 🇹🇭泰国 01
+      - 🇮🇪爱尔兰 01
+      - 🇸🇪瑞典 01
+      - 🇬🇧英国 01
+      - 🇬🇧英国 02
+      - 🇵🇭菲律宾 01
+      - 🇦🇪迪拜 01
+      - 🇦🇷阿根廷 01
+  - name: 🌄 特殊控制 | Brad
+    type: select
+    proxies:
+      - REJECT
+      - 🇭🇰香港01
+      - 🇭🇰香港 02
+      - 🇭🇰香港 03
+      - 🇭🇰香港 04
+      - 🇸🇬新加坡 01
+      - 🇸🇬新加坡 02
+      - 🇸🇬新加坡 03
+      - 🇸🇬新加坡 04
+      - 🇸🇬新加坡 05
+      - 🇸🇬新加坡 06
+      - 🇸🇬新加坡 07
+      - 🇯🇵日本 01
+      - 🇯🇵日本 02
+      - 🇯🇵日本 03
+      - 🇯🇵日本 04
+      - 🇺🇸美国 01
+      - 🇺🇸美国 02
+      - 🇰🇷韩国 01
+      - 🇰🇷韩国 02
+      - 🇰🇷韩国 03
+      - 🇰🇷韩国 04
+      - 🇰🇷韩国 05
+      - 🇰🇷韩国 06
+      - 🇮🇳印度 01
+      - 🇮🇳印度 02
+      - 🇹🇼台湾 01
+      - 🇹🇼台湾 02
+      - 🇲🇾马来西亚 01
+      - 🇫🇷法国 01
+      - 🇦🇺澳大利亚 01
+      - 🇷🇺俄罗斯 01
+      - 🇨🇦加拿大 01
+      - 🇹🇷土耳其 01
+      - 🇧🇷巴西 01
+      - 🇩🇪德国 01
+      - 🇮🇹意大利 01
+      - 🇹🇭泰国 01
+      - 🇮🇪爱尔兰 01
+      - 🇸🇪瑞典 01
+      - 🇬🇧英国 01
+      - 🇬🇧英国 02
+      - 🇵🇭菲律宾 01
+      - 🇦🇪迪拜 01
+      - 🇦🇷阿根廷 01
+  - name: 🌄 特殊控制 | Copilot
+    type: select
+    proxies:
+      - DIRECT
+      - 🌌 科学上网 | CLOVER
+  - name: 🌄 特殊控制 | Edge
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - 🌌 科学上网 | CLOVER
+  - name: 🌄 特殊控制 | Node.js
+    type: select
+    proxies:
+      - DIRECT
+      - 🌌 科学上网 | CLOVER
+  - name: 🌉 负载均衡 | 香港
+    type: load-balance
+    proxies:
+      - 🇭🇰香港01
+      - 🇭🇰香港 02
+      - 🇭🇰香港 03
+      - 🇭🇰香港 04
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
+  - name: 🌉 负载均衡 | 新加坡
+    type: load-balance
+    proxies:
+      - 🇸🇬新加坡 01
+      - 🇸🇬新加坡 02
+      - 🇸🇬新加坡 03
+      - 🇸🇬新加坡 04
+      - 🇸🇬新加坡 05
+      - 🇸🇬新加坡 06
+      - 🇸🇬新加坡 07
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
+  - name: 🌉 负载均衡 | 台湾
+    type: load-balance
+    proxies:
+      - 🇹🇼台湾 01
+      - 🇹🇼台湾 02
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
+  - name: 🌉 负载均衡 | 印度
+    type: load-balance
+    proxies:
+      - 🇮🇳印度 01
+      - 🇮🇳印度 02
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
+  - name: 🌉 负载均衡 | 日本
+    type: load-balance
+    proxies:
+      - 🇯🇵日本 01
+      - 🇯🇵日本 02
+      - 🇯🇵日本 03
+      - 🇯🇵日本 04
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
+  - name: 🌉 负载均衡 | 美国
+    type: load-balance
+    proxies:
+      - 🇺🇸美国 01
+      - 🇺🇸美国 02
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
+  - name: 🌉 负载均衡 | 韩国
+    type: load-balance
+    proxies:
+      - 🇰🇷韩国 01
+      - 🇰🇷韩国 02
+      - 🇰🇷韩国 03
+      - 🇰🇷韩国 04
+      - 🇰🇷韩国 05
+      - 🇰🇷韩国 06
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
+  - name: 🌅 目标节点
+    type: select
+    proxies:
+      - REJECT
+      - 🇭🇰香港01
+      - 🇭🇰香港 02
+      - 🇭🇰香港 03
+      - 🇭🇰香港 04
+      - 🇸🇬新加坡 01
+      - 🇸🇬新加坡 02
+      - 🇸🇬新加坡 03
+      - 🇸🇬新加坡 04
+      - 🇸🇬新加坡 05
+      - 🇸🇬新加坡 06
+      - 🇸🇬新加坡 07
+      - 🇯🇵日本 01
+      - 🇯🇵日本 02
+      - 🇯🇵日本 03
+      - 🇯🇵日本 04
+      - 🇺🇸美国 01
+      - 🇺🇸美国 02
+      - 🇰🇷韩国 01
+      - 🇰🇷韩国 02
+      - 🇰🇷韩国 03
+      - 🇰🇷韩国 04
+      - 🇰🇷韩国 05
+      - 🇰🇷韩国 06
+      - 🇮🇳印度 01
+      - 🇮🇳印度 02
+      - 🇹🇼台湾 01
+      - 🇹🇼台湾 02
+      - 🇲🇾马来西亚 01
+      - 🇫🇷法国 01
+      - 🇦🇺澳大利亚 01
+      - 🇷🇺俄罗斯 01
+      - 🇨🇦加拿大 01
+      - 🇹🇷土耳其 01
+      - 🇧🇷巴西 01
+      - 🇩🇪德国 01
+      - 🇮🇹意大利 01
+      - 🇹🇭泰国 01
+      - 🇮🇪爱尔兰 01
+      - 🇸🇪瑞典 01
+      - 🇬🇧英国 01
+      - 🇬🇧英国 02
+      - 🇵🇭菲律宾 01
+      - 🇦🇪迪拜 01
+      - 🇦🇷阿根廷 01
+  - name: 🌠 规则逃逸
+    type: select
+    proxies:
+      - DIRECT
+      - 🌌 科学上网 | CLOVER
+rule-providers: #!replace
+  addition-download:
+    type: http
+    behavior: classical
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/download.yaml
+    interval: 86400
+  addition-reject:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/reject.yaml
+    interval: 86400
+  addition-direct:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/direct.yaml
+    interval: 86400
+  addition-openai:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/openai.yaml
+    interval: 86400
+  addition-brad:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/brad.yaml
+    interval: 86400
+  addition-copilot:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/copilot.yaml
+    interval: 86400
+  addition-edge:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/edge.yaml
+    interval: 86400
+  addition-nodejs:
+    type: http
+    behavior: classical
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/nodejs.yaml
+    interval: 86400
+  addition-proxy:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/proxy.yaml
+    interval: 86400
+  original-applications:
+    type: http
+    behavior: classical
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/applications.yaml
+    interval: 86400
+  original-apple:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/apple.yaml
+    interval: 86400
+  original-icloud:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/icloud.yaml
+    interval: 86400
+  original-private:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/private.yaml
+    interval: 86400
+  original-direct:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/direct.yaml
+    interval: 86400
+  original-greatfire:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/greatfire.yaml
+    interval: 86400
+  original-gfw:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/gfw.yaml
+    interval: 86400
+  original-proxy:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/proxy.yaml
+    interval: 86400
+  original-tld-not-cn:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/tld-not-cn.yaml
+    interval: 86400
+  original-reject:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/reject.yaml
+    interval: 86400
+  original-telegramcidr:
+    type: http
+    behavior: ipcidr
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/telegramcidr.yaml
+    interval: 86400
+  original-lancidr:
+    type: http
+    behavior: ipcidr
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/lancidr.yaml
+    interval: 86400
+  original-cncidr:
+    type: http
+    behavior: ipcidr
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/cncidr.yaml
+    interval: 86400

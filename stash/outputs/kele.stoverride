@@ -1,0 +1,530 @@
+name: kele
+desc: Replace original configuration file.
+dns: #!replace
+  enable: true
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 192.18.0.1/16
+  nameserver:
+    - 119.29.29.29
+    - 119.28.28.28
+    - 223.5.5.5
+    - 223.6.6.6
+  fallback:
+    - 114.114.114.114
+    - 114.114.115.115
+    - 101.226.4.6
+    - 218.30.118.6
+    - 8.8.8.8
+    - 94.140.14.15
+    - 94.140.15.16
+    - 1.1.1.1
+  fake-ip-filter:
+    - +.stun.*.*
+    - +.stun.*.*.*
+    - +.stun.*.*.*.*
+    - +.stun.*.*.*.*.*
+    - "*.n.n.srv.nintendo.net"
+    - +.stun.playstation.net
+    - xbox.*.*.microsoft.com
+    - "*.*.xboxlive.com"
+    - "*.msftncsi.com"
+    - "*.msftconnecttest.com"
+    - WORKGROUP
+rules: #!replace
+  - RULE-SET,addition-download,🌁 数据下载
+  - RULE-SET,addition-reject,REJECT
+  - RULE-SET,addition-direct,DIRECT
+  - RULE-SET,addition-openai,🌄 特殊控制 | OpenAI
+  - RULE-SET,addition-brad,🌄 特殊控制 | Brad
+  - RULE-SET,addition-copilot,🌄 特殊控制 | Copilot
+  - RULE-SET,addition-edge,🌄 特殊控制 | Edge
+  - RULE-SET,addition-nodejs,🌄 特殊控制 | Node.js
+  - RULE-SET,addition-proxy,🌌 科学上网 | KELECLOUD
+  - RULE-SET,original-applications,DIRECT
+  - RULE-SET,original-apple,DIRECT
+  - RULE-SET,original-icloud,DIRECT
+  - RULE-SET,original-private,DIRECT
+  - RULE-SET,original-direct,DIRECT
+  - RULE-SET,original-greatfire,🌌 科学上网 | KELECLOUD
+  - RULE-SET,original-gfw,🌌 科学上网 | KELECLOUD
+  - RULE-SET,original-proxy,🌌 科学上网 | KELECLOUD
+  - RULE-SET,original-tld-not-cn,🌌 科学上网 | KELECLOUD
+  - RULE-SET,original-reject,REJECT
+  - RULE-SET,original-telegramcidr,🌌 科学上网 | KELECLOUD,no-resolve
+  - RULE-SET,original-lancidr,DIRECT,no-resolve
+  - RULE-SET,original-cncidr,DIRECT,no-resolve
+  - GEOIP,LAN,DIRECT,no-resolve
+  - GEOIP,CN,DIRECT,no-resolve
+  - MATCH,🌠 规则逃逸
+proxy-groups: #!replace
+  - name: 🌌 科学上网 | KELECLOUD
+    type: select
+    proxies:
+      - 🌉 负载均衡 | 香港 A
+      - 🌉 负载均衡 | 香港 B
+      - 🌉 负载均衡 | 美国
+      - 🌉 负载均衡 | 日本
+      - 🌅 目标节点
+      - DIRECT
+  - name: 🌁 数据下载
+    type: select
+    proxies:
+      - DIRECT
+      - 🌌 科学上网 | KELECLOUD
+  - name: 🌄 特殊控制 | OpenAI
+    type: select
+    proxies:
+      - REJECT
+      - "[SS]香港 01"
+      - "[SS]香港 02"
+      - "[SS]香港 03"
+      - "[SS]香港 04"
+      - "[SS]香港 05"
+      - "[SS]香港 06"
+      - "[SS]香港 07"
+      - "[SS]香港 08"
+      - "[SS]香港 09"
+      - "[SS]香港 10"
+      - "[SS]香港 11"
+      - "[SS]香港 12"
+      - "[SS]香港 13"
+      - "[SS]香港 14"
+      - "[SS]香港 01B"
+      - "[SS]香港 02B"
+      - "[SS]香港 03B"
+      - "[SS]香港 04B"
+      - "[SS]香港 05B"
+      - "[SS]香港 06B"
+      - "[SS]香港 07B"
+      - "[SS]香港 08B"
+      - "[SS]香港 09B"
+      - "[SS]香港 10B"
+      - "[SS]香港 11B"
+      - "[SS]香港 12B"
+      - "[SS]香港 13B"
+      - "[SS]香港 14B"
+      - "[SS]香港 15B"
+      - "[SS]香港 16B"
+      - "[SS]香港 17B"
+      - "[SS]香港 18B"
+      - "[SS]香港 19B"
+      - "[SS]香港 20B"
+      - "[SS]香港 21B"
+      - "[SS]香港 22B"
+      - "[SS]香港 23B"
+      - "[SS]香港 24B"
+      - "[SS]香港 25B"
+      - "[SS]香港 26B"
+      - "[SS]香港 27B"
+      - "[SS]香港 28B"
+      - "[SS]香港 29B"
+      - "[SS]香港 30B"
+      - "[SS]香港 31B"
+      - "[SS]香港 32B"
+      - "[SS]香港 33B"
+      - "[SS]香港 34B"
+      - "[SS]香港 35B"
+      - "[SS]越南 01"
+      - "[SS]越南 02"
+      - "[SS]越南 03"
+      - "[SS]越南 04"
+      - "[SS]越南 05"
+      - "[SS]越南 06"
+      - "[SS]越南 07"
+      - "[SS]越南 08"
+      - "[SS]越南 09"
+      - "[SS]美國 01"
+      - "[SS]美國 02"
+      - "[SS]美國 03"
+      - "[SS]美國 04"
+      - "[SS]美國 05"
+      - "[SS]美國 06"
+      - "[SS]美國 07"
+      - "[SS]美國 08"
+      - "[SS]美國 09"
+      - "[SS]日本 01"
+      - "[SS]日本 02"
+      - "[SS]日本 03"
+      - "[SS]日本 04"
+      - "[SS]台灣 01"
+      - "[SS]新加坡 01"
+      - "[SS]新加坡 02"
+      - "[SS]新加坡 03"
+  - name: 🌄 特殊控制 | Brad
+    type: select
+    proxies:
+      - REJECT
+      - "[SS]香港 01"
+      - "[SS]香港 02"
+      - "[SS]香港 03"
+      - "[SS]香港 04"
+      - "[SS]香港 05"
+      - "[SS]香港 06"
+      - "[SS]香港 07"
+      - "[SS]香港 08"
+      - "[SS]香港 09"
+      - "[SS]香港 10"
+      - "[SS]香港 11"
+      - "[SS]香港 12"
+      - "[SS]香港 13"
+      - "[SS]香港 14"
+      - "[SS]香港 01B"
+      - "[SS]香港 02B"
+      - "[SS]香港 03B"
+      - "[SS]香港 04B"
+      - "[SS]香港 05B"
+      - "[SS]香港 06B"
+      - "[SS]香港 07B"
+      - "[SS]香港 08B"
+      - "[SS]香港 09B"
+      - "[SS]香港 10B"
+      - "[SS]香港 11B"
+      - "[SS]香港 12B"
+      - "[SS]香港 13B"
+      - "[SS]香港 14B"
+      - "[SS]香港 15B"
+      - "[SS]香港 16B"
+      - "[SS]香港 17B"
+      - "[SS]香港 18B"
+      - "[SS]香港 19B"
+      - "[SS]香港 20B"
+      - "[SS]香港 21B"
+      - "[SS]香港 22B"
+      - "[SS]香港 23B"
+      - "[SS]香港 24B"
+      - "[SS]香港 25B"
+      - "[SS]香港 26B"
+      - "[SS]香港 27B"
+      - "[SS]香港 28B"
+      - "[SS]香港 29B"
+      - "[SS]香港 30B"
+      - "[SS]香港 31B"
+      - "[SS]香港 32B"
+      - "[SS]香港 33B"
+      - "[SS]香港 34B"
+      - "[SS]香港 35B"
+      - "[SS]越南 01"
+      - "[SS]越南 02"
+      - "[SS]越南 03"
+      - "[SS]越南 04"
+      - "[SS]越南 05"
+      - "[SS]越南 06"
+      - "[SS]越南 07"
+      - "[SS]越南 08"
+      - "[SS]越南 09"
+      - "[SS]美國 01"
+      - "[SS]美國 02"
+      - "[SS]美國 03"
+      - "[SS]美國 04"
+      - "[SS]美國 05"
+      - "[SS]美國 06"
+      - "[SS]美國 07"
+      - "[SS]美國 08"
+      - "[SS]美國 09"
+      - "[SS]日本 01"
+      - "[SS]日本 02"
+      - "[SS]日本 03"
+      - "[SS]日本 04"
+      - "[SS]台灣 01"
+      - "[SS]新加坡 01"
+      - "[SS]新加坡 02"
+      - "[SS]新加坡 03"
+  - name: 🌄 特殊控制 | Copilot
+    type: select
+    proxies:
+      - DIRECT
+      - 🌌 科学上网 | KELECLOUD
+  - name: 🌄 特殊控制 | Edge
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - 🌌 科学上网 | KELECLOUD
+  - name: 🌄 特殊控制 | Node.js
+    type: select
+    proxies:
+      - DIRECT
+      - 🌌 科学上网 | KELECLOUD
+  - name: 🌉 负载均衡 | 香港 A
+    type: load-balance
+    proxies:
+      - "[SS]香港 01B"
+      - "[SS]香港 02B"
+      - "[SS]香港 03B"
+      - "[SS]香港 04B"
+      - "[SS]香港 05B"
+      - "[SS]香港 06B"
+      - "[SS]香港 07B"
+      - "[SS]香港 08B"
+      - "[SS]香港 09B"
+      - "[SS]香港 10B"
+      - "[SS]香港 11B"
+      - "[SS]香港 12B"
+      - "[SS]香港 13B"
+      - "[SS]香港 14B"
+      - "[SS]香港 15B"
+      - "[SS]香港 16B"
+      - "[SS]香港 17B"
+      - "[SS]香港 18B"
+      - "[SS]香港 19B"
+      - "[SS]香港 20B"
+      - "[SS]香港 21B"
+      - "[SS]香港 22B"
+      - "[SS]香港 23B"
+      - "[SS]香港 24B"
+      - "[SS]香港 25B"
+      - "[SS]香港 26B"
+      - "[SS]香港 27B"
+      - "[SS]香港 28B"
+      - "[SS]香港 29B"
+      - "[SS]香港 30B"
+      - "[SS]香港 31B"
+      - "[SS]香港 32B"
+      - "[SS]香港 33B"
+      - "[SS]香港 34B"
+      - "[SS]香港 35B"
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
+  - name: 🌉 负载均衡 | 香港 B
+    type: load-balance
+    proxies:
+      - "[SS]香港 01"
+      - "[SS]香港 02"
+      - "[SS]香港 03"
+      - "[SS]香港 04"
+      - "[SS]香港 05"
+      - "[SS]香港 06"
+      - "[SS]香港 07"
+      - "[SS]香港 08"
+      - "[SS]香港 09"
+      - "[SS]香港 10"
+      - "[SS]香港 11"
+      - "[SS]香港 12"
+      - "[SS]香港 13"
+      - "[SS]香港 14"
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
+  - name: 🌉 负载均衡 | 美国
+    type: load-balance
+    proxies:
+      - "[SS]美國 01"
+      - "[SS]美國 02"
+      - "[SS]美國 03"
+      - "[SS]美國 04"
+      - "[SS]美國 05"
+      - "[SS]美國 06"
+      - "[SS]美國 07"
+      - "[SS]美國 08"
+      - "[SS]美國 09"
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
+  - name: 🌉 负载均衡 | 日本
+    type: load-balance
+    proxies:
+      - "[SS]日本 01"
+      - "[SS]日本 02"
+      - "[SS]日本 03"
+      - "[SS]日本 04"
+    url: http://www.gstatic.com/generate_204
+    interval: 72
+    lazy: true
+  - name: 🌅 目标节点
+    type: select
+    proxies:
+      - REJECT
+      - DIRECT
+      - "[SS]香港 01"
+      - "[SS]香港 02"
+      - "[SS]香港 03"
+      - "[SS]香港 04"
+      - "[SS]香港 05"
+      - "[SS]香港 06"
+      - "[SS]香港 07"
+      - "[SS]香港 08"
+      - "[SS]香港 09"
+      - "[SS]香港 10"
+      - "[SS]香港 11"
+      - "[SS]香港 12"
+      - "[SS]香港 13"
+      - "[SS]香港 14"
+      - "[SS]香港 01B"
+      - "[SS]香港 02B"
+      - "[SS]香港 03B"
+      - "[SS]香港 04B"
+      - "[SS]香港 05B"
+      - "[SS]香港 06B"
+      - "[SS]香港 07B"
+      - "[SS]香港 08B"
+      - "[SS]香港 09B"
+      - "[SS]香港 10B"
+      - "[SS]香港 11B"
+      - "[SS]香港 12B"
+      - "[SS]香港 13B"
+      - "[SS]香港 14B"
+      - "[SS]香港 15B"
+      - "[SS]香港 16B"
+      - "[SS]香港 17B"
+      - "[SS]香港 18B"
+      - "[SS]香港 19B"
+      - "[SS]香港 20B"
+      - "[SS]香港 21B"
+      - "[SS]香港 22B"
+      - "[SS]香港 23B"
+      - "[SS]香港 24B"
+      - "[SS]香港 25B"
+      - "[SS]香港 26B"
+      - "[SS]香港 27B"
+      - "[SS]香港 28B"
+      - "[SS]香港 29B"
+      - "[SS]香港 30B"
+      - "[SS]香港 31B"
+      - "[SS]香港 32B"
+      - "[SS]香港 33B"
+      - "[SS]香港 34B"
+      - "[SS]香港 35B"
+      - "[SS]越南 01"
+      - "[SS]越南 02"
+      - "[SS]越南 03"
+      - "[SS]越南 04"
+      - "[SS]越南 05"
+      - "[SS]越南 06"
+      - "[SS]越南 07"
+      - "[SS]越南 08"
+      - "[SS]越南 09"
+      - "[SS]美國 01"
+      - "[SS]美國 02"
+      - "[SS]美國 03"
+      - "[SS]美國 04"
+      - "[SS]美國 05"
+      - "[SS]美國 06"
+      - "[SS]美國 07"
+      - "[SS]美國 08"
+      - "[SS]美國 09"
+      - "[SS]日本 01"
+      - "[SS]日本 02"
+      - "[SS]日本 03"
+      - "[SS]日本 04"
+      - "[SS]台灣 01"
+      - "[SS]新加坡 01"
+      - "[SS]新加坡 02"
+      - "[SS]新加坡 03"
+  - name: 🌠 规则逃逸
+    type: select
+    proxies:
+      - DIRECT
+      - 🌌 科学上网 | KELECLOUD
+rule-providers: #!replace
+  addition-download:
+    type: http
+    behavior: classical
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/download.yaml
+    interval: 86400
+  addition-reject:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/reject.yaml
+    interval: 86400
+  addition-direct:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/direct.yaml
+    interval: 86400
+  addition-openai:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/openai.yaml
+    interval: 86400
+  addition-brad:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/brad.yaml
+    interval: 86400
+  addition-copilot:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/copilot.yaml
+    interval: 86400
+  addition-edge:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/edge.yaml
+    interval: 86400
+  addition-nodejs:
+    type: http
+    behavior: classical
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/nodejs.yaml
+    interval: 86400
+  addition-proxy:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/proxy.yaml
+    interval: 86400
+  original-applications:
+    type: http
+    behavior: classical
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/applications.yaml
+    interval: 86400
+  original-apple:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/apple.yaml
+    interval: 86400
+  original-icloud:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/icloud.yaml
+    interval: 86400
+  original-private:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/private.yaml
+    interval: 86400
+  original-direct:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/direct.yaml
+    interval: 86400
+  original-greatfire:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/greatfire.yaml
+    interval: 86400
+  original-gfw:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/gfw.yaml
+    interval: 86400
+  original-proxy:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/proxy.yaml
+    interval: 86400
+  original-tld-not-cn:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/tld-not-cn.yaml
+    interval: 86400
+  original-reject:
+    type: http
+    behavior: domain
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/reject.yaml
+    interval: 86400
+  original-telegramcidr:
+    type: http
+    behavior: ipcidr
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/telegramcidr.yaml
+    interval: 86400
+  original-lancidr:
+    type: http
+    behavior: ipcidr
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/lancidr.yaml
+    interval: 86400
+  original-cncidr:
+    type: http
+    behavior: ipcidr
+    path: https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/cncidr.yaml
+    interval: 86400

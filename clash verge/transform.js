@@ -30,7 +30,8 @@ const transform = () => {
     "updateCheck",
     "updateRules",
     "updateTimestamp",
-    "getFormatDate"
+    "getFormatDate",
+    "getBehavior"
   ];
 
   const transformedCode = babel.transformSync(constructCode, {
@@ -61,17 +62,17 @@ const transform = () => {
     /* 移除所有 console.log 代码行。*/
     .replace(/console.log\(.+$\n/gm, "");
 
-  const configsPosition = inputPath + "configs/";
+  const configsPosition = inputPath + "profiles/";
   const configs = fs.readdirSync(configsPosition);
 
   /* 读取必要的 .js 配置并合并在一起。*/
-  let newCode = "";
+  let newCode = fs.readFileSync(inputPath + "rules/rulesBehavior.js", "utf-8") + "\n\n";
   configs.forEach(fileName => {
     newCode += fs.readFileSync(configsPosition + fileName, "utf-8").replace("configuration", fileName.replace(".js", "")) + "\n\n";
   });
   const initPosition = outputPath + "configs/init.js";
-  newCode += fs.readFileSync(initPosition, "utf-8") + "\n\n";
   newCode = newCode.replace(/module.exports\./gm, "const ");
+  newCode += fs.readFileSync(initPosition, "utf-8") + "\n\n";
 
   const outputCode = formatTransformedCode + "\n\n" + newCode;
 
