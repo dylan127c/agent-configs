@@ -167,6 +167,7 @@ function getProxyGroups(modifiedParams, configuraion) {
 function getRuleProviders(modifiedParams, mode) {
     let ruleProviders = {};
     if (modifiedParams.additionRules) {
+        const link = mode.additionStatus ? "path" : "url";
         const ruleNames = modifiedParams.additionRules.map(ele => {
             return ele.replace(",no-resolve", "").match(/(?<=,).+(?=,)/gm).toString();
         });
@@ -174,7 +175,7 @@ function getRuleProviders(modifiedParams, mode) {
             ruleProviders[modifiedParams.additionPrefix.concat(modifiedParams.prefixConnector + name)] = {
                 type: mode.additionStatus ? FILE : HTTP,
                 behavior: getBehavior(modifiedParams, name),
-                path: mode.additionStatus ?
+                [link]: mode.additionStatus ?
                     modifiedParams.additionNative.concat("/", name, ".", modifiedParams.additionNativeType) :
                     modifiedParams.additionRemote.concat("/", name, ".", modifiedParams.additionRemoteType),
                 interval: 86400
@@ -182,6 +183,7 @@ function getRuleProviders(modifiedParams, mode) {
         })
     }
     if (modifiedParams.originalRules) {
+        const link = mode.additionStatus ? "path" : "url";
         const ruleNames = modifiedParams.originalRules.map(ele => {
             return ele.replace(/^.+?,/gm, "").replace(/,.+$/gm, "");
         });
@@ -189,7 +191,7 @@ function getRuleProviders(modifiedParams, mode) {
             ruleProviders[modifiedParams.originalPrefix.concat(modifiedParams.prefixConnector + name)] = {
                 type: mode.originalStatus ? FILE : HTTP,
                 behavior: getBehavior(modifiedParams, name),
-                path: mode.originalStatus ?
+                [link]: mode.originalStatus ?
                     modifiedParams.originalNative.concat("/", name, ".", modifiedParams.originalNativeType) :
                     modifiedParams.originalRemote.concat("/", name, ".", modifiedParams.originalRemoteType),
                 interval: 86400
