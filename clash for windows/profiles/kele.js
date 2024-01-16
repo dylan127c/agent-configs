@@ -58,7 +58,7 @@ module.exports.configuration = () => {
     return {
         groups: groups,
         endRules: endRules,
-        prefixConnector: "-",
+        connector: "-",
         initScript: "H:/OneDrive/Repositories/Proxy Rules/clash for windows/configs/initialization",
 
         defaultBehavior: "domain",

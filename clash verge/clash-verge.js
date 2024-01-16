@@ -1,159 +1,282 @@
-const CFW_FOLDER = "H:/OneDrive/Documents/Repositories/Proxy Rules/clash for windows/";
-const REMOTE_URL = "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/";
-const SOURCES = {
-  defaultFile: CFW_FOLDER + "rules/default",
-  additionalFile: CFW_FOLDER + "rules/additional",
-  defaultHttp: REMOTE_URL + "rules/default",
-  additionalHttp: REMOTE_URL + "rules/additional"
-};
+const FILENAME = "main";
 
-function get(console, originalConfiguration, mode, configuration, isConfigRemote) {
-  const newConfiguration = init(originalConfiguration);
-  const profile = configuration();
-  const defaultRulesSaver = addRulePrefix(profile.defaultPrefix, profile.defaultRules);
-  const additionalRulesSaver = addRulePrefix(profile.additionalPrefix, profile.additionalRules);
-  newConfiguration["rules"] = additionalRulesSaver.concat(defaultRulesSaver, profile.endRules);
-  newConfiguration["proxy-groups"] = getProxyGroups(profile.groups, originalConfiguration.proxies);
-  let defaultSaver;
-  let additionalSaver;
-  if (mode[0]) {
-    defaultSaver = getRuleProviders(profile.defaultRules, profile.defaultPrefix, SOURCES.defaultFile);
-  } else {
-    defaultSaver = getRuleProviders(profile.defaultRules, profile.defaultPrefix, SOURCES.defaultHttp);
-  }
-  if (mode[1]) {
-    additionalSaver = getRuleProviders(profile.additionalRules, profile.additionalPrefix, SOURCES.additionalFile);
-  } else {
-    additionalSaver = getRuleProviders(profile.additionalRules, profile.additionalPrefix, SOURCES.additionalHttp);
-  }
-  newConfiguration["rule-providers"] = Object.assign(defaultSaver, additionalSaver);
-    return isConfigRemote ? JSON.stringify(newConfiguration) : outputClashConfig(newConfiguration, profile.replacement);
+const ADDITION = "addition";
+const ORIGINAL = "original";
+
+/**
+ * @method {@link getProxyGroups}
+ */
+const SELECT = "select";
+const TEST_URL = "http://www.gstatic.com/generate_204";
+const TEST_INTERVAL = 72;
+const TEST_LAZY = true;
+const DEFAULT_PROXY = "DIRECT";
+
+/**
+ * @method {@link getRuleProviders}
+ */
+const FILE = "file";
+const HTTP = "http";
+
+function generate(log, mode, originalConfiguration, modifiedParams, isConfigRemote) {
+    const funcName = "generate";
+
+    /* INITIALIZE */
+    const newConfiguration = init(log, originalConfiguration, modifiedParams);
+
+    /* RULES */
+    const identifiers = [ADDITION, ORIGINAL];
+    newConfiguration["rules"] = getRules(modifiedParams, identifiers);
+
+    /* PROXY GROUPS */
+    newConfiguration["proxy-groups"] = getProxyGroups(modifiedParams, originalConfiguration);
+    /* RULE PROVIDERS */
+    newConfiguration["rule-providers"] = getRuleProviders(modifiedParams, mode);
+
+    /* FINAL CONFIGURATION */
+    log.info(mark(funcName), "parsing done.");
+    const rawConfiguration = JSON.stringify(newConfiguration);
+    return isConfigRemote ?
+        rawConfiguration :
+        replaceAndReturn(rawConfiguration, modifiedParams.replacement);
 }
 
-function init(configuration) {
-  let initConfiguration = {};
-  initConfiguration["mixed-port"] = 7890;
-  initConfiguration["allow-lan"] = false;
-  initConfiguration["bind-address"] = "*";
-  initConfiguration.mode = "rule";
-  initConfiguration["log-level"] = "info";
-  initConfiguration.ipv6 = false;
-  initConfiguration["external-controller"] = "127.0.0.1:9090";
-  initConfiguration.secret = "";
-  initConfiguration["dns"] = {};
-  initConfiguration.dns.enable = true;
-  initConfiguration.dns.ipv6 = false;
-  initConfiguration.dns["enhanced-mode"] = "fake-ip";
-  initConfiguration.dns["fake-ip-range"] = "192.18.0.1/16";
-  initConfiguration.dns.nameserver = ["119.29.29.29", "119.28.28.28", "223.5.5.5", "223.6.6.6"];
-  initConfiguration.dns.fallback = ["114.114.114.114", "114.114.115.115", "101.226.4.6", "218.30.118.6", "8.8.8.8", "94.140.14.15", "94.140.15.16", "1.1.1.1"];
-  initConfiguration.dns["fake-ip-filter"] = ["+.stun.*.*", "+.stun.*.*.*", "+.stun.*.*.*.*", "+.stun.*.*.*.*.*", "*.n.n.srv.nintendo.net", "+.stun.playstation.net", "xbox.*.*.microsoft.com", "*.*.xboxlive.com", "*.msftncsi.com", "*.msftconnecttest.com", "WORKGROUP"];
-  initConfiguration["tun"] = {
-    enable: false,
-    stack: "system",
-    "auto-route": true,
-    "auto-detect-interface": true,
-    "dns-hijack": ["any:53"]
-  };
-  initConfiguration["profile"] = {
-    "tracing": true
-  };
-  initConfiguration.proxies = configuration.proxies;
-  return initConfiguration;
+function mark(name) {
+    return FILENAME + "." + name + " =>";
 }
 
-function addRulePrefix(rulePrefix, ...ruleArrays) {
-  let arr = [];
-  if (!ruleArrays || ruleArrays.toString() === "") {
-    return arr;
-  }
-  ruleArrays.forEach(ruleArray => {
-    const provisionalArr = ruleArray.map(ele => ele.replace(",", "," + rulePrefix));
-    arr = arr.concat(provisionalArr);
-  });
-  return arr;
-}
+function init(log, configuration, modifiedParams) {
+    const funcName = "init";
 
-function getProxyGroups(details, proxies) {
-  const arr = [];
-  details.forEach(detail => {
-    const proxyGroup = {
-      name: detail.name,
-      type: detail.type,
-      proxies: detail.proxies
-    };
-    if (detail.type !== "select") {
-      proxyGroup.url = "http://www.gstatic.com/generate_204";
-      proxyGroup.interval = 72;
-      proxyGroup.lazy = true;
+    /* INITIALIZE */
+    let initConfiguration;
+    try {
+        initConfiguration = build();
+    } catch (error) {
+        log.error(mark(funcName), "initScript missing.");
+        log.error(mark(funcName), error);
     }
-    if (detail.proxies.length) {
-      proxyGroup.proxies = detail.proxies;
-    }
-    if (detail.append) {
-      proxies.forEach(proxy => {
-        if (proxy.name.match(detail.append)) {
-          proxyGroup.proxies.push(proxy.name);
+
+    /* PROXIES */
+    initConfiguration.proxies = configuration.proxies;
+    /* RETURN NEW CONFIGURATION */
+    return initConfiguration;
+}
+
+function getRules(modifiedParams, identifiers) {
+    let arr = [];
+    identifiers.forEach(identifier => {
+        const rules = modifiedParams[identifier + "Rules"];
+        const prefix = modifiedParams[identifier + "Prefix"];
+
+        if (!rules || !rules.length) {
+            return arr;
         }
-      });
-    }
-    arr.push(proxyGroup);
-  });
-  return arr;
-}
-
-function getRuleProviders(rules, rulePrefix, ruleSource) {
-  let ruleProviders = {};
-  if (!ruleSource || ruleSource === "") {
-    return {};
-  }
-  const ruleNames = rules.map(ele => ele.replace(/^.+?,/gm, "").replace(/,.+$/gm, ""));
-  ;
-  const getType = ruleSource => {
-    return ruleSource.includes("http") ? "http" : "file";
-  };
-  if (getType(ruleSource) === "http") {
-    ruleNames.forEach(name => {
-      ruleProviders[rulePrefix + name] = {
-        type: "http",
-        behavior: getBehavior(name),
-        url: ruleSource + "/" + name + ".yaml",
-        interval: 86400
-      };
+        const provisional = rules.map(ele => {
+            return ele.replace(",", ",".concat(prefix, modifiedParams.connector));
+        });
+        arr = arr.concat(provisional);
     });
-  }
-  if (getType(ruleSource) === "file") {
-    ruleNames.forEach(name => {
-      ruleProviders[rulePrefix + name] = {
-        type: "file",
-        behavior: getBehavior(name),
-        path: ruleSource + "/" + name + ".yaml",
-        interval: 86400
-      };
-    });
-  }
-  return ruleProviders;
+    return arr.concat(modifiedParams.endRules);
 }
 
-function outputClashConfig(configuration, replacement) {
-  return fixSomeFlag(JSON.stringify(configuration), replacement);
+function getProxyGroups(modifiedParams, configuraion) {
+    const arr = [];
+    modifiedParams.groups.forEach(group => {
+        const groupConstruct = {
+            name: group.name,
+            type: group.type,
+            proxies: group.proxies ? Array.from(group.proxies) : []
+        };
+
+        if (group.type !== SELECT) {
+            groupConstruct.url = TEST_URL;
+            groupConstruct.interval = TEST_INTERVAL;
+            groupConstruct.lazy = TEST_LAZY;
+        }
+
+        if (group.append) {
+            configuraion.proxies.forEach(proxy => {
+                if (proxy.name.match(group.append)) {
+                    groupConstruct.proxies.push(proxy.name);
+                }
+            });
+        }
+
+        if (!groupConstruct.proxies.length) {
+            groupConstruct.proxies.push(DEFAULT_PROXY);
+            configuraion.proxies.forEach(proxy => {
+                groupConstruct.proxies.push(proxy.name);
+            });
+        }
+        arr.push(groupConstruct);
+    })
+    return arr;
 }
 
-function fixSomeFlag(str, map) {
-  for (const [search, replace] of Object.entries(map)) {
-    str = str.replaceAll(search, replace);
-  }
-  return str;
-}
-
-const getBehavior = (ruleName) => {
-    if (ruleName === "applications" || ruleName === "download") {
-        return "classical";
+function getRuleProviders(modifiedParams, mode) {
+    let ruleProviders = {};
+    if (modifiedParams.additionRules) {
+        const link = mode.additionStatus ? "path" : "url";
+        const ruleNames = modifiedParams.additionRules.map(ele => {
+            return ele.replace(",no-resolve", "").match(/(?<=,).+(?=,)/gm).toString();
+        });
+        ruleNames.forEach(name => {
+            ruleProviders[modifiedParams.additionPrefix.concat(modifiedParams.connector + name)] = {
+                type: mode.additionStatus ? FILE : HTTP,
+                behavior: getBehavior(modifiedParams, name),
+                [link]: mode.additionStatus ?
+                    modifiedParams.additionNative.concat("/", name, ".", modifiedParams.additionNativeType) :
+                    modifiedParams.additionRemote.concat("/", name, ".", modifiedParams.additionRemoteType),
+                interval: 86400
+            }
+        })
     }
-    if (ruleName.includes("cidr")) {
-        return "ipcidr";
+    if (modifiedParams.originalRules) {
+        const link = mode.additionStatus ? "path" : "url";
+        const ruleNames = modifiedParams.originalRules.map(ele => {
+            return ele.replace(/^.+?,/gm, "").replace(/,.+$/gm, "");
+        });
+        ruleNames.forEach(name => {
+            ruleProviders[modifiedParams.originalPrefix.concat(modifiedParams.connector + name)] = {
+                type: mode.originalStatus ? FILE : HTTP,
+                behavior: getBehavior(modifiedParams, name),
+                [link]: mode.originalStatus ?
+                    modifiedParams.originalNative.concat("/", name, ".", modifiedParams.originalNativeType) :
+                    modifiedParams.originalRemote.concat("/", name, ".", modifiedParams.originalRemoteType),
+                interval: 86400
+            }
+        })
     }
-    return "domain";
+    return ruleProviders;
+}
+
+function getBehavior(modifiedParams, name) {
+    for (const [behavior, arr] of Object.entries(modifiedParams.behavior)) {
+        if (arr.includes(name)) {
+            return behavior;
+        }
+    }
+    return modifiedParams.defaultBehavior;
+}
+
+/**
+ * 获取 ./profiles 中的替换信息，以替换输出配置中的某些文本信息。
+ * 
+ * @param {string} str 已解析并重构的配置信息
+ * @param {Map<string, string>} map 记录替换信息的映射表
+ * @returns {string} 已处理完毕的配置信息
+ */
+function replaceAndReturn(str, map) {
+    for (const [search, replace] of Object.entries(map)) {
+        if (search.includes("/")) {
+            str = str.replaceAll(eval(search), replace);
+        } else {
+            str = str.replaceAll(search, replace);
+        }
+    }
+    return str;
+}
+
+function build() {
+
+    /* INITIALIZE */
+    let initConfiguration = {};
+
+    /* BASIC CONFIGURATION */
+    initConfiguration["mixed-port"] = 7890;
+    initConfiguration["allow-lan"] = false;
+    initConfiguration["bind-address"] = "*";
+    initConfiguration.mode = "rule";
+    initConfiguration["log-level"] = "info";
+    initConfiguration.ipv6 = false;
+    initConfiguration["external-controller"] = "127.0.0.1:9090";
+    initConfiguration.secret = "";
+
+    /*
+     * DNS
+     * 
+     * 当 dns.enable 启用时，所有经过 CFW 或 CV 的流量都会使用 DNS 配置。
+     * 
+     * 对于 CFW 来说，TUN 模式自带了 DNS 配置，且该配置默认处于启用状态，并无法更改。
+     * 这意味着使用 CFW 开启 TUN 模式后，默认生效的 DNS 配置永远是 TUN 模式自带的 DNS 配置。
+     * 
+     * 配置文件内的 DNS 配置可以选择性开启或关闭。如果开启 DNS 配置，则所有经过 CFW/CV 的请求
+     * 都会用 nameserver、fallback 中的 DNS 服务器进行解析（同时解析）。
+     * 如果关闭 DNS 配置（dns.enable = false），则意味 CFW/CV 会使用系统默认的 DNS 解析服务。
+     * 
+     * 对于 CV 来说，需在设置中勾选 DNS/TUN 字段同时启用 DNS 配置后，才能正常使用 TUN 模式。
+     */
+    initConfiguration["dns"] = {};
+    initConfiguration.dns.enable = true;
+    initConfiguration.dns.ipv6 = false;
+    initConfiguration.dns["enhanced-mode"] = "fake-ip";
+    initConfiguration.dns["fake-ip-range"] = "192.18.0.1/16";
+    initConfiguration.dns.nameserver = [
+        "119.29.29.29",
+        "119.28.28.28",
+        "223.5.5.5",
+        "223.6.6.6",
+    ];
+    initConfiguration.dns.fallback = [
+        "114.114.114.114",
+        "114.114.115.115",
+        "101.226.4.6",
+        "218.30.118.6",
+        "8.8.8.8",
+        "94.140.14.15",
+        "94.140.15.16",
+        "1.1.1.1"
+    ];
+    initConfiguration.dns["fake-ip-filter"] = [
+        "+.stun.*.*",
+        "+.stun.*.*.*",
+        "+.stun.*.*.*.*",
+        "+.stun.*.*.*.*.*",
+        "*.n.n.srv.nintendo.net",
+        "+.stun.playstation.net",
+        "xbox.*.*.microsoft.com",
+        "*.*.xboxlive.com",
+        "*.msftncsi.com",
+        "*.msftconnecttest.com",
+        "WORKGROUP"
+    ];
+
+    /*
+     * TUN
+     *
+     * 大部分浏览器默认开启 “安全 DNS” 功能，此功能会影响 TUN 模式劫持 DNS 请求导致反推域名失败，
+     * 请在浏览器设置中关闭此功能以保证 TUN 模式正常运行。
+     * 
+     * 注意，在 tun.enable = true 时，CFW 会在完成配置更新时自动打开 TUN 模式，这显然不合理。
+     * 而对于 CV 来说，无论 tun.enable 的值是什么，TUN 模式都不会被自动打开。
+     * 
+     * 因此，建议 tun.enable 保持 false 状态，在需要使用到 TUN 模式时，再手动代开。
+     * 
+     * 另外，tun.stack 默认为 gvisor 模式，但该模式兼容性欠佳，因此建议改为 system 模式。
+     * 
+     * 但需要注意，使用 system 模式需要先添加防火墙规则 Add firewall rules，
+     * 同时还要安装、启用服务模式 Service Mode。
+     */
+    initConfiguration["tun"] = {
+        enable: false,
+        stack: "system",
+        "auto-route": true,
+        "auto-detect-interface": true,
+        "dns-hijack": ["any:53"]
+    };
+
+    /*
+     * PROFILE
+     *
+     * 遗留问题：使用 clash-tracing 项目监控 CFW 流量时，则需要在 ~/.config/clash/config.yaml 中添加 profile 配置。
+     * 但目前 CFW 并无法正确识别该配置，即便将配置写入 config.yaml 中也不会生效。
+     * 
+     * 解决方法：直接在配置中添加 profile 信息，这样就可以使用 clash-tracing 项目来监控 CFW 流量了。
+     */
+    initConfiguration["profile"] = { "tracing": true };
+
+    return initConfiguration;
 }
 
 const clover = () => {
@@ -167,10 +290,12 @@ const clover = () => {
         "🌉 负载均衡 | 韩国",
         "🌅 目标节点",
     ];
+
+    const regChatGPT = /香港\s02|菲律宾|马来西亚|加拿大|德国|土耳其|爱尔兰|澳大利亚|瑞典/gm;    
     const groups = [
         { name: "🌌 科学上网 | CLOVER", type: "select", proxies: mainGroups.concat(["DIRECT"]) },
         { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
-        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^(?!剩余|套餐)/gm },
+        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: regChatGPT },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^(?!剩余|套餐)/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | CLOVER"] },
@@ -186,7 +311,7 @@ const clover = () => {
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
     ]
 
-    const additionalRules = [
+    const additionRules = [
         "RULE-SET,download,🌁 数据下载",
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
@@ -197,7 +322,7 @@ const clover = () => {
         "RULE-SET,nodejs,🌄 特殊控制 | Node.js",
         "RULE-SET,proxy,🌌 科学上网 | CLOVER",
     ];
-    const defaultRules = [
+    const originalRules = [
         "RULE-SET,applications,DIRECT",
         "RULE-SET,apple,DIRECT",
         "RULE-SET,icloud,DIRECT",
@@ -221,10 +346,29 @@ const clover = () => {
     return {
         groups: groups,
         endRules: endRules,
-        additionalRules: additionalRules,
-        additionalPrefix: "[additional] ",
-        defaultRules: defaultRules,
-        defaultPrefix: "[default] ",
+        connector: "-",
+        initScript: "H:/OneDrive/Repositories/Proxy Rules/clash for windows/configs/initialization",
+
+        defaultBehavior: "domain",
+        behavior: {
+            "classical": ["applications", "download", "nodejs"],
+            "ipcidr": ["telegramcidr", "lancidr", "cncidr"]
+        },
+
+        originalRules: originalRules,
+        originalPrefix: "original",
+        originalNative: "H:/OneDrive/Repositories/Proxy Rules/clash for windows/rules/original",
+        originalNativeType: "yaml",
+        originalRemote: "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original",
+        originalRemoteType: "yaml",
+
+        additionRules: additionRules,
+        additionPrefix: "addition",
+        additionNative: "H:/OneDrive/Repositories/Proxy Rules/clash for windows/rules/addition",
+        additionNativeType: "yaml",
+        additionRemote: "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition",
+        additionRemoteType: "yaml",
+
         replacement: {
             "🇹🇼": "🇨🇳 ",
             "香港01": "香港 01",
@@ -280,7 +424,7 @@ const kele = () => {
         { name: "🏞️ 订阅详情", type: "select", proxies: [], append: /剩余流量/gm },
     ]
 
-    const additionalRules = [
+    const additionRules = [
         "RULE-SET,download,🌁 数据下载",
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
@@ -291,7 +435,7 @@ const kele = () => {
         "RULE-SET,nodejs,🌄 特殊控制 | Node.js",
         "RULE-SET,proxy,🌌 科学上网 | KELECLOUD",
     ];
-    const defaultRules = [
+    const originalRules = [
         "RULE-SET,applications,DIRECT",
         "RULE-SET,apple,DIRECT",
         "RULE-SET,icloud,DIRECT",
@@ -315,10 +459,29 @@ const kele = () => {
     return {
         groups: groups,
         endRules: endRules,
-        additionalRules: additionalRules,
-        additionalPrefix: "[additional] ",
-        defaultRules: defaultRules,
-        defaultPrefix: "[default] ",
+        connector: "-",
+        initScript: "H:/OneDrive/Repositories/Proxy Rules/clash for windows/configs/initialization",
+
+        defaultBehavior: "domain",
+        behavior: {
+            "classical": ["applications", "download", "nodejs"],
+            "ipcidr": ["telegramcidr", "lancidr", "cncidr"]
+        },
+
+        originalRules: originalRules,
+        originalPrefix: "original",
+        originalNative: "H:/OneDrive/Repositories/Proxy Rules/clash for windows/rules/original",
+        originalNativeType: "yaml",
+        originalRemote: "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original",
+        originalRemoteType: "yaml",
+
+        additionRules: additionRules,
+        additionPrefix: "addition",
+        additionNative: "H:/OneDrive/Repositories/Proxy Rules/clash for windows/rules/addition",
+        additionNativeType: "yaml",
+        additionRemote: "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition",
+        additionRemoteType: "yaml",
+
         replacement: {
             "[SS]香港": "🇭🇰 香港",
             "[SS]越南": "🇻🇳 越南",
@@ -338,25 +501,27 @@ const orient = () => {
         "🌉 负载均衡 | 香港",
         "🌉 负载均衡 | 日本",
         "🌅 目标节点",
-    ];
+    ].concat(["DIRECT"]);
+
+    const regChatGPT = /韩国|德国|土耳其|巴西|新加坡\s01|日本|阿根廷|澳大利亚|英国/gm;
     const groups = [
-        { name: "🌌 科学上网 | ORIENTAL", type: "select", proxies: mainGroups.concat(["DIRECT"]) },
+        { name: "🌌 科学上网 | ORIENTAL", type: "select", proxies: mainGroups },
         { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENTAL"] },
-        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
+        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: regChatGPT },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENTAL"] },
         { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | ORIENTAL"] },
         { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENTAL"] },
-        { name: "🌃 故障切换 | 深港移动", type: "fallback", proxies: [], append: /香港 \d\d 移动.+/gm },
-        { name: "🌃 故障切换 | 沪港电信", type: "fallback", proxies: [], append: /香港 \d\d 电信.+/gm },
-        { name: "🌃 故障切换 | 沪日电信", type: "fallback", proxies: [], append: /日本 \d\d [^A-Z].+/gm },
-        { name: "🌉 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港\s\d\d [A-Z].+$/gm },
-        { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本\s\d\d [A-Z]/gm },
+        { name: "🌃 故障切换 | 深港移动", type: "fallback", append: /香港 \d\d 移动.+/gm },
+        { name: "🌃 故障切换 | 沪港电信", type: "fallback", append: /香港 \d\d 电信.+/gm },
+        { name: "🌃 故障切换 | 沪日电信", type: "fallback", append: /日本 \d\d [^A-Z].+/gm },
+        { name: "🌉 负载均衡 | 香港", type: "load-balance", append: /香港\s\d\d [A-Z].+$/gm },
+        { name: "🌉 负载均衡 | 日本", type: "load-balance", append: /日本\s\d\d [A-Z]/gm },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENTAL"] },
     ];
 
-    const additionalRules = [
+    const additionRules = [
         "RULE-SET,download,🌁 数据下载",
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
@@ -367,7 +532,8 @@ const orient = () => {
         "RULE-SET,nodejs,🌄 特殊控制 | Node.js",
         "RULE-SET,proxy,🌌 科学上网 | ORIENTAL",
     ];
-    const defaultRules = [
+
+    const originalRules = [
         "RULE-SET,applications,DIRECT",
         "RULE-SET,apple,DIRECT",
         "RULE-SET,icloud,DIRECT",
@@ -382,6 +548,7 @@ const orient = () => {
         "RULE-SET,lancidr,DIRECT,no-resolve",
         "RULE-SET,cncidr,DIRECT,no-resolve"
     ];
+    
     const endRules = [
         "GEOIP,LAN,DIRECT,no-resolve",
         "GEOIP,CN,DIRECT,no-resolve",
@@ -391,16 +558,38 @@ const orient = () => {
     return {
         groups: groups,
         endRules: endRules,
-        additionalRules: additionalRules,
-        additionalPrefix: "[additional] ",
-        defaultRules: defaultRules,
-        defaultPrefix: "[default] ",
+        connector: "-",
+        initScript: "H:/OneDrive/Repositories/Proxy Rules/clash for windows/configs/initialization",
+
+        defaultBehavior: "domain",
+        behavior: {
+            "classical": ["applications", "download", "nodejs"],
+            "ipcidr": ["telegramcidr", "lancidr", "cncidr"]
+        },
+
+        originalRules: originalRules,
+        originalPrefix: "original",
+        originalNative: "H:/OneDrive/Repositories/Proxy Rules/clash for windows/rules/original",
+        originalNativeType: "yaml",
+        originalRemote: "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original",
+        originalRemoteType: "yaml",
+
+        additionRules: additionRules,
+        additionPrefix: "addition",
+        additionNative: "H:/OneDrive/Repositories/Proxy Rules/clash for windows/rules/addition",
+        additionNativeType: "yaml",
+        additionRemote: "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition",
+        additionRemoteType: "yaml",
+
         replacement: {
             "🇹🇼": "🇨🇳",
-            "卢森堡": "🇺🇳 卢森堡"
+            "卢森堡": "🇺🇳 卢森堡",
+            "/（.+?）/gm": ""
         }
     }
 }
+
+
 
 function main(params) {
     let configuration;
@@ -412,11 +601,14 @@ function main(params) {
     } else if (count === 3) {
         configuration = clover;
     }
-    const mode = [1, 1];
-    return JSON.parse(get(
+    let mode = {
+        originalStatus: true,
+        additionStatus: true
+    }
+    return JSON.parse(generate(
         console,
-        params,
         mode,
-        configuration));
+        params,
+        configuration()));
 }
 

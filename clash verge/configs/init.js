@@ -8,10 +8,13 @@ function main(params) {
     } else if (count === 3) {
         configuration = clover;
     }
-    const mode = [1, 1];
-    return JSON.parse(get(
+    let mode = {
+        originalStatus: true,
+        additionStatus: true
+    }
+    return JSON.parse(generate(
         console,
-        params,
         mode,
-        configuration));
+        params,
+        configuration()));
 }

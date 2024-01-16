@@ -8,14 +8,6 @@ function mark(name) {
 
 const OUTPUT_FOLDER = path.resolve(__dirname, "./outputs");
 
-/**
- * 本方法用于输出 Stash 配置文件。
- * 
- * @async
- * @param {object} yaml yaml 框架
- * @param {string} configurationRaw 已处理完毕的配置信息
- * @param {object} console 控制台调试对象
- */
 module.exports.output = (yaml, log, name, configurationRaw) => {
     const funcName = "output";
     const symbol = name.split("_")[0].toLowerCase();

@@ -77,16 +77,11 @@ proxy-groups: #!replace
     type: select
     proxies:
       - REJECT
-      - 🇷🇺 俄罗斯 01 RT IPv6
-      - 卢森堡 01 Cogent（0.5倍率/无版权）
-      - 🇹🇼 台湾 01 HiNet
-      - 🇹🇼 台湾 02 HiNet
       - 🇹🇷 土耳其 01 Cogent
       - 🇧🇷 巴西 01 Ascenty
       - 🇩🇪 德国 01 GIA CN2（1.9倍率）
       - 🇩🇪 德国 03 Cogent/Tata IPv6
       - 🇸🇬 新加坡 01 Cogent IPv6（流媒体）
-      - 🇸🇬 新加坡 02 PCCW（2.4倍率）
       - 🇯🇵 日本 01 电信/沪日专线（3倍率）
       - 🇯🇵 日本 02 电信/沪日专线（3倍率）
       - 🇯🇵 日本 05 NTT IPv6
@@ -100,21 +95,10 @@ proxy-groups: #!replace
       - 🇯🇵 日本 19 IIJ
       - 🇯🇵 日本 21 NTT
       - 🇦🇺 澳大利亚 01 NTT IPv6
-      - 🇺🇲 美国 01 GIA CN2 IPv6
-      - 🇺🇲 美国 03 GIA CN2 IPv6
-      - 🇺🇲 美国 05 Cogent IPv6（流媒体）
       - 🇬🇧 英国 01 NTT/GTT
       - 🇦🇷 阿根廷 01 Telecom
       - 🇦🇷 阿根廷 02 Velocom
       - 🇰🇷 韩国 01 SK（2.7倍率）
-      - 🇭🇰 香港 01 电信/沪港专线（2.5倍率）
-      - 🇭🇰 香港 02 电信/沪港专线（2.5倍率）
-      - 🇭🇰 香港 05 移动/深港专线（2倍率）
-      - 🇭🇰 香港 06 移动/深港专线（2倍率）
-      - 🇭🇰 香港 09 HKT家宽（0.5倍率）
-      - 🇭🇰 香港 10 HKBN家宽（0.5倍率）
-      - 🇭🇰 香港 11 NTT IPv6
-      - 🇭🇰 香港 12 Cogent IPv6（流媒体）
   - name: 🌄 特殊控制 | Brad
     type: select
     proxies:

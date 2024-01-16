@@ -1,5 +1,5 @@
 module.exports.build = () => {
-    
+
     /* INITIALIZE */
     let initConfiguration = {};
 
@@ -36,7 +36,7 @@ module.exports.build = () => {
         "119.29.29.29",
         "119.28.28.28",
         "223.5.5.5",
-        "223.6.6.6"
+        "223.6.6.6",
     ];
     initConfiguration.dns.fallback = [
         "114.114.114.114",

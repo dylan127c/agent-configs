@@ -8,10 +8,11 @@ module.exports.configuration = () => {
         "🌅 目标节点",
     ].concat(["DIRECT"]);
 
+    const regChatGPT = /韩国|德国|土耳其|巴西|新加坡\s01|日本|阿根廷|澳大利亚|英国/gm;
     const groups = [
         { name: "🌌 科学上网 | ORIENTAL", type: "select", proxies: mainGroups },
         { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENTAL"] },
-        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
+        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: regChatGPT },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENTAL"] },
         { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | ORIENTAL"] },
@@ -62,7 +63,7 @@ module.exports.configuration = () => {
     return {
         groups: groups,
         endRules: endRules,
-        prefixConnector: "-",
+        connector: "-",
         initScript: "H:/OneDrive/Repositories/Proxy Rules/clash for windows/configs/initialization",
 
         defaultBehavior: "domain",
@@ -87,7 +88,8 @@ module.exports.configuration = () => {
 
         replacement: {
             "🇹🇼": "🇨🇳",
-            "卢森堡": "🇺🇳 卢森堡"
+            "卢森堡": "🇺🇳 卢森堡",
+            "/（.+?）/gm": ""
         }
     }
 }

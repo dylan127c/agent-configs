@@ -1,21 +1,6 @@
 const fs = require("fs");
 const path = require("path");
 
-const FILE_NAME = path.basename(__filename).replace(".js", "");
-function mark(name) {
-    return FILE_NAME + "." + name + " =>";
-}
-
-/**
- * 本方法用于解析 CFW 相关的订阅配置。
- * 
- * @param {string} raw 原始配置文件信息
- * @param {function} axios 网络请求框架
- * @param {object} yaml yaml 框架
- * @param {object} console 控制台调试对象
- * @param {string} url 订阅地址
- * @returns {string} 已处理完毕的配置信息
- */
 module.exports.parse = async (raw, { axios, yaml, notify, console },
     { name, url, interval, selected }) => {
 
@@ -46,7 +31,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console },
     /* GENERATE CONFIGURATION */
     let generateConfiguration = main.generate(log, mode, originalConfiguration, modifiedParams, true);
 
-    /* STASH && SHADOWROCKET CONFIGURATION */
+    /* STASH && SHADOWROCKET CONFIGURATION && CLASH VERGE */
     outputStash(yaml, log, name, generateConfiguration);
     outputShadowrocket(yaml, log, name, generateConfiguration, modifiedParams);
 
@@ -61,13 +46,10 @@ module.exports.parse = async (raw, { axios, yaml, notify, console },
     return yaml.stringify(JSON.parse(generateConfiguration));
 }
 
-/**
- * 本方法用于判断当前使用的配置文件，需要根据实际的配置情况对方法进行调整。
- * 
- * @param {any} condition 判断条件
- * @param {object} console 控制台调试对象
- * @returns {function} 具体的配置文件
- */
+function mark(name) {
+    return path.basename(__filename).replace(".js", "") + "." + name + " =>";
+}
+
 function getConfig(condition, log) {
     const funcName = "getConfig";
     const shortName = condition.includes("_") ?
@@ -84,14 +66,6 @@ function getConfig(condition, log) {
     }
 }
 
-/**
- * 本方法用于判断规则文件来源于网络 HTTP 还是本地文件 FILE。
- * 
- * @param {number[]} mode 初始化组合
- * @param {function} axios 网络请求框架
- * @param {object} console 控制台调试对象
- * @returns {number[]} 已检查组合
- */
 function getStatus(axios, log, mode, modifiedParams) {
     const funcName = "getStatus";
     try {
@@ -151,6 +125,21 @@ function outputShadowrocket(yaml, log, name, output, modifiedParams) {
         log.info(mark(funcName), "script applied.");
 
         shadowrocket.output(yaml, log, name, output, modifiedParams);
+        log.info(mark(funcName), "output completed.");
+    } catch (error) {
+        log.error(mark(funcName), "output failure.")
+        log.error(mark(funcName), error);
+    }
+}
+
+function outputClashVerge(log) {
+    const funcName = "outputClashVerge";
+    try {
+        delete require.cache[require.resolve("../clash verge/transform")];
+        const cv = require("../clash verge/transform");
+        log.info(mark(funcName), "script applied.");
+
+        cv.output();
         log.info(mark(funcName), "output completed.");
     } catch (error) {
         log.error(mark(funcName), "output failure.")

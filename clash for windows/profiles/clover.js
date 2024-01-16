@@ -9,10 +9,12 @@ module.exports.configuration = () => {
         "🌉 负载均衡 | 韩国",
         "🌅 目标节点",
     ];
+
+    const regChatGPT = /香港\s02|菲律宾|马来西亚|加拿大|德国|土耳其|爱尔兰|澳大利亚|瑞典/gm;    
     const groups = [
         { name: "🌌 科学上网 | CLOVER", type: "select", proxies: mainGroups.concat(["DIRECT"]) },
         { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
-        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^(?!剩余|套餐)/gm },
+        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: regChatGPT },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^(?!剩余|套餐)/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | CLOVER"] },
@@ -63,7 +65,7 @@ module.exports.configuration = () => {
     return {
         groups: groups,
         endRules: endRules,
-        prefixConnector: "-",
+        connector: "-",
         initScript: "H:/OneDrive/Repositories/Proxy Rules/clash for windows/configs/initialization",
 
         defaultBehavior: "domain",
@@ -85,7 +87,7 @@ module.exports.configuration = () => {
         additionNativeType: "yaml",
         additionRemote: "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition",
         additionRemoteType: "yaml",
-        
+
         replacement: {
             "🇹🇼": "🇨🇳 ",
             "香港01": "香港 01",

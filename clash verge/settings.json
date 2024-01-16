@@ -1,0 +1,8 @@
+{
+    "main": "../clash for windows/main.js",
+    "initailizaion": "../clash for windows/configs/initialization.js",
+    "profiles": "../clash for windows/profiles",
+    "init": "./configs/init.js",
+    "output": "./clash-verge.js",
+    "replace": "C:/Users/dylan/.config/clash-verge/profiles/sEBvEhd1bIs2.js"
+}

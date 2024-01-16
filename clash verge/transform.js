@@ -1,85 +1,35 @@
-const transform = () => {
-  const fs = require('fs');
-  const babel = require('./lib/node_modules/@babel/core');
+const fs = require("fs");
+const path = require("path");
+const settings = require("./settings.json");
 
-  const inputPath = "H:/OneDrive/Documents/Repositories/Proxy Rules/clash for windows/";
-  const outputPath = "H:/OneDrive/Documents/Repositories/Proxy Rules/clash verge/";
+const NEW_LINE = "\n\n";
 
-  const inputFile = inputPath + "configuration.js";
-  const outputFile = outputPath + "clash-verge.js";
-
-  const originalCode = fs.readFileSync(inputFile, 'utf-8');
-
-  let constructCode = originalCode
-    /* 移除所有注释。*/
-    .replace(/^ *\/\*.*$\n/gm, "")
-    .replace(/^ *\*.*$\n/gm, "")
-    .replace(/(?<!:)\/\/.*$\n/gm, "")
-    /* 将导出的模块函数替换为普通函数。*/
-    .replace("module.exports.", "function ")
-    .replace("= async ", "")
-    .replace("=>", "");
-
-  /* 需要移除的函数的名称。*/
-  const functionsToRemove = [
-    "parse",
-    "getConfig",
-    "outputStash",
-    "outputShadowrocket",
-    "getMode",
-    "updateCheck",
-    "updateRules",
-    "updateTimestamp",
-    "getFormatDate",
-    "getBehavior"
-  ];
-
-  const transformedCode = babel.transformSync(constructCode, {
-    plugins: [
-      function customPlugin() {
-        return {
-          visitor: {
-            FunctionDeclaration(path) {
-              // const node = path.node;
-              // each path.remove() will change the path val into null.
-              if (path.node.id && functionsToRemove.includes(path.node.id.name)) {
-                path.remove();
-              }
-            }
-          },
-        };
-      },
-    ],
-  }).code;
-
-  const formatTransformedCode = transformedCode
-    /* 格式化代码，在方法之间添加空行。*/
-    .replace(/^function /gm, "\nfunction ")
-    /* 移除 require 全局方法。*/
+exports.output = () => {
+  const mainCode = fs.readFileSync(path.resolve(__dirname, settings.main), "utf-8")
     .replace(/^.+require.+$\n/gm, "")
-    /* 替换 __dirname 内置常量。*/
-    .replace(/__dirname.+?(?=;)/gm, "\"" + inputPath + "\"")
-    /* 移除所有 console.log 代码行。*/
-    .replace(/console.log\(.+$\n/gm, "");
+    .replace("module.exports.", "function ")
+    .replace(" = (", "(")
+    .replace(") =>", ")");
+  const initializationCode = fs.readFileSync(path.resolve(__dirname, settings.initailizaion), "utf-8")
+    .replace("module.exports.", "function ")
+    .replace(" = (", "(")
+    .replace(") =>", ")");
 
-  const configsPosition = inputPath + "profiles/";
-  const configs = fs.readdirSync(configsPosition);
-
-  /* 读取必要的 .js 配置并合并在一起。*/
-  let newCode = fs.readFileSync(inputPath + "rules/rulesBehavior.js", "utf-8") + "\n\n";
+  let profileCode = "";
+  const configs = fs.readdirSync(path.resolve(__dirname, settings.profiles));
   configs.forEach(fileName => {
-    newCode += fs.readFileSync(configsPosition + fileName, "utf-8").replace("configuration", fileName.replace(".js", "")) + "\n\n";
+    const profile = fs.readFileSync(path.resolve(__dirname, settings.profiles, fileName), "utf-8");
+    profileCode += profile.replace("configuration", fileName.replace(".js", "")) + NEW_LINE;
   });
-  const initPosition = outputPath + "configs/init.js";
-  newCode = newCode.replace(/module.exports\./gm, "const ");
-  newCode += fs.readFileSync(initPosition, "utf-8") + "\n\n";
+  profileCode = profileCode.replace(/module.exports\./gm, "const ");
 
-  const outputCode = formatTransformedCode + "\n\n" + newCode;
+  const initCode = fs.readFileSync(path.resolve(__dirname, settings.init), "utf-8") + NEW_LINE;
 
-  fs.writeFileSync(outputFile, outputCode, "utf-8");
+  const outputCode = mainCode + NEW_LINE +
+    initializationCode + NEW_LINE +
+    profileCode + NEW_LINE +
+    initCode;
 
-  const autoReplaceConfigFile = "C:/Users/dylan/.config/clash-verge/profiles/sjWWJPGyS5p0.js";
-  fs.writeFileSync(autoReplaceConfigFile, outputCode, "utf-8");
+  fs.writeFileSync(path.resolve(__dirname, settings.output), outputCode, "utf-8");
+  fs.writeFileSync(path.resolve(__dirname, settings.replace), outputCode, "utf-8");
 }
-
-transform();

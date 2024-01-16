@@ -102,8 +102,8 @@ function transformRules(log, profile) {
         fs.mkdirSync(RULES_FOLDER);
     }
 
-    transform(log, profile, profile.originalNative, profile.originalPrefix, profile.prefixConnector);
-    transform(log, profile, profile.additionNative, profile.additionPrefix, profile.prefixConnector);
+    transform(log, profile, profile.originalNative, profile.originalPrefix, profile.connector);
+    transform(log, profile, profile.additionNative, profile.additionPrefix, profile.connector);
 
     log.info(mark(funcName), "transform completed.")
 }
