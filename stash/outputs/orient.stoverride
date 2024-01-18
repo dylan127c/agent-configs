@@ -40,30 +40,30 @@ rules: #!replace
   - RULE-SET,addition-copilot,🌄 特殊控制 | Copilot
   - RULE-SET,addition-edge,🌄 特殊控制 | Edge
   - RULE-SET,addition-nodejs,🌄 特殊控制 | Node.js
-  - RULE-SET,addition-proxy,🌌 科学上网 | ORIENTAL
+  - RULE-SET,addition-proxy,🌌 科学上网 | ORIENT
   - RULE-SET,original-applications,DIRECT
   - RULE-SET,original-apple,DIRECT
   - RULE-SET,original-icloud,DIRECT
   - RULE-SET,original-private,DIRECT
   - RULE-SET,original-direct,DIRECT
-  - RULE-SET,original-greatfire,🌌 科学上网 | ORIENTAL
-  - RULE-SET,original-gfw,🌌 科学上网 | ORIENTAL
-  - RULE-SET,original-proxy,🌌 科学上网 | ORIENTAL
-  - RULE-SET,original-tld-not-cn,🌌 科学上网 | ORIENTAL
+  - RULE-SET,original-greatfire,🌌 科学上网 | ORIENT
+  - RULE-SET,original-gfw,🌌 科学上网 | ORIENT
+  - RULE-SET,original-proxy,🌌 科学上网 | ORIENT
+  - RULE-SET,original-tld-not-cn,🌌 科学上网 | ORIENT
   - RULE-SET,original-reject,REJECT
-  - RULE-SET,original-telegramcidr,🌌 科学上网 | ORIENTAL,no-resolve
+  - RULE-SET,original-telegramcidr,🌌 科学上网 | ORIENT,no-resolve
   - RULE-SET,original-lancidr,DIRECT,no-resolve
   - RULE-SET,original-cncidr,DIRECT,no-resolve
   - GEOIP,LAN,DIRECT,no-resolve
   - GEOIP,CN,DIRECT,no-resolve
   - MATCH,🌠 规则逃逸
 proxy-groups: #!replace
-  - name: 🌌 科学上网 | ORIENTAL
+  - name: 🌌 科学上网 | ORIENT
     type: select
     proxies:
-      - 🌃 故障切换 | 深港移动
-      - 🌃 故障切换 | 沪港电信
-      - 🌃 故障切换 | 沪日电信
+      - 🌃 故障恢复 | 深港移动
+      - 🌃 故障恢复 | 沪港电信
+      - 🌃 故障恢复 | 沪日电信
       - 🌉 负载均衡 | 香港
       - 🌉 负载均衡 | 日本
       - 🌅 目标节点
@@ -72,7 +72,7 @@ proxy-groups: #!replace
     type: select
     proxies:
       - DIRECT
-      - 🌌 科学上网 | ORIENTAL
+      - 🌌 科学上网 | ORIENT
   - name: 🌄 特殊控制 | OpenAI
     type: select
     proxies:
@@ -144,20 +144,20 @@ proxy-groups: #!replace
   - name: 🌄 特殊控制 | Copilot
     type: select
     proxies:
+      - 🌌 科学上网 | ORIENT
       - DIRECT
-      - 🌌 科学上网 | ORIENTAL
   - name: 🌄 特殊控制 | Edge
     type: select
     proxies:
       - DIRECT
       - REJECT
-      - 🌌 科学上网 | ORIENTAL
+      - 🌌 科学上网 | ORIENT
   - name: 🌄 特殊控制 | Node.js
     type: select
     proxies:
       - DIRECT
-      - 🌌 科学上网 | ORIENTAL
-  - name: 🌃 故障切换 | 深港移动
+      - 🌌 科学上网 | ORIENT
+  - name: 🌃 故障恢复 | 深港移动
     type: fallback
     proxies:
       - 🇭🇰 香港 05 移动/深港专线（2倍率）
@@ -165,7 +165,7 @@ proxy-groups: #!replace
     url: http://www.gstatic.com/generate_204
     interval: 72
     lazy: true
-  - name: 🌃 故障切换 | 沪港电信
+  - name: 🌃 故障恢复 | 沪港电信
     type: fallback
     proxies:
       - 🇭🇰 香港 01 电信/沪港专线（2.5倍率）
@@ -173,7 +173,7 @@ proxy-groups: #!replace
     url: http://www.gstatic.com/generate_204
     interval: 72
     lazy: true
-  - name: 🌃 故障切换 | 沪日电信
+  - name: 🌃 故障恢复 | 沪日电信
     type: fallback
     proxies:
       - 🇯🇵 日本 01 电信/沪日专线（3倍率）
@@ -254,7 +254,7 @@ proxy-groups: #!replace
     type: select
     proxies:
       - DIRECT
-      - 🌌 科学上网 | ORIENTAL
+      - 🌌 科学上网 | ORIENT
 rule-providers: #!replace
   addition-download:
     type: http

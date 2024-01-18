@@ -8,9 +8,8 @@ function mark(name) {
 delete require.cache[require.resolve("./settings.json")];
 const settings = require("./settings.json");
 
-module.exports = {
-    updateCheck
-}
+delete require.cache[require.resolve("../lib/date-formatter")];
+const formatter = require("../lib/date-formatter")
 
 /**
  * 本方法用于检查是否需要更新默认规则目录 original 下的文件。
@@ -22,7 +21,7 @@ module.exports = {
  * @param {function} axios 网络请求框架
  * @param {object} log 控制台调试对象
  */
-function updateCheck(axios, log) {
+module.exports.updateCheck = (axios, log) => {
     const funcName = "updateCheck";
     fs.readFile(settings.timestamp,
         "utf-8",
@@ -41,7 +40,7 @@ function updateCheck(axios, log) {
                     updateRules(axios, log);
                 } else {
                     log.info(mark(funcName), "update suspended.");
-                    log.info(mark(funcName), "last updated:", log.getFormatDate(new Date(savedTimestamp)));
+                    log.info(mark(funcName), "last updated:", formatter.getFormatDate(new Date(savedTimestamp)));
                 }
             }
         });
@@ -124,7 +123,7 @@ function updateTimestamp(log) {
                 log.info(mark(funcName), err);
             } else {
                 log.info(mark(funcName), "timestamp file updated:",
-                    log.getFormatDate(new Date(currentTimestamp)));
+                    formatter.getFormatDate(new Date(currentTimestamp)));
             }
         });
 }

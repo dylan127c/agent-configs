@@ -10,13 +10,13 @@ module.exports.configuration = () => {
         "🌅 目标节点",
     ];
 
-    const regChatGPT = /香港\s02|菲律宾|马来西亚|加拿大|德国|土耳其|爱尔兰|澳大利亚|瑞典/gm;    
+    const specificRegex = /香港\s02|菲律宾|马来西亚|加拿大|德国|土耳其|爱尔兰|澳大利亚|瑞典/gm;
     const groups = [
         { name: "🌌 科学上网 | CLOVER", type: "select", proxies: mainGroups.concat(["DIRECT"]) },
         { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
-        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: regChatGPT },
+        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: specificRegex },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^(?!剩余|套餐)/gm },
-        { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
+        { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | CLOVER", "DIRECT"] },
         { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌉 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港/gm },
@@ -89,31 +89,9 @@ module.exports.configuration = () => {
         additionRemoteType: "yaml",
 
         replacement: {
-            "🇹🇼": "🇨🇳 ",
+            "🇹🇼": "🇨🇳",
             "香港01": "香港 01",
-            "🇭🇰香港": "🇭🇰 香港",
-            "🇸🇬新加坡": "🇸🇬 新加坡",
-            "🇯🇵日本": "🇯🇵 日本",
-            "🇺🇸美国": "🇺🇸 美国",
-            "🇰🇷韩国": "🇰🇷 韩国",
-            "🇮🇳印度": "🇮🇳 印度",
-            "🇨🇳台湾": "🇨🇳 台湾",
-            "🇲🇾马来西亚": "🇲🇾 马来西亚",
-            "🇫🇷法国": "🇫🇷 法国",
-            "🇦🇺澳大利亚": "🇦🇺 澳大利亚",
-            "🇷🇺俄罗斯": "🇷🇺 俄罗斯",
-            "🇨🇦加拿大": "🇨🇦 加拿大",
-            "🇹🇷土耳其": "🇹🇷 土耳其",
-            "🇧🇷巴西": "🇧🇷 巴西",
-            "🇩🇪德国": "🇩🇪 德国",
-            "🇮🇹意大利": "🇮🇹 意大利",
-            "🇹🇭泰国": "🇹🇭 泰国",
-            "🇮🇪爱尔兰": "🇮🇪 爱尔兰",
-            "🇸🇪瑞典": "🇸🇪 瑞典",
-            "🇬🇧英国": "🇬🇧 英国",
-            "🇵🇭菲律宾": "🇵🇭 菲律宾",
-            "🇦🇪迪拜": "🇦🇪 迪拜",
-            "🇦🇷阿根廷": "🇦🇷 阿根廷",
+            "/(?<=^\\W{4})/gm": " "
         }
     }
 }

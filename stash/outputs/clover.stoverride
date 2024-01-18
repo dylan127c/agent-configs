@@ -139,8 +139,8 @@ proxy-groups: #!replace
   - name: 🌄 特殊控制 | Copilot
     type: select
     proxies:
-      - DIRECT
       - 🌌 科学上网 | CLOVER
+      - DIRECT
   - name: 🌄 特殊控制 | Edge
     type: select
     proxies:

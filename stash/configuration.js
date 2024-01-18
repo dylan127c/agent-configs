@@ -5,20 +5,21 @@ const FILE_NAME = path.basename(__filename).replace(".js", "");
 function mark(name) {
     return FILE_NAME + "." + name + " =>";
 }
-
 const OUTPUT_FOLDER = path.resolve(__dirname, "./outputs");
+const SEARCHES = [
+    "订阅详情",
+];
 
-module.exports.output = (yaml, log, name, configurationRaw) => {
+module.exports.output = (yaml, log, name, configuration) => {
     const funcName = "output";
     const symbol = name.split("_")[0].toLowerCase();
-    const configuration = yaml.parse(configurationRaw);
 
     const constructContent = yaml.stringify({
         name: symbol,
         desc: "Replace original configuration file.",
         dns: configuration.dns,
         rules: configuration.rules,
-        "proxy-groups": removeSpecificGroupReverse(configuration, "订阅详情"),
+        "proxy-groups": removeSpecificGroupReverse(configuration, SEARCHES),
         "rule-providers": configuration["rule-providers"]
     });
 
@@ -36,11 +37,13 @@ module.exports.output = (yaml, log, name, configurationRaw) => {
     }
 }
 
-function removeSpecificGroupReverse(configuration, search) {
+function removeSpecificGroupReverse(configuration, ...searches) {
     const groups = Object.assign(configuration["proxy-groups"]);
-    const index = groups.findLastIndex(ele => ele.name.includes(search));
-    if (index >= 0) {
-        groups.splice(index, 1);
-    }
+    searches.forEach(search => {
+        const index = groups.findLastIndex(ele => ele.name.includes(search));
+        if (index >= 0) {
+            groups.splice(index, 1);
+        }
+    })
     return groups;
 }

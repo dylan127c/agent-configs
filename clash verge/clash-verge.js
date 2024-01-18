@@ -1,44 +1,38 @@
+const IDENTIFIERS = ["addition", "original"];
+
+/** @method {@link mark} */
 const FILENAME = "main";
 
-const ADDITION = "addition";
-const ORIGINAL = "original";
-
-/**
- * @method {@link getProxyGroups}
- */
+/** @method {@link getProxyGroups} */
 const SELECT = "select";
 const TEST_URL = "http://www.gstatic.com/generate_204";
 const TEST_INTERVAL = 72;
 const TEST_LAZY = true;
 const DEFAULT_PROXY = "DIRECT";
 
-/**
- * @method {@link getRuleProviders}
- */
+/** @method {@link getRuleProviders} */
 const FILE = "file";
 const HTTP = "http";
 
-function generate(log, mode, originalConfiguration, modifiedParams, isConfigRemote) {
+/**
+ * Generate configuration.
+ */
+function generate(log, mode, originalConfiguration, modifiedParams) {
     const funcName = "generate";
 
     /* INITIALIZE */
     const newConfiguration = init(log, originalConfiguration, modifiedParams);
 
     /* RULES */
-    const identifiers = [ADDITION, ORIGINAL];
-    newConfiguration["rules"] = getRules(modifiedParams, identifiers);
-
+    newConfiguration["rules"] = getRules(modifiedParams, IDENTIFIERS);
     /* PROXY GROUPS */
-    newConfiguration["proxy-groups"] = getProxyGroups(modifiedParams, originalConfiguration);
+    newConfiguration["proxy-groups"] = getProxyGroups(modifiedParams, newConfiguration);
     /* RULE PROVIDERS */
-    newConfiguration["rule-providers"] = getRuleProviders(modifiedParams, mode);
+    newConfiguration["rule-providers"] = getRuleProviders(mode, modifiedParams);
 
     /* FINAL CONFIGURATION */
     log.info(mark(funcName), "parsing done.");
-    const rawConfiguration = JSON.stringify(newConfiguration);
-    return isConfigRemote ?
-        rawConfiguration :
-        replaceAndReturn(rawConfiguration, modifiedParams.replacement);
+    return newConfiguration;
 }
 
 function mark(name) {
@@ -58,7 +52,7 @@ function init(log, configuration, modifiedParams) {
     }
 
     /* PROXIES */
-    initConfiguration.proxies = configuration.proxies;
+    initConfiguration.proxies = Array.from(configuration.proxies);
     /* RETURN NEW CONFIGURATION */
     return initConfiguration;
 }
@@ -103,6 +97,7 @@ function getProxyGroups(modifiedParams, configuraion) {
             });
         }
 
+        /* DEFAULT PROXIES ADDING TO AVOID EMPTY GROUP PROXIES */
         if (!groupConstruct.proxies.length) {
             groupConstruct.proxies.push(DEFAULT_PROXY);
             configuraion.proxies.forEach(proxy => {
@@ -114,7 +109,7 @@ function getProxyGroups(modifiedParams, configuraion) {
     return arr;
 }
 
-function getRuleProviders(modifiedParams, mode) {
+function getRuleProviders(mode, modifiedParams) {
     let ruleProviders = {};
     if (modifiedParams.additionRules) {
         const link = mode.additionStatus ? "path" : "url";
@@ -158,24 +153,6 @@ function getBehavior(modifiedParams, name) {
         }
     }
     return modifiedParams.defaultBehavior;
-}
-
-/**
- * 获取 ./profiles 中的替换信息，以替换输出配置中的某些文本信息。
- * 
- * @param {string} str 已解析并重构的配置信息
- * @param {Map<string, string>} map 记录替换信息的映射表
- * @returns {string} 已处理完毕的配置信息
- */
-function replaceAndReturn(str, map) {
-    for (const [search, replace] of Object.entries(map)) {
-        if (search.includes("/")) {
-            str = str.replaceAll(eval(search), replace);
-        } else {
-            str = str.replaceAll(search, replace);
-        }
-    }
-    return str;
 }
 
 function build() {
@@ -291,13 +268,13 @@ const clover = () => {
         "🌅 目标节点",
     ];
 
-    const regChatGPT = /香港\s02|菲律宾|马来西亚|加拿大|德国|土耳其|爱尔兰|澳大利亚|瑞典/gm;    
+    const specificRegex = /香港\s02|菲律宾|马来西亚|加拿大|德国|土耳其|爱尔兰|澳大利亚|瑞典/gm;
     const groups = [
         { name: "🌌 科学上网 | CLOVER", type: "select", proxies: mainGroups.concat(["DIRECT"]) },
         { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
-        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: regChatGPT },
+        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: specificRegex },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^(?!剩余|套餐)/gm },
-        { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
+        { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | CLOVER", "DIRECT"] },
         { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌉 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港/gm },
@@ -370,31 +347,9 @@ const clover = () => {
         additionRemoteType: "yaml",
 
         replacement: {
-            "🇹🇼": "🇨🇳 ",
+            "🇹🇼": "🇨🇳",
             "香港01": "香港 01",
-            "🇭🇰香港": "🇭🇰 香港",
-            "🇸🇬新加坡": "🇸🇬 新加坡",
-            "🇯🇵日本": "🇯🇵 日本",
-            "🇺🇸美国": "🇺🇸 美国",
-            "🇰🇷韩国": "🇰🇷 韩国",
-            "🇮🇳印度": "🇮🇳 印度",
-            "🇨🇳台湾": "🇨🇳 台湾",
-            "🇲🇾马来西亚": "🇲🇾 马来西亚",
-            "🇫🇷法国": "🇫🇷 法国",
-            "🇦🇺澳大利亚": "🇦🇺 澳大利亚",
-            "🇷🇺俄罗斯": "🇷🇺 俄罗斯",
-            "🇨🇦加拿大": "🇨🇦 加拿大",
-            "🇹🇷土耳其": "🇹🇷 土耳其",
-            "🇧🇷巴西": "🇧🇷 巴西",
-            "🇩🇪德国": "🇩🇪 德国",
-            "🇮🇹意大利": "🇮🇹 意大利",
-            "🇹🇭泰国": "🇹🇭 泰国",
-            "🇮🇪爱尔兰": "🇮🇪 爱尔兰",
-            "🇸🇪瑞典": "🇸🇪 瑞典",
-            "🇬🇧英国": "🇬🇧 英国",
-            "🇵🇭菲律宾": "🇵🇭 菲律宾",
-            "🇦🇪迪拜": "🇦🇪 迪拜",
-            "🇦🇷阿根廷": "🇦🇷 阿根廷",
+            "/(?<=^\\W{4})/gm": " "
         }
     }
 }
@@ -408,19 +363,19 @@ const kele = () => {
         "🌅 目标节点",
     ];
     const groups = [
-        { name: "🌌 科学上网 | KELECLOUD", type: "select", proxies: mainGroups.concat(["DIRECT"]) },
-        { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELECLOUD"] },
+        { name: "🌌 科学上网 | KELE", type: "select", proxies: mainGroups.concat(["DIRECT"]) },
+        { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /\[.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /\[.+/gm },
-        { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELECLOUD"] },
-        { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | KELECLOUD"] },
-        { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELECLOUD"] },
+        { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | KELE", "DIRECT"] },
+        { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | KELE"] },
+        { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
         { name: "🌉 负载均衡 | 香港 A", type: "load-balance", proxies: [], append: /香港\s\d\d\w/gm },
         { name: "🌉 负载均衡 | 香港 B", type: "load-balance", proxies: [], append: /香港\s\d\d$/gm },
         { name: "🌉 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美國\s\d\d$/gm },
         { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本\s\d\d$/gm },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /\[.+/gm },
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELECLOUD"] },
+        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
         { name: "🏞️ 订阅详情", type: "select", proxies: [], append: /剩余流量/gm },
     ]
 
@@ -433,7 +388,7 @@ const kele = () => {
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
         "RULE-SET,edge,🌄 特殊控制 | Edge",
         "RULE-SET,nodejs,🌄 特殊控制 | Node.js",
-        "RULE-SET,proxy,🌌 科学上网 | KELECLOUD",
+        "RULE-SET,proxy,🌌 科学上网 | KELE",
     ];
     const originalRules = [
         "RULE-SET,applications,DIRECT",
@@ -441,12 +396,12 @@ const kele = () => {
         "RULE-SET,icloud,DIRECT",
         "RULE-SET,private,DIRECT",
         "RULE-SET,direct,DIRECT",
-        "RULE-SET,greatfire,🌌 科学上网 | KELECLOUD",
-        "RULE-SET,gfw,🌌 科学上网 | KELECLOUD",
-        "RULE-SET,proxy,🌌 科学上网 | KELECLOUD",
-        "RULE-SET,tld-not-cn,🌌 科学上网 | KELECLOUD",
+        "RULE-SET,greatfire,🌌 科学上网 | KELE",
+        "RULE-SET,gfw,🌌 科学上网 | KELE",
+        "RULE-SET,proxy,🌌 科学上网 | KELE",
+        "RULE-SET,tld-not-cn,🌌 科学上网 | KELE",
         "RULE-SET,reject,REJECT",
-        "RULE-SET,telegramcidr,🌌 科学上网 | KELECLOUD,no-resolve",
+        "RULE-SET,telegramcidr,🌌 科学上网 | KELE,no-resolve",
         "RULE-SET,lancidr,DIRECT,no-resolve",
         "RULE-SET,cncidr,DIRECT,no-resolve"
     ];
@@ -495,30 +450,30 @@ const kele = () => {
 
 const orient = () => {
     const mainGroups = [
-        "🌃 故障切换 | 深港移动",
-        "🌃 故障切换 | 沪港电信",
-        "🌃 故障切换 | 沪日电信",
+        "🌃 故障恢复 | 深港移动",
+        "🌃 故障恢复 | 沪港电信",
+        "🌃 故障恢复 | 沪日电信",
         "🌉 负载均衡 | 香港",
         "🌉 负载均衡 | 日本",
         "🌅 目标节点",
     ].concat(["DIRECT"]);
 
-    const regChatGPT = /韩国|德国|土耳其|巴西|新加坡\s01|日本|阿根廷|澳大利亚|英国/gm;
+    const specificRegex = /韩国|德国|土耳其|巴西|新加坡\s01|日本|阿根廷|澳大利亚|英国/gm;
     const groups = [
-        { name: "🌌 科学上网 | ORIENTAL", type: "select", proxies: mainGroups },
-        { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENTAL"] },
-        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: regChatGPT },
+        { name: "🌌 科学上网 | ORIENT", type: "select", proxies: mainGroups },
+        { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
+        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: specificRegex },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
-        { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENTAL"] },
-        { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | ORIENTAL"] },
-        { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENTAL"] },
-        { name: "🌃 故障切换 | 深港移动", type: "fallback", append: /香港 \d\d 移动.+/gm },
-        { name: "🌃 故障切换 | 沪港电信", type: "fallback", append: /香港 \d\d 电信.+/gm },
-        { name: "🌃 故障切换 | 沪日电信", type: "fallback", append: /日本 \d\d [^A-Z].+/gm },
+        { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | ORIENT", "DIRECT"] },
+        { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | ORIENT"] },
+        { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
+        { name: "🌃 故障恢复 | 深港移动", type: "fallback", append: /香港 \d\d 移动.+/gm },
+        { name: "🌃 故障恢复 | 沪港电信", type: "fallback", append: /香港 \d\d 电信.+/gm },
+        { name: "🌃 故障恢复 | 沪日电信", type: "fallback", append: /日本 \d\d [^A-Z].+/gm },
         { name: "🌉 负载均衡 | 香港", type: "load-balance", append: /香港\s\d\d [A-Z].+$/gm },
         { name: "🌉 负载均衡 | 日本", type: "load-balance", append: /日本\s\d\d [A-Z]/gm },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENTAL"] },
+        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
     ];
 
     const additionRules = [
@@ -530,7 +485,7 @@ const orient = () => {
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
         "RULE-SET,edge,🌄 特殊控制 | Edge",
         "RULE-SET,nodejs,🌄 特殊控制 | Node.js",
-        "RULE-SET,proxy,🌌 科学上网 | ORIENTAL",
+        "RULE-SET,proxy,🌌 科学上网 | ORIENT",
     ];
 
     const originalRules = [
@@ -539,16 +494,16 @@ const orient = () => {
         "RULE-SET,icloud,DIRECT",
         "RULE-SET,private,DIRECT",
         "RULE-SET,direct,DIRECT",
-        "RULE-SET,greatfire,🌌 科学上网 | ORIENTAL",
-        "RULE-SET,gfw,🌌 科学上网 | ORIENTAL",
-        "RULE-SET,proxy,🌌 科学上网 | ORIENTAL",
-        "RULE-SET,tld-not-cn,🌌 科学上网 | ORIENTAL",
+        "RULE-SET,greatfire,🌌 科学上网 | ORIENT",
+        "RULE-SET,gfw,🌌 科学上网 | ORIENT",
+        "RULE-SET,proxy,🌌 科学上网 | ORIENT",
+        "RULE-SET,tld-not-cn,🌌 科学上网 | ORIENT",
         "RULE-SET,reject,REJECT",
-        "RULE-SET,telegramcidr,🌌 科学上网 | ORIENTAL,no-resolve",
+        "RULE-SET,telegramcidr,🌌 科学上网 | ORIENT,no-resolve",
         "RULE-SET,lancidr,DIRECT,no-resolve",
         "RULE-SET,cncidr,DIRECT,no-resolve"
     ];
-    
+
     const endRules = [
         "GEOIP,LAN,DIRECT,no-resolve",
         "GEOIP,CN,DIRECT,no-resolve",
@@ -584,7 +539,7 @@ const orient = () => {
         replacement: {
             "🇹🇼": "🇨🇳",
             "卢森堡": "🇺🇳 卢森堡",
-            "/（.+?）/gm": ""
+            "/(?<=\\s\\d\\d)\\s.+$/gm": "",
         }
     }
 }
@@ -605,10 +560,48 @@ function main(params) {
         originalStatus: true,
         additionStatus: true
     }
-    return JSON.parse(generate(
-        console,
-        mode,
-        params,
-        configuration()));
+
+    /* WHITELIST MODE REVERSE DEFAULT GROUP FOR MATCH RULES */
+    const provisional = configuration();
+    provisional.groups.forEach(element => {
+        if (element.name.match("规则逃逸")) {
+            const reversed = element.proxies.reverse();
+            element.proxies = reversed;
+        }
+    });
+
+    const generateConfiguration = generate(console, mode, params, provisional);
+    nameReplacer(generateConfiguration, provisional);
+    return generateConfiguration;
+}
+
+function nameReplacer(configuraion, modifiedParams) {
+    const replacementMap = modifiedParams.replacement;
+    if (replacementMap) {
+        configuraion.proxies.forEach(proxy => {
+            proxy.name = replacement(proxy.name, replacementMap);
+        });
+        configuraion["proxy-groups"].forEach(group => {
+            const replacedArray = group.proxies.map(name => {
+                return replacement(name, replacementMap);
+            })
+            group.proxies = replacedArray;
+        })
+    }
+}
+
+function replacement(str, map) {
+    if (!str.match(/\d\d/gm)) {
+        return str;
+    }
+    for (const [search, replace] of Object.entries(map)) {
+
+        if (search.includes("/")) {
+            str = str.replace(eval(search), replace);
+        } else {
+            str = str.replace(search, replace);
+        }
+    }
+    return str;
 }
 

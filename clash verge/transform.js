@@ -4,7 +4,7 @@ const settings = require("./settings.json");
 
 const NEW_LINE = "\n\n";
 
-exports.output = () => {
+module.exports.output = () => {
   const mainCode = fs.readFileSync(path.resolve(__dirname, settings.main), "utf-8")
     .replace(/^.+require.+$\n/gm, "")
     .replace("module.exports.", "function ")
@@ -21,7 +21,8 @@ exports.output = () => {
     const profile = fs.readFileSync(path.resolve(__dirname, settings.profiles, fileName), "utf-8");
     profileCode += profile.replace("configuration", fileName.replace(".js", "")) + NEW_LINE;
   });
-  profileCode = profileCode.replace(/module.exports\./gm, "const ");
+  profileCode = profileCode
+    .replace(/module.exports\./gm, "const ");
 
   const initCode = fs.readFileSync(path.resolve(__dirname, settings.init), "utf-8") + NEW_LINE;
 

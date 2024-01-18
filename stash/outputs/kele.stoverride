@@ -40,25 +40,25 @@ rules: #!replace
   - RULE-SET,addition-copilot,🌄 特殊控制 | Copilot
   - RULE-SET,addition-edge,🌄 特殊控制 | Edge
   - RULE-SET,addition-nodejs,🌄 特殊控制 | Node.js
-  - RULE-SET,addition-proxy,🌌 科学上网 | KELECLOUD
+  - RULE-SET,addition-proxy,🌌 科学上网 | KELE
   - RULE-SET,original-applications,DIRECT
   - RULE-SET,original-apple,DIRECT
   - RULE-SET,original-icloud,DIRECT
   - RULE-SET,original-private,DIRECT
   - RULE-SET,original-direct,DIRECT
-  - RULE-SET,original-greatfire,🌌 科学上网 | KELECLOUD
-  - RULE-SET,original-gfw,🌌 科学上网 | KELECLOUD
-  - RULE-SET,original-proxy,🌌 科学上网 | KELECLOUD
-  - RULE-SET,original-tld-not-cn,🌌 科学上网 | KELECLOUD
+  - RULE-SET,original-greatfire,🌌 科学上网 | KELE
+  - RULE-SET,original-gfw,🌌 科学上网 | KELE
+  - RULE-SET,original-proxy,🌌 科学上网 | KELE
+  - RULE-SET,original-tld-not-cn,🌌 科学上网 | KELE
   - RULE-SET,original-reject,REJECT
-  - RULE-SET,original-telegramcidr,🌌 科学上网 | KELECLOUD,no-resolve
+  - RULE-SET,original-telegramcidr,🌌 科学上网 | KELE,no-resolve
   - RULE-SET,original-lancidr,DIRECT,no-resolve
   - RULE-SET,original-cncidr,DIRECT,no-resolve
   - GEOIP,LAN,DIRECT,no-resolve
   - GEOIP,CN,DIRECT,no-resolve
   - MATCH,🌠 规则逃逸
 proxy-groups: #!replace
-  - name: 🌌 科学上网 | KELECLOUD
+  - name: 🌌 科学上网 | KELE
     type: select
     proxies:
       - 🌉 负载均衡 | 香港 A
@@ -71,7 +71,7 @@ proxy-groups: #!replace
     type: select
     proxies:
       - DIRECT
-      - 🌌 科学上网 | KELECLOUD
+      - 🌌 科学上网 | KELE
   - name: 🌄 特殊控制 | OpenAI
     type: select
     proxies:
@@ -233,19 +233,19 @@ proxy-groups: #!replace
   - name: 🌄 特殊控制 | Copilot
     type: select
     proxies:
+      - 🌌 科学上网 | KELE
       - DIRECT
-      - 🌌 科学上网 | KELECLOUD
   - name: 🌄 特殊控制 | Edge
     type: select
     proxies:
       - DIRECT
       - REJECT
-      - 🌌 科学上网 | KELECLOUD
+      - 🌌 科学上网 | KELE
   - name: 🌄 特殊控制 | Node.js
     type: select
     proxies:
       - DIRECT
-      - 🌌 科学上网 | KELECLOUD
+      - 🌌 科学上网 | KELE
   - name: 🌉 负载均衡 | 香港 A
     type: load-balance
     proxies:
@@ -416,7 +416,7 @@ proxy-groups: #!replace
     type: select
     proxies:
       - DIRECT
-      - 🌌 科学上网 | KELECLOUD
+      - 🌌 科学上网 | KELE
 rule-providers: #!replace
   addition-download:
     type: http

@@ -18,11 +18,11 @@ const RULES_FOLDER = path.resolve(__dirname, settings.rules);
  * @param {*} configurationRaw 已处理完毕的配置信息
  * @param {object} console 控制台调试对象
  */
-module.exports.output = (yaml, log, name, configurationRaw, profile) => {
+module.exports.output = (log, name, configuration, profile) => {
     const funcName = "output";
     const symbol = name.split("_")[0].toLowerCase();
 
-    const configuration = yaml.parse(configurationRaw);
+    // const configuration = yaml.parse(configurationRaw);
 
     const initProxyGroups = Object.assign(configuration["proxy-groups"]);
     const index = initProxyGroups.findLastIndex(ele => ele.name.includes("订阅详情"));

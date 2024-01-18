@@ -7,19 +7,19 @@ module.exports.configuration = () => {
         "🌅 目标节点",
     ];
     const groups = [
-        { name: "🌌 科学上网 | KELECLOUD", type: "select", proxies: mainGroups.concat(["DIRECT"]) },
-        { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELECLOUD"] },
+        { name: "🌌 科学上网 | KELE", type: "select", proxies: mainGroups.concat(["DIRECT"]) },
+        { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /\[.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /\[.+/gm },
-        { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELECLOUD"] },
-        { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | KELECLOUD"] },
-        { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELECLOUD"] },
+        { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | KELE", "DIRECT"] },
+        { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | KELE"] },
+        { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
         { name: "🌉 负载均衡 | 香港 A", type: "load-balance", proxies: [], append: /香港\s\d\d\w/gm },
         { name: "🌉 负载均衡 | 香港 B", type: "load-balance", proxies: [], append: /香港\s\d\d$/gm },
         { name: "🌉 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美國\s\d\d$/gm },
         { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本\s\d\d$/gm },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /\[.+/gm },
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELECLOUD"] },
+        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
         { name: "🏞️ 订阅详情", type: "select", proxies: [], append: /剩余流量/gm },
     ]
 
@@ -32,7 +32,7 @@ module.exports.configuration = () => {
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
         "RULE-SET,edge,🌄 特殊控制 | Edge",
         "RULE-SET,nodejs,🌄 特殊控制 | Node.js",
-        "RULE-SET,proxy,🌌 科学上网 | KELECLOUD",
+        "RULE-SET,proxy,🌌 科学上网 | KELE",
     ];
     const originalRules = [
         "RULE-SET,applications,DIRECT",
@@ -40,12 +40,12 @@ module.exports.configuration = () => {
         "RULE-SET,icloud,DIRECT",
         "RULE-SET,private,DIRECT",
         "RULE-SET,direct,DIRECT",
-        "RULE-SET,greatfire,🌌 科学上网 | KELECLOUD",
-        "RULE-SET,gfw,🌌 科学上网 | KELECLOUD",
-        "RULE-SET,proxy,🌌 科学上网 | KELECLOUD",
-        "RULE-SET,tld-not-cn,🌌 科学上网 | KELECLOUD",
+        "RULE-SET,greatfire,🌌 科学上网 | KELE",
+        "RULE-SET,gfw,🌌 科学上网 | KELE",
+        "RULE-SET,proxy,🌌 科学上网 | KELE",
+        "RULE-SET,tld-not-cn,🌌 科学上网 | KELE",
         "RULE-SET,reject,REJECT",
-        "RULE-SET,telegramcidr,🌌 科学上网 | KELECLOUD,no-resolve",
+        "RULE-SET,telegramcidr,🌌 科学上网 | KELE,no-resolve",
         "RULE-SET,lancidr,DIRECT,no-resolve",
         "RULE-SET,cncidr,DIRECT,no-resolve"
     ];

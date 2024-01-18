@@ -1,44 +1,38 @@
+const IDENTIFIERS = ["addition", "original"];
+
+/** @method {@link mark} */
 const FILENAME = "main";
 
-const ADDITION = "addition";
-const ORIGINAL = "original";
-
-/**
- * @method {@link getProxyGroups}
- */
+/** @method {@link getProxyGroups} */
 const SELECT = "select";
 const TEST_URL = "http://www.gstatic.com/generate_204";
 const TEST_INTERVAL = 72;
 const TEST_LAZY = true;
 const DEFAULT_PROXY = "DIRECT";
 
-/**
- * @method {@link getRuleProviders}
- */
+/** @method {@link getRuleProviders} */
 const FILE = "file";
 const HTTP = "http";
 
-module.exports.generate = (log, mode, originalConfiguration, modifiedParams, isConfigRemote) => {
+/**
+ * Generate configuration.
+ */
+module.exports.generate = (log, mode, originalConfiguration, modifiedParams) => {
     const funcName = "generate";
 
     /* INITIALIZE */
     const newConfiguration = init(log, originalConfiguration, modifiedParams);
 
     /* RULES */
-    const identifiers = [ADDITION, ORIGINAL];
-    newConfiguration["rules"] = getRules(modifiedParams, identifiers);
-
+    newConfiguration["rules"] = getRules(modifiedParams, IDENTIFIERS);
     /* PROXY GROUPS */
-    newConfiguration["proxy-groups"] = getProxyGroups(modifiedParams, originalConfiguration);
+    newConfiguration["proxy-groups"] = getProxyGroups(modifiedParams, newConfiguration);
     /* RULE PROVIDERS */
-    newConfiguration["rule-providers"] = getRuleProviders(modifiedParams, mode);
+    newConfiguration["rule-providers"] = getRuleProviders(mode, modifiedParams);
 
     /* FINAL CONFIGURATION */
     log.info(mark(funcName), "parsing done.");
-    const rawConfiguration = JSON.stringify(newConfiguration);
-    return isConfigRemote ?
-        rawConfiguration :
-        replaceAndReturn(rawConfiguration, modifiedParams.replacement);
+    return newConfiguration;
 }
 
 function mark(name) {
@@ -60,7 +54,7 @@ function init(log, configuration, modifiedParams) {
     }
 
     /* PROXIES */
-    initConfiguration.proxies = configuration.proxies;
+    initConfiguration.proxies = Array.from(configuration.proxies);
     /* RETURN NEW CONFIGURATION */
     return initConfiguration;
 }
@@ -105,6 +99,7 @@ function getProxyGroups(modifiedParams, configuraion) {
             });
         }
 
+        /* DEFAULT PROXIES ADDING TO AVOID EMPTY GROUP PROXIES */
         if (!groupConstruct.proxies.length) {
             groupConstruct.proxies.push(DEFAULT_PROXY);
             configuraion.proxies.forEach(proxy => {
@@ -116,7 +111,7 @@ function getProxyGroups(modifiedParams, configuraion) {
     return arr;
 }
 
-function getRuleProviders(modifiedParams, mode) {
+function getRuleProviders(mode, modifiedParams) {
     let ruleProviders = {};
     if (modifiedParams.additionRules) {
         const link = mode.additionStatus ? "path" : "url";
@@ -160,22 +155,4 @@ function getBehavior(modifiedParams, name) {
         }
     }
     return modifiedParams.defaultBehavior;
-}
-
-/**
- * 获取 ./profiles 中的替换信息，以替换输出配置中的某些文本信息。
- * 
- * @param {string} str 已解析并重构的配置信息
- * @param {Map<string, string>} map 记录替换信息的映射表
- * @returns {string} 已处理完毕的配置信息
- */
-function replaceAndReturn(str, map) {
-    for (const [search, replace] of Object.entries(map)) {
-        if (search.includes("/")) {
-            str = str.replaceAll(eval(search), replace);
-        } else {
-            str = str.replaceAll(search, replace);
-        }
-    }
-    return str;
 }
