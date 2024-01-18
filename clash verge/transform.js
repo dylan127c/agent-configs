@@ -24,11 +24,11 @@ module.exports.output = () => {
   profileCode = profileCode
     .replace(/module.exports\./gm, "const ");
 
-  const initCode = fs.readFileSync(path.resolve(__dirname, settings.init), "utf-8") + NEW_LINE;
+  const initCode = fs.readFileSync(path.resolve(__dirname, settings.init), "utf-8");
 
   const outputCode = mainCode + NEW_LINE +
     initializationCode + NEW_LINE +
-    profileCode + NEW_LINE +
+    profileCode +
     initCode;
 
   fs.writeFileSync(path.resolve(__dirname, settings.output), outputCode, "utf-8");

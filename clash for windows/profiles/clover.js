@@ -78,14 +78,14 @@ module.exports.configuration = () => {
         originalPrefix: "original",
         originalNative: "H:/OneDrive/Repositories/Proxy Rules/clash for windows/rules/original",
         originalNativeType: "yaml",
-        originalRemote: "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original",
+        originalRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original",
         originalRemoteType: "yaml",
 
         additionRules: additionRules,
         additionPrefix: "addition",
         additionNative: "H:/OneDrive/Repositories/Proxy Rules/clash for windows/rules/addition",
         additionNativeType: "yaml",
-        additionRemote: "https://raw.githubusercontent.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition",
+        additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition",
         additionRemoteType: "yaml",
 
         replacement: {

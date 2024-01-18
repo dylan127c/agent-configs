@@ -47,7 +47,7 @@ module.exports.parse = async (raw, { axios, yaml, notify, console },
     log.info(mark(funcName), "main parsing completed.")
 
     /* CHANGE PROXY NAME */
-    nameCharger(generateConfiguration, modifiedParams);
+    nameChanger(generateConfiguration, modifiedParams);
 
     /* OUTPUT FORMATTED CONFIGURATION STRING */
     return yaml.stringify(generateConfiguration);
@@ -179,7 +179,7 @@ function outputClashVerge(log) {
     }
 }
 
-function nameCharger(configuraion, modifiedParams) {
+function nameChanger(configuraion, modifiedParams) {
     const replacementMap = modifiedParams.replacement;
     if (replacementMap) {
         configuraion.proxies.forEach(proxy => {

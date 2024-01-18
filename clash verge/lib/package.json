@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@babel/core": "^7.23.6",
-    "jsdoc": "^4.0.2"
-  }
-}
