@@ -200,7 +200,7 @@ function replacement(str, map) {
     }
     for (const [search, replace] of Object.entries(map)) {
 
-        if (search.includes("/")) {
+        if (search.includes("/gm")) {
             str = str.replace(eval(search), replace);
         } else {
             str = str.replace(search, replace);

@@ -271,21 +271,21 @@ const clover = () => {
     const specificRegex = /香港\s02|菲律宾|马来西亚|加拿大|德国|土耳其|爱尔兰|澳大利亚|瑞典/gm;
     const groups = [
         { name: "🌌 科学上网 | CLOVER", type: "select", proxies: mainGroups.concat(["DIRECT"]) },
+        { name: "🌅 目标节点", type: "select", proxies: ["REJECT"], append: /^(?!剩余|套餐)/gm },
         { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
+        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: specificRegex },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^(?!剩余|套餐)/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | CLOVER", "DIRECT"] },
         { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌉 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港/gm },
-        { name: "🌉 负载均衡 | 新加坡", type: "load-balance", proxies: [], append: /新加坡/gm },
         { name: "🌉 负载均衡 | 台湾", type: "load-balance", proxies: [], append: /台湾/gm },
-        { name: "🌉 负载均衡 | 印度", type: "load-balance", proxies: [], append: /印度/gm },
         { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本/gm },
-        { name: "🌉 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美国/gm },
+        { name: "🌉 负载均衡 | 印度", type: "load-balance", proxies: [], append: /印度/gm },
         { name: "🌉 负载均衡 | 韩国", type: "load-balance", proxies: [], append: /韩国/gm },
-        { name: "🌅 目标节点", type: "select", proxies: ["REJECT"], append: /^(?!剩余|套餐)/gm },
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
+        { name: "🌉 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美国/gm },
+        { name: "🌉 负载均衡 | 新加坡", type: "load-balance", proxies: [], append: /新加坡/gm },
     ]
 
     const additionRules = [
@@ -356,26 +356,28 @@ const clover = () => {
 
 const kele = () => {
     const mainGroups = [
-        "🌉 负载均衡 | 香港 A",
-        "🌉 负载均衡 | 香港 B",
+        "🌉 负载均衡 | 香港推荐",
+        "🌉 负载均衡 | 香港备选",
         "🌉 负载均衡 | 美国",
         "🌉 负载均衡 | 日本",
+        "🏙️ 延迟测试 | 其他",
         "🌅 目标节点",
     ];
     const groups = [
         { name: "🌌 科学上网 | KELE", type: "select", proxies: mainGroups.concat(["DIRECT"]) },
+        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /\[.+/gm },
         { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
+        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /\[.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /\[.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | KELE", "DIRECT"] },
         { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | KELE"] },
         { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
-        { name: "🌉 负载均衡 | 香港 A", type: "load-balance", proxies: [], append: /香港\s\d\d\w/gm },
-        { name: "🌉 负载均衡 | 香港 B", type: "load-balance", proxies: [], append: /香港\s\d\d$/gm },
+        { name: "🌉 负载均衡 | 香港推荐", type: "load-balance", proxies: [], append: /香港\s\d\d\w/gm },
+        { name: "🌉 负载均衡 | 香港备选", type: "load-balance", proxies: [], append: /香港\s\d\d$/gm },
         { name: "🌉 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美國\s\d\d$/gm },
         { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本\s\d\d$/gm },
-        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /\[.+/gm },
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
+        { name: "🏙️ 延迟测试 | 其他", type: "url-test", proxies: [], append: /[^香港|美國|日本]\s\d\d$/gm },
         { name: "🏞️ 订阅详情", type: "select", proxies: [], append: /剩余流量/gm },
     ]
 
@@ -461,7 +463,9 @@ const orient = () => {
     const specificRegex = /韩国|德国|土耳其|巴西|新加坡\s01|日本|阿根廷|澳大利亚|英国/gm;
     const groups = [
         { name: "🌌 科学上网 | ORIENT", type: "select", proxies: mainGroups },
+        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
         { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
+        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: specificRegex },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | ORIENT", "DIRECT"] },
@@ -472,8 +476,6 @@ const orient = () => {
         { name: "🌃 故障恢复 | 沪日电信", type: "fallback", append: /日本 \d\d [^A-Z].+/gm },
         { name: "🌉 负载均衡 | 香港", type: "load-balance", append: /香港\s\d\d [A-Z].+$/gm },
         { name: "🌉 负载均衡 | 日本", type: "load-balance", append: /日本\s\d\d [A-Z]/gm },
-        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
     ];
 
     const additionRules = [
@@ -539,7 +541,10 @@ const orient = () => {
         replacement: {
             "🇹🇼": "🇨🇳",
             "卢森堡": "🇺🇳 卢森堡",
+            "（流媒体）": "",
+            "/(?<=\\s\\d\\d)\\s.+(?=（)/gm": "",
             "/(?<=\\s\\d\\d)\\s.+$/gm": "",
+            "/无版权": "",
         }
     }
 }
@@ -594,7 +599,7 @@ function replacement(str, map) {
     }
     for (const [search, replace] of Object.entries(map)) {
 
-        if (search.includes("/")) {
+        if (search.includes("/gm")) {
             str = str.replace(eval(search), replace);
         } else {
             str = str.replace(search, replace);

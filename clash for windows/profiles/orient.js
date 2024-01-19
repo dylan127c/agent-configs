@@ -11,7 +11,9 @@ module.exports.configuration = () => {
     const specificRegex = /韩国|德国|土耳其|巴西|新加坡\s01|日本|阿根廷|澳大利亚|英国/gm;
     const groups = [
         { name: "🌌 科学上网 | ORIENT", type: "select", proxies: mainGroups },
+        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
         { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
+        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: specificRegex },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | ORIENT", "DIRECT"] },
@@ -22,8 +24,6 @@ module.exports.configuration = () => {
         { name: "🌃 故障恢复 | 沪日电信", type: "fallback", append: /日本 \d\d [^A-Z].+/gm },
         { name: "🌉 负载均衡 | 香港", type: "load-balance", append: /香港\s\d\d [A-Z].+$/gm },
         { name: "🌉 负载均衡 | 日本", type: "load-balance", append: /日本\s\d\d [A-Z]/gm },
-        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
     ];
 
     const additionRules = [
@@ -89,7 +89,10 @@ module.exports.configuration = () => {
         replacement: {
             "🇹🇼": "🇨🇳",
             "卢森堡": "🇺🇳 卢森堡",
+            "（流媒体）": "",
+            "/(?<=\\s\\d\\d)\\s.+(?=（)/gm": "",
             "/(?<=\\s\\d\\d)\\s.+$/gm": "",
+            "/无版权": "",
         }
     }
 }
