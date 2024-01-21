@@ -6,7 +6,7 @@ const FILENAME = "main";
 /** @method {@link getProxyGroups} */
 const SELECT = "select";
 const TEST_URL = "http://www.gstatic.com/generate_204";
-const TEST_INTERVAL = 72;
+const TEST_INTERVAL = 300;
 const TEST_LAZY = true;
 const DEFAULT_PROXY = "DIRECT";
 

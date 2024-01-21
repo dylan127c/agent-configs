@@ -21,7 +21,7 @@ module.exports.configuration = () => {
         { name: "🌉 负载均衡 | 香港备选", type: "load-balance", proxies: [], append: /香港\s\d\d$/gm },
         { name: "🌉 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美國\s\d\d$/gm },
         { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本\s\d\d$/gm },
-        { name: "🏙️ 延迟测试 | 其他", type: "url-test", proxies: [], append: /[^香港|美國|日本]\s\d\d$/gm },
+        { name: "🏙️ 延迟测试 | 其他", type: "url-test", proxies: ["REJECT"], append: /[^香港|美國|日本]\s\d\d$/gm },
         { name: "🏞️ 订阅详情", type: "select", proxies: [], append: /剩余流量/gm },
     ]
 
@@ -90,6 +90,17 @@ module.exports.configuration = () => {
             "[SS]日本": "🇯🇵 日本",
             "[SS]台灣": "🇨🇳 台灣",
             "[SS]新加坡": "🇸🇬 新加坡"
-        }
+        },
+
+        proxiesAdditionClashVerge: [{
+            name: "🏳️‍⚧️ 本地订阅 | PORT => 13766",
+            type: "http",
+            server: "127.0.0.1",
+            port: 13766
+        }],
+        proxiesMappingClashVerge: {
+            "🌄 特殊控制 | OpenAI": "🏳️‍⚧️ 本地订阅 | PORT => 13766",
+            "🌄 特殊控制 | Brad": "🏳️‍⚧️ 本地订阅 | PORT => 13766",
+        },
     }
 }

@@ -6,7 +6,7 @@ const FILENAME = "main";
 /** @method {@link getProxyGroups} */
 const SELECT = "select";
 const TEST_URL = "http://www.gstatic.com/generate_204";
-const TEST_INTERVAL = 72;
+const TEST_INTERVAL = 300;
 const TEST_LAZY = true;
 const DEFAULT_PROXY = "DIRECT";
 
@@ -446,7 +446,115 @@ const kele = () => {
             "[SS]日本": "🇯🇵 日本",
             "[SS]台灣": "🇨🇳 台灣",
             "[SS]新加坡": "🇸🇬 新加坡"
-        }
+        },
+
+        proxiesAdditionClashVerge: [{
+            name: "🏳️‍⚧️ 本地订阅 | PORT => 13766",
+            type: "http",
+            server: "127.0.0.1",
+            port: 13766
+        }],
+        proxiesMappingClashVerge: {
+            "🌄 特殊控制 | OpenAI": "🏳️‍⚧️ 本地订阅 | PORT => 13766",
+            "🌄 特殊控制 | Brad": "🏳️‍⚧️ 本地订阅 | PORT => 13766",
+        },
+    }
+}
+
+const nebulae = () => {
+    const mainGroups = [
+        "🌃 故障恢复 | IEPL",
+        "🌉 负载均衡 | 香港",
+        "🌉 负载均衡 | 新加坡",
+        "🌉 负载均衡 | 台湾",
+        "🌉 负载均衡 | 美国",
+        "🌉 负载均衡 | 日本",
+        "🌉 负载均衡 | 德国",
+        "🏙️ 专有节点 | IPv6",
+        "🌅 目标节点",
+    ].concat(["DIRECT"]);
+
+    const groups = [
+        { name: "🌌 科学上网 | NEBULAE", type: "select", proxies: mainGroups },
+        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
+        { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
+        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
+        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
+        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
+        { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | NEBULAE", "DIRECT"] },
+        { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | NEBULAE"] },
+        { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
+        { name: "🌃 故障恢复 | IEPL", type: "fallback", proxies: [], append: /IEPL\s/gm },
+        { name: "🌉 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港\w\s/gm },
+        { name: "🌉 负载均衡 | 台湾", type: "load-balance", proxies: [], append: /台湾\w\s/gm },
+        { name: "🌉 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美国\w\s/gm },
+        { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本\w\s/gm },
+        { name: "🌉 负载均衡 | 德国", type: "load-balance", proxies: [], append: /德国\w\s/gm },
+        { name: "🌉 负载均衡 | 新加坡", type: "load-balance", proxies: [], append: /狮城\w\s/gm },
+        { name: "🏙️ 专有节点 | IPv6", type: "select", proxies: ["REJECT"], append: /v6\s/gm },
+    ]
+
+    const additionRules = [
+        "RULE-SET,download,🌁 数据下载",
+        "RULE-SET,reject,REJECT",
+        "RULE-SET,direct,DIRECT",
+        "RULE-SET,openai,🌄 特殊控制 | OpenAI",
+        "RULE-SET,brad,🌄 特殊控制 | Brad",
+        "RULE-SET,copilot,🌄 特殊控制 | Copilot",
+        "RULE-SET,edge,🌄 特殊控制 | Edge",
+        "RULE-SET,nodejs,🌄 特殊控制 | Node.js",
+        "RULE-SET,proxy,🌌 科学上网 | NEBULAE",
+    ];
+    const originalRules = [
+        "RULE-SET,applications,DIRECT",
+        "RULE-SET,apple,DIRECT",
+        "RULE-SET,icloud,DIRECT",
+        "RULE-SET,private,DIRECT",
+        "RULE-SET,direct,DIRECT",
+        "RULE-SET,greatfire,🌌 科学上网 | NEBULAE",
+        "RULE-SET,gfw,🌌 科学上网 | NEBULAE",
+        "RULE-SET,proxy,🌌 科学上网 | NEBULAE",
+        "RULE-SET,tld-not-cn,🌌 科学上网 | NEBULAE",
+        "RULE-SET,reject,REJECT",
+        "RULE-SET,telegramcidr,🌌 科学上网 | NEBULAE,no-resolve",
+        "RULE-SET,lancidr,DIRECT,no-resolve",
+        "RULE-SET,cncidr,DIRECT,no-resolve"
+    ];
+    const endRules = [
+        "GEOIP,LAN,DIRECT,no-resolve",
+        "GEOIP,CN,DIRECT,no-resolve",
+        "MATCH,🌠 规则逃逸"
+    ];
+
+    return {
+        groups: groups,
+        endRules: endRules,
+        connector: "-",
+        initScript: "H:/OneDrive/Repositories/Proxy Rules/clash for windows/configs/initialization",
+
+        defaultBehavior: "domain",
+        behavior: {
+            "classical": ["applications", "download", "nodejs"],
+            "ipcidr": ["telegramcidr", "lancidr", "cncidr"]
+        },
+
+        originalRules: originalRules,
+        originalPrefix: "original",
+        originalNative: "H:/OneDrive/Repositories/Proxy Rules/clash for windows/rules/original",
+        originalNativeType: "yaml",
+        originalRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original",
+        originalRemoteType: "yaml",
+
+        additionRules: additionRules,
+        additionPrefix: "addition",
+        additionNative: "H:/OneDrive/Repositories/Proxy Rules/clash for windows/rules/addition",
+        additionNativeType: "yaml",
+        additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition",
+        additionRemoteType: "yaml",
+
+        replacement: {
+            
+        },
     }
 }
 
@@ -558,6 +666,8 @@ function main(params) {
         configuration = kele;
     } else if (count === 3) {
         configuration = clover;
+    } else if (count === 18) {
+        configuration = nebulae;
     }
     let mode = {
         originalStatus: true,
@@ -575,6 +685,7 @@ function main(params) {
 
     const generateConfiguration = generate(console, mode, params, provisional);
     nameReplacer(generateConfiguration, provisional);
+    proxyAdder(generateConfiguration, provisional);
     return generateConfiguration;
 }
 
@@ -598,7 +709,6 @@ function replacement(str, map) {
         return str;
     }
     for (const [search, replace] of Object.entries(map)) {
-
         if (search.includes("/gm")) {
             str = str.replace(eval(search), replace);
         } else {
@@ -606,4 +716,26 @@ function replacement(str, map) {
         }
     }
     return str;
+}
+
+function proxyAdder(configuraion, modifiedParams) {
+    try {
+        const proxiesArr = modifiedParams.proxiesAdditionClashVerge;
+        if (proxiesArr) {
+            proxiesArr.forEach(proxy => {
+                configuraion.proxies.push(proxy);
+            })
+        }
+        configuraion["proxy-groups"].forEach(group => {
+            const map = modifiedParams.proxiesMappingClashVerge;
+            for (const [search, add] of Object.entries(map)) {
+                if (group.name.includes(search)) {
+                    group.proxies.unshift(add);
+                    break;
+                }
+            }
+        })
+    } catch (error) {
+        return;
+    }
 }

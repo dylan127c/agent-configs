@@ -371,7 +371,7 @@ proxy-groups: #!replace
       - "[SS]香港 34B"
       - "[SS]香港 35B"
     url: http://www.gstatic.com/generate_204
-    interval: 72
+    interval: 300
     lazy: true
   - name: 🌉 负载均衡 | 香港备选
     type: load-balance
@@ -391,7 +391,7 @@ proxy-groups: #!replace
       - "[SS]香港 13"
       - "[SS]香港 14"
     url: http://www.gstatic.com/generate_204
-    interval: 72
+    interval: 300
     lazy: true
   - name: 🌉 负载均衡 | 美国
     type: load-balance
@@ -406,7 +406,7 @@ proxy-groups: #!replace
       - "[SS]美國 08"
       - "[SS]美國 09"
     url: http://www.gstatic.com/generate_204
-    interval: 72
+    interval: 300
     lazy: true
   - name: 🌉 负载均衡 | 日本
     type: load-balance
@@ -416,7 +416,7 @@ proxy-groups: #!replace
       - "[SS]日本 03"
       - "[SS]日本 04"
     url: http://www.gstatic.com/generate_204
-    interval: 72
+    interval: 300
     lazy: true
   - name: 🏙️ 延迟测试 | 其他
     type: url-test
@@ -435,7 +435,7 @@ proxy-groups: #!replace
       - "[SS]新加坡 02"
       - "[SS]新加坡 03"
     url: http://www.gstatic.com/generate_204
-    interval: 72
+    interval: 300
     lazy: true
 rule-providers: #!replace
   addition-download:

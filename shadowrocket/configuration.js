@@ -6,24 +6,18 @@ function mark(name) {
     return FILE_NAME + "." + name + " =>";
 }
 
-delete require.cache[require.resolve("./settings.json")];
-const settings = require("./settings.json");
-
-const RULES_FOLDER = path.resolve(__dirname, settings.rules);
-
-/**
- * 本方法用于输出 Shadowrocket 配置文件。
- * 
- * @param {*} yaml yaml 框架
- * @param {*} configurationRaw 已处理完毕的配置信息
- * @param {object} console 控制台调试对象
- */
 module.exports.output = (log, name, configuration, profile) => {
     const funcName = "output";
-    const symbol = name.split("_")[0].toLowerCase();
 
-    // const configuration = yaml.parse(configurationRaw);
+    delete require.cache[require.resolve("./settings.json")];
+    const settings = require("./settings.json");
 
+    /* THE "_" OR " " IS DEFAULT SEPARATOR. */
+    const symbol = name.includes("_") ?
+        name.split("_")[0].toLowerCase() :
+        name.split(" ")[0].toLowerCase();
+
+    /* REMOVE UNNECESSARY GROUP IF EXIST. */
     const initProxyGroups = Object.assign(configuration["proxy-groups"]);
     const index = initProxyGroups.findLastIndex(ele => ele.name.includes("订阅详情"));
     if (index >= 0) {
@@ -31,36 +25,30 @@ module.exports.output = (log, name, configuration, profile) => {
     }
 
     /* RULE */
-    let shadowrocketRule = "[Rule]\n";
-    configuration.rules.forEach(ele => {
-        if (ele.includes("RULE-SET")) {
-            const remote = settings.remote.endsWith("/") ?
-                settings.remote :
-                settings.remote + "/";
-            shadowrocketRule += ele.replace(/RULE-SET,/gm, "RULE-SET," + remote)
+    let rules = "[Rule]\n";
+    const remote = ensureTrailingSlash(settings.remote);
+    configuration.rules.forEach(rule => {
+        if (rule.includes("RULE-SET")) {
+            rules += rule
+                .replace(/RULE-SET,/gm, "RULE-SET," + remote)
                 .replace(/(?<!T),(?!n)/gm, ".list,") + "\n";
         } else {
-            shadowrocketRule += ele + "\n"
+            rules += rule + "\n"
         }
     });
 
     /* PROXY GROUP */
-    let shadowrocketProxyGroup = "[Proxy Group]\n";
-    initProxyGroups.forEach(ele => {
-        shadowrocketProxyGroup += ele.name + " = " + ele.type + ",";
-        ele.proxies.forEach(proxy => {
-            if (symbol === "orient" && proxy.match(/\d\d/gm)) {
-                /* Shadowrocket 中非 SS 节点的组名不支持 Emoji 表情。
-                 * 注意：由于某些节点名称不包含 Emoji，不推荐使用 /^\W{4}/gm 替换，这样会导致中文字符被替换。*/
-                shadowrocketProxyGroup += proxy.replace(/^\W+?\s(?!\d)/gm, "") + ","
+    let groups = "[Proxy Group]\n";
+    initProxyGroups.forEach(group => {
+        groups += group.name + " = " + group.type + ",";
+        group.proxies.forEach(name => {
+            if (symbol === "orient" && name.match(/\d\d/gm)) {
+                groups += removeEmoji(name) + ","
             } else {
-                shadowrocketProxyGroup += proxy + ","
+                groups += name + ","
             }
         });
-
-        /* Shadowrocket 配置文件的分组无论属于什么 Type 类型，都可以添加以下条目。
-         * 当类型本身不需要这些选项时，Shadowrocket 会自动忽略条目中已给出的某些键值。*/
-        shadowrocketProxyGroup += "interval=600,timeout=5,select=0,url=http://www.gstatic.com/generate_204\n";
+        groups += "interval=600,timeout=5,select=0,url=http://www.gstatic.com/generate_204\n";
     });
 
     /*
@@ -70,46 +58,43 @@ module.exports.output = (log, name, configuration, profile) => {
      * 通过覆盖初始配置文件的 Rule 和 Proxy Group 内容，即可得到最终的 Shadowrocket 配置文件。
      */
     const inputFileName = settings.init;
-    const inputFilePath = path.resolve(__dirname, settings.configs, inputFileName);
-
     const outputFileName = settings.prefix + symbol + settings.suffix;
-    const outputFilePath = path.resolve(__dirname, settings.outputs, outputFileName);
 
+    const inputFilePath = path.resolve(__dirname, settings.configs, inputFileName);
+    const outputFilePath = path.resolve(__dirname, settings.outputs, outputFileName);
     try {
         const inputContent = fs.readFileSync(inputFilePath, 'utf-8');
         log.info(mark(funcName), inputFileName, "imported.");
         const outputContent = inputContent
-            .replace(/\[Rule\]/g, shadowrocketRule)
-            .replace(/\[Proxy Group\]/g, shadowrocketProxyGroup);
+            .replace(/\[Rule\]/g, rules)
+            .replace(/\[Proxy Group\]/g, groups);
         fs.writeFileSync(outputFilePath, outputContent, "utf-8");
         log.info(mark(funcName), outputFileName, "exported.");
     } catch (error) {
         log.error(mark(funcName), error);
     }
-    transformRules(log, profile);
+    transformRules(log, profile, settings);
 }
 
-/**
- * 本方法用于转换 Clash 规则文件为 Shadowrocket 规则文件。
- * 
- * 所有 Clash 规则会通过本地获取，不需要请求网络。但前提是，本地需要存在 Clash 规则文件。
- * 
- * @param {object} console 
- */
-function transformRules(log, profile) {
+function transformRules(log, profile, settings) {
     const funcName = "transformRules";
-    if (!fs.existsSync(RULES_FOLDER)) {
-        fs.mkdirSync(RULES_FOLDER);
+
+    const shadowrocketRules = path.resolve(__dirname, settings.rules);
+    if (!fs.existsSync(shadowrocketRules)) {
+        fs.mkdirSync(shadowrocketRules);
     }
-
-    transform(log, profile, profile.originalNative, profile.originalPrefix, profile.connector);
-    transform(log, profile, profile.additionNative, profile.additionPrefix, profile.connector);
-
+    ["original", "addition"].forEach(identifier => {
+        transform(log, profile, settings, identifier);
+    })
     log.info(mark(funcName), "transform completed.")
 }
 
-function transform(log, profile, native, prefix, connector) {
+function transform(log, profile, settings, identifier) {
     const funcName = "transform";
+
+    const native = profile[identifier + "Native"];
+    const prefix = profile[identifier + "Prefix"];
+
     if (!fs.existsSync(native)) {
         log.error(mark(funcName), "native rules folder missing.");
         return;
@@ -117,13 +102,14 @@ function transform(log, profile, native, prefix, connector) {
 
     const sourceFiles = fs.readdirSync(native);
     sourceFiles.forEach(sourceFile => {
+        const fileName = removeSuffix(sourceFile);
         const inputPath = path.join(native, sourceFile);
-        const outputPath = path.join(RULES_FOLDER, prefix + connector + sourceFile.replace(/\..+$/gm, "") + ".list");
+        const outputPath = path.join(
+            path.resolve(__dirname, settings.rules),
+            prefix.concat(profile.connector, fileName, ".list")
+        );
         try {
             let fileContent = fs.readFileSync(inputPath, "utf-8");
-            /* 这里主要是为了去掉文件名的后缀信息。
-             * 不推荐使用/\..+$/gm匹配，以避免文件名中存在多个“.”符号。*/
-            const fileName = sourceFile.replace(/\.[a-zA-Z]+$/gm, "");
             const behavior = getBehavior(profile, fileName);
 
             for (const [search, replace] of Object.entries(settings.replacement[settings[behavior]])) {
@@ -134,6 +120,24 @@ function transform(log, profile, native, prefix, connector) {
             log.error(mark(funcName), error);
         }
     });
+}
+
+function ensureTrailingSlash(str) {
+    if (!str.endsWith('/')) {
+        return str + '/';
+    }
+    return str;
+}
+
+function removeSuffix(str) {
+    return str.replace(/\.[a-zA-Z]+$/gm, "");
+}
+
+/**
+ * Group names of non-SS nodes in Shadowrocket do not support Emoji.
+ */
+function removeEmoji(str) {
+    return str.replace(/^\W+?\s(?!\d)/gm, "");
 }
 
 function getBehavior(profile, name) {

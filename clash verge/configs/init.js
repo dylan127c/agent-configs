@@ -7,6 +7,8 @@ function main(params) {
         configuration = kele;
     } else if (count === 3) {
         configuration = clover;
+    } else if (count === 18) {
+        configuration = nebulae;
     }
     let mode = {
         originalStatus: true,
@@ -24,6 +26,7 @@ function main(params) {
 
     const generateConfiguration = generate(console, mode, params, provisional);
     nameReplacer(generateConfiguration, provisional);
+    proxyAdder(generateConfiguration, provisional);
     return generateConfiguration;
 }
 
@@ -47,7 +50,6 @@ function replacement(str, map) {
         return str;
     }
     for (const [search, replace] of Object.entries(map)) {
-
         if (search.includes("/gm")) {
             str = str.replace(eval(search), replace);
         } else {
@@ -55,4 +57,26 @@ function replacement(str, map) {
         }
     }
     return str;
+}
+
+function proxyAdder(configuraion, modifiedParams) {
+    try {
+        const proxiesArr = modifiedParams.proxiesAdditionClashVerge;
+        if (proxiesArr) {
+            proxiesArr.forEach(proxy => {
+                configuraion.proxies.push(proxy);
+            })
+        }
+        configuraion["proxy-groups"].forEach(group => {
+            const map = modifiedParams.proxiesMappingClashVerge;
+            for (const [search, add] of Object.entries(map)) {
+                if (group.name.includes(search)) {
+                    group.proxies.unshift(add);
+                    break;
+                }
+            }
+        })
+    } catch (error) {
+        return;
+    }
 }

@@ -1,4 +1,4 @@
-name: clover
+name: nebulae
 desc: Replace original configuration file.
 dns: #!replace
   enable: true
@@ -40,237 +40,266 @@ rules: #!replace
   - RULE-SET,addition-copilot,🌄 特殊控制 | Copilot
   - RULE-SET,addition-edge,🌄 特殊控制 | Edge
   - RULE-SET,addition-nodejs,🌄 特殊控制 | Node.js
-  - RULE-SET,addition-proxy,🌌 科学上网 | CLOVER
+  - RULE-SET,addition-proxy,🌌 科学上网 | NEBULAE
   - RULE-SET,original-applications,DIRECT
   - RULE-SET,original-apple,DIRECT
   - RULE-SET,original-icloud,DIRECT
   - RULE-SET,original-private,DIRECT
   - RULE-SET,original-direct,DIRECT
-  - RULE-SET,original-greatfire,🌌 科学上网 | CLOVER
-  - RULE-SET,original-gfw,🌌 科学上网 | CLOVER
-  - RULE-SET,original-proxy,🌌 科学上网 | CLOVER
-  - RULE-SET,original-tld-not-cn,🌌 科学上网 | CLOVER
+  - RULE-SET,original-greatfire,🌌 科学上网 | NEBULAE
+  - RULE-SET,original-gfw,🌌 科学上网 | NEBULAE
+  - RULE-SET,original-proxy,🌌 科学上网 | NEBULAE
+  - RULE-SET,original-tld-not-cn,🌌 科学上网 | NEBULAE
   - RULE-SET,original-reject,REJECT
-  - RULE-SET,original-telegramcidr,🌌 科学上网 | CLOVER,no-resolve
+  - RULE-SET,original-telegramcidr,🌌 科学上网 | NEBULAE,no-resolve
   - RULE-SET,original-lancidr,DIRECT,no-resolve
   - RULE-SET,original-cncidr,DIRECT,no-resolve
   - GEOIP,LAN,DIRECT,no-resolve
   - GEOIP,CN,DIRECT,no-resolve
   - MATCH,🌠 规则逃逸
 proxy-groups: #!replace
-  - name: 🌌 科学上网 | CLOVER
+  - name: 🌌 科学上网 | NEBULAE
     type: select
     proxies:
+      - 🌃 故障恢复 | IEPL
       - 🌉 负载均衡 | 香港
       - 🌉 负载均衡 | 新加坡
       - 🌉 负载均衡 | 台湾
-      - 🌉 负载均衡 | 印度
-      - 🌉 负载均衡 | 日本
       - 🌉 负载均衡 | 美国
-      - 🌉 负载均衡 | 韩国
+      - 🌉 负载均衡 | 日本
+      - 🌉 负载均衡 | 德国
+      - 🏙️ 延迟测试 | IPv6
       - 🌅 目标节点
       - DIRECT
   - name: 🌅 目标节点
     type: select
     proxies:
       - REJECT
-      - 🇭🇰香港01
-      - 🇭🇰香港 02
-      - 🇭🇰香港 03
-      - 🇭🇰香港 04
-      - 🇸🇬新加坡 01
-      - 🇸🇬新加坡 02
-      - 🇸🇬新加坡 03
-      - 🇸🇬新加坡 04
-      - 🇸🇬新加坡 05
-      - 🇸🇬新加坡 06
-      - 🇸🇬新加坡 07
-      - 🇯🇵日本 01
-      - 🇯🇵日本 02
-      - 🇯🇵日本 03
-      - 🇯🇵日本 04
-      - 🇺🇸美国 01
-      - 🇺🇸美国 02
-      - 🇰🇷韩国 01
-      - 🇰🇷韩国 02
-      - 🇰🇷韩国 03
-      - 🇰🇷韩国 04
-      - 🇰🇷韩国 05
-      - 🇰🇷韩国 06
-      - 🇮🇳印度 01
-      - 🇮🇳印度 02
-      - 🇹🇼台湾 01
-      - 🇹🇼台湾 02
-      - 🇲🇾马来西亚 01
-      - 🇫🇷法国 01
-      - 🇦🇺澳大利亚 01
-      - 🇷🇺俄罗斯 01
-      - 🇨🇦加拿大 01
-      - 🇹🇷土耳其 01
-      - 🇧🇷巴西 01
-      - 🇩🇪德国 01
-      - 🇮🇹意大利 01
-      - 🇹🇭泰国 01
-      - 🇮🇪爱尔兰 01
-      - 🇸🇪瑞典 01
-      - 🇬🇧英国 01
-      - 🇬🇧英国 02
-      - 🇵🇭菲律宾 01
-      - 🇦🇪迪拜 01
-      - 🇦🇷阿根廷 01
+      - DIRECT
+      - 🇭🇰 香港IEPL 乾坤
+      - 🇭🇰 香港IEPL 坎离
+      - 🇭🇰 香港IEPL 震巽
+      - 🇨🇳 台湾IEPL 坤乾
+      - 🇸🇬 狮城IEPL 艮兑
+      - 🇯🇵 日本IEPL 离震
+      - 🇺🇸 美国IEPL 兑艮
+      - 🇩🇪 德国IEPL 巽乾
+      - 🇭🇰 香港A 安培环路式
+      - 🇭🇰 香港A 帕累托法则
+      - 🇭🇰 香港A 阿贝尔定律
+      - 🇨🇳 台湾A 波动传播律
+      - 🇸🇬 狮城A 薛定谔方程
+      - 🇯🇵 日本A 康普顿散射
+      - 🇺🇸 美国A 超流体描述
+      - 🇺🇸 美国A 玻尔兹曼律
+      - 🇩🇪 德国A 帕塞瓦尔律
+      - 🇭🇰 香港B 质能关系式
+      - 🇭🇰 香港B 海森堡原理
+      - 🇭🇰 香港B 希尔伯特线
+      - 🇨🇳 台湾B 相变热力学
+      - 🇸🇬 狮城B 麦克斯韦组
+      - 🇯🇵 日本B 波尔兹曼律
+      - 🇺🇸 美国B 菲涅耳方程
+      - 🇺🇸 美国B 斯特藩定律
+      - 🇩🇪 德国B 德布罗意波
+      - 🇭🇰 香港v6 阿伏伽德罗定律
+      - 🇭🇰 香港v6 理想气体状态式
+      - 🇭🇰 香港v6 热力学第一定律
+      - 🇨🇳 台湾v6 波尔兹曼熵统计
+      - 🇨🇳 台湾v6 统计物理熵理论
+      - 🇸🇬 狮城v6 静电场高斯定律
+      - 🇺🇸 美国v6 柯尔莫戈洛夫律
+      - 🇯🇵 日本v6 静电力库仑定律
+      - 🇺🇸 美国v6 热力学第二定律
+      - 🇩🇪 德国v6 普朗克辐射定律
   - name: 🌁 数据下载
     type: select
     proxies:
       - DIRECT
-      - 🌌 科学上网 | CLOVER
+      - 🌌 科学上网 | NEBULAE
   - name: 🌠 规则逃逸
     type: select
     proxies:
       - DIRECT
-      - 🌌 科学上网 | CLOVER
+      - 🌌 科学上网 | NEBULAE
   - name: 🌄 特殊控制 | OpenAI
     type: select
     proxies:
       - REJECT
-      - 🇭🇰香港 02
-      - 🇲🇾马来西亚 01
-      - 🇦🇺澳大利亚 01
-      - 🇨🇦加拿大 01
-      - 🇹🇷土耳其 01
-      - 🇩🇪德国 01
-      - 🇮🇪爱尔兰 01
-      - 🇸🇪瑞典 01
-      - 🇵🇭菲律宾 01
+      - 🇭🇰 香港IEPL 乾坤
+      - 🇭🇰 香港IEPL 坎离
+      - 🇭🇰 香港IEPL 震巽
+      - 🇨🇳 台湾IEPL 坤乾
+      - 🇸🇬 狮城IEPL 艮兑
+      - 🇯🇵 日本IEPL 离震
+      - 🇺🇸 美国IEPL 兑艮
+      - 🇩🇪 德国IEPL 巽乾
+      - 🇭🇰 香港A 安培环路式
+      - 🇭🇰 香港A 帕累托法则
+      - 🇭🇰 香港A 阿贝尔定律
+      - 🇨🇳 台湾A 波动传播律
+      - 🇸🇬 狮城A 薛定谔方程
+      - 🇯🇵 日本A 康普顿散射
+      - 🇺🇸 美国A 超流体描述
+      - 🇺🇸 美国A 玻尔兹曼律
+      - 🇩🇪 德国A 帕塞瓦尔律
+      - 🇭🇰 香港B 质能关系式
+      - 🇭🇰 香港B 海森堡原理
+      - 🇭🇰 香港B 希尔伯特线
+      - 🇨🇳 台湾B 相变热力学
+      - 🇸🇬 狮城B 麦克斯韦组
+      - 🇯🇵 日本B 波尔兹曼律
+      - 🇺🇸 美国B 菲涅耳方程
+      - 🇺🇸 美国B 斯特藩定律
+      - 🇩🇪 德国B 德布罗意波
+      - 🇭🇰 香港v6 阿伏伽德罗定律
+      - 🇭🇰 香港v6 理想气体状态式
+      - 🇭🇰 香港v6 热力学第一定律
+      - 🇨🇳 台湾v6 波尔兹曼熵统计
+      - 🇨🇳 台湾v6 统计物理熵理论
+      - 🇸🇬 狮城v6 静电场高斯定律
+      - 🇺🇸 美国v6 柯尔莫戈洛夫律
+      - 🇯🇵 日本v6 静电力库仑定律
+      - 🇺🇸 美国v6 热力学第二定律
+      - 🇩🇪 德国v6 普朗克辐射定律
   - name: 🌄 特殊控制 | Brad
     type: select
     proxies:
       - REJECT
-      - 🇭🇰香港01
-      - 🇭🇰香港 02
-      - 🇭🇰香港 03
-      - 🇭🇰香港 04
-      - 🇸🇬新加坡 01
-      - 🇸🇬新加坡 02
-      - 🇸🇬新加坡 03
-      - 🇸🇬新加坡 04
-      - 🇸🇬新加坡 05
-      - 🇸🇬新加坡 06
-      - 🇸🇬新加坡 07
-      - 🇯🇵日本 01
-      - 🇯🇵日本 02
-      - 🇯🇵日本 03
-      - 🇯🇵日本 04
-      - 🇺🇸美国 01
-      - 🇺🇸美国 02
-      - 🇰🇷韩国 01
-      - 🇰🇷韩国 02
-      - 🇰🇷韩国 03
-      - 🇰🇷韩国 04
-      - 🇰🇷韩国 05
-      - 🇰🇷韩国 06
-      - 🇮🇳印度 01
-      - 🇮🇳印度 02
-      - 🇹🇼台湾 01
-      - 🇹🇼台湾 02
-      - 🇲🇾马来西亚 01
-      - 🇫🇷法国 01
-      - 🇦🇺澳大利亚 01
-      - 🇷🇺俄罗斯 01
-      - 🇨🇦加拿大 01
-      - 🇹🇷土耳其 01
-      - 🇧🇷巴西 01
-      - 🇩🇪德国 01
-      - 🇮🇹意大利 01
-      - 🇹🇭泰国 01
-      - 🇮🇪爱尔兰 01
-      - 🇸🇪瑞典 01
-      - 🇬🇧英国 01
-      - 🇬🇧英国 02
-      - 🇵🇭菲律宾 01
-      - 🇦🇪迪拜 01
-      - 🇦🇷阿根廷 01
+      - 🇭🇰 香港IEPL 乾坤
+      - 🇭🇰 香港IEPL 坎离
+      - 🇭🇰 香港IEPL 震巽
+      - 🇨🇳 台湾IEPL 坤乾
+      - 🇸🇬 狮城IEPL 艮兑
+      - 🇯🇵 日本IEPL 离震
+      - 🇺🇸 美国IEPL 兑艮
+      - 🇩🇪 德国IEPL 巽乾
+      - 🇭🇰 香港A 安培环路式
+      - 🇭🇰 香港A 帕累托法则
+      - 🇭🇰 香港A 阿贝尔定律
+      - 🇨🇳 台湾A 波动传播律
+      - 🇸🇬 狮城A 薛定谔方程
+      - 🇯🇵 日本A 康普顿散射
+      - 🇺🇸 美国A 超流体描述
+      - 🇺🇸 美国A 玻尔兹曼律
+      - 🇩🇪 德国A 帕塞瓦尔律
+      - 🇭🇰 香港B 质能关系式
+      - 🇭🇰 香港B 海森堡原理
+      - 🇭🇰 香港B 希尔伯特线
+      - 🇨🇳 台湾B 相变热力学
+      - 🇸🇬 狮城B 麦克斯韦组
+      - 🇯🇵 日本B 波尔兹曼律
+      - 🇺🇸 美国B 菲涅耳方程
+      - 🇺🇸 美国B 斯特藩定律
+      - 🇩🇪 德国B 德布罗意波
+      - 🇭🇰 香港v6 阿伏伽德罗定律
+      - 🇭🇰 香港v6 理想气体状态式
+      - 🇭🇰 香港v6 热力学第一定律
+      - 🇨🇳 台湾v6 波尔兹曼熵统计
+      - 🇨🇳 台湾v6 统计物理熵理论
+      - 🇸🇬 狮城v6 静电场高斯定律
+      - 🇺🇸 美国v6 柯尔莫戈洛夫律
+      - 🇯🇵 日本v6 静电力库仑定律
+      - 🇺🇸 美国v6 热力学第二定律
+      - 🇩🇪 德国v6 普朗克辐射定律
   - name: 🌄 特殊控制 | Copilot
     type: select
     proxies:
-      - 🌌 科学上网 | CLOVER
+      - 🌌 科学上网 | NEBULAE
       - DIRECT
   - name: 🌄 特殊控制 | Edge
     type: select
     proxies:
       - DIRECT
       - REJECT
-      - 🌌 科学上网 | CLOVER
+      - 🌌 科学上网 | NEBULAE
   - name: 🌄 特殊控制 | Node.js
     type: select
     proxies:
       - DIRECT
-      - 🌌 科学上网 | CLOVER
+      - 🌌 科学上网 | NEBULAE
+  - name: 🌃 故障恢复 | IEPL
+    type: fallback
+    proxies:
+      - 🇭🇰 香港IEPL 乾坤
+      - 🇭🇰 香港IEPL 坎离
+      - 🇭🇰 香港IEPL 震巽
+      - 🇨🇳 台湾IEPL 坤乾
+      - 🇸🇬 狮城IEPL 艮兑
+      - 🇯🇵 日本IEPL 离震
+      - 🇺🇸 美国IEPL 兑艮
+      - 🇩🇪 德国IEPL 巽乾
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    lazy: true
   - name: 🌉 负载均衡 | 香港
     type: load-balance
     proxies:
-      - 🇭🇰香港01
-      - 🇭🇰香港 02
-      - 🇭🇰香港 03
-      - 🇭🇰香港 04
+      - 🇭🇰 香港A 安培环路式
+      - 🇭🇰 香港A 帕累托法则
+      - 🇭🇰 香港A 阿贝尔定律
+      - 🇭🇰 香港B 质能关系式
+      - 🇭🇰 香港B 海森堡原理
+      - 🇭🇰 香港B 希尔伯特线
     url: http://www.gstatic.com/generate_204
     interval: 300
     lazy: true
   - name: 🌉 负载均衡 | 台湾
     type: load-balance
     proxies:
-      - 🇹🇼台湾 01
-      - 🇹🇼台湾 02
-    url: http://www.gstatic.com/generate_204
-    interval: 300
-    lazy: true
-  - name: 🌉 负载均衡 | 日本
-    type: load-balance
-    proxies:
-      - 🇯🇵日本 01
-      - 🇯🇵日本 02
-      - 🇯🇵日本 03
-      - 🇯🇵日本 04
-    url: http://www.gstatic.com/generate_204
-    interval: 300
-    lazy: true
-  - name: 🌉 负载均衡 | 印度
-    type: load-balance
-    proxies:
-      - 🇮🇳印度 01
-      - 🇮🇳印度 02
-    url: http://www.gstatic.com/generate_204
-    interval: 300
-    lazy: true
-  - name: 🌉 负载均衡 | 韩国
-    type: load-balance
-    proxies:
-      - 🇰🇷韩国 01
-      - 🇰🇷韩国 02
-      - 🇰🇷韩国 03
-      - 🇰🇷韩国 04
-      - 🇰🇷韩国 05
-      - 🇰🇷韩国 06
+      - 🇨🇳 台湾A 波动传播律
+      - 🇨🇳 台湾B 相变热力学
     url: http://www.gstatic.com/generate_204
     interval: 300
     lazy: true
   - name: 🌉 负载均衡 | 美国
     type: load-balance
     proxies:
-      - 🇺🇸美国 01
-      - 🇺🇸美国 02
+      - 🇺🇸 美国A 超流体描述
+      - 🇺🇸 美国A 玻尔兹曼律
+      - 🇺🇸 美国B 菲涅耳方程
+      - 🇺🇸 美国B 斯特藩定律
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    lazy: true
+  - name: 🌉 负载均衡 | 日本
+    type: load-balance
+    proxies:
+      - 🇯🇵 日本A 康普顿散射
+      - 🇯🇵 日本B 波尔兹曼律
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    lazy: true
+  - name: 🌉 负载均衡 | 德国
+    type: load-balance
+    proxies:
+      - 🇩🇪 德国A 帕塞瓦尔律
+      - 🇩🇪 德国B 德布罗意波
     url: http://www.gstatic.com/generate_204
     interval: 300
     lazy: true
   - name: 🌉 负载均衡 | 新加坡
     type: load-balance
     proxies:
-      - 🇸🇬新加坡 01
-      - 🇸🇬新加坡 02
-      - 🇸🇬新加坡 03
-      - 🇸🇬新加坡 04
-      - 🇸🇬新加坡 05
-      - 🇸🇬新加坡 06
-      - 🇸🇬新加坡 07
+      - 🇸🇬 狮城A 薛定谔方程
+      - 🇸🇬 狮城B 麦克斯韦组
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    lazy: true
+  - name: 🏙️ 延迟测试 | IPv6
+    type: url-test
+    proxies:
+      - REJECT
+      - 🇭🇰 香港v6 阿伏伽德罗定律
+      - 🇭🇰 香港v6 理想气体状态式
+      - 🇭🇰 香港v6 热力学第一定律
+      - 🇨🇳 台湾v6 波尔兹曼熵统计
+      - 🇨🇳 台湾v6 统计物理熵理论
+      - 🇸🇬 狮城v6 静电场高斯定律
+      - 🇺🇸 美国v6 柯尔莫戈洛夫律
+      - 🇯🇵 日本v6 静电力库仑定律
+      - 🇺🇸 美国v6 热力学第二定律
+      - 🇩🇪 德国v6 普朗克辐射定律
     url: http://www.gstatic.com/generate_204
     interval: 300
     lazy: true

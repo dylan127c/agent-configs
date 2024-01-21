@@ -8,49 +8,54 @@ const path = require("path");
 module.exports.parse = async (raw, { axios, yaml, notify, console },
     { name, url, interval, selected }) => {
 
-    delete require.cache[require.resolve("./lib/log")];
-    const log = require("./lib/log")(console);
-    delete require.cache[require.resolve("./main")];
-    const main = require("./main");
+    try {
+        delete require.cache[require.resolve("./main")];
+        const main = require("./main");
+        delete require.cache[require.resolve("./lib/log")];
+        const log = require("./lib/log")(console);
 
-    const funcName = "parse";
-    log.info(mark(funcName), "parsing start.")
+        const funcName = "parse";
+        log.info(mark(funcName), "parsing start.")
 
-    const configuration = getConfig(log, name);
-    if (configuration === undefined) {
-        log.info(mark(funcName), "original configuration applied.")
+        const configuration = getConfig(log, name);
+        if (configuration === undefined) {
+            log.info(mark(funcName), "original configuration applied.")
+            return raw;
+        }
+
+        /* MODIFIED PARAMETERS */
+        const modifiedParams = configuration();
+        /* ORIGINAL CONFIGURATION */
+        const originalConfiguration = yaml.parse(raw);
+        /* ORIGINAL MODE */
+        let mode = {
+            originalStatus: false,
+            additionStatus: false
+        }
+        log.info(mark(funcName), "mode:", Object.values(mode));
+
+        /* GENERATE CONFIGURATION */
+        let generateConfiguration = main.generate(log, mode, originalConfiguration, modifiedParams);
+
+        /* STASH && SHADOWROCKET CONFIGURATION */
+        outputStash(yaml, log, name, generateConfiguration);
+        outputShadowrocket(log, name, generateConfiguration, modifiedParams);
+
+        /* CLASH FOR WINDOWS CONFIGURATION */
+        mode = getStatus(axios, log, mode, modifiedParams); // GET NEW(REAL) MODE
+        log.info(mark(funcName), "main parsing start.")
+        generateConfiguration = main.generate(log, mode, originalConfiguration, modifiedParams); // GENERATE NEW CONFIGURATION
+        log.info(mark(funcName), "main parsing completed.")
+
+        /* CHANGE PROXY NAME */
+        nameChanger(generateConfiguration, modifiedParams);
+
+        /* OUTPUT FORMATTED CONFIGURATION STRING */
+        return yaml.stringify(generateConfiguration);
+    } catch (error) {
+        console.warn("Error occurred. Original configuration will be returned.")
         return raw;
     }
-
-    /* MODIFIED PARAMETERS */
-    const modifiedParams = configuration();
-    /* ORIGINAL CONFIGURATION */
-    const originalConfiguration = yaml.parse(raw);
-    /* ORIGINAL MODE */
-    let mode = {
-        originalStatus: false,
-        additionStatus: false
-    }
-    log.info(mark(funcName), "mode:", Object.values(mode));
-
-    /* GENERATE CONFIGURATION */
-    let generateConfiguration = main.generate(log, mode, originalConfiguration, modifiedParams);
-
-    /* STASH && SHADOWROCKET CONFIGURATION */
-    outputStash(yaml, log, name, generateConfiguration);
-    outputShadowrocket(log, name, generateConfiguration, modifiedParams);
-
-    /* CLASH FOR WINDOWS CONFIGURATION */
-    mode = getStatus(axios, log, mode, modifiedParams); // GET NEW(REAL) MODE
-    log.info(mark(funcName), "main parsing start.")
-    generateConfiguration = main.generate(log, mode, originalConfiguration, modifiedParams); // GENERATE NEW CONFIGURATION
-    log.info(mark(funcName), "main parsing completed.")
-
-    /* CHANGE PROXY NAME */
-    nameChanger(generateConfiguration, modifiedParams);
-
-    /* OUTPUT FORMATTED CONFIGURATION STRING */
-    return yaml.stringify(generateConfiguration);
 }
 
 /**
@@ -179,6 +184,12 @@ function outputClashVerge(log) {
     }
 }
 
+/**
+ * Replace agent name.
+ * 
+ * @param {object} configuraion generated configuration
+ * @param {object} modifiedParams specific configuration
+ */
 function nameChanger(configuraion, modifiedParams) {
     const replacementMap = modifiedParams.replacement;
     if (replacementMap) {
@@ -199,7 +210,6 @@ function replacement(str, map) {
         return str;
     }
     for (const [search, replace] of Object.entries(map)) {
-
         if (search.includes("/gm")) {
             str = str.replace(eval(search), replace);
         } else {

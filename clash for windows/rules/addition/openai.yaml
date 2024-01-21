@@ -6,3 +6,4 @@ payload:
   - '+.imgix.net'
   - '+.openaiapi-site.azureedge.net'
   - '+.api.statsig.com'
+  - '+.challenges.cloudflare.com'
