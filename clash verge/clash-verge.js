@@ -201,23 +201,40 @@ function build() {
     initConfiguration.dns.ipv6 = false;
     initConfiguration.dns["enhanced-mode"] = "fake-ip";
     initConfiguration.dns["fake-ip-range"] = "192.18.0.1/16";
-    initConfiguration.dns.nameserver = [
+    initConfiguration.dns.listen = "0.0.0.0:53";
+    initConfiguration.dns["use-hosts"] = true;
+    initConfiguration.dns["default-nameserver"] = [
         "119.29.29.29",
         "119.28.28.28",
         "223.5.5.5",
         "223.6.6.6",
-    ];
-    initConfiguration.dns.fallback = [
         "114.114.114.114",
         "114.114.115.115",
         "101.226.4.6",
-        "218.30.118.6",
-        "8.8.8.8",
+    ];
+    initConfiguration.dns.nameserver = [
+        "https://doh.pub/dns-query",
+        "https://dns.alidns.com/dns-query",
+        "https://1.12.12.12/dns-query",
+        "https://120.53.53.53/dns-query",
+    ];
+    initConfiguration.dns.fallback = [
         "94.140.14.15",
         "94.140.15.16",
-        "1.1.1.1"
+        "8.8.8.8",
+        "1.1.1.1",
     ];
+    initConfiguration.dns["fallback-filter"] = {
+        geoip: true,
+        "geoip-code": "CN",
+        ipcidr: [
+            "240.0.0.0/4",
+            "0.0.0.0/32",
+        ]
+    }
     initConfiguration.dns["fake-ip-filter"] = [
+        "*.lan",
+        "localhost.ptlogin2.qq.com",
         "+.stun.*.*",
         "+.stun.*.*.*",
         "+.stun.*.*.*.*",
@@ -228,6 +245,8 @@ function build() {
         "*.*.xboxlive.com",
         "*.msftncsi.com",
         "*.msftconnecttest.com",
+        "*.logon.battlenet.com.cn",
+        "*.logon.battle.net",
         "WORKGROUP"
     ];
 
@@ -237,7 +256,7 @@ function build() {
      * 大部分浏览器默认开启 “安全 DNS” 功能，此功能会影响 TUN 模式劫持 DNS 请求导致反推域名失败，
      * 请在浏览器设置中关闭此功能以保证 TUN 模式正常运行。
      * 
-     * 注意，在 tun.enable = true 时，CFW 会在完成配置更新时自动打开 TUN 模式，这显然不合理。
+     * 注意，在 tun.enable = true 时，CFW 会在完成配置更新时自动打开 TUN 模式，这显然不合理。
      * 而对于 CV 来说，无论 tun.enable 的值是什么，TUN 模式都不会被自动打开。
      * 
      * 因此，建议 tun.enable 保持 false 状态，在需要使用到 TUN 模式时，再手动代开。

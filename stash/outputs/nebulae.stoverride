@@ -5,21 +5,35 @@ dns: #!replace
   ipv6: false
   enhanced-mode: fake-ip
   fake-ip-range: 192.18.0.1/16
-  nameserver:
+  listen: 0.0.0.0:53
+  use-hosts: true
+  default-nameserver:
     - 119.29.29.29
     - 119.28.28.28
     - 223.5.5.5
     - 223.6.6.6
-  fallback:
     - 114.114.114.114
     - 114.114.115.115
     - 101.226.4.6
-    - 218.30.118.6
-    - 8.8.8.8
+  nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+    - https://1.12.12.12/dns-query
+    - https://120.53.53.53/dns-query
+  fallback:
     - 94.140.14.15
     - 94.140.15.16
+    - 8.8.8.8
     - 1.1.1.1
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    ipcidr:
+      - 240.0.0.0/4
+      - 0.0.0.0/32
   fake-ip-filter:
+    - "*.lan"
+    - localhost.ptlogin2.qq.com
     - +.stun.*.*
     - +.stun.*.*.*
     - +.stun.*.*.*.*
@@ -30,6 +44,8 @@ dns: #!replace
     - "*.*.xboxlive.com"
     - "*.msftncsi.com"
     - "*.msftconnecttest.com"
+    - "*.logon.battlenet.com.cn"
+    - "*.logon.battle.net"
     - WORKGROUP
 rules: #!replace
   - RULE-SET,addition-idm,🌁 数据下载 | IDM
