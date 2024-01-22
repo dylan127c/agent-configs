@@ -88,15 +88,19 @@ module.exports.configuration = () => {
             "[SS]新加坡": "🇸🇬 新加坡"
         },
 
-        proxiesAdditionClashVerge: [{
-            name: "🏳️‍⚧️ 本地订阅 | PORT => 13766",
-            type: "http",
-            server: "127.0.0.1",
-            port: 13766
-        }],
-        proxiesMappingClashVerge: {
-            "🌄 特殊控制 | OpenAI": "🏳️‍⚧️ 本地订阅 | PORT => 13766",
-            "🌄 特殊控制 | Brad": "🏳️‍⚧️ 本地订阅 | PORT => 13766",
-        },
+        interval: 72,
+
+        proxiesClashVerge: {
+            proxiesAddition: [{
+                name: "🏳️‍⚧️ 本地订阅 | PORT => 13766",
+                type: "http",
+                server: "127.0.0.1",
+                port: 13766
+            }],
+            proxiesMapping: {
+                "🌄 特殊控制 | OpenAI": "🏳️‍⚧️ 本地订阅 | PORT => 13766",
+                "🌄 特殊控制 | Brad": "🏳️‍⚧️ 本地订阅 | PORT => 13766",
+            },
+        }
     }
 }

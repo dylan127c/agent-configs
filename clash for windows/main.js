@@ -5,9 +5,11 @@ const FILENAME = "main";
 
 /** @method {@link getProxyGroups} */
 const SELECT = "select";
-const TEST_URL = "http://www.gstatic.com/generate_204";
+const LOAD_BALANCE = "load-balance";
+const HEALTH_CHECK_URL = "https://www.gstatic.com/generate_204";
 const TEST_INTERVAL = 300;
-const TEST_LAZY = true;
+const LAZY_TESTING = true;
+const STRATEGY = "consistent-hashing";
 const DEFAULT_PROXY = "DIRECT";
 
 /** @method {@link getRuleProviders} */
@@ -86,9 +88,19 @@ function getProxyGroups(modifiedParams, configuraion) {
         };
 
         if (group.type !== SELECT) {
-            groupConstruct.url = TEST_URL;
-            groupConstruct.interval = TEST_INTERVAL;
-            groupConstruct.lazy = TEST_LAZY;
+            groupConstruct.url = HEALTH_CHECK_URL;
+            groupConstruct.lazy = LAZY_TESTING;
+
+            /* CONSISTENT-HASHING IS DEFAULT STRATEGY */
+            if (group.type === LOAD_BALANCE) {
+                groupConstruct.strategy = STRATEGY;
+            }
+            /* ALLOW CUSTOMIZE HEALTH CHECK INTERVAL */
+            if (modifiedParams.hasOwnProperty("interval")) {
+                groupConstruct.interval = modifiedParams.interval;
+            } else {
+                groupConstruct.interval = TEST_INTERVAL;
+            }
         }
 
         if (group.append) {

@@ -197,25 +197,25 @@ proxy-groups: #!replace
     proxies:
       - 🇭🇰 香港 05 移动/深港专线（2倍率）
       - 🇭🇰 香港 06 移动/深港专线（2倍率）
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    url: https://www.gstatic.com/generate_204
     lazy: true
+    interval: 72
   - name: 🌃 故障恢复 | 沪港电信
     type: fallback
     proxies:
       - 🇭🇰 香港 01 电信/沪港专线（2.5倍率）
       - 🇭🇰 香港 02 电信/沪港专线（2.5倍率）
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    url: https://www.gstatic.com/generate_204
     lazy: true
+    interval: 72
   - name: 🌃 故障恢复 | 沪日电信
     type: fallback
     proxies:
       - 🇯🇵 日本 01 电信/沪日专线（3倍率）
       - 🇯🇵 日本 02 电信/沪日专线（3倍率）
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    url: https://www.gstatic.com/generate_204
     lazy: true
+    interval: 72
   - name: 🌉 负载均衡 | 香港
     type: load-balance
     proxies:
@@ -223,9 +223,10 @@ proxy-groups: #!replace
       - 🇭🇰 香港 10 HKBN家宽（0.5倍率）
       - 🇭🇰 香港 11 NTT IPv6
       - 🇭🇰 香港 12 Cogent IPv6（流媒体）
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    url: https://www.gstatic.com/generate_204
     lazy: true
+    strategy: consistent-hashing
+    interval: 72
   - name: 🌉 负载均衡 | 日本
     type: load-balance
     proxies:
@@ -239,9 +240,10 @@ proxy-groups: #!replace
       - 🇯🇵 日本 17 IIJ
       - 🇯🇵 日本 19 IIJ
       - 🇯🇵 日本 21 NTT
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    url: https://www.gstatic.com/generate_204
     lazy: true
+    strategy: consistent-hashing
+    interval: 72
 rule-providers: #!replace
   addition-idm:
     type: http

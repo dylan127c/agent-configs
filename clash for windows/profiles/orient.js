@@ -89,6 +89,8 @@ module.exports.configuration = () => {
             "/(?<=\\s\\d\\d)\\s.+(?=（)/gm": "",
             "/(?<=\\s\\d\\d)\\s.+$/gm": "",
             "/无版权": "",
-        }
+        },
+
+        interval: 72,
     }
 }

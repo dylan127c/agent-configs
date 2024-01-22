@@ -191,6 +191,9 @@ function outputClashVerge(log) {
  * @param {object} modifiedParams specific configuration
  */
 function nameChanger(configuraion, modifiedParams) {
+    if (!modifiedParams.hasOwnProperty("replacement")) {
+        return;
+    }
     const replacementMap = modifiedParams.replacement;
     if (replacementMap) {
         configuraion.proxies.forEach(proxy => {

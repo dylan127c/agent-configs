@@ -31,6 +31,9 @@ function main(params) {
 }
 
 function nameReplacer(configuraion, modifiedParams) {
+    if (!modifiedParams.hasOwnProperty("replacement")) {
+        return;
+    }
     const replacementMap = modifiedParams.replacement;
     if (replacementMap) {
         configuraion.proxies.forEach(proxy => {
@@ -60,23 +63,24 @@ function replacement(str, map) {
 }
 
 function proxyAdder(configuraion, modifiedParams) {
-    try {
-        const proxiesArr = modifiedParams.proxiesAdditionClashVerge;
-        if (proxiesArr) {
-            proxiesArr.forEach(proxy => {
-                configuraion.proxies.push(proxy);
-            })
-        }
-        configuraion["proxy-groups"].forEach(group => {
-            const map = modifiedParams.proxiesMappingClashVerge;
-            for (const [search, add] of Object.entries(map)) {
-                if (group.name.includes(search)) {
-                    group.proxies.unshift(add);
-                    break;
-                }
-            }
-        })
-    } catch (error) {
+    if (!modifiedParams.hasOwnProperty("proxiesClashVerge")) {
         return;
     }
+
+    const proxiesConfig = modifiedParams.proxiesClashVerge;
+    const proxiesArr = proxiesConfig.proxiesAddition;
+    if (proxiesArr) {
+        proxiesArr.forEach(proxy => {
+            configuraion.proxies.push(proxy);
+        })
+    }
+    configuraion["proxy-groups"].forEach(group => {
+        const map = proxiesConfig.proxiesMapping;
+        for (const [search, add] of Object.entries(map)) {
+            if (group.name.includes(search)) {
+                group.proxies.unshift(add);
+                break;
+            }
+        }
+    })
 }

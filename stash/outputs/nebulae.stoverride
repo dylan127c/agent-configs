@@ -216,9 +216,9 @@ proxy-groups: #!replace
       - 🇯🇵 日本IEPL 离震
       - 🇺🇸 美国IEPL 兑艮
       - 🇩🇪 德国IEPL 巽乾
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    url: https://www.gstatic.com/generate_204
     lazy: true
+    interval: 300
   - name: 🌉 负载均衡 | 香港
     type: load-balance
     proxies:
@@ -228,17 +228,19 @@ proxy-groups: #!replace
       - 🇭🇰 香港B 质能关系式
       - 🇭🇰 香港B 海森堡原理
       - 🇭🇰 香港B 希尔伯特线
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    url: https://www.gstatic.com/generate_204
     lazy: true
+    strategy: consistent-hashing
+    interval: 300
   - name: 🌉 负载均衡 | 台湾
     type: load-balance
     proxies:
       - 🇨🇳 台湾A 波动传播律
       - 🇨🇳 台湾B 相变热力学
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    url: https://www.gstatic.com/generate_204
     lazy: true
+    strategy: consistent-hashing
+    interval: 300
   - name: 🌉 负载均衡 | 美国
     type: load-balance
     proxies:
@@ -246,33 +248,37 @@ proxy-groups: #!replace
       - 🇺🇸 美国A 玻尔兹曼律
       - 🇺🇸 美国B 菲涅耳方程
       - 🇺🇸 美国B 斯特藩定律
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    url: https://www.gstatic.com/generate_204
     lazy: true
+    strategy: consistent-hashing
+    interval: 300
   - name: 🌉 负载均衡 | 日本
     type: load-balance
     proxies:
       - 🇯🇵 日本A 康普顿散射
       - 🇯🇵 日本B 波尔兹曼律
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    url: https://www.gstatic.com/generate_204
     lazy: true
+    strategy: consistent-hashing
+    interval: 300
   - name: 🌉 负载均衡 | 德国
     type: load-balance
     proxies:
       - 🇩🇪 德国A 帕塞瓦尔律
       - 🇩🇪 德国B 德布罗意波
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    url: https://www.gstatic.com/generate_204
     lazy: true
+    strategy: consistent-hashing
+    interval: 300
   - name: 🌉 负载均衡 | 新加坡
     type: load-balance
     proxies:
       - 🇸🇬 狮城A 薛定谔方程
       - 🇸🇬 狮城B 麦克斯韦组
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    url: https://www.gstatic.com/generate_204
     lazy: true
+    strategy: consistent-hashing
+    interval: 300
   - name: 🏙️ 延迟测试 | IPv6
     type: url-test
     proxies:
@@ -287,9 +293,9 @@ proxy-groups: #!replace
       - 🇯🇵 日本v6 静电力库仑定律
       - 🇺🇸 美国v6 热力学第二定律
       - 🇩🇪 德国v6 普朗克辐射定律
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    url: https://www.gstatic.com/generate_204
     lazy: true
+    interval: 300
 rule-providers: #!replace
   addition-idm:
     type: http

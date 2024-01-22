@@ -5,9 +5,11 @@ const FILENAME = "main";
 
 /** @method {@link getProxyGroups} */
 const SELECT = "select";
-const TEST_URL = "http://www.gstatic.com/generate_204";
+const LOAD_BALANCE = "load-balance";
+const HEALTH_CHECK_URL = "https://www.gstatic.com/generate_204";
 const TEST_INTERVAL = 300;
-const TEST_LAZY = true;
+const LAZY_TESTING = true;
+const STRATEGY = "consistent-hashing";
 const DEFAULT_PROXY = "DIRECT";
 
 /** @method {@link getRuleProviders} */
@@ -84,9 +86,19 @@ function getProxyGroups(modifiedParams, configuraion) {
         };
 
         if (group.type !== SELECT) {
-            groupConstruct.url = TEST_URL;
-            groupConstruct.interval = TEST_INTERVAL;
-            groupConstruct.lazy = TEST_LAZY;
+            groupConstruct.url = HEALTH_CHECK_URL;
+            groupConstruct.lazy = LAZY_TESTING;
+
+            /* CONSISTENT-HASHING IS DEFAULT STRATEGY */
+            if (group.type === LOAD_BALANCE) {
+                groupConstruct.strategy = STRATEGY;
+            }
+            /* ALLOW CUSTOMIZE HEALTH CHECK INTERVAL */
+            if (modifiedParams.hasOwnProperty("interval")) {
+                groupConstruct.interval = modifiedParams.interval;
+            } else {
+                groupConstruct.interval = TEST_INTERVAL;
+            }
         }
 
         if (group.append) {
@@ -272,13 +284,11 @@ const clover = () => {
     const groups = [
         { name: "🌌 科学上网 | CLOVER", type: "select", proxies: mainGroups.concat(["DIRECT"]) },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT"], append: /^(?!剩余|套餐)/gm },
-        { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
+        { name: "🌁 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: specificRegex },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^(?!剩余|套餐)/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | CLOVER", "DIRECT"] },
-        { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | CLOVER"] },
-        { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌉 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港/gm },
         { name: "🌉 负载均衡 | 台湾", type: "load-balance", proxies: [], append: /台湾/gm },
         { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本/gm },
@@ -289,14 +299,12 @@ const clover = () => {
     ]
 
     const additionRules = [
-        "RULE-SET,download,🌁 数据下载",
+        "RULE-SET,idm,🌁 数据下载 | IDM",
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
         "RULE-SET,brad,🌄 特殊控制 | Brad",
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
-        "RULE-SET,edge,🌄 特殊控制 | Edge",
-        "RULE-SET,nodejs,🌄 特殊控制 | Node.js",
         "RULE-SET,proxy,🌌 科学上网 | CLOVER",
     ];
     const originalRules = [
@@ -328,7 +336,7 @@ const clover = () => {
 
         defaultBehavior: "domain",
         behavior: {
-            "classical": ["applications", "download", "nodejs"],
+            "classical": ["idm"],
             "ipcidr": ["telegramcidr", "lancidr", "cncidr"]
         },
 
@@ -366,30 +374,26 @@ const kele = () => {
     const groups = [
         { name: "🌌 科学上网 | KELE", type: "select", proxies: mainGroups.concat(["DIRECT"]) },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /\[.+/gm },
-        { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
+        { name: "🌁 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /\[.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /\[.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | KELE", "DIRECT"] },
-        { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | KELE"] },
-        { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
         { name: "🌉 负载均衡 | 香港推荐", type: "load-balance", proxies: [], append: /香港\s\d\d\w/gm },
         { name: "🌉 负载均衡 | 香港备选", type: "load-balance", proxies: [], append: /香港\s\d\d$/gm },
         { name: "🌉 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美國\s\d\d$/gm },
         { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本\s\d\d$/gm },
-        { name: "🏙️ 延迟测试 | 其他", type: "url-test", proxies: [], append: /[^香港|美國|日本]\s\d\d$/gm },
+        { name: "🏙️ 延迟测试 | 其他", type: "url-test", proxies: ["REJECT"], append: /[^香港|美國|日本]\s\d\d$/gm },
         { name: "🏞️ 订阅详情", type: "select", proxies: [], append: /剩余流量/gm },
     ]
 
     const additionRules = [
-        "RULE-SET,download,🌁 数据下载",
+        "RULE-SET,idm,🌁 数据下载 | IDM",
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
         "RULE-SET,brad,🌄 特殊控制 | Brad",
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
-        "RULE-SET,edge,🌄 特殊控制 | Edge",
-        "RULE-SET,nodejs,🌄 特殊控制 | Node.js",
         "RULE-SET,proxy,🌌 科学上网 | KELE",
     ];
     const originalRules = [
@@ -421,7 +425,7 @@ const kele = () => {
 
         defaultBehavior: "domain",
         behavior: {
-            "classical": ["applications", "download", "nodejs"],
+            "classical": ["idm"],
             "ipcidr": ["telegramcidr", "lancidr", "cncidr"]
         },
 
@@ -448,16 +452,20 @@ const kele = () => {
             "[SS]新加坡": "🇸🇬 新加坡"
         },
 
-        proxiesAdditionClashVerge: [{
-            name: "🏳️‍⚧️ 本地订阅 | PORT => 13766",
-            type: "http",
-            server: "127.0.0.1",
-            port: 13766
-        }],
-        proxiesMappingClashVerge: {
-            "🌄 特殊控制 | OpenAI": "🏳️‍⚧️ 本地订阅 | PORT => 13766",
-            "🌄 特殊控制 | Brad": "🏳️‍⚧️ 本地订阅 | PORT => 13766",
-        },
+        interval: 72,
+
+        proxiesClashVerge: {
+            proxiesAddition: [{
+                name: "🏳️‍⚧️ 本地订阅 | PORT => 13766",
+                type: "http",
+                server: "127.0.0.1",
+                port: 13766
+            }],
+            proxiesMapping: {
+                "🌄 特殊控制 | OpenAI": "🏳️‍⚧️ 本地订阅 | PORT => 13766",
+                "🌄 特殊控制 | Brad": "🏳️‍⚧️ 本地订阅 | PORT => 13766",
+            },
+        }
     }
 }
 
@@ -470,20 +478,18 @@ const nebulae = () => {
         "🌉 负载均衡 | 美国",
         "🌉 负载均衡 | 日本",
         "🌉 负载均衡 | 德国",
-        "🏙️ 专有节点 | IPv6",
+        "🏙️ 延迟测试 | IPv6",
         "🌅 目标节点",
     ].concat(["DIRECT"]);
 
     const groups = [
         { name: "🌌 科学上网 | NEBULAE", type: "select", proxies: mainGroups },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
-        { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
+        { name: "🌁 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | NEBULAE", "DIRECT"] },
-        { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | NEBULAE"] },
-        { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
         { name: "🌃 故障恢复 | IEPL", type: "fallback", proxies: [], append: /IEPL\s/gm },
         { name: "🌉 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港\w\s/gm },
         { name: "🌉 负载均衡 | 台湾", type: "load-balance", proxies: [], append: /台湾\w\s/gm },
@@ -491,18 +497,16 @@ const nebulae = () => {
         { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本\w\s/gm },
         { name: "🌉 负载均衡 | 德国", type: "load-balance", proxies: [], append: /德国\w\s/gm },
         { name: "🌉 负载均衡 | 新加坡", type: "load-balance", proxies: [], append: /狮城\w\s/gm },
-        { name: "🏙️ 专有节点 | IPv6", type: "select", proxies: ["REJECT"], append: /v6\s/gm },
+        { name: "🏙️ 延迟测试 | IPv6", type: "url-test", proxies: ["REJECT"], append: /v6\s/gm },
     ]
 
     const additionRules = [
-        "RULE-SET,download,🌁 数据下载",
+        "RULE-SET,idm,🌁 数据下载 | IDM",
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
         "RULE-SET,brad,🌄 特殊控制 | Brad",
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
-        "RULE-SET,edge,🌄 特殊控制 | Edge",
-        "RULE-SET,nodejs,🌄 特殊控制 | Node.js",
         "RULE-SET,proxy,🌌 科学上网 | NEBULAE",
     ];
     const originalRules = [
@@ -534,7 +538,7 @@ const nebulae = () => {
 
         defaultBehavior: "domain",
         behavior: {
-            "classical": ["applications", "download", "nodejs"],
+            "classical": ["idm"],
             "ipcidr": ["telegramcidr", "lancidr", "cncidr"]
         },
 
@@ -551,10 +555,6 @@ const nebulae = () => {
         additionNativeType: "yaml",
         additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition",
         additionRemoteType: "yaml",
-
-        replacement: {
-            
-        },
     }
 }
 
@@ -572,13 +572,11 @@ const orient = () => {
     const groups = [
         { name: "🌌 科学上网 | ORIENT", type: "select", proxies: mainGroups },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
-        { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
+        { name: "🌁 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: specificRegex },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | ORIENT", "DIRECT"] },
-        { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | ORIENT"] },
-        { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
         { name: "🌃 故障恢复 | 深港移动", type: "fallback", append: /香港 \d\d 移动.+/gm },
         { name: "🌃 故障恢复 | 沪港电信", type: "fallback", append: /香港 \d\d 电信.+/gm },
         { name: "🌃 故障恢复 | 沪日电信", type: "fallback", append: /日本 \d\d [^A-Z].+/gm },
@@ -587,14 +585,12 @@ const orient = () => {
     ];
 
     const additionRules = [
-        "RULE-SET,download,🌁 数据下载",
+        "RULE-SET,idm,🌁 数据下载 | IDM",
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
         "RULE-SET,brad,🌄 特殊控制 | Brad",
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
-        "RULE-SET,edge,🌄 特殊控制 | Edge",
-        "RULE-SET,nodejs,🌄 特殊控制 | Node.js",
         "RULE-SET,proxy,🌌 科学上网 | ORIENT",
     ];
 
@@ -628,7 +624,7 @@ const orient = () => {
 
         defaultBehavior: "domain",
         behavior: {
-            "classical": ["applications", "download", "nodejs"],
+            "classical": ["idm"],
             "ipcidr": ["telegramcidr", "lancidr", "cncidr"]
         },
 
@@ -653,7 +649,9 @@ const orient = () => {
             "/(?<=\\s\\d\\d)\\s.+(?=（)/gm": "",
             "/(?<=\\s\\d\\d)\\s.+$/gm": "",
             "/无版权": "",
-        }
+        },
+
+        interval: 72,
     }
 }
 
@@ -690,6 +688,9 @@ function main(params) {
 }
 
 function nameReplacer(configuraion, modifiedParams) {
+    if (!modifiedParams.hasOwnProperty("replacement")) {
+        return;
+    }
     const replacementMap = modifiedParams.replacement;
     if (replacementMap) {
         configuraion.proxies.forEach(proxy => {
@@ -719,23 +720,24 @@ function replacement(str, map) {
 }
 
 function proxyAdder(configuraion, modifiedParams) {
-    try {
-        const proxiesArr = modifiedParams.proxiesAdditionClashVerge;
-        if (proxiesArr) {
-            proxiesArr.forEach(proxy => {
-                configuraion.proxies.push(proxy);
-            })
-        }
-        configuraion["proxy-groups"].forEach(group => {
-            const map = modifiedParams.proxiesMappingClashVerge;
-            for (const [search, add] of Object.entries(map)) {
-                if (group.name.includes(search)) {
-                    group.proxies.unshift(add);
-                    break;
-                }
-            }
-        })
-    } catch (error) {
+    if (!modifiedParams.hasOwnProperty("proxiesClashVerge")) {
         return;
     }
+
+    const proxiesConfig = modifiedParams.proxiesClashVerge;
+    const proxiesArr = proxiesConfig.proxiesAddition;
+    if (proxiesArr) {
+        proxiesArr.forEach(proxy => {
+            configuraion.proxies.push(proxy);
+        })
+    }
+    configuraion["proxy-groups"].forEach(group => {
+        const map = proxiesConfig.proxiesMapping;
+        for (const [search, add] of Object.entries(map)) {
+            if (group.name.includes(search)) {
+                group.proxies.unshift(add);
+                break;
+            }
+        }
+    })
 }

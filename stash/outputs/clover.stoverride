@@ -199,17 +199,19 @@ proxy-groups: #!replace
       - 🇭🇰香港 02
       - 🇭🇰香港 03
       - 🇭🇰香港 04
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    url: https://www.gstatic.com/generate_204
     lazy: true
+    strategy: consistent-hashing
+    interval: 300
   - name: 🌉 负载均衡 | 台湾
     type: load-balance
     proxies:
       - 🇹🇼台湾 01
       - 🇹🇼台湾 02
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    url: https://www.gstatic.com/generate_204
     lazy: true
+    strategy: consistent-hashing
+    interval: 300
   - name: 🌉 负载均衡 | 日本
     type: load-balance
     proxies:
@@ -217,17 +219,19 @@ proxy-groups: #!replace
       - 🇯🇵日本 02
       - 🇯🇵日本 03
       - 🇯🇵日本 04
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    url: https://www.gstatic.com/generate_204
     lazy: true
+    strategy: consistent-hashing
+    interval: 300
   - name: 🌉 负载均衡 | 印度
     type: load-balance
     proxies:
       - 🇮🇳印度 01
       - 🇮🇳印度 02
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    url: https://www.gstatic.com/generate_204
     lazy: true
+    strategy: consistent-hashing
+    interval: 300
   - name: 🌉 负载均衡 | 韩国
     type: load-balance
     proxies:
@@ -237,17 +241,19 @@ proxy-groups: #!replace
       - 🇰🇷韩国 04
       - 🇰🇷韩国 05
       - 🇰🇷韩国 06
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    url: https://www.gstatic.com/generate_204
     lazy: true
+    strategy: consistent-hashing
+    interval: 300
   - name: 🌉 负载均衡 | 美国
     type: load-balance
     proxies:
       - 🇺🇸美国 01
       - 🇺🇸美国 02
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    url: https://www.gstatic.com/generate_204
     lazy: true
+    strategy: consistent-hashing
+    interval: 300
   - name: 🌉 负载均衡 | 新加坡
     type: load-balance
     proxies:
@@ -258,9 +264,10 @@ proxy-groups: #!replace
       - 🇸🇬新加坡 05
       - 🇸🇬新加坡 06
       - 🇸🇬新加坡 07
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    url: https://www.gstatic.com/generate_204
     lazy: true
+    strategy: consistent-hashing
+    interval: 300
 rule-providers: #!replace
   addition-idm:
     type: http

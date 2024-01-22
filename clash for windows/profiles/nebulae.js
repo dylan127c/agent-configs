@@ -84,9 +84,5 @@ module.exports.configuration = () => {
         additionNativeType: "yaml",
         additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition",
         additionRemoteType: "yaml",
-
-        replacement: {
-            
-        },
     }
 }
