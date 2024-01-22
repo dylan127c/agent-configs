@@ -12,13 +12,11 @@ module.exports.configuration = () => {
     const groups = [
         { name: "🌌 科学上网 | ORIENT", type: "select", proxies: mainGroups },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
-        { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
+        { name: "🌁 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: specificRegex },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | ORIENT", "DIRECT"] },
-        { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | ORIENT"] },
-        { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
         { name: "🌃 故障恢复 | 深港移动", type: "fallback", append: /香港 \d\d 移动.+/gm },
         { name: "🌃 故障恢复 | 沪港电信", type: "fallback", append: /香港 \d\d 电信.+/gm },
         { name: "🌃 故障恢复 | 沪日电信", type: "fallback", append: /日本 \d\d [^A-Z].+/gm },
@@ -27,14 +25,12 @@ module.exports.configuration = () => {
     ];
 
     const additionRules = [
-        "RULE-SET,download,🌁 数据下载",
+        "RULE-SET,idm,🌁 数据下载 | IDM",
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
         "RULE-SET,brad,🌄 特殊控制 | Brad",
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
-        "RULE-SET,edge,🌄 特殊控制 | Edge",
-        "RULE-SET,nodejs,🌄 特殊控制 | Node.js",
         "RULE-SET,proxy,🌌 科学上网 | ORIENT",
     ];
 
@@ -68,7 +64,7 @@ module.exports.configuration = () => {
 
         defaultBehavior: "domain",
         behavior: {
-            "classical": ["applications", "download", "nodejs"],
+            "classical": ["idm"],
             "ipcidr": ["telegramcidr", "lancidr", "cncidr"]
         },
 

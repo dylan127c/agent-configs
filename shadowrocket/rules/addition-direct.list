@@ -21,6 +21,13 @@ DOMAIN-SUFFIX,injections.adguard.org
 # 参考：https://adguard.com/kb/zh-CN/general/https-filtering/local-adguard-com-domain/
 DOMAIN-SUFFIX,local.adguard.org
 
+# 以下域名用于加载Microsoft Edge新标签页，它们可能影响浏览器的加载速度。
+# DIRECT模式为默认模式，按需使用PROXY。
+# REJECT可能可以加快浏览器的启动速度。
+DOMAIN-SUFFIX,ntp.msn.cn
+DOMAIN-SUFFIX,assets.msn.cn
+DOMAIN-SUFFIX,assets2.msn.cn
+
 # 其他域名
 DOMAIN-SUFFIX,clash.razord.top
 DOMAIN-SUFFIX,ihaxs.com

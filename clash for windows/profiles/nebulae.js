@@ -14,13 +14,11 @@ module.exports.configuration = () => {
     const groups = [
         { name: "🌌 科学上网 | NEBULAE", type: "select", proxies: mainGroups },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
-        { name: "🌁 数据下载", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
+        { name: "🌁 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | NEBULAE", "DIRECT"] },
-        { name: "🌄 特殊控制 | Edge", type: "select", proxies: ["DIRECT", "REJECT", "🌌 科学上网 | NEBULAE"] },
-        { name: "🌄 特殊控制 | Node.js", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
         { name: "🌃 故障恢复 | IEPL", type: "fallback", proxies: [], append: /IEPL\s/gm },
         { name: "🌉 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港\w\s/gm },
         { name: "🌉 负载均衡 | 台湾", type: "load-balance", proxies: [], append: /台湾\w\s/gm },
@@ -32,14 +30,12 @@ module.exports.configuration = () => {
     ]
 
     const additionRules = [
-        "RULE-SET,download,🌁 数据下载",
+        "RULE-SET,idm,🌁 数据下载 | IDM",
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
         "RULE-SET,brad,🌄 特殊控制 | Brad",
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
-        "RULE-SET,edge,🌄 特殊控制 | Edge",
-        "RULE-SET,nodejs,🌄 特殊控制 | Node.js",
         "RULE-SET,proxy,🌌 科学上网 | NEBULAE",
     ];
     const originalRules = [
@@ -71,7 +67,7 @@ module.exports.configuration = () => {
 
         defaultBehavior: "domain",
         behavior: {
-            "classical": ["applications", "download", "nodejs"],
+            "classical": ["idm"],
             "ipcidr": ["telegramcidr", "lancidr", "cncidr"]
         },
 

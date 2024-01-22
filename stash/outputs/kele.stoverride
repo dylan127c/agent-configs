@@ -32,14 +32,12 @@ dns: #!replace
     - "*.msftconnecttest.com"
     - WORKGROUP
 rules: #!replace
-  - RULE-SET,addition-download,🌁 数据下载
+  - RULE-SET,addition-idm,🌁 数据下载 | IDM
   - RULE-SET,addition-reject,REJECT
   - RULE-SET,addition-direct,DIRECT
   - RULE-SET,addition-openai,🌄 特殊控制 | OpenAI
   - RULE-SET,addition-brad,🌄 特殊控制 | Brad
   - RULE-SET,addition-copilot,🌄 特殊控制 | Copilot
-  - RULE-SET,addition-edge,🌄 特殊控制 | Edge
-  - RULE-SET,addition-nodejs,🌄 特殊控制 | Node.js
   - RULE-SET,addition-proxy,🌌 科学上网 | KELE
   - RULE-SET,original-applications,DIRECT
   - RULE-SET,original-apple,DIRECT
@@ -148,12 +146,12 @@ proxy-groups: #!replace
       - "[SS]新加坡 01"
       - "[SS]新加坡 02"
       - "[SS]新加坡 03"
-  - name: 🌁 数据下载
+  - name: 🌠 规则逃逸
     type: select
     proxies:
       - DIRECT
       - 🌌 科学上网 | KELE
-  - name: 🌠 规则逃逸
+  - name: 🌁 数据下载 | IDM
     type: select
     proxies:
       - DIRECT
@@ -321,17 +319,6 @@ proxy-groups: #!replace
     proxies:
       - 🌌 科学上网 | KELE
       - DIRECT
-  - name: 🌄 特殊控制 | Edge
-    type: select
-    proxies:
-      - DIRECT
-      - REJECT
-      - 🌌 科学上网 | KELE
-  - name: 🌄 特殊控制 | Node.js
-    type: select
-    proxies:
-      - DIRECT
-      - 🌌 科学上网 | KELE
   - name: 🌉 负载均衡 | 香港推荐
     type: load-balance
     proxies:
@@ -421,6 +408,7 @@ proxy-groups: #!replace
   - name: 🏙️ 延迟测试 | 其他
     type: url-test
     proxies:
+      - REJECT
       - "[SS]越南 01"
       - "[SS]越南 02"
       - "[SS]越南 03"
@@ -438,10 +426,10 @@ proxy-groups: #!replace
     interval: 300
     lazy: true
 rule-providers: #!replace
-  addition-download:
+  addition-idm:
     type: http
     behavior: classical
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/download.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/idm.yaml
     interval: 86400
   addition-reject:
     type: http
@@ -468,16 +456,6 @@ rule-providers: #!replace
     behavior: domain
     url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/copilot.yaml
     interval: 86400
-  addition-edge:
-    type: http
-    behavior: domain
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/edge.yaml
-    interval: 86400
-  addition-nodejs:
-    type: http
-    behavior: classical
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/nodejs.yaml
-    interval: 86400
   addition-proxy:
     type: http
     behavior: domain
@@ -485,7 +463,7 @@ rule-providers: #!replace
     interval: 86400
   original-applications:
     type: http
-    behavior: classical
+    behavior: domain
     url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/applications.yaml
     interval: 86400
   original-apple:
