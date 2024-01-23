@@ -62,7 +62,7 @@ module.exports.configuration = () => {
         groups: groups,
         endRules: endRules,
         connector: "-",
-        initScript: "H:/OneDrive/Repositories/Proxy Rules/clash for windows/configs/initialization",
+        initScript: "h:/onedrive/repositories/proxy rules/commons/configs/basis",
 
         defaultBehavior: "domain",
         behavior: {
@@ -72,14 +72,14 @@ module.exports.configuration = () => {
 
         originalRules: originalRules,
         originalPrefix: "original",
-        originalNative: "H:/OneDrive/Repositories/Proxy Rules/clash for windows/rules/original",
+        originalNative: "h:/onedrive/repositories/proxy rules/commons/rules/original",
         originalNativeType: "yaml",
         originalRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original",
         originalRemoteType: "yaml",
 
         additionRules: additionRules,
         additionPrefix: "addition",
-        additionNative: "H:/OneDrive/Repositories/Proxy Rules/clash for windows/rules/addition",
+        additionNative: "h:/onedrive/repositories/proxy rules/commons/rules/addition",
         additionNativeType: "yaml",
         additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition",
         additionRemoteType: "yaml",

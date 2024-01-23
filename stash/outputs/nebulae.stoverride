@@ -90,19 +90,22 @@ proxy-groups: #!replace
     proxies:
       - REJECT
       - DIRECT
-      - 🇭🇰 香港IEPL 乾坤
-      - 🇭🇰 香港IEPL 坎离
-      - 🇭🇰 香港IEPL 震巽
-      - 🇨🇳 台湾IEPL 坤乾
-      - 🇸🇬 狮城IEPL 艮兑
-      - 🇯🇵 日本IEPL 离震
-      - 🇺🇸 美国IEPL 兑艮
-      - 🇩🇪 德国IEPL 巽乾
+      - 🇭🇰 香港IEPL       乾坤
+      - 🇭🇰 香港IEPL       坤震
+      - 🇭🇰 香港IEPL       震巽
+      - 🇨🇳 台湾IEPL       巽坎
+      - 🇸🇬 狮城IEPL       坎艮
+      - 🇸🇬 狮城IEPL       艮离
+      - 🇯🇵 日本IEPL       离兑
+      - 🇺🇸 美国IEPL       兑乾
+      - 🇺🇸 美国IEPL       坤巽
+      - 🇩🇪 德国IEPL       乾震
       - 🇭🇰 香港A 安培环路式
       - 🇭🇰 香港A 帕累托法则
       - 🇭🇰 香港A 阿贝尔定律
       - 🇨🇳 台湾A 波动传播律
       - 🇸🇬 狮城A 薛定谔方程
+      - 🇸🇬 狮城A 全等同分裂
       - 🇯🇵 日本A 康普顿散射
       - 🇺🇸 美国A 超流体描述
       - 🇺🇸 美国A 玻尔兹曼律
@@ -112,6 +115,7 @@ proxy-groups: #!replace
       - 🇭🇰 香港B 希尔伯特线
       - 🇨🇳 台湾B 相变热力学
       - 🇸🇬 狮城B 麦克斯韦组
+      - 🇸🇬 狮城B 庞加莱猜想
       - 🇯🇵 日本B 波尔兹曼律
       - 🇺🇸 美国B 菲涅耳方程
       - 🇺🇸 美国B 斯特藩定律
@@ -122,8 +126,9 @@ proxy-groups: #!replace
       - 🇨🇳 台湾v6 波尔兹曼熵统计
       - 🇨🇳 台湾v6 统计物理熵理论
       - 🇸🇬 狮城v6 静电场高斯定律
-      - 🇺🇸 美国v6 柯尔莫戈洛夫律
+      - 🇸🇬 狮城v6 阿姆斯特朗定律
       - 🇯🇵 日本v6 静电力库仑定律
+      - 🇺🇸 美国v6 柯尔莫戈洛夫律
       - 🇺🇸 美国v6 热力学第二定律
       - 🇩🇪 德国v6 普朗克辐射定律
   - name: 🌠 规则逃逸
@@ -140,19 +145,22 @@ proxy-groups: #!replace
     type: select
     proxies:
       - REJECT
-      - 🇭🇰 香港IEPL 乾坤
-      - 🇭🇰 香港IEPL 坎离
-      - 🇭🇰 香港IEPL 震巽
-      - 🇨🇳 台湾IEPL 坤乾
-      - 🇸🇬 狮城IEPL 艮兑
-      - 🇯🇵 日本IEPL 离震
-      - 🇺🇸 美国IEPL 兑艮
-      - 🇩🇪 德国IEPL 巽乾
+      - 🇭🇰 香港IEPL       乾坤
+      - 🇭🇰 香港IEPL       坤震
+      - 🇭🇰 香港IEPL       震巽
+      - 🇨🇳 台湾IEPL       巽坎
+      - 🇸🇬 狮城IEPL       坎艮
+      - 🇸🇬 狮城IEPL       艮离
+      - 🇯🇵 日本IEPL       离兑
+      - 🇺🇸 美国IEPL       兑乾
+      - 🇺🇸 美国IEPL       坤巽
+      - 🇩🇪 德国IEPL       乾震
       - 🇭🇰 香港A 安培环路式
       - 🇭🇰 香港A 帕累托法则
       - 🇭🇰 香港A 阿贝尔定律
       - 🇨🇳 台湾A 波动传播律
       - 🇸🇬 狮城A 薛定谔方程
+      - 🇸🇬 狮城A 全等同分裂
       - 🇯🇵 日本A 康普顿散射
       - 🇺🇸 美国A 超流体描述
       - 🇺🇸 美国A 玻尔兹曼律
@@ -162,6 +170,7 @@ proxy-groups: #!replace
       - 🇭🇰 香港B 希尔伯特线
       - 🇨🇳 台湾B 相变热力学
       - 🇸🇬 狮城B 麦克斯韦组
+      - 🇸🇬 狮城B 庞加莱猜想
       - 🇯🇵 日本B 波尔兹曼律
       - 🇺🇸 美国B 菲涅耳方程
       - 🇺🇸 美国B 斯特藩定律
@@ -172,27 +181,31 @@ proxy-groups: #!replace
       - 🇨🇳 台湾v6 波尔兹曼熵统计
       - 🇨🇳 台湾v6 统计物理熵理论
       - 🇸🇬 狮城v6 静电场高斯定律
-      - 🇺🇸 美国v6 柯尔莫戈洛夫律
+      - 🇸🇬 狮城v6 阿姆斯特朗定律
       - 🇯🇵 日本v6 静电力库仑定律
+      - 🇺🇸 美国v6 柯尔莫戈洛夫律
       - 🇺🇸 美国v6 热力学第二定律
       - 🇩🇪 德国v6 普朗克辐射定律
   - name: 🌄 特殊控制 | Brad
     type: select
     proxies:
       - REJECT
-      - 🇭🇰 香港IEPL 乾坤
-      - 🇭🇰 香港IEPL 坎离
-      - 🇭🇰 香港IEPL 震巽
-      - 🇨🇳 台湾IEPL 坤乾
-      - 🇸🇬 狮城IEPL 艮兑
-      - 🇯🇵 日本IEPL 离震
-      - 🇺🇸 美国IEPL 兑艮
-      - 🇩🇪 德国IEPL 巽乾
+      - 🇭🇰 香港IEPL       乾坤
+      - 🇭🇰 香港IEPL       坤震
+      - 🇭🇰 香港IEPL       震巽
+      - 🇨🇳 台湾IEPL       巽坎
+      - 🇸🇬 狮城IEPL       坎艮
+      - 🇸🇬 狮城IEPL       艮离
+      - 🇯🇵 日本IEPL       离兑
+      - 🇺🇸 美国IEPL       兑乾
+      - 🇺🇸 美国IEPL       坤巽
+      - 🇩🇪 德国IEPL       乾震
       - 🇭🇰 香港A 安培环路式
       - 🇭🇰 香港A 帕累托法则
       - 🇭🇰 香港A 阿贝尔定律
       - 🇨🇳 台湾A 波动传播律
       - 🇸🇬 狮城A 薛定谔方程
+      - 🇸🇬 狮城A 全等同分裂
       - 🇯🇵 日本A 康普顿散射
       - 🇺🇸 美国A 超流体描述
       - 🇺🇸 美国A 玻尔兹曼律
@@ -202,6 +215,7 @@ proxy-groups: #!replace
       - 🇭🇰 香港B 希尔伯特线
       - 🇨🇳 台湾B 相变热力学
       - 🇸🇬 狮城B 麦克斯韦组
+      - 🇸🇬 狮城B 庞加莱猜想
       - 🇯🇵 日本B 波尔兹曼律
       - 🇺🇸 美国B 菲涅耳方程
       - 🇺🇸 美国B 斯特藩定律
@@ -212,8 +226,9 @@ proxy-groups: #!replace
       - 🇨🇳 台湾v6 波尔兹曼熵统计
       - 🇨🇳 台湾v6 统计物理熵理论
       - 🇸🇬 狮城v6 静电场高斯定律
-      - 🇺🇸 美国v6 柯尔莫戈洛夫律
+      - 🇸🇬 狮城v6 阿姆斯特朗定律
       - 🇯🇵 日本v6 静电力库仑定律
+      - 🇺🇸 美国v6 柯尔莫戈洛夫律
       - 🇺🇸 美国v6 热力学第二定律
       - 🇩🇪 德国v6 普朗克辐射定律
   - name: 🌄 特殊控制 | Copilot
@@ -224,14 +239,16 @@ proxy-groups: #!replace
   - name: 🌃 故障恢复 | IEPL
     type: fallback
     proxies:
-      - 🇭🇰 香港IEPL 乾坤
-      - 🇭🇰 香港IEPL 坎离
-      - 🇭🇰 香港IEPL 震巽
-      - 🇨🇳 台湾IEPL 坤乾
-      - 🇸🇬 狮城IEPL 艮兑
-      - 🇯🇵 日本IEPL 离震
-      - 🇺🇸 美国IEPL 兑艮
-      - 🇩🇪 德国IEPL 巽乾
+      - 🇭🇰 香港IEPL       乾坤
+      - 🇭🇰 香港IEPL       坤震
+      - 🇭🇰 香港IEPL       震巽
+      - 🇨🇳 台湾IEPL       巽坎
+      - 🇸🇬 狮城IEPL       坎艮
+      - 🇸🇬 狮城IEPL       艮离
+      - 🇯🇵 日本IEPL       离兑
+      - 🇺🇸 美国IEPL       兑乾
+      - 🇺🇸 美国IEPL       坤巽
+      - 🇩🇪 德国IEPL       乾震
     url: https://www.gstatic.com/generate_204
     lazy: true
     interval: 300
@@ -290,7 +307,9 @@ proxy-groups: #!replace
     type: load-balance
     proxies:
       - 🇸🇬 狮城A 薛定谔方程
+      - 🇸🇬 狮城A 全等同分裂
       - 🇸🇬 狮城B 麦克斯韦组
+      - 🇸🇬 狮城B 庞加莱猜想
     url: https://www.gstatic.com/generate_204
     lazy: true
     strategy: consistent-hashing
@@ -305,8 +324,9 @@ proxy-groups: #!replace
       - 🇨🇳 台湾v6 波尔兹曼熵统计
       - 🇨🇳 台湾v6 统计物理熵理论
       - 🇸🇬 狮城v6 静电场高斯定律
-      - 🇺🇸 美国v6 柯尔莫戈洛夫律
+      - 🇸🇬 狮城v6 阿姆斯特朗定律
       - 🇯🇵 日本v6 静电力库仑定律
+      - 🇺🇸 美国v6 柯尔莫戈洛夫律
       - 🇺🇸 美国v6 热力学第二定律
       - 🇩🇪 德国v6 普朗克辐射定律
     url: https://www.gstatic.com/generate_204

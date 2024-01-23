@@ -1,12 +1,104 @@
+const axios = require("axios");
+const yaml = require('yaml');
 const fs = require("fs");
 const path = require("path");
+
+delete require.cache[require.resolve("./settings.json")];
+const settings = require("./settings.json");
+
+const logFilePath = path.join(__dirname, settings.log);
+const logStream = fs.createWriteStream(logFilePath);
+console.log = (...messages) => {
+    const logMessage = messages.join(" ");
+    logStream.write(`${logMessage}\n`);
+}
+
+delete require.cache[require.resolve(settings.source)];
+const preset = require(settings.source);
+const subs = preset.subscriptions;
+
+const promises = Object.keys(subs).map(name => {
+    const link = subs[name];
+    return new Promise((resolve, reject) => {
+        axios.get(link)
+            .then(function (response) {
+                const configuration = tryParse(response.data);
+                const configurationRaw = yaml.stringify(configuration);
+
+                parse(configurationRaw, axios, yaml, name);
+                resolve();
+            })
+            .catch(function (error) {
+                console.log(error);
+                reject();
+            });
+    });
+});
+
+/* ONLY UPDATE ONCE */
+Promise.all(promises)
+    .then(() => {
+        delete require.cache[require.resolve("../commons/lib/log")];
+        const log = require("../commons/lib/log")(console);
+
+        /* ORIGINAL RULES UPDATER */
+        update(axios, log);
+    })
+    .catch(err => {
+        console.log(err);
+    });
+
+function tryParse(encryptedRaw) {
+    /* PLAIN TEXT SUBSCRIPTION CONTENT */
+    const configuraion = yaml.parse(encryptedRaw);
+    if (configuraion.hasOwnProperty("proxies")) {
+        return {
+            proxies: configuraion.proxies
+        };
+    }
+
+    /* ENCRYPTED SUBSCRIPTION CONTENT */
+    const afterBase64 = atob(encryptedRaw);
+    const afterURI = decodeURI(afterBase64);
+    const nodes = afterURI.split("\r\n");
+
+    const arr = [];
+    nodes.forEach(node => {
+        if (node !== "") {
+            const name = node.match(/(?<=#).+$/gm)[0].toString();
+            const type = node.match(/^.+?:/gm)[0].toString();
+
+            const serverAndPort = node.match(/(?<=@).+(?=#)/gm)[0].toString();
+            const server = serverAndPort.match(/^.+(?=:)/gm)[0].toString();
+            const port = serverAndPort.match(/(?<=:).+$/gm)[0].toString();
+
+            const cipherAndPassword = atob(node.match(/(?<=\/\/).+(?=@)/gm)[0].toString());
+            const cipher = cipherAndPassword.match(/^.+(?=:)/gm)[0].toString();
+            const password = cipherAndPassword.match(/(?<=:).+$/gm)[0].toString();
+
+            const newNode = {
+                name: name,
+                type: type,
+                server: server,
+                port: port,
+                cipher: cipher,
+                password: password,
+                udp: true
+            }
+            arr.push(newNode);
+        }
+    });
+
+    return {
+        proxies: arr
+    }
+}
 
 /**
  * @param {string} name subscription name
  * @param {string} raw subscription content
  */
-module.exports.parse = async (raw, { axios, yaml, notify, console },
-    { name, url, interval, selected }) => {
+function parse(raw, axios, yaml, name) {
 
     try {
         delete require.cache[require.resolve("../commons/main")];
@@ -40,6 +132,8 @@ module.exports.parse = async (raw, { axios, yaml, notify, console },
         /* STASH && SHADOWROCKET CONFIGURATION */
         outputStash(yaml, log, name, generateConfiguration);
         outputShadowrocket(log, name, generateConfiguration, modifiedParams);
+
+        return;
 
         /* CLASH FOR WINDOWS CONFIGURATION */
         mode = getStatus(axios, log, mode, modifiedParams); // GET NEW(REAL) MODE
@@ -135,7 +229,7 @@ function update(axios, log) {
         /* !!! ASYNC FUNCTIOAN !!! */
         update.updateCheck(axios, log);
     } catch (error) {
-        log.warn(mark(funcName), "../commons/rules/update.js missing.")
+        log.warn(mark(funcName), "update.js missing.")
     }
 }
 

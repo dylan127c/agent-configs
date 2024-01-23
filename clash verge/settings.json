@@ -1,8 +1,9 @@
 {
-    "main": "../clash for windows/main.js",
-    "initailizaion": "../clash for windows/configs/initialization.js",
-    "profiles": "../clash for windows/profiles",
+    "main": "../commons/main.js",
+    "initailizaion": "../commons/configs/basis.js",
+    "profiles": "../profiles",
     "init": "./configs/init.js",
     "output": "./clash-verge.js",
-    "replace": "C:/Users/dylan/.config/clash-verge/profiles/sEBvEhd1bIs2.js"
+    "replace": "c:/users/dylan/.config/clash-verge/profiles/sEBvEhd1bIs2.js",
+    "updateMark": 0
 }

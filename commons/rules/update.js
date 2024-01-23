@@ -23,7 +23,7 @@ const formatter = require("../lib/date-formatter")
  */
 module.exports.updateCheck = (axios, log) => {
     const funcName = "updateCheck";
-    fs.readFile(settings.timestamp,
+    fs.readFile(path.resolve(__dirname, settings.timestamp),
         "utf-8",
         (err, data) => {
             if (err) {
@@ -67,7 +67,7 @@ function updateRules(axios, log) {
             return new Promise((resolve, reject) => {
                 fs.writeFile(
                     path.resolve(
-                        settings.savePath,
+                        path.resolve(__dirname, settings.savePath),
                         fileName + "." + settings.saveType
                     ),
                     res.data, 'utf8',
@@ -116,7 +116,7 @@ function updateRules(axios, log) {
 function updateTimestamp(log) {
     const funcName = "updateTimestamp";
     const currentTimestamp = Date.now();
-    fs.writeFile(settings.timestamp,
+    fs.writeFile(path.resolve(__dirname, settings.timestamp),
         currentTimestamp.toString(),
         (err) => {
             if (err) {
