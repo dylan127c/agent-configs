@@ -363,14 +363,14 @@ const clover = () => {
         originalPrefix: "original",
         originalNative: "h:/onedrive/repositories/proxy rules/commons/rules/original",
         originalNativeType: "yaml",
-        originalRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original",
+        originalRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original",
         originalRemoteType: "yaml",
 
         additionRules: additionRules,
         additionPrefix: "addition",
         additionNative: "h:/onedrive/repositories/proxy rules/commons/rules/addition",
         additionNativeType: "yaml",
-        additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition",
+        additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition",
         additionRemoteType: "yaml",
 
         replacement: {
@@ -452,14 +452,14 @@ const kele = () => {
         originalPrefix: "original",
         originalNative: "h:/onedrive/repositories/proxy rules/commons/rules/original",
         originalNativeType: "yaml",
-        originalRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original",
+        originalRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original",
         originalRemoteType: "yaml",
 
         additionRules: additionRules,
         additionPrefix: "addition",
         additionNative: "h:/onedrive/repositories/proxy rules/commons/rules/addition",
         additionNativeType: "yaml",
-        additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition",
+        additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition",
         additionRemoteType: "yaml",
 
         replacement: {
@@ -565,14 +565,14 @@ const nebulae = () => {
         originalPrefix: "original",
         originalNative: "h:/onedrive/repositories/proxy rules/commons/rules/original",
         originalNativeType: "yaml",
-        originalRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original",
+        originalRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original",
         originalRemoteType: "yaml",
 
         additionRules: additionRules,
         additionPrefix: "addition",
         additionNative: "h:/onedrive/repositories/proxy rules/commons/rules/addition",
         additionNativeType: "yaml",
-        additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition",
+        additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition",
         additionRemoteType: "yaml",
     }
 }
@@ -651,14 +651,14 @@ const orient = () => {
         originalPrefix: "original",
         originalNative: "h:/onedrive/repositories/proxy rules/commons/rules/original",
         originalNativeType: "yaml",
-        originalRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original",
+        originalRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original",
         originalRemoteType: "yaml",
 
         additionRules: additionRules,
         additionPrefix: "addition",
         additionNative: "h:/onedrive/repositories/proxy rules/commons/rules/addition",
         additionNativeType: "yaml",
-        additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition",
+        additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition",
         additionRemoteType: "yaml",
 
         replacement: {
