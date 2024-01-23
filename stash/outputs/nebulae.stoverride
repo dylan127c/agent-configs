@@ -336,100 +336,100 @@ rule-providers: #!replace
   addition-idm:
     type: http
     behavior: classical
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/idm.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition/idm.yaml
     interval: 86400
   addition-reject:
     type: http
     behavior: domain
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/reject.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition/reject.yaml
     interval: 86400
   addition-direct:
     type: http
     behavior: domain
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/direct.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition/direct.yaml
     interval: 86400
   addition-openai:
     type: http
     behavior: domain
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/openai.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition/openai.yaml
     interval: 86400
   addition-brad:
     type: http
     behavior: domain
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/brad.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition/brad.yaml
     interval: 86400
   addition-copilot:
     type: http
     behavior: domain
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/copilot.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition/copilot.yaml
     interval: 86400
   addition-proxy:
     type: http
     behavior: domain
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/addition/proxy.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition/proxy.yaml
     interval: 86400
   original-applications:
     type: http
     behavior: domain
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/applications.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/applications.yaml
     interval: 86400
   original-apple:
     type: http
     behavior: domain
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/apple.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/apple.yaml
     interval: 86400
   original-icloud:
     type: http
     behavior: domain
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/icloud.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/icloud.yaml
     interval: 86400
   original-private:
     type: http
     behavior: domain
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/private.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/private.yaml
     interval: 86400
   original-direct:
     type: http
     behavior: domain
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/direct.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/direct.yaml
     interval: 86400
   original-greatfire:
     type: http
     behavior: domain
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/greatfire.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/greatfire.yaml
     interval: 86400
   original-gfw:
     type: http
     behavior: domain
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/gfw.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/gfw.yaml
     interval: 86400
   original-proxy:
     type: http
     behavior: domain
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/proxy.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/proxy.yaml
     interval: 86400
   original-tld-not-cn:
     type: http
     behavior: domain
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/tld-not-cn.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/tld-not-cn.yaml
     interval: 86400
   original-reject:
     type: http
     behavior: domain
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/reject.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/reject.yaml
     interval: 86400
   original-telegramcidr:
     type: http
     behavior: ipcidr
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/telegramcidr.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/telegramcidr.yaml
     interval: 86400
   original-lancidr:
     type: http
     behavior: ipcidr
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/lancidr.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/lancidr.yaml
     interval: 86400
   original-cncidr:
     type: http
     behavior: ipcidr
-    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/clash%20for%20windows/rules/original/cncidr.yaml
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/cncidr.yaml
     interval: 86400
