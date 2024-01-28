@@ -114,6 +114,7 @@ proxy-groups: #!replace
       - 🇵🇭菲律宾 01
       - 🇦🇪迪拜 01
       - 🇦🇷阿根廷 01
+      - 🇳🇬尼日利亚 01
   - name: 🌠 规则逃逸
     type: select
     proxies:
@@ -185,6 +186,7 @@ proxy-groups: #!replace
       - 🇵🇭菲律宾 01
       - 🇦🇪迪拜 01
       - 🇦🇷阿根廷 01
+      - 🇳🇬尼日利亚 01
   - name: 🌄 特殊控制 | Copilot
     type: select
     proxies:

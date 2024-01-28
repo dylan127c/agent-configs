@@ -16,7 +16,7 @@ module.exports.build = () => {
     /*
      * DNS
      *
-     * 规则模式下，所有使用 DIRECT 或遇到未添加 no-resolve 的 IP 规则的域名，
+     * TUN 模式下，所有使用 DIRECT 或遇到未添加 no-resolve 的 IP 规则的域名，
      * 都需要使用到 DNS 规则。
      * 
      * CLASH 将同时使用 nameserver 和 fallback 中的所有 DNS 服务器，来查询
@@ -27,10 +27,6 @@ module.exports.build = () => {
      * 如果需要解析国外域名，即便 nameserver 返回被污染的 IP 地址，也还可以
      * 依靠 fallback 中国外的 DNS 服务器所解析出来的 IP 地址。
      * 
-     * 
-     * 当 dns.enable 启用时，。
-     * 当 dns.enable 启用时，所有经过 CFW 或 CV 的流量都会使用 DNS 配置。
-     * 
      * 对于 CFW 来说，TUN 模式自带了 DNS 配置，且该配置默认处于启用状态，并无法更改。
      * 这意味着使用 CFW 开启 TUN 模式后，默认生效的 DNS 配置永远是 TUN 模式自带的 DNS 配置。
      * 
@@ -38,7 +34,9 @@ module.exports.build = () => {
      * 都会用 nameserver、fallback 中的 DNS 服务器进行解析（同时解析）。
      * 如果关闭 DNS 配置（dns.enable = false），则意味 CFW/CV 会使用系统默认的 DNS 解析服务。
      * 
-     * 对于 CV 来说，需在设置中勾选 DNS/TUN 字段同时启用 DNS 配置后，才能正常使用 TUN 模式。
+     * 建议日常将 dns.enable 设置 false，以免未启用 TUN 时使用了 DNS 配置中的服务器。
+     * 
+     * 无论是 CFW 还是 CV，都需要启用服务模式后，才能正常使用 TUN 模式。
      */
     initConfiguration["dns"] = {};
     initConfiguration.dns.enable = false;
