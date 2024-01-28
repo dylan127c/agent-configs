@@ -9,6 +9,8 @@ function main(params) {
         configuration = clover;
     } else if (count === 18) {
         configuration = nebulae;
+    } else {
+        return params;
     }
     let mode = {
         originalStatus: true,

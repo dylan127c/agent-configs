@@ -1,0 +1,9 @@
+{
+    "main": "../../commons/main.js",
+    "initailizaion": "../../commons/configs/basis.js",
+    "profiles": "../../profiles",
+    "init": "./configs/init.js",
+    "output": "./clash-verge.js",
+    "replace": "c:/users/dylan/.config/clash-verge/profiles/saUlwmtPpBND.js",
+    "updateMark": 0
+}

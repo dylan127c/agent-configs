@@ -6,10 +6,12 @@ const FILENAME = "main";
 /** @method {@link getProxyGroups} */
 const SELECT = "select";
 const LOAD_BALANCE = "load-balance";
+const URL_TEST = "url-test";
 const HEALTH_CHECK_URL = "https://www.gstatic.com/generate_204";
 const TEST_INTERVAL = 300;
 const LAZY_TESTING = true;
 const STRATEGY = "consistent-hashing";
+const TOLERANCE = 50;
 const DEFAULT_PROXY = "DIRECT";
 
 /** @method {@link getRuleProviders} */
@@ -82,7 +84,7 @@ function getProxyGroups(modifiedParams, configuraion) {
         const groupConstruct = {
             name: group.name,
             type: group.type,
-            proxies: group.proxies ? Array.from(group.proxies) : []
+            proxies: group.hasOwnProperty("proxies") ? Array.from(group.proxies) : [],
         };
 
         if (group.type !== SELECT) {
@@ -93,6 +95,9 @@ function getProxyGroups(modifiedParams, configuraion) {
             if (group.type === LOAD_BALANCE) {
                 groupConstruct.strategy = STRATEGY;
             }
+            if(group.type === URL_TEST) {
+                groupConstruct.tolerance = TOLERANCE;
+            }
             /* ALLOW CUSTOMIZE HEALTH CHECK INTERVAL */
             if (modifiedParams.hasOwnProperty("interval")) {
                 groupConstruct.interval = modifiedParams.interval;
@@ -101,12 +106,37 @@ function getProxyGroups(modifiedParams, configuraion) {
             }
         }
 
-        if (group.append) {
+        const conditions = [];
+        if (group.hasOwnProperty("append")) {
             configuraion.proxies.forEach(proxy => {
+                /* GET THE CONDITIONS FOR RESERSING SORTING */
+                if (group.hasOwnProperty("reverse")) {
+                    const condition = proxy.name.match(group.reverse);
+                    if (condition && condition.length) {
+                        conditions.push(condition[0]);
+                    }
+                }
                 if (proxy.name.match(group.append)) {
                     groupConstruct.proxies.push(proxy.name);
                 }
             });
+        }
+
+        /* REVERSE SORTING BASED ON CONDITIONS */
+        if (conditions.length) {
+            const ordered = [];
+            [...new Set(conditions)].forEach(condition => {
+                const saver = [];
+                groupConstruct.proxies.forEach(name => {
+                    if (name.match(condition)) {
+                        saver.unshift(name);
+                    }
+                });
+                saver.forEach(name => {
+                    ordered.push(name);
+                });
+            });
+            groupConstruct.proxies = Array.from(ordered);
         }
 
         /* DEFAULT PROXIES ADDING TO AVOID EMPTY GROUP PROXIES */
@@ -184,7 +214,20 @@ function build() {
 
     /*
      * DNS
+     *
+     * 规则模式下，所有使用 DIRECT 或遇到未添加 no-resolve 的 IP 规则的域名，
+     * 都需要使用到 DNS 规则。
      * 
+     * CLASH 将同时使用 nameserver 和 fallback 中的所有 DNS 服务器，来查询
+     * 域名的真实 IP 地址，其中 fallback 中的 DNS 解析结果的优先级较高。
+     * 
+     * 通常的配置策略是 nameserver 中提供国内的 DNS 服务器，而在 fallback 中
+     * 提供国外的 DNS 服务器。 当需要解析国内域名时，基本能够保证结果的可靠性；
+     * 如果需要解析国外域名，即便 nameserver 返回被污染的 IP 地址，也还可以
+     * 依靠 fallback 中国外的 DNS 服务器所解析出来的 IP 地址。
+     * 
+     * 
+     * 当 dns.enable 启用时，。
      * 当 dns.enable 启用时，所有经过 CFW 或 CV 的流量都会使用 DNS 配置。
      * 
      * 对于 CFW 来说，TUN 模式自带了 DNS 配置，且该配置默认处于启用状态，并无法更改。
@@ -197,41 +240,12 @@ function build() {
      * 对于 CV 来说，需在设置中勾选 DNS/TUN 字段同时启用 DNS 配置后，才能正常使用 TUN 模式。
      */
     initConfiguration["dns"] = {};
-    initConfiguration.dns.enable = true;
+    initConfiguration.dns.enable = false;
     initConfiguration.dns.ipv6 = false;
-    initConfiguration.dns["enhanced-mode"] = "fake-ip";
-    initConfiguration.dns["fake-ip-range"] = "192.18.0.1/16";
     initConfiguration.dns.listen = "0.0.0.0:53";
     initConfiguration.dns["use-hosts"] = true;
-    initConfiguration.dns["default-nameserver"] = [
-        "119.29.29.29",
-        "119.28.28.28",
-        "223.5.5.5",
-        "223.6.6.6",
-        "114.114.114.114",
-        "114.114.115.115",
-        "101.226.4.6",
-    ];
-    initConfiguration.dns.nameserver = [
-        "https://doh.pub/dns-query",
-        "https://dns.alidns.com/dns-query",
-        "https://1.12.12.12/dns-query",
-        "https://120.53.53.53/dns-query",
-    ];
-    initConfiguration.dns.fallback = [
-        "94.140.14.15",
-        "94.140.15.16",
-        "8.8.8.8",
-        "1.1.1.1",
-    ];
-    initConfiguration.dns["fallback-filter"] = {
-        geoip: true,
-        "geoip-code": "CN",
-        ipcidr: [
-            "240.0.0.0/4",
-            "0.0.0.0/32",
-        ]
-    }
+    initConfiguration.dns["enhanced-mode"] = "fake-ip";
+    initConfiguration.dns["fake-ip-range"] = "192.18.0.1/16";
     initConfiguration.dns["fake-ip-filter"] = [
         "*.lan",
         "localhost.ptlogin2.qq.com",
@@ -249,6 +263,27 @@ function build() {
         "*.logon.battle.net",
         "WORKGROUP"
     ];
+    initConfiguration.dns["default-nameserver"] = [
+        "119.29.29.29",
+        "223.5.5.5",
+    ];
+    initConfiguration.dns.nameserver = [
+        "https://doh.pub/dns-query",
+        "https://dns.alidns.com/dns-query",
+    ];
+    // initConfiguration.dns.fallback = [
+    //     "https://doh.dns.sb/dns-query",
+    //     "https://dns.cloudflare.com/dns-query",
+    //     "https://dns.twnic.tw/dns-query",
+    //     "tls://8.8.4.4:853",
+    // ];
+    // initConfiguration.dns["fallback-filter"] = {
+    //     geoip: true,
+    //     "geoip-code": "CN",
+    //     ipcidr: [
+    //         "240.0.0.0/4",
+    //     ]
+    // }
 
     /*
      * TUN
@@ -290,7 +325,7 @@ function build() {
 const clover = () => {
     const mainGroups = [
         "🌉 负载均衡 | 香港",
-        "🌉 负载均衡 | 新加坡",
+        "🌉 负载均衡 | 狮城",
         "🌉 负载均衡 | 台湾",
         "🌉 负载均衡 | 印度",
         "🌉 负载均衡 | 日本",
@@ -304,21 +339,21 @@ const clover = () => {
         { name: "🌌 科学上网 | CLOVER", type: "select", proxies: mainGroups.concat(["DIRECT"]) },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT"], append: /^(?!剩余|套餐)/gm },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
-        { name: "🌁 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
+        { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: specificRegex },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^(?!剩余|套餐)/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | CLOVER", "DIRECT"] },
         { name: "🌉 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港/gm },
+        { name: "🌉 负载均衡 | 狮城", type: "load-balance", proxies: [], append: /新加坡/gm },
         { name: "🌉 负载均衡 | 台湾", type: "load-balance", proxies: [], append: /台湾/gm },
         { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本/gm },
         { name: "🌉 负载均衡 | 印度", type: "load-balance", proxies: [], append: /印度/gm },
         { name: "🌉 负载均衡 | 韩国", type: "load-balance", proxies: [], append: /韩国/gm },
         { name: "🌉 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美国/gm },
-        { name: "🌉 负载均衡 | 新加坡", type: "load-balance", proxies: [], append: /新加坡/gm },
     ]
 
     const additionRules = [
-        "RULE-SET,idm,🌁 数据下载 | IDM",
+        "RULE-SET,idm,🌆 数据下载 | IDM",
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
@@ -375,8 +410,8 @@ const clover = () => {
 
         replacement: {
             "🇹🇼": "🇨🇳",
-            "香港01": "香港 01",
-            "/(?<=^\\W{4})/gm": " "
+            "/(?<!\\s)(?=\\d\\d)/gm": " ",
+            "/(?<=^\\W{4})(?=.+\\d)/gm": " "
         }
     }
 }
@@ -387,14 +422,14 @@ const kele = () => {
         "🌉 负载均衡 | 香港备选",
         "🌉 负载均衡 | 美国",
         "🌉 负载均衡 | 日本",
-        "🏙️ 延迟测试 | 其他",
+        "🌁 延迟测试 | 其他",
         "🌅 目标节点",
     ];
     const groups = [
         { name: "🌌 科学上网 | KELE", type: "select", proxies: mainGroups.concat(["DIRECT"]) },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /\[.+/gm },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
-        { name: "🌁 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
+        { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /\[.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /\[.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | KELE", "DIRECT"] },
@@ -402,12 +437,12 @@ const kele = () => {
         { name: "🌉 负载均衡 | 香港备选", type: "load-balance", proxies: [], append: /香港\s\d\d$/gm },
         { name: "🌉 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美國\s\d\d$/gm },
         { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本\s\d\d$/gm },
-        { name: "🏙️ 延迟测试 | 其他", type: "url-test", proxies: ["REJECT"], append: /[^香港|美國|日本]\s\d\d$/gm },
+        { name: "🌁 延迟测试 | 其他", type: "url-test", proxies: ["REJECT"], append: /[^香港|美國|日本]\s\d\d$/gm },
         { name: "🏞️ 订阅详情", type: "select", proxies: [], append: /剩余流量/gm },
     ]
 
     const additionRules = [
-        "RULE-SET,idm,🌁 数据下载 | IDM",
+        "RULE-SET,idm,🌆 数据下载 | IDM",
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
@@ -490,14 +525,14 @@ const kele = () => {
 
 const nebulae = () => {
     const mainGroups = [
-        "🌃 故障恢复 | IEPL",
+        "🌃 故障转移 | IEPL",
         "🌉 负载均衡 | 香港",
-        "🌉 负载均衡 | 新加坡",
+        "🌉 负载均衡 | 狮城",
         "🌉 负载均衡 | 台湾",
         "🌉 负载均衡 | 美国",
         "🌉 负载均衡 | 日本",
         "🌉 负载均衡 | 德国",
-        "🏙️ 延迟测试 | IPv6",
+        "🌁 延迟测试 | IPv6",
         "🌅 目标节点",
     ].concat(["DIRECT"]);
 
@@ -505,22 +540,22 @@ const nebulae = () => {
         { name: "🌌 科学上网 | NEBULAE", type: "select", proxies: mainGroups },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
-        { name: "🌁 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
+        { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | NEBULAE", "DIRECT"] },
-        { name: "🌃 故障恢复 | IEPL", type: "fallback", proxies: [], append: /IEPL\s/gm },
+        { name: "🌃 故障转移 | IEPL", type: "fallback", proxies: [], append: /港深隧道\s/gm , reverse: /(?<=\s).+(?=港深隧道)/gm},
         { name: "🌉 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港\w\s/gm },
+        { name: "🌉 负载均衡 | 狮城", type: "load-balance", proxies: [], append: /狮城\w\s/gm },
         { name: "🌉 负载均衡 | 台湾", type: "load-balance", proxies: [], append: /台湾\w\s/gm },
         { name: "🌉 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美国\w\s/gm },
         { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本\w\s/gm },
         { name: "🌉 负载均衡 | 德国", type: "load-balance", proxies: [], append: /德国\w\s/gm },
-        { name: "🌉 负载均衡 | 新加坡", type: "load-balance", proxies: [], append: /狮城\w\s/gm },
-        { name: "🏙️ 延迟测试 | IPv6", type: "url-test", proxies: ["REJECT"], append: /v6\s/gm },
+        { name: "🌁 延迟测试 | IPv6", type: "url-test", proxies: ["REJECT"], append: /v6\s/gm },
     ]
 
     const additionRules = [
-        "RULE-SET,idm,🌁 数据下载 | IDM",
+        "RULE-SET,idm,🌆 数据下载 | IDM",
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
@@ -574,14 +609,18 @@ const nebulae = () => {
         additionNativeType: "yaml",
         additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition",
         additionRemoteType: "yaml",
+
+        replacement: {
+            "港深隧道": "IEPL"
+        }
     }
 }
 
 const orient = () => {
     const mainGroups = [
-        "🌃 故障恢复 | 深港移动",
-        "🌃 故障恢复 | 沪港电信",
-        "🌃 故障恢复 | 沪日电信",
+        "🌃 故障转移 | 深港移动",
+        "🌃 故障转移 | 沪港电信",
+        "🌃 故障转移 | 沪日电信",
         "🌉 负载均衡 | 香港",
         "🌉 负载均衡 | 日本",
         "🌅 目标节点",
@@ -592,19 +631,19 @@ const orient = () => {
         { name: "🌌 科学上网 | ORIENT", type: "select", proxies: mainGroups },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
-        { name: "🌁 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
+        { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: specificRegex },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | ORIENT", "DIRECT"] },
-        { name: "🌃 故障恢复 | 深港移动", type: "fallback", append: /香港 \d\d 移动.+/gm },
-        { name: "🌃 故障恢复 | 沪港电信", type: "fallback", append: /香港 \d\d 电信.+/gm },
-        { name: "🌃 故障恢复 | 沪日电信", type: "fallback", append: /日本 \d\d [^A-Z].+/gm },
+        { name: "🌃 故障转移 | 深港移动", type: "fallback", append: /香港 \d\d 移动.+/gm },
+        { name: "🌃 故障转移 | 沪港电信", type: "fallback", append: /香港 \d\d 电信.+/gm },
+        { name: "🌃 故障转移 | 沪日电信", type: "fallback", append: /日本 \d\d [^A-Z].+/gm },
         { name: "🌉 负载均衡 | 香港", type: "load-balance", append: /香港\s\d\d [A-Z].+$/gm },
         { name: "🌉 负载均衡 | 日本", type: "load-balance", append: /日本\s\d\d [A-Z]/gm },
     ];
 
     const additionRules = [
-        "RULE-SET,idm,🌁 数据下载 | IDM",
+        "RULE-SET,idm,🌆 数据下载 | IDM",
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
@@ -685,6 +724,8 @@ function main(params) {
         configuration = clover;
     } else if (count === 18) {
         configuration = nebulae;
+    } else {
+        return params;
     }
     let mode = {
         originalStatus: true,

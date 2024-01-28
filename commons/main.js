@@ -6,10 +6,12 @@ const FILENAME = "main";
 /** @method {@link getProxyGroups} */
 const SELECT = "select";
 const LOAD_BALANCE = "load-balance";
+const URL_TEST = "url-test";
 const HEALTH_CHECK_URL = "https://www.gstatic.com/generate_204";
 const TEST_INTERVAL = 300;
 const LAZY_TESTING = true;
 const STRATEGY = "consistent-hashing";
+const TOLERANCE = 50;
 const DEFAULT_PROXY = "DIRECT";
 
 /** @method {@link getRuleProviders} */
@@ -84,7 +86,7 @@ function getProxyGroups(modifiedParams, configuraion) {
         const groupConstruct = {
             name: group.name,
             type: group.type,
-            proxies: group.proxies ? Array.from(group.proxies) : []
+            proxies: group.hasOwnProperty("proxies") ? Array.from(group.proxies) : [],
         };
 
         if (group.type !== SELECT) {
@@ -95,6 +97,9 @@ function getProxyGroups(modifiedParams, configuraion) {
             if (group.type === LOAD_BALANCE) {
                 groupConstruct.strategy = STRATEGY;
             }
+            if(group.type === URL_TEST) {
+                groupConstruct.tolerance = TOLERANCE;
+            }
             /* ALLOW CUSTOMIZE HEALTH CHECK INTERVAL */
             if (modifiedParams.hasOwnProperty("interval")) {
                 groupConstruct.interval = modifiedParams.interval;
@@ -103,12 +108,37 @@ function getProxyGroups(modifiedParams, configuraion) {
             }
         }
 
-        if (group.append) {
+        const conditions = [];
+        if (group.hasOwnProperty("append")) {
             configuraion.proxies.forEach(proxy => {
+                /* GET THE CONDITIONS FOR RESERSING SORTING */
+                if (group.hasOwnProperty("reverse")) {
+                    const condition = proxy.name.match(group.reverse);
+                    if (condition && condition.length) {
+                        conditions.push(condition[0]);
+                    }
+                }
                 if (proxy.name.match(group.append)) {
                     groupConstruct.proxies.push(proxy.name);
                 }
             });
+        }
+
+        /* REVERSE SORTING BASED ON CONDITIONS */
+        if (conditions.length) {
+            const ordered = [];
+            [...new Set(conditions)].forEach(condition => {
+                const saver = [];
+                groupConstruct.proxies.forEach(name => {
+                    if (name.match(condition)) {
+                        saver.unshift(name);
+                    }
+                });
+                saver.forEach(name => {
+                    ordered.push(name);
+                });
+            });
+            groupConstruct.proxies = Array.from(ordered);
         }
 
         /* DEFAULT PROXIES ADDING TO AVOID EMPTY GROUP PROXIES */

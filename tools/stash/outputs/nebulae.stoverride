@@ -1,36 +1,12 @@
 name: nebulae
 desc: Replace original configuration file.
 dns: #!replace
-  enable: true
+  enable: false
   ipv6: false
-  enhanced-mode: fake-ip
-  fake-ip-range: 192.18.0.1/16
   listen: 0.0.0.0:53
   use-hosts: true
-  default-nameserver:
-    - 119.29.29.29
-    - 119.28.28.28
-    - 223.5.5.5
-    - 223.6.6.6
-    - 114.114.114.114
-    - 114.114.115.115
-    - 101.226.4.6
-  nameserver:
-    - https://doh.pub/dns-query
-    - https://dns.alidns.com/dns-query
-    - https://1.12.12.12/dns-query
-    - https://120.53.53.53/dns-query
-  fallback:
-    - 94.140.14.15
-    - 94.140.15.16
-    - 8.8.8.8
-    - 1.1.1.1
-  fallback-filter:
-    geoip: true
-    geoip-code: CN
-    ipcidr:
-      - 240.0.0.0/4
-      - 0.0.0.0/32
+  enhanced-mode: fake-ip
+  fake-ip-range: 192.18.0.1/16
   fake-ip-filter:
     - "*.lan"
     - localhost.ptlogin2.qq.com
@@ -47,8 +23,14 @@ dns: #!replace
     - "*.logon.battlenet.com.cn"
     - "*.logon.battle.net"
     - WORKGROUP
+  default-nameserver:
+    - 119.29.29.29
+    - 223.5.5.5
+  nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
 rules: #!replace
-  - RULE-SET,addition-idm,🌁 数据下载 | IDM
+  - RULE-SET,addition-idm,🌆 数据下载 | IDM
   - RULE-SET,addition-reject,REJECT
   - RULE-SET,addition-direct,DIRECT
   - RULE-SET,addition-openai,🌄 特殊控制 | OpenAI
@@ -75,14 +57,14 @@ proxy-groups: #!replace
   - name: 🌌 科学上网 | NEBULAE
     type: select
     proxies:
-      - 🌃 故障恢复 | IEPL
+      - 🌃 故障转移 | IEPL
       - 🌉 负载均衡 | 香港
-      - 🌉 负载均衡 | 新加坡
+      - 🌉 负载均衡 | 狮城
       - 🌉 负载均衡 | 台湾
       - 🌉 负载均衡 | 美国
       - 🌉 负载均衡 | 日本
       - 🌉 负载均衡 | 德国
-      - 🏙️ 延迟测试 | IPv6
+      - 🌁 延迟测试 | IPv6
       - 🌅 目标节点
       - DIRECT
   - name: 🌅 目标节点
@@ -90,16 +72,16 @@ proxy-groups: #!replace
     proxies:
       - REJECT
       - DIRECT
-      - 🇭🇰 香港IEPL       乾坤
-      - 🇭🇰 香港IEPL       坤震
-      - 🇭🇰 香港IEPL       震巽
-      - 🇨🇳 台湾IEPL       巽坎
-      - 🇸🇬 狮城IEPL       坎艮
-      - 🇸🇬 狮城IEPL       艮离
-      - 🇯🇵 日本IEPL       离兑
-      - 🇺🇸 美国IEPL       兑乾
-      - 🇺🇸 美国IEPL       坤巽
-      - 🇩🇪 德国IEPL       乾震
+      - 🇭🇰 香港港深隧道 乾坤
+      - 🇭🇰 香港港深隧道 坤震
+      - 🇭🇰 香港港深隧道 震巽
+      - 🇨🇳 台湾港深隧道 巽坎
+      - 🇸🇬 狮城港深隧道 坎艮
+      - 🇸🇬 狮城港深隧道 艮离
+      - 🇯🇵 日本港深隧道 离兑
+      - 🇺🇸 美国港深隧道 兑乾
+      - 🇺🇸 美国港深隧道 坤巽
+      - 🇩🇪 德国港深隧道 乾震
       - 🇭🇰 香港A 安培环路式
       - 🇭🇰 香港A 帕累托法则
       - 🇭🇰 香港A 阿贝尔定律
@@ -123,7 +105,6 @@ proxy-groups: #!replace
       - 🇭🇰 香港v6 阿伏伽德罗定律
       - 🇭🇰 香港v6 理想气体状态式
       - 🇭🇰 香港v6 热力学第一定律
-      - 🇨🇳 台湾v6 波尔兹曼熵统计
       - 🇨🇳 台湾v6 统计物理熵理论
       - 🇸🇬 狮城v6 静电场高斯定律
       - 🇸🇬 狮城v6 阿姆斯特朗定律
@@ -136,7 +117,7 @@ proxy-groups: #!replace
     proxies:
       - DIRECT
       - 🌌 科学上网 | NEBULAE
-  - name: 🌁 数据下载 | IDM
+  - name: 🌆 数据下载 | IDM
     type: select
     proxies:
       - DIRECT
@@ -145,16 +126,16 @@ proxy-groups: #!replace
     type: select
     proxies:
       - REJECT
-      - 🇭🇰 香港IEPL       乾坤
-      - 🇭🇰 香港IEPL       坤震
-      - 🇭🇰 香港IEPL       震巽
-      - 🇨🇳 台湾IEPL       巽坎
-      - 🇸🇬 狮城IEPL       坎艮
-      - 🇸🇬 狮城IEPL       艮离
-      - 🇯🇵 日本IEPL       离兑
-      - 🇺🇸 美国IEPL       兑乾
-      - 🇺🇸 美国IEPL       坤巽
-      - 🇩🇪 德国IEPL       乾震
+      - 🇭🇰 香港港深隧道 乾坤
+      - 🇭🇰 香港港深隧道 坤震
+      - 🇭🇰 香港港深隧道 震巽
+      - 🇨🇳 台湾港深隧道 巽坎
+      - 🇸🇬 狮城港深隧道 坎艮
+      - 🇸🇬 狮城港深隧道 艮离
+      - 🇯🇵 日本港深隧道 离兑
+      - 🇺🇸 美国港深隧道 兑乾
+      - 🇺🇸 美国港深隧道 坤巽
+      - 🇩🇪 德国港深隧道 乾震
       - 🇭🇰 香港A 安培环路式
       - 🇭🇰 香港A 帕累托法则
       - 🇭🇰 香港A 阿贝尔定律
@@ -178,7 +159,6 @@ proxy-groups: #!replace
       - 🇭🇰 香港v6 阿伏伽德罗定律
       - 🇭🇰 香港v6 理想气体状态式
       - 🇭🇰 香港v6 热力学第一定律
-      - 🇨🇳 台湾v6 波尔兹曼熵统计
       - 🇨🇳 台湾v6 统计物理熵理论
       - 🇸🇬 狮城v6 静电场高斯定律
       - 🇸🇬 狮城v6 阿姆斯特朗定律
@@ -190,16 +170,16 @@ proxy-groups: #!replace
     type: select
     proxies:
       - REJECT
-      - 🇭🇰 香港IEPL       乾坤
-      - 🇭🇰 香港IEPL       坤震
-      - 🇭🇰 香港IEPL       震巽
-      - 🇨🇳 台湾IEPL       巽坎
-      - 🇸🇬 狮城IEPL       坎艮
-      - 🇸🇬 狮城IEPL       艮离
-      - 🇯🇵 日本IEPL       离兑
-      - 🇺🇸 美国IEPL       兑乾
-      - 🇺🇸 美国IEPL       坤巽
-      - 🇩🇪 德国IEPL       乾震
+      - 🇭🇰 香港港深隧道 乾坤
+      - 🇭🇰 香港港深隧道 坤震
+      - 🇭🇰 香港港深隧道 震巽
+      - 🇨🇳 台湾港深隧道 巽坎
+      - 🇸🇬 狮城港深隧道 坎艮
+      - 🇸🇬 狮城港深隧道 艮离
+      - 🇯🇵 日本港深隧道 离兑
+      - 🇺🇸 美国港深隧道 兑乾
+      - 🇺🇸 美国港深隧道 坤巽
+      - 🇩🇪 德国港深隧道 乾震
       - 🇭🇰 香港A 安培环路式
       - 🇭🇰 香港A 帕累托法则
       - 🇭🇰 香港A 阿贝尔定律
@@ -223,7 +203,6 @@ proxy-groups: #!replace
       - 🇭🇰 香港v6 阿伏伽德罗定律
       - 🇭🇰 香港v6 理想气体状态式
       - 🇭🇰 香港v6 热力学第一定律
-      - 🇨🇳 台湾v6 波尔兹曼熵统计
       - 🇨🇳 台湾v6 统计物理熵理论
       - 🇸🇬 狮城v6 静电场高斯定律
       - 🇸🇬 狮城v6 阿姆斯特朗定律
@@ -236,19 +215,19 @@ proxy-groups: #!replace
     proxies:
       - 🌌 科学上网 | NEBULAE
       - DIRECT
-  - name: 🌃 故障恢复 | IEPL
+  - name: 🌃 故障转移 | IEPL
     type: fallback
     proxies:
-      - 🇭🇰 香港IEPL       乾坤
-      - 🇭🇰 香港IEPL       坤震
-      - 🇭🇰 香港IEPL       震巽
-      - 🇨🇳 台湾IEPL       巽坎
-      - 🇸🇬 狮城IEPL       坎艮
-      - 🇸🇬 狮城IEPL       艮离
-      - 🇯🇵 日本IEPL       离兑
-      - 🇺🇸 美国IEPL       兑乾
-      - 🇺🇸 美国IEPL       坤巽
-      - 🇩🇪 德国IEPL       乾震
+      - 🇭🇰 香港港深隧道 震巽
+      - 🇭🇰 香港港深隧道 坤震
+      - 🇭🇰 香港港深隧道 乾坤
+      - 🇨🇳 台湾港深隧道 巽坎
+      - 🇸🇬 狮城港深隧道 艮离
+      - 🇸🇬 狮城港深隧道 坎艮
+      - 🇯🇵 日本港深隧道 离兑
+      - 🇺🇸 美国港深隧道 坤巽
+      - 🇺🇸 美国港深隧道 兑乾
+      - 🇩🇪 德国港深隧道 乾震
     url: https://www.gstatic.com/generate_204
     lazy: true
     interval: 300
@@ -261,6 +240,17 @@ proxy-groups: #!replace
       - 🇭🇰 香港B 质能关系式
       - 🇭🇰 香港B 海森堡原理
       - 🇭🇰 香港B 希尔伯特线
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 🌉 负载均衡 | 狮城
+    type: load-balance
+    proxies:
+      - 🇸🇬 狮城A 薛定谔方程
+      - 🇸🇬 狮城A 全等同分裂
+      - 🇸🇬 狮城B 麦克斯韦组
+      - 🇸🇬 狮城B 庞加莱猜想
     url: https://www.gstatic.com/generate_204
     lazy: true
     strategy: consistent-hashing
@@ -303,25 +293,13 @@ proxy-groups: #!replace
     lazy: true
     strategy: consistent-hashing
     interval: 300
-  - name: 🌉 负载均衡 | 新加坡
-    type: load-balance
-    proxies:
-      - 🇸🇬 狮城A 薛定谔方程
-      - 🇸🇬 狮城A 全等同分裂
-      - 🇸🇬 狮城B 麦克斯韦组
-      - 🇸🇬 狮城B 庞加莱猜想
-    url: https://www.gstatic.com/generate_204
-    lazy: true
-    strategy: consistent-hashing
-    interval: 300
-  - name: 🏙️ 延迟测试 | IPv6
+  - name: 🌁 延迟测试 | IPv6
     type: url-test
     proxies:
       - REJECT
       - 🇭🇰 香港v6 阿伏伽德罗定律
       - 🇭🇰 香港v6 理想气体状态式
       - 🇭🇰 香港v6 热力学第一定律
-      - 🇨🇳 台湾v6 波尔兹曼熵统计
       - 🇨🇳 台湾v6 统计物理熵理论
       - 🇸🇬 狮城v6 静电场高斯定律
       - 🇸🇬 狮城v6 阿姆斯特朗定律
@@ -331,6 +309,7 @@ proxy-groups: #!replace
       - 🇩🇪 德国v6 普朗克辐射定律
     url: https://www.gstatic.com/generate_204
     lazy: true
+    tolerance: 50
     interval: 300
 rule-providers: #!replace
   addition-idm:

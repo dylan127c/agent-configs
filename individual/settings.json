@@ -1,4 +1,10 @@
 {
     "source": "h:/onedrive/attachments/subscription/json/subscriptions.json",
-    "log": "./alone-parse.log"
+    "logPath": "./alone-parse.log",
+    "profiles": "../profiles",
+    "main": "../commons/main",
+    "log": "../commons/lib/log",
+    "update": "../commons/rules/update",
+    "stashConfig": "../tools/stash/configuration",
+    "shadowrocketConfig": "../tools/shadowrocket/configuration"
 }

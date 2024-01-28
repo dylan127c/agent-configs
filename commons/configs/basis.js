@@ -15,7 +15,20 @@ module.exports.build = () => {
 
     /*
      * DNS
+     *
+     * 规则模式下，所有使用 DIRECT 或遇到未添加 no-resolve 的 IP 规则的域名，
+     * 都需要使用到 DNS 规则。
      * 
+     * CLASH 将同时使用 nameserver 和 fallback 中的所有 DNS 服务器，来查询
+     * 域名的真实 IP 地址，其中 fallback 中的 DNS 解析结果的优先级较高。
+     * 
+     * 通常的配置策略是 nameserver 中提供国内的 DNS 服务器，而在 fallback 中
+     * 提供国外的 DNS 服务器。 当需要解析国内域名时，基本能够保证结果的可靠性；
+     * 如果需要解析国外域名，即便 nameserver 返回被污染的 IP 地址，也还可以
+     * 依靠 fallback 中国外的 DNS 服务器所解析出来的 IP 地址。
+     * 
+     * 
+     * 当 dns.enable 启用时，。
      * 当 dns.enable 启用时，所有经过 CFW 或 CV 的流量都会使用 DNS 配置。
      * 
      * 对于 CFW 来说，TUN 模式自带了 DNS 配置，且该配置默认处于启用状态，并无法更改。
@@ -28,41 +41,12 @@ module.exports.build = () => {
      * 对于 CV 来说，需在设置中勾选 DNS/TUN 字段同时启用 DNS 配置后，才能正常使用 TUN 模式。
      */
     initConfiguration["dns"] = {};
-    initConfiguration.dns.enable = true;
+    initConfiguration.dns.enable = false;
     initConfiguration.dns.ipv6 = false;
-    initConfiguration.dns["enhanced-mode"] = "fake-ip";
-    initConfiguration.dns["fake-ip-range"] = "192.18.0.1/16";
     initConfiguration.dns.listen = "0.0.0.0:53";
     initConfiguration.dns["use-hosts"] = true;
-    initConfiguration.dns["default-nameserver"] = [
-        "119.29.29.29",
-        "119.28.28.28",
-        "223.5.5.5",
-        "223.6.6.6",
-        "114.114.114.114",
-        "114.114.115.115",
-        "101.226.4.6",
-    ];
-    initConfiguration.dns.nameserver = [
-        "https://doh.pub/dns-query",
-        "https://dns.alidns.com/dns-query",
-        "https://1.12.12.12/dns-query",
-        "https://120.53.53.53/dns-query",
-    ];
-    initConfiguration.dns.fallback = [
-        "94.140.14.15",
-        "94.140.15.16",
-        "8.8.8.8",
-        "1.1.1.1",
-    ];
-    initConfiguration.dns["fallback-filter"] = {
-        geoip: true,
-        "geoip-code": "CN",
-        ipcidr: [
-            "240.0.0.0/4",
-            "0.0.0.0/32",
-        ]
-    }
+    initConfiguration.dns["enhanced-mode"] = "fake-ip";
+    initConfiguration.dns["fake-ip-range"] = "192.18.0.1/16";
     initConfiguration.dns["fake-ip-filter"] = [
         "*.lan",
         "localhost.ptlogin2.qq.com",
@@ -80,6 +64,27 @@ module.exports.build = () => {
         "*.logon.battle.net",
         "WORKGROUP"
     ];
+    initConfiguration.dns["default-nameserver"] = [
+        "119.29.29.29",
+        "223.5.5.5",
+    ];
+    initConfiguration.dns.nameserver = [
+        "https://doh.pub/dns-query",
+        "https://dns.alidns.com/dns-query",
+    ];
+    // initConfiguration.dns.fallback = [
+    //     "https://doh.dns.sb/dns-query",
+    //     "https://dns.cloudflare.com/dns-query",
+    //     "https://dns.twnic.tw/dns-query",
+    //     "tls://8.8.4.4:853",
+    // ];
+    // initConfiguration.dns["fallback-filter"] = {
+    //     geoip: true,
+    //     "geoip-code": "CN",
+    //     ipcidr: [
+    //         "240.0.0.0/4",
+    //     ]
+    // }
 
     /*
      * TUN

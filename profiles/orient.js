@@ -1,8 +1,8 @@
 module.exports.configuration = () => {
     const mainGroups = [
-        "🌃 故障恢复 | 深港移动",
-        "🌃 故障恢复 | 沪港电信",
-        "🌃 故障恢复 | 沪日电信",
+        "🌃 故障转移 | 深港移动",
+        "🌃 故障转移 | 沪港电信",
+        "🌃 故障转移 | 沪日电信",
         "🌉 负载均衡 | 香港",
         "🌉 负载均衡 | 日本",
         "🌅 目标节点",
@@ -13,19 +13,19 @@ module.exports.configuration = () => {
         { name: "🌌 科学上网 | ORIENT", type: "select", proxies: mainGroups },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
-        { name: "🌁 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
+        { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: specificRegex },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | ORIENT", "DIRECT"] },
-        { name: "🌃 故障恢复 | 深港移动", type: "fallback", append: /香港 \d\d 移动.+/gm },
-        { name: "🌃 故障恢复 | 沪港电信", type: "fallback", append: /香港 \d\d 电信.+/gm },
-        { name: "🌃 故障恢复 | 沪日电信", type: "fallback", append: /日本 \d\d [^A-Z].+/gm },
+        { name: "🌃 故障转移 | 深港移动", type: "fallback", append: /香港 \d\d 移动.+/gm },
+        { name: "🌃 故障转移 | 沪港电信", type: "fallback", append: /香港 \d\d 电信.+/gm },
+        { name: "🌃 故障转移 | 沪日电信", type: "fallback", append: /日本 \d\d [^A-Z].+/gm },
         { name: "🌉 负载均衡 | 香港", type: "load-balance", append: /香港\s\d\d [A-Z].+$/gm },
         { name: "🌉 负载均衡 | 日本", type: "load-balance", append: /日本\s\d\d [A-Z]/gm },
     ];
 
     const additionRules = [
-        "RULE-SET,idm,🌁 数据下载 | IDM",
+        "RULE-SET,idm,🌆 数据下载 | IDM",
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",

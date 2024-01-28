@@ -1,13 +1,13 @@
 module.exports.configuration = () => {
     const mainGroups = [
-        "🌃 故障恢复 | IEPL",
+        "🌃 故障转移 | IEPL",
         "🌉 负载均衡 | 香港",
-        "🌉 负载均衡 | 新加坡",
+        "🌉 负载均衡 | 狮城",
         "🌉 负载均衡 | 台湾",
         "🌉 负载均衡 | 美国",
         "🌉 负载均衡 | 日本",
         "🌉 负载均衡 | 德国",
-        "🏙️ 延迟测试 | IPv6",
+        "🌁 延迟测试 | IPv6",
         "🌅 目标节点",
     ].concat(["DIRECT"]);
 
@@ -15,22 +15,22 @@ module.exports.configuration = () => {
         { name: "🌌 科学上网 | NEBULAE", type: "select", proxies: mainGroups },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
-        { name: "🌁 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
+        { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | NEBULAE", "DIRECT"] },
-        { name: "🌃 故障恢复 | IEPL", type: "fallback", proxies: [], append: /IEPL\s/gm },
+        { name: "🌃 故障转移 | IEPL", type: "fallback", proxies: [], append: /港深隧道\s/gm , reverse: /(?<=\s).+(?=港深隧道)/gm},
         { name: "🌉 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港\w\s/gm },
+        { name: "🌉 负载均衡 | 狮城", type: "load-balance", proxies: [], append: /狮城\w\s/gm },
         { name: "🌉 负载均衡 | 台湾", type: "load-balance", proxies: [], append: /台湾\w\s/gm },
         { name: "🌉 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美国\w\s/gm },
         { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本\w\s/gm },
         { name: "🌉 负载均衡 | 德国", type: "load-balance", proxies: [], append: /德国\w\s/gm },
-        { name: "🌉 负载均衡 | 新加坡", type: "load-balance", proxies: [], append: /狮城\w\s/gm },
-        { name: "🏙️ 延迟测试 | IPv6", type: "url-test", proxies: ["REJECT"], append: /v6\s/gm },
+        { name: "🌁 延迟测试 | IPv6", type: "url-test", proxies: ["REJECT"], append: /v6\s/gm },
     ]
 
     const additionRules = [
-        "RULE-SET,idm,🌁 数据下载 | IDM",
+        "RULE-SET,idm,🌆 数据下载 | IDM",
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
@@ -84,5 +84,9 @@ module.exports.configuration = () => {
         additionNativeType: "yaml",
         additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition",
         additionRemoteType: "yaml",
+
+        replacement: {
+            "港深隧道": "IEPL"
+        }
     }
 }

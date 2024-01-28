@@ -1,0 +1,8 @@
+{
+    "profiles": "../../profiles",
+    "main": "../../commons/main",
+    "log": "../../commons/lib/log",
+    "update": "../../commons/rules/update",
+    "stashConfig": "../stash/configuration",
+    "shadowrocketConfig": "../shadowrocket/configuration"
+}

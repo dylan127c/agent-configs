@@ -1,36 +1,12 @@
 name: clover
 desc: Replace original configuration file.
 dns: #!replace
-  enable: true
+  enable: false
   ipv6: false
-  enhanced-mode: fake-ip
-  fake-ip-range: 192.18.0.1/16
   listen: 0.0.0.0:53
   use-hosts: true
-  default-nameserver:
-    - 119.29.29.29
-    - 119.28.28.28
-    - 223.5.5.5
-    - 223.6.6.6
-    - 114.114.114.114
-    - 114.114.115.115
-    - 101.226.4.6
-  nameserver:
-    - https://doh.pub/dns-query
-    - https://dns.alidns.com/dns-query
-    - https://1.12.12.12/dns-query
-    - https://120.53.53.53/dns-query
-  fallback:
-    - 94.140.14.15
-    - 94.140.15.16
-    - 8.8.8.8
-    - 1.1.1.1
-  fallback-filter:
-    geoip: true
-    geoip-code: CN
-    ipcidr:
-      - 240.0.0.0/4
-      - 0.0.0.0/32
+  enhanced-mode: fake-ip
+  fake-ip-range: 192.18.0.1/16
   fake-ip-filter:
     - "*.lan"
     - localhost.ptlogin2.qq.com
@@ -47,8 +23,14 @@ dns: #!replace
     - "*.logon.battlenet.com.cn"
     - "*.logon.battle.net"
     - WORKGROUP
+  default-nameserver:
+    - 119.29.29.29
+    - 223.5.5.5
+  nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
 rules: #!replace
-  - RULE-SET,addition-idm,🌁 数据下载 | IDM
+  - RULE-SET,addition-idm,🌆 数据下载 | IDM
   - RULE-SET,addition-reject,REJECT
   - RULE-SET,addition-direct,DIRECT
   - RULE-SET,addition-openai,🌄 特殊控制 | OpenAI
@@ -76,7 +58,7 @@ proxy-groups: #!replace
     type: select
     proxies:
       - 🌉 负载均衡 | 香港
-      - 🌉 负载均衡 | 新加坡
+      - 🌉 负载均衡 | 狮城
       - 🌉 负载均衡 | 台湾
       - 🌉 负载均衡 | 印度
       - 🌉 负载均衡 | 日本
@@ -137,7 +119,7 @@ proxy-groups: #!replace
     proxies:
       - DIRECT
       - 🌌 科学上网 | CLOVER
-  - name: 🌁 数据下载 | IDM
+  - name: 🌆 数据下载 | IDM
     type: select
     proxies:
       - DIRECT
@@ -219,6 +201,20 @@ proxy-groups: #!replace
     lazy: true
     strategy: consistent-hashing
     interval: 300
+  - name: 🌉 负载均衡 | 狮城
+    type: load-balance
+    proxies:
+      - 🇸🇬新加坡 01
+      - 🇸🇬新加坡 02
+      - 🇸🇬新加坡 03
+      - 🇸🇬新加坡 04
+      - 🇸🇬新加坡 05
+      - 🇸🇬新加坡 06
+      - 🇸🇬新加坡 07
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
   - name: 🌉 负载均衡 | 台湾
     type: load-balance
     proxies:
@@ -266,20 +262,6 @@ proxy-groups: #!replace
     proxies:
       - 🇺🇸美国 01
       - 🇺🇸美国 02
-    url: https://www.gstatic.com/generate_204
-    lazy: true
-    strategy: consistent-hashing
-    interval: 300
-  - name: 🌉 负载均衡 | 新加坡
-    type: load-balance
-    proxies:
-      - 🇸🇬新加坡 01
-      - 🇸🇬新加坡 02
-      - 🇸🇬新加坡 03
-      - 🇸🇬新加坡 04
-      - 🇸🇬新加坡 05
-      - 🇸🇬新加坡 06
-      - 🇸🇬新加坡 07
     url: https://www.gstatic.com/generate_204
     lazy: true
     strategy: consistent-hashing

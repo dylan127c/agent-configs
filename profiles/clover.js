@@ -1,7 +1,7 @@
 module.exports.configuration = () => {
     const mainGroups = [
         "🌉 负载均衡 | 香港",
-        "🌉 负载均衡 | 新加坡",
+        "🌉 负载均衡 | 狮城",
         "🌉 负载均衡 | 台湾",
         "🌉 负载均衡 | 印度",
         "🌉 负载均衡 | 日本",
@@ -15,21 +15,21 @@ module.exports.configuration = () => {
         { name: "🌌 科学上网 | CLOVER", type: "select", proxies: mainGroups.concat(["DIRECT"]) },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT"], append: /^(?!剩余|套餐)/gm },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
-        { name: "🌁 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
+        { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: specificRegex },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^(?!剩余|套餐)/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | CLOVER", "DIRECT"] },
         { name: "🌉 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港/gm },
+        { name: "🌉 负载均衡 | 狮城", type: "load-balance", proxies: [], append: /新加坡/gm },
         { name: "🌉 负载均衡 | 台湾", type: "load-balance", proxies: [], append: /台湾/gm },
         { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本/gm },
         { name: "🌉 负载均衡 | 印度", type: "load-balance", proxies: [], append: /印度/gm },
         { name: "🌉 负载均衡 | 韩国", type: "load-balance", proxies: [], append: /韩国/gm },
         { name: "🌉 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美国/gm },
-        { name: "🌉 负载均衡 | 新加坡", type: "load-balance", proxies: [], append: /新加坡/gm },
     ]
 
     const additionRules = [
-        "RULE-SET,idm,🌁 数据下载 | IDM",
+        "RULE-SET,idm,🌆 数据下载 | IDM",
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
@@ -86,8 +86,8 @@ module.exports.configuration = () => {
 
         replacement: {
             "🇹🇼": "🇨🇳",
-            "香港01": "香港 01",
-            "/(?<=^\\W{4})/gm": " "
+            "/(?<!\\s)(?=\\d\\d)/gm": " ",
+            "/(?<=^\\W{4})(?=.+\\d)/gm": " "
         }
     }
 }

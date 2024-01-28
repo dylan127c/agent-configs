@@ -1,6 +1,9 @@
 const fs = require("fs");
 const path = require("path");
 
+delete require.cache[require.resolve("./settings.json")];
+const settings = require("./settings.json");
+
 /**
  * @param {string} name subscription name
  * @param {string} raw subscription content
@@ -9,10 +12,10 @@ module.exports.parse = async (raw, { axios, yaml, notify, console },
     { name, url, interval, selected }) => {
 
     try {
-        delete require.cache[require.resolve("../commons/main")];
-        const main = require("../commons/main");
-        delete require.cache[require.resolve("../commons/lib/log")];
-        const log = require("../commons/lib/log")(console);
+        delete require.cache[require.resolve(settings.main)];
+        const main = require(settings.main);
+        delete require.cache[require.resolve(settings.log)];
+        const log = require(settings.log)(console);
 
         const funcName = "parse";
         log.info(mark(funcName), "parsing start.")
@@ -42,17 +45,11 @@ module.exports.parse = async (raw, { axios, yaml, notify, console },
         outputShadowrocket(log, name, generateConfiguration, modifiedParams);
 
         /* CLASH FOR WINDOWS CONFIGURATION */
-        mode = getStatus(axios, log, mode, modifiedParams); // GET NEW(REAL) MODE
-        log.info(mark(funcName), "main parsing start.")
-        generateConfiguration = main.generate(log, mode, originalConfiguration, modifiedParams); // GENERATE NEW CONFIGURATION
-        log.info(mark(funcName), "main parsing completed.")
-
-        /* CHANGE PROXY NAME */
-        nameChanger(generateConfiguration, modifiedParams);
-
+        const result = outputClash(main, yaml, axios, log, mode, originalConfiguration, modifiedParams);
         /* OUTPUT FORMATTED CONFIGURATION STRING */
-        return yaml.stringify(generateConfiguration);
+        return yaml.stringify(result);
     } catch (error) {
+        console.log(error);
         console.warn("Error occurred. Original configuration will be returned.")
         return raw;
     }
@@ -83,7 +80,7 @@ function getConfig(log, condition) {
         condition.split(" ")[0].toLowerCase();
 
     /* CONFIGURATION SOURCES */
-    const position = path.resolve(__dirname, "..", "profiles", shortName);
+    const position = path.resolve(__dirname, settings.profiles, shortName);
     try {
         delete require.cache[require.resolve(position)];
         const moduleConfig = require(position);
@@ -129,21 +126,21 @@ function getStatus(axios, log, mode, modifiedParams) {
 function update(axios, log) {
     const funcName = "update";
     try {
-        delete require.cache[require.resolve("../commons/rules/update")];
-        const update = require("../commons/rules/update");
+        delete require.cache[require.resolve(settings.update)];
+        const update = require(settings.update);
 
         /* !!! ASYNC FUNCTIOAN !!! */
         update.updateCheck(axios, log);
     } catch (error) {
-        log.warn(mark(funcName), "../commons/rules/update.js missing.")
+        log.warn(mark(funcName), "update.js missing.")
     }
 }
 
 function outputStash(yaml, log, name, output) {
     const funcName = "outputStash";
     try {
-        delete require.cache[require.resolve("../stash/configuration")];
-        const stash = require("../stash/configuration");
+        delete require.cache[require.resolve(settings.stashConfig)];
+        const stash = require(settings.stashConfig);
         log.info(mark(funcName), "script applied.");
 
         stash.output(yaml, log, name, output);
@@ -157,8 +154,8 @@ function outputStash(yaml, log, name, output) {
 function outputShadowrocket(log, name, output, modifiedParams) {
     const funcName = "outputShadowrocket";
     try {
-        delete require.cache[require.resolve("../shadowrocket/configuration")];
-        const shadowrocket = require("../shadowrocket/configuration");
+        delete require.cache[require.resolve(settings.shadowrocketConfig)];
+        const shadowrocket = require(settings.shadowrocketConfig);
         log.info(mark(funcName), "script applied.");
 
         shadowrocket.output(log, name, output, modifiedParams);
@@ -167,6 +164,19 @@ function outputShadowrocket(log, name, output, modifiedParams) {
         log.error(mark(funcName), "output failed.")
         log.error(mark(funcName), error);
     }
+}
+
+function outputClash(main, yaml, axios, log, mode, originalConfiguration, modifiedParams) {
+    const funcName = "outputClash"
+    /* CLASH FOR WINDOWS CONFIGURATION */
+    const modeActual = getStatus(axios, log, mode, modifiedParams); // GET NEW(REAL) MODE
+    log.info(mark(funcName), "main parsing start.")
+    const generateConfiguration = main.generate(log, modeActual, originalConfiguration, modifiedParams); // GENERATE NEW CONFIGURATION
+    log.info(mark(funcName), "main parsing completed.")
+
+    /* CHANGE PROXY NAME */
+    nameChanger(generateConfiguration, modifiedParams);
+    return generateConfiguration;
 }
 
 function outputClashVerge(log) {
@@ -209,9 +219,6 @@ function nameChanger(configuraion, modifiedParams) {
 }
 
 function replacement(str, map) {
-    if (!str.match(/\d\d/gm)) {
-        return str;
-    }
     for (const [search, replace] of Object.entries(map)) {
         if (search.includes("/gm")) {
             str = str.replace(eval(search), replace);
