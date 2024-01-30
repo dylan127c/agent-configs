@@ -2,6 +2,7 @@ payload:
   # OpenAI ChatGPT
   - '+.openai.com'
   - '+.intercom.io'
+  - '+.intercomcdn.com'
   - '+.sentry.io'
   - '+.imgix.net'
   - '+.openaiapi-site.azureedge.net'
