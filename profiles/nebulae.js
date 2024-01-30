@@ -1,7 +1,8 @@
 module.exports.configuration = () => {
     const mainGroups = [
         "🌃 故障转移 | IEPL",
-        "🌉 负载均衡 | 香港",
+        "🌃 故障转移 | HK-A",
+        "🌃 故障转移 | HK-B",
         "🌉 负载均衡 | 狮城",
         "🌉 负载均衡 | 台湾",
         "🌉 负载均衡 | 美国",
@@ -19,8 +20,9 @@ module.exports.configuration = () => {
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | NEBULAE", "DIRECT"] },
-        { name: "🌃 故障转移 | IEPL", type: "fallback", proxies: [], append: /港深隧道\s/gm , reverse: /(?<=\s).+(?=港深隧道)/gm},
-        { name: "🌉 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港\w\s/gm },
+        { name: "🌃 故障转移 | IEPL", type: "fallback", proxies: [], append: /港深隧道\s/gm, reverse: /(?<=\s).+(?=港深隧道)/gm},
+        { name: "🌃 故障转移 | HK-A", type: "fallback", proxies: [], append: /香港A\s/gm, reverse: /(?<=\s).+(?=A)/gm },
+        { name: "🌃 故障转移 | HK-B", type: "fallback", proxies: [], append: /香港B\s/gm, reverse: /(?<=\s).+(?=B)/gm },
         { name: "🌉 负载均衡 | 狮城", type: "load-balance", proxies: [], append: /狮城\w\s/gm },
         { name: "🌉 负载均衡 | 台湾", type: "load-balance", proxies: [], append: /台湾\w\s/gm },
         { name: "🌉 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美国\w\s/gm },

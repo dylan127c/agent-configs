@@ -51,9 +51,6 @@ function nameReplacer(configuraion, modifiedParams) {
 }
 
 function replacement(str, map) {
-    if (!str.match(/\d\d/gm)) {
-        return str;
-    }
     for (const [search, replace] of Object.entries(map)) {
         if (search.includes("/gm")) {
             str = str.replace(eval(search), replace);
