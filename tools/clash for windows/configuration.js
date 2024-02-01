@@ -176,6 +176,7 @@ function outputClash(main, yaml, axios, log, mode, originalConfiguration, modifi
 
     /* CHANGE PROXY NAME */
     nameChanger(generateConfiguration, modifiedParams);
+    proxyAdder(generateConfiguration, modifiedParams);
     return generateConfiguration;
 }
 
@@ -227,4 +228,27 @@ function replacement(str, map) {
         }
     }
     return str;
+}
+
+function proxyAdder(configuraion, modifiedParams) {
+    if (!modifiedParams.hasOwnProperty("proxiesSpecialized")) {
+        return;
+    }
+
+    const proxiesConfig = modifiedParams.proxiesSpecialized;
+    const proxiesArr = proxiesConfig.proxiesAddition;
+    if (proxiesArr) {
+        proxiesArr.forEach(proxy => {
+            configuraion.proxies.push(proxy);
+        })
+    }
+    configuraion["proxy-groups"].forEach(group => {
+        const map = proxiesConfig.proxiesMapping;
+        for (const [search, add] of Object.entries(map)) {
+            if (group.name.includes(search)) {
+                group.proxies.unshift(add);
+                break;
+            }
+        }
+    })
 }

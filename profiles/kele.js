@@ -90,16 +90,15 @@ module.exports.configuration = () => {
 
         interval: 72,
 
-        proxiesClashVerge: {
+        proxiesSpecialized: {
             proxiesAddition: [{
-                name: "🏳️‍⚧️ 本地订阅 | PORT => 13766",
-                type: "http",
+                name: "🔄️ v2rayN | Global",
+                type: "socks5",
                 server: "127.0.0.1",
-                port: 13766
+                port: 10808
             }],
             proxiesMapping: {
-                "🌄 特殊控制 | OpenAI": "🏳️‍⚧️ 本地订阅 | PORT => 13766",
-                "🌄 特殊控制 | Brad": "🏳️‍⚧️ 本地订阅 | PORT => 13766",
+                "🌄 特殊控制 | OpenAI": "🔄️ v2rayN | Global",
             },
         }
     }

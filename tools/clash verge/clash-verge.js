@@ -332,13 +332,12 @@ const clover = () => {
         "🌅 目标节点",
     ];
 
-    const specificRegex = /香港\s02|菲律宾|马来西亚|加拿大|德国|土耳其|爱尔兰|澳大利亚|瑞典/gm;
     const groups = [
         { name: "🌌 科学上网 | CLOVER", type: "select", proxies: mainGroups.concat(["DIRECT"]) },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT"], append: /^(?!剩余|套餐)/gm },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
-        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: specificRegex },
+        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^(?!剩余|套餐)/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^(?!剩余|套餐)/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | CLOVER", "DIRECT"] },
         { name: "🌉 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港/gm },
@@ -410,6 +409,18 @@ const clover = () => {
             "🇹🇼": "🇨🇳",
             "/(?<!\\s)(?=\\d\\d)/gm": " ",
             "/(?<=^\\W{4})(?=.+\\d)/gm": " "
+        },
+
+        proxiesSpecialized: {
+            proxiesAddition: [{
+                name: "🔄️ v2rayN | Global",
+                type: "socks5",
+                server: "127.0.0.1",
+                port: 10808
+            }],
+            proxiesMapping: {
+                "🌄 特殊控制 | OpenAI": "🔄️ v2rayN | Global",
+            },
         }
     }
 }
@@ -506,16 +517,15 @@ const kele = () => {
 
         interval: 72,
 
-        proxiesClashVerge: {
+        proxiesSpecialized: {
             proxiesAddition: [{
-                name: "🏳️‍⚧️ 本地订阅 | PORT => 13766",
-                type: "http",
+                name: "🔄️ v2rayN | Global",
+                type: "socks5",
                 server: "127.0.0.1",
-                port: 13766
+                port: 10808
             }],
             proxiesMapping: {
-                "🌄 特殊控制 | OpenAI": "🏳️‍⚧️ 本地订阅 | PORT => 13766",
-                "🌄 特殊控制 | Brad": "🏳️‍⚧️ 本地订阅 | PORT => 13766",
+                "🌄 特殊控制 | OpenAI": "🔄️ v2rayN | Global",
             },
         }
     }
@@ -612,6 +622,18 @@ const nebulae = () => {
 
         replacement: {
             "港深隧道": "IEPL"
+        },
+
+        proxiesSpecialized: {
+            proxiesAddition: [{
+                name: "🔄️ v2rayN | Global",
+                type: "socks5",
+                server: "127.0.0.1",
+                port: 10808
+            }],
+            proxiesMapping: {
+                "🌄 特殊控制 | OpenAI": "🔄️ v2rayN | Global",
+            },
         }
     }
 }
@@ -710,6 +732,18 @@ const orient = () => {
         },
 
         interval: 72,
+
+        proxiesSpecialized: {
+            proxiesAddition: [{
+                name: "🔄️ v2rayN | Global",
+                type: "socks5",
+                server: "127.0.0.1",
+                port: 10808
+            }],
+            proxiesMapping: {
+                "🌄 特殊控制 | OpenAI": "🔄️ v2rayN | Global",
+            },
+        }
     }
 }
 
@@ -777,11 +811,11 @@ function replacement(str, map) {
 }
 
 function proxyAdder(configuraion, modifiedParams) {
-    if (!modifiedParams.hasOwnProperty("proxiesClashVerge")) {
+    if (!modifiedParams.hasOwnProperty("proxiesSpecialized")) {
         return;
     }
 
-    const proxiesConfig = modifiedParams.proxiesClashVerge;
+    const proxiesConfig = modifiedParams.proxiesSpecialized;
     const proxiesArr = proxiesConfig.proxiesAddition;
     if (proxiesArr) {
         proxiesArr.forEach(proxy => {

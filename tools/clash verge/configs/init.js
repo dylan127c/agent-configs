@@ -62,11 +62,11 @@ function replacement(str, map) {
 }
 
 function proxyAdder(configuraion, modifiedParams) {
-    if (!modifiedParams.hasOwnProperty("proxiesClashVerge")) {
+    if (!modifiedParams.hasOwnProperty("proxiesSpecialized")) {
         return;
     }
 
-    const proxiesConfig = modifiedParams.proxiesClashVerge;
+    const proxiesConfig = modifiedParams.proxiesSpecialized;
     const proxiesArr = proxiesConfig.proxiesAddition;
     if (proxiesArr) {
         proxiesArr.forEach(proxy => {

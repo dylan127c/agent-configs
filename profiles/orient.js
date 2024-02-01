@@ -92,5 +92,17 @@ module.exports.configuration = () => {
         },
 
         interval: 72,
+
+        proxiesSpecialized: {
+            proxiesAddition: [{
+                name: "🔄️ v2rayN | Global",
+                type: "socks5",
+                server: "127.0.0.1",
+                port: 10808
+            }],
+            proxiesMapping: {
+                "🌄 特殊控制 | OpenAI": "🔄️ v2rayN | Global",
+            },
+        }
     }
 }
