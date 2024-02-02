@@ -1,25 +1,17 @@
 module.exports.configuration = () => {
     const mainGroups = [
-        "🌉 负载均衡 | 香港推荐",
-        "🌉 负载均衡 | 香港备选",
-        "🌉 负载均衡 | 美国",
-        "🌉 负载均衡 | 日本",
-        "🌁 延迟测试 | 其他",
+        "🌉 负载均衡 | 香港",
         "🌅 目标节点",
     ];
     const groups = [
         { name: "🌌 科学上网 | KELE", type: "select", proxies: mainGroups.concat(["DIRECT"]) },
-        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /\[.+/gm },
+        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /\s\d\d/gm },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
-        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /\[.+/gm },
-        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /\[.+/gm },
+        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /\s\d\d/gm },
+        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /\s\d\d/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | KELE", "DIRECT"] },
-        { name: "🌉 负载均衡 | 香港推荐", type: "load-balance", proxies: [], append: /香港\s\d\d\w/gm },
-        { name: "🌉 负载均衡 | 香港备选", type: "load-balance", proxies: [], append: /香港\s\d\d$/gm },
-        { name: "🌉 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美國\s\d\d$/gm },
-        { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本\s\d\d$/gm },
-        { name: "🌁 延迟测试 | 其他", type: "url-test", proxies: ["REJECT"], append: /[^香港|美國|日本]\s\d\d$/gm },
+        { name: "🌉 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港\s\d\d/gm },
         { name: "🏞️ 订阅详情", type: "select", proxies: [], append: /剩余流量/gm },
     ]
 

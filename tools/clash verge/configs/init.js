@@ -1,13 +1,13 @@
 function main(params) {
     let configuration;
-    const count = params["proxy-groups"].length
-    if (count === 11) {
+    const identification = params["proxy-groups"][0].name
+    if (identification.includes("国外流量")) {
         configuration = orient;
-    } else if (count === 15) {
+    } else if (identification.includes("🥤")) {
         configuration = kele;
-    } else if (count === 3) {
+    } else if (identification.includes("Clover")) {
         configuration = clover;
-    } else if (count === 18) {
+    } else if (identification.includes("新雲")) {
         configuration = nebulae;
     } else {
         return params;
