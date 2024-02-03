@@ -81,6 +81,14 @@ function getRules(modifiedParams, identifiers) {
 }
 
 function getProxyGroups(modifiedParams, configuraion) {
+    if (modifiedParams.hasOwnProperty("removal")) {
+        modifiedParams.removal.forEach(condition => {
+            const index = configuraion.proxies
+                .findIndex(proxy => proxy.name.includes(condition));
+            configuraion.proxies.splice(index, 1);
+        })
+    }
+
     const arr = [];
     modifiedParams.groups.forEach(group => {
         const groupConstruct = {
@@ -97,7 +105,7 @@ function getProxyGroups(modifiedParams, configuraion) {
             if (group.type === LOAD_BALANCE) {
                 groupConstruct.strategy = STRATEGY;
             }
-            if(group.type === URL_TEST) {
+            if (group.type === URL_TEST) {
                 groupConstruct.tolerance = TOLERANCE;
             }
             /* ALLOW CUSTOMIZE HEALTH CHECK INTERVAL */

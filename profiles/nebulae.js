@@ -1,14 +1,15 @@
 module.exports.configuration = () => {
     const mainGroups = [
-        "🌃 故障转移 | IEPL",
         "🌃 故障转移 | HK-A",
         "🌃 故障转移 | HK-B",
-        "🌉 负载均衡 | 狮城",
-        "🌉 负载均衡 | 台湾",
-        "🌉 负载均衡 | 美国",
-        "🌉 负载均衡 | 日本",
-        "🌉 负载均衡 | 德国",
-        "🌁 延迟测试 | IPv6",
+        "🌃 故障转移 | HK-C",
+        "🌃 故障转移 | IEPL 2X",
+        "🎑 负载均衡 | 狮城",
+        "🎑 负载均衡 | 台湾",
+        "🎑 负载均衡 | 美国",
+        "🎑 负载均衡 | 日本",
+        "🎑 负载均衡 | 德国",
+        "🌇 專用節點 | IPv6",
         "🌅 目标节点",
     ].concat(["DIRECT"]);
 
@@ -20,15 +21,16 @@ module.exports.configuration = () => {
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | NEBULAE", "DIRECT"] },
-        { name: "🌃 故障转移 | IEPL", type: "fallback", proxies: [], append: /港深隧道\s/gm, reverse: /(?<=\s).+(?=港深隧道)/gm},
         { name: "🌃 故障转移 | HK-A", type: "fallback", proxies: [], append: /香港A\s/gm, reverse: /(?<=\s).+(?=A)/gm },
         { name: "🌃 故障转移 | HK-B", type: "fallback", proxies: [], append: /香港B\s/gm, reverse: /(?<=\s).+(?=B)/gm },
-        { name: "🌉 负载均衡 | 狮城", type: "load-balance", proxies: [], append: /狮城\w\s/gm },
-        { name: "🌉 负载均衡 | 台湾", type: "load-balance", proxies: [], append: /台湾\w\s/gm },
-        { name: "🌉 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美国\w\s/gm },
-        { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本\w\s/gm },
-        { name: "🌉 负载均衡 | 德国", type: "load-balance", proxies: [], append: /德国\w\s/gm },
-        { name: "🌁 延迟测试 | IPv6", type: "url-test", proxies: ["REJECT"], append: /v6\s/gm },
+        { name: "🌃 故障转移 | HK-C", type: "fallback", proxies: [], append: /香港C\s/gm, reverse: /(?<=\s).+(?=C)/gm },
+        { name: "🌃 故障转移 | IEPL 2X", type: "fallback", proxies: [], append: /二倍专线\s/gm, reverse: /(?<=\s).+(?=二倍专线)/gm},
+        { name: "🎑 负载均衡 | 狮城", type: "load-balance", proxies: [], append: /狮城\w\s/gm },
+        { name: "🎑 负载均衡 | 台湾", type: "load-balance", proxies: [], append: /台湾\w\s/gm },
+        { name: "🎑 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美国\w\s/gm },
+        { name: "🎑 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本\w\s/gm },
+        { name: "🎑 负载均衡 | 德国", type: "load-balance", proxies: [], append: /德国\w\s/gm },
+        { name: "🌇 專用節點 | IPv6", type: "url-test", proxies: ["REJECT"], append: /v6\s/gm },
     ]
 
     const additionRules = [
@@ -88,7 +90,7 @@ module.exports.configuration = () => {
         additionRemoteType: "yaml",
 
         replacement: {
-            "港深隧道": "IEPL"
+            "二倍专线": "",
         },
 
         proxiesSpecialized: {

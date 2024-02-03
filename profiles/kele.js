@@ -1,18 +1,17 @@
 module.exports.configuration = () => {
     const mainGroups = [
-        "🌉 负载均衡 | 香港",
+        "🎑 负载均衡 | 香港",
         "🌅 目标节点",
     ];
     const groups = [
         { name: "🌌 科学上网 | KELE", type: "select", proxies: mainGroups.concat(["DIRECT"]) },
-        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /\s\d\d/gm },
+        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
-        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /\s\d\d/gm },
-        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /\s\d\d/gm },
+        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
+        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | KELE", "DIRECT"] },
-        { name: "🌉 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港\s\d\d/gm },
-        { name: "🏞️ 订阅详情", type: "select", proxies: [], append: /剩余流量/gm },
+        { name: "🎑 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港\s\d\d/gm },
     ]
 
     const additionRules = [
@@ -70,6 +69,11 @@ module.exports.configuration = () => {
         additionNativeType: "yaml",
         additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition",
         additionRemoteType: "yaml",
+
+        removal: [
+            "流量",
+            "套餐"
+        ],
 
         replacement: {
             "[SS]香港": "🇭🇰 香港",

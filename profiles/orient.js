@@ -3,8 +3,8 @@ module.exports.configuration = () => {
         "🌃 故障转移 | 深港移动",
         "🌃 故障转移 | 沪港电信",
         "🌃 故障转移 | 沪日电信",
-        "🌉 负载均衡 | 香港",
-        "🌉 负载均衡 | 日本",
+        "🎑 负载均衡 | 香港",
+        "🎑 负载均衡 | 日本",
         "🌅 目标节点",
     ].concat(["DIRECT"]);
 
@@ -20,8 +20,8 @@ module.exports.configuration = () => {
         { name: "🌃 故障转移 | 深港移动", type: "fallback", append: /香港 \d\d 移动.+/gm },
         { name: "🌃 故障转移 | 沪港电信", type: "fallback", append: /香港 \d\d 电信.+/gm },
         { name: "🌃 故障转移 | 沪日电信", type: "fallback", append: /日本 \d\d [^A-Z].+/gm },
-        { name: "🌉 负载均衡 | 香港", type: "load-balance", append: /香港\s\d\d [A-Z].+$/gm },
-        { name: "🌉 负载均衡 | 日本", type: "load-balance", append: /日本\s\d\d [A-Z]/gm },
+        { name: "🎑 负载均衡 | 香港", type: "load-balance", append: /香港\s\d\d [A-Z].+$/gm },
+        { name: "🎑 负载均衡 | 日本", type: "load-balance", append: /日本\s\d\d [A-Z]/gm },
     ];
 
     const additionRules = [

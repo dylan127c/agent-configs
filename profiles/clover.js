@@ -1,12 +1,17 @@
 module.exports.configuration = () => {
     const mainGroups = [
-        "🌉 负载均衡 | 香港",
-        "🌉 负载均衡 | 狮城",
-        "🌉 负载均衡 | 台湾",
-        "🌉 负载均衡 | 印度",
-        "🌉 负载均衡 | 日本",
-        "🌉 负载均衡 | 美国",
-        "🌉 负载均衡 | 韩国",
+        "🎑 负载均衡 | 香港IEPL",
+        "🎑 负载均衡 | 香港TRANS",
+        "🎑 负载均衡 | 狮城IEPL",
+        "🎑 负载均衡 | 狮城TRANS",
+        "🎑 负载均衡 | 台湾IEPL",
+        "🎑 负载均衡 | 台湾TRANS",
+        "🎑 负载均衡 | 韩国IEPL",
+        "🎑 负载均衡 | 韩国TRANS",
+        "🎑 负载均衡 | 日本IEPL",
+        "🎑 负载均衡 | 日本TRANS",
+        "🎑 负载均衡 | 其他IEPL",
+        "🎑 负载均衡 | 其他TRANS",
         "🌅 目标节点",
     ];
 
@@ -18,13 +23,18 @@ module.exports.configuration = () => {
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^(?!剩余|套餐)/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^(?!剩余|套餐)/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | CLOVER", "DIRECT"] },
-        { name: "🌉 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港/gm },
-        { name: "🌉 负载均衡 | 狮城", type: "load-balance", proxies: [], append: /新加坡/gm },
-        { name: "🌉 负载均衡 | 台湾", type: "load-balance", proxies: [], append: /台湾/gm },
-        { name: "🌉 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本/gm },
-        { name: "🌉 负载均衡 | 印度", type: "load-balance", proxies: [], append: /印度/gm },
-        { name: "🌉 负载均衡 | 韩国", type: "load-balance", proxies: [], append: /韩国/gm },
-        { name: "🌉 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美国/gm },
+        { name: "🎑 负载均衡 | 香港IEPL", type: "load-balance", proxies: [], append: /(?<=IEPL)香港/gm },
+        { name: "🎑 负载均衡 | 狮城IEPL", type: "load-balance", proxies: [], append: /(?<=IEPL)新加坡/gm },
+        { name: "🎑 负载均衡 | 台湾IEPL", type: "load-balance", proxies: [], append: /(?<=IEPL)台湾/gm },
+        { name: "🎑 负载均衡 | 韩国IEPL", type: "load-balance", proxies: [], append: /(?<=IEPL)韩国/gm },
+        { name: "🎑 负载均衡 | 日本IEPL", type: "load-balance", proxies: [], append: /(?<=IEPL)日本/gm },
+        { name: "🎑 负载均衡 | 其他IEPL", type: "load-balance", proxies: [], append: /(?<=IEPL)(?!香港|新加坡|台湾|韩国|日本)/gm },
+        { name: "🎑 负载均衡 | 香港TRANS", type: "load-balance", proxies: [], append: /(?<!IEPL)香港/gm },
+        { name: "🎑 负载均衡 | 狮城TRANS", type: "load-balance", proxies: [], append: /(?<!IEPL)新加坡/gm },
+        { name: "🎑 负载均衡 | 台湾TRANS", type: "load-balance", proxies: [], append: /(?<!IEPL)台湾/gm },
+        { name: "🎑 负载均衡 | 韩国TRANS", type: "load-balance", proxies: [], append: /(?<!IEPL)韩国/gm },
+        { name: "🎑 负载均衡 | 日本TRANS", type: "load-balance", proxies: [], append: /(?<!IEPL)日本/gm },
+        { name: "🎑 负载均衡 | 其他TRANS", type: "load-balance", proxies: [], append: /^\W{4}(?!\s|香港|新加坡|台湾|韩国|日本)/gm },
     ]
 
     const additionRules = [
@@ -82,6 +92,11 @@ module.exports.configuration = () => {
         additionNativeType: "yaml",
         additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition",
         additionRemoteType: "yaml",
+
+        removal: [
+            "流量",
+            "套餐"
+        ],
 
         replacement: {
             "🇹🇼": "🇨🇳",

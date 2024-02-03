@@ -6,9 +6,8 @@ function mark(name) {
     return FILE_NAME + "." + name + " =>";
 }
 const OUTPUT_FOLDER = path.resolve(__dirname, "./outputs");
-const SEARCHES = [
-    "订阅详情",
-];
+const SEARCHES = [];
+const EMOJI_REMOVAL = ["🌌", "🌅", "🌠", "🌆", "🌄", "🌃", "🎑", "🌇"];
 
 module.exports.output = (yaml, log, name, configuration) => {
     const funcName = "output";
@@ -24,7 +23,7 @@ module.exports.output = (yaml, log, name, configuration) => {
     });
 
     const outputFilePath = path.join(OUTPUT_FOLDER, symbol + ".stoverride");
-    const outputContent = constructContent
+    const outputContent = removeEmoji(constructContent, EMOJI_REMOVAL)
         .replace("dns:", "dns: #!replace")
         .replace("rules:", "rules: #!replace")
         .replace("proxy-groups:", "proxy-groups: #!replace")
@@ -37,7 +36,10 @@ module.exports.output = (yaml, log, name, configuration) => {
     }
 }
 
-function removeSpecificGroupReverse(configuration, ...searches) {
+function removeSpecificGroupReverse(configuration, searches) {
+    if (!searches.length) {
+        return;
+    }
     const groups = Object.assign(configuration["proxy-groups"]);
     searches.forEach(search => {
         const index = groups.findLastIndex(ele => ele.name.includes(search));
@@ -46,4 +48,14 @@ function removeSpecificGroupReverse(configuration, ...searches) {
         }
     })
     return groups;
+}
+
+function removeEmoji(str, removale) {
+    if (!removale.length) {
+        return;
+    }
+    removale.forEach(emoji => {
+        str = str.replaceAll(new RegExp(emoji + "\\s*", "g"), "");
+    });
+    return str;
 }
