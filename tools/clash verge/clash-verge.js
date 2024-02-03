@@ -461,7 +461,7 @@ const kele = () => {
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | KELE", "DIRECT"] },
-        { name: "🎑 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港\s\d\d/gm },
+        { name: "🎑 负载均衡 | 香港", type: "load-balance", proxies: [], append: /香港/gm },
     ]
 
     const additionRules = [
@@ -526,12 +526,7 @@ const kele = () => {
         ],
 
         replacement: {
-            "[SS]香港": "🇭🇰 香港",
-            "[SS]越南": "🇻🇳 越南",
-            "[SS]美國": "🇺🇸 美國",
-            "[SS]日本": "🇯🇵 日本",
-            "[SS]台灣": "🇨🇳 台灣",
-            "[SS]新加坡": "🇸🇬 新加坡"
+            "/香港(?=\\s\\d\\d)/gm": "🇭🇰 香港",
         },
 
         interval: 72,
