@@ -53,6 +53,495 @@ rules: #!replace
   - GEOIP,LAN,DIRECT,no-resolve
   - GEOIP,CN,DIRECT,no-resolve
   - MATCH,规则逃逸
+proxy-groups: #!replace
+  - name: 科学上网 | CLOVER
+    type: select
+    proxies:
+      - 负载均衡 | 香港IEPL
+      - 负载均衡 | 香港TRANS
+      - 负载均衡 | 狮城IEPL
+      - 负载均衡 | 狮城TRANS
+      - 负载均衡 | 台湾IEPL
+      - 负载均衡 | 台湾TRANS
+      - 负载均衡 | 韩国IEPL
+      - 负载均衡 | 韩国TRANS
+      - 负载均衡 | 日本IEPL
+      - 负载均衡 | 日本TRANS
+      - 负载均衡 | 其他IEPL
+      - 负载均衡 | 其他TRANS
+      - 目标节点
+      - DIRECT
+  - name: 目标节点
+    type: select
+    proxies:
+      - REJECT
+      - 🇭🇰香港01
+      - 🇭🇰香港 02
+      - 🇭🇰香港 03
+      - 🇭🇰香港 04
+      - 🇸🇬新加坡 01
+      - 🇸🇬新加坡 02
+      - 🇸🇬新加坡 03
+      - 🇸🇬新加坡 04
+      - 🇸🇬新加坡 05
+      - 🇸🇬新加坡 06
+      - 🇸🇬新加坡 07
+      - 🇯🇵日本 01
+      - 🇯🇵日本 02
+      - 🇯🇵日本 03
+      - 🇯🇵日本 04
+      - 🇺🇸美国 01
+      - 🇺🇸美国 02
+      - 🇰🇷韩国 01
+      - 🇰🇷韩国 02
+      - 🇰🇷韩国 03
+      - 🇰🇷韩国 04
+      - 🇰🇷韩国 05
+      - 🇰🇷韩国 06
+      - 🇮🇳印度 01
+      - 🇮🇳印度 02
+      - 🇹🇼台湾 01
+      - 🇹🇼台湾 02
+      - 🇲🇾马来西亚 01
+      - 🇫🇷法国 01
+      - 🇷🇺俄罗斯 01
+      - 🇨🇦加拿大 01
+      - 🇹🇷土耳其 01
+      - 🇧🇷巴西 01
+      - 🇩🇪德国 01
+      - 🇮🇹意大利 01
+      - 🇹🇭泰国 01
+      - 🇮🇪爱尔兰 01
+      - 🇵🇭菲律宾 01
+      - 🇸🇪瑞典 01
+      - 🇦🇺澳大利亚 01
+      - 🇬🇧英国 01
+      - 🇬🇧英国 02
+      - 🇦🇪迪拜 01
+      - 🇦🇷阿根廷 01
+      - 🇳🇬尼日利亚 01
+      - 🇭🇰 IEPL香港 01
+      - 🇭🇰 IEPL香港 02
+      - 🇭🇰 IEPL香港 03
+      - 🇭🇰 IEPL香港 04
+      - 🇸🇬 IEPL新加坡 01
+      - 🇸🇬 IEPL新加坡 02
+      - 🇸🇬 IEPL新加坡 03
+      - 🇸🇬 IEPL新加坡 04
+      - 🇸🇬 IEPL新加坡 05
+      - 🇸🇬 IEPL新加坡 06
+      - 🇸🇬 IEPL新加坡 07
+      - 🇯🇵 IEPL日本 01
+      - 🇯🇵 IEPL日本 02
+      - 🇯🇵 IEPL日本 03
+      - 🇯🇵 IEPL日本 04
+      - 🇺🇸 IEPL美国 01
+      - 🇺🇸 IEPL美国 02
+      - 🇰🇷 IEPL韩国 01
+      - 🇰🇷 IEPL韩国 02
+      - 🇰🇷 IEPL韩国 03
+      - 🇰🇷 IEPL韩国 04
+      - 🇰🇷 IEPL韩国 05
+      - 🇰🇷 IEPL韩国 06
+      - 🇮🇳 IEPL印度 01
+      - 🇮🇳 IEPL印度 02
+      - 🇹🇼 IEPL台湾 01
+      - 🇹🇼 IEPL台湾 02
+      - 🇲🇾 IEPL马来西亚 01
+      - 🇫🇷 IEPL法国 01
+      - 🇦🇺 IEPL澳大利亚 01
+      - 🇷🇺 IEPL俄罗斯 01
+      - 🇨🇦 IEPL加拿大 01
+      - 🇹🇷 IEPL土耳其 01
+      - 🇧🇷 IEPL巴西 01
+      - 🇩🇪 IEPL德国 01
+      - 🇮🇹 IEPL意大利 01
+      - 🇹🇭 IEPL泰国 01
+      - 🇮🇪 IEPL爱尔兰 01
+      - 🇸🇪 IEPL瑞典 01
+      - 🇬🇧 IEPL英国 01
+      - 🇬🇧 IEPL英国 02
+      - 🇵🇭 IEPL菲律宾 01
+      - 🇦🇪 IEPL迪拜 01
+      - 🇦🇷 IEPL阿根廷 01
+      - 🇳🇬 IEPL尼日利亚 01
+  - name: 规则逃逸
+    type: select
+    proxies:
+      - DIRECT
+      - 科学上网 | CLOVER
+  - name: 数据下载 | IDM
+    type: select
+    proxies:
+      - DIRECT
+      - 科学上网 | CLOVER
+  - name: 特殊控制 | OpenAI
+    type: select
+    proxies:
+      - REJECT
+      - 🇭🇰香港01
+      - 🇭🇰香港 02
+      - 🇭🇰香港 03
+      - 🇭🇰香港 04
+      - 🇸🇬新加坡 01
+      - 🇸🇬新加坡 02
+      - 🇸🇬新加坡 03
+      - 🇸🇬新加坡 04
+      - 🇸🇬新加坡 05
+      - 🇸🇬新加坡 06
+      - 🇸🇬新加坡 07
+      - 🇯🇵日本 01
+      - 🇯🇵日本 02
+      - 🇯🇵日本 03
+      - 🇯🇵日本 04
+      - 🇺🇸美国 01
+      - 🇺🇸美国 02
+      - 🇰🇷韩国 01
+      - 🇰🇷韩国 02
+      - 🇰🇷韩国 03
+      - 🇰🇷韩国 04
+      - 🇰🇷韩国 05
+      - 🇰🇷韩国 06
+      - 🇮🇳印度 01
+      - 🇮🇳印度 02
+      - 🇹🇼台湾 01
+      - 🇹🇼台湾 02
+      - 🇲🇾马来西亚 01
+      - 🇫🇷法国 01
+      - 🇷🇺俄罗斯 01
+      - 🇨🇦加拿大 01
+      - 🇹🇷土耳其 01
+      - 🇧🇷巴西 01
+      - 🇩🇪德国 01
+      - 🇮🇹意大利 01
+      - 🇹🇭泰国 01
+      - 🇮🇪爱尔兰 01
+      - 🇵🇭菲律宾 01
+      - 🇸🇪瑞典 01
+      - 🇦🇺澳大利亚 01
+      - 🇬🇧英国 01
+      - 🇬🇧英国 02
+      - 🇦🇪迪拜 01
+      - 🇦🇷阿根廷 01
+      - 🇳🇬尼日利亚 01
+      - 🇭🇰 IEPL香港 01
+      - 🇭🇰 IEPL香港 02
+      - 🇭🇰 IEPL香港 03
+      - 🇭🇰 IEPL香港 04
+      - 🇸🇬 IEPL新加坡 01
+      - 🇸🇬 IEPL新加坡 02
+      - 🇸🇬 IEPL新加坡 03
+      - 🇸🇬 IEPL新加坡 04
+      - 🇸🇬 IEPL新加坡 05
+      - 🇸🇬 IEPL新加坡 06
+      - 🇸🇬 IEPL新加坡 07
+      - 🇯🇵 IEPL日本 01
+      - 🇯🇵 IEPL日本 02
+      - 🇯🇵 IEPL日本 03
+      - 🇯🇵 IEPL日本 04
+      - 🇺🇸 IEPL美国 01
+      - 🇺🇸 IEPL美国 02
+      - 🇰🇷 IEPL韩国 01
+      - 🇰🇷 IEPL韩国 02
+      - 🇰🇷 IEPL韩国 03
+      - 🇰🇷 IEPL韩国 04
+      - 🇰🇷 IEPL韩国 05
+      - 🇰🇷 IEPL韩国 06
+      - 🇮🇳 IEPL印度 01
+      - 🇮🇳 IEPL印度 02
+      - 🇹🇼 IEPL台湾 01
+      - 🇹🇼 IEPL台湾 02
+      - 🇲🇾 IEPL马来西亚 01
+      - 🇫🇷 IEPL法国 01
+      - 🇦🇺 IEPL澳大利亚 01
+      - 🇷🇺 IEPL俄罗斯 01
+      - 🇨🇦 IEPL加拿大 01
+      - 🇹🇷 IEPL土耳其 01
+      - 🇧🇷 IEPL巴西 01
+      - 🇩🇪 IEPL德国 01
+      - 🇮🇹 IEPL意大利 01
+      - 🇹🇭 IEPL泰国 01
+      - 🇮🇪 IEPL爱尔兰 01
+      - 🇸🇪 IEPL瑞典 01
+      - 🇬🇧 IEPL英国 01
+      - 🇬🇧 IEPL英国 02
+      - 🇵🇭 IEPL菲律宾 01
+      - 🇦🇪 IEPL迪拜 01
+      - 🇦🇷 IEPL阿根廷 01
+      - 🇳🇬 IEPL尼日利亚 01
+  - name: 特殊控制 | Brad
+    type: select
+    proxies:
+      - REJECT
+      - 🇭🇰香港01
+      - 🇭🇰香港 02
+      - 🇭🇰香港 03
+      - 🇭🇰香港 04
+      - 🇸🇬新加坡 01
+      - 🇸🇬新加坡 02
+      - 🇸🇬新加坡 03
+      - 🇸🇬新加坡 04
+      - 🇸🇬新加坡 05
+      - 🇸🇬新加坡 06
+      - 🇸🇬新加坡 07
+      - 🇯🇵日本 01
+      - 🇯🇵日本 02
+      - 🇯🇵日本 03
+      - 🇯🇵日本 04
+      - 🇺🇸美国 01
+      - 🇺🇸美国 02
+      - 🇰🇷韩国 01
+      - 🇰🇷韩国 02
+      - 🇰🇷韩国 03
+      - 🇰🇷韩国 04
+      - 🇰🇷韩国 05
+      - 🇰🇷韩国 06
+      - 🇮🇳印度 01
+      - 🇮🇳印度 02
+      - 🇹🇼台湾 01
+      - 🇹🇼台湾 02
+      - 🇲🇾马来西亚 01
+      - 🇫🇷法国 01
+      - 🇷🇺俄罗斯 01
+      - 🇨🇦加拿大 01
+      - 🇹🇷土耳其 01
+      - 🇧🇷巴西 01
+      - 🇩🇪德国 01
+      - 🇮🇹意大利 01
+      - 🇹🇭泰国 01
+      - 🇮🇪爱尔兰 01
+      - 🇵🇭菲律宾 01
+      - 🇸🇪瑞典 01
+      - 🇦🇺澳大利亚 01
+      - 🇬🇧英国 01
+      - 🇬🇧英国 02
+      - 🇦🇪迪拜 01
+      - 🇦🇷阿根廷 01
+      - 🇳🇬尼日利亚 01
+      - 🇭🇰 IEPL香港 01
+      - 🇭🇰 IEPL香港 02
+      - 🇭🇰 IEPL香港 03
+      - 🇭🇰 IEPL香港 04
+      - 🇸🇬 IEPL新加坡 01
+      - 🇸🇬 IEPL新加坡 02
+      - 🇸🇬 IEPL新加坡 03
+      - 🇸🇬 IEPL新加坡 04
+      - 🇸🇬 IEPL新加坡 05
+      - 🇸🇬 IEPL新加坡 06
+      - 🇸🇬 IEPL新加坡 07
+      - 🇯🇵 IEPL日本 01
+      - 🇯🇵 IEPL日本 02
+      - 🇯🇵 IEPL日本 03
+      - 🇯🇵 IEPL日本 04
+      - 🇺🇸 IEPL美国 01
+      - 🇺🇸 IEPL美国 02
+      - 🇰🇷 IEPL韩国 01
+      - 🇰🇷 IEPL韩国 02
+      - 🇰🇷 IEPL韩国 03
+      - 🇰🇷 IEPL韩国 04
+      - 🇰🇷 IEPL韩国 05
+      - 🇰🇷 IEPL韩国 06
+      - 🇮🇳 IEPL印度 01
+      - 🇮🇳 IEPL印度 02
+      - 🇹🇼 IEPL台湾 01
+      - 🇹🇼 IEPL台湾 02
+      - 🇲🇾 IEPL马来西亚 01
+      - 🇫🇷 IEPL法国 01
+      - 🇦🇺 IEPL澳大利亚 01
+      - 🇷🇺 IEPL俄罗斯 01
+      - 🇨🇦 IEPL加拿大 01
+      - 🇹🇷 IEPL土耳其 01
+      - 🇧🇷 IEPL巴西 01
+      - 🇩🇪 IEPL德国 01
+      - 🇮🇹 IEPL意大利 01
+      - 🇹🇭 IEPL泰国 01
+      - 🇮🇪 IEPL爱尔兰 01
+      - 🇸🇪 IEPL瑞典 01
+      - 🇬🇧 IEPL英国 01
+      - 🇬🇧 IEPL英国 02
+      - 🇵🇭 IEPL菲律宾 01
+      - 🇦🇪 IEPL迪拜 01
+      - 🇦🇷 IEPL阿根廷 01
+      - 🇳🇬 IEPL尼日利亚 01
+  - name: 特殊控制 | Copilot
+    type: select
+    proxies:
+      - 科学上网 | CLOVER
+      - DIRECT
+  - name: 负载均衡 | 香港IEPL
+    type: load-balance
+    proxies:
+      - 🇭🇰 IEPL香港 01
+      - 🇭🇰 IEPL香港 02
+      - 🇭🇰 IEPL香港 03
+      - 🇭🇰 IEPL香港 04
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 负载均衡 | 狮城IEPL
+    type: load-balance
+    proxies:
+      - 🇸🇬 IEPL新加坡 01
+      - 🇸🇬 IEPL新加坡 02
+      - 🇸🇬 IEPL新加坡 03
+      - 🇸🇬 IEPL新加坡 04
+      - 🇸🇬 IEPL新加坡 05
+      - 🇸🇬 IEPL新加坡 06
+      - 🇸🇬 IEPL新加坡 07
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 负载均衡 | 台湾IEPL
+    type: load-balance
+    proxies:
+      - 🇹🇼 IEPL台湾 01
+      - 🇹🇼 IEPL台湾 02
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 负载均衡 | 韩国IEPL
+    type: load-balance
+    proxies:
+      - 🇰🇷 IEPL韩国 01
+      - 🇰🇷 IEPL韩国 02
+      - 🇰🇷 IEPL韩国 03
+      - 🇰🇷 IEPL韩国 04
+      - 🇰🇷 IEPL韩国 05
+      - 🇰🇷 IEPL韩国 06
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 负载均衡 | 日本IEPL
+    type: load-balance
+    proxies:
+      - 🇯🇵 IEPL日本 01
+      - 🇯🇵 IEPL日本 02
+      - 🇯🇵 IEPL日本 03
+      - 🇯🇵 IEPL日本 04
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 负载均衡 | 其他IEPL
+    type: load-balance
+    proxies:
+      - 🇺🇸 IEPL美国 01
+      - 🇺🇸 IEPL美国 02
+      - 🇮🇳 IEPL印度 01
+      - 🇮🇳 IEPL印度 02
+      - 🇲🇾 IEPL马来西亚 01
+      - 🇫🇷 IEPL法国 01
+      - 🇦🇺 IEPL澳大利亚 01
+      - 🇷🇺 IEPL俄罗斯 01
+      - 🇨🇦 IEPL加拿大 01
+      - 🇹🇷 IEPL土耳其 01
+      - 🇧🇷 IEPL巴西 01
+      - 🇩🇪 IEPL德国 01
+      - 🇮🇹 IEPL意大利 01
+      - 🇹🇭 IEPL泰国 01
+      - 🇮🇪 IEPL爱尔兰 01
+      - 🇸🇪 IEPL瑞典 01
+      - 🇬🇧 IEPL英国 01
+      - 🇬🇧 IEPL英国 02
+      - 🇵🇭 IEPL菲律宾 01
+      - 🇦🇪 IEPL迪拜 01
+      - 🇦🇷 IEPL阿根廷 01
+      - 🇳🇬 IEPL尼日利亚 01
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 负载均衡 | 香港TRANS
+    type: load-balance
+    proxies:
+      - 🇭🇰香港01
+      - 🇭🇰香港 02
+      - 🇭🇰香港 03
+      - 🇭🇰香港 04
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 负载均衡 | 狮城TRANS
+    type: load-balance
+    proxies:
+      - 🇸🇬新加坡 01
+      - 🇸🇬新加坡 02
+      - 🇸🇬新加坡 03
+      - 🇸🇬新加坡 04
+      - 🇸🇬新加坡 05
+      - 🇸🇬新加坡 06
+      - 🇸🇬新加坡 07
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 负载均衡 | 台湾TRANS
+    type: load-balance
+    proxies:
+      - 🇹🇼台湾 01
+      - 🇹🇼台湾 02
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 负载均衡 | 韩国TRANS
+    type: load-balance
+    proxies:
+      - 🇰🇷韩国 01
+      - 🇰🇷韩国 02
+      - 🇰🇷韩国 03
+      - 🇰🇷韩国 04
+      - 🇰🇷韩国 05
+      - 🇰🇷韩国 06
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 负载均衡 | 日本TRANS
+    type: load-balance
+    proxies:
+      - 🇯🇵日本 01
+      - 🇯🇵日本 02
+      - 🇯🇵日本 03
+      - 🇯🇵日本 04
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 负载均衡 | 其他TRANS
+    type: load-balance
+    proxies:
+      - 🇺🇸美国 01
+      - 🇺🇸美国 02
+      - 🇮🇳印度 01
+      - 🇮🇳印度 02
+      - 🇲🇾马来西亚 01
+      - 🇫🇷法国 01
+      - 🇷🇺俄罗斯 01
+      - 🇨🇦加拿大 01
+      - 🇹🇷土耳其 01
+      - 🇧🇷巴西 01
+      - 🇩🇪德国 01
+      - 🇮🇹意大利 01
+      - 🇹🇭泰国 01
+      - 🇮🇪爱尔兰 01
+      - 🇵🇭菲律宾 01
+      - 🇸🇪瑞典 01
+      - 🇦🇺澳大利亚 01
+      - 🇬🇧英国 01
+      - 🇬🇧英国 02
+      - 🇦🇪迪拜 01
+      - 🇦🇷阿根廷 01
+      - 🇳🇬尼日利亚 01
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
 rule-providers: #!replace
   addition-idm:
     type: http

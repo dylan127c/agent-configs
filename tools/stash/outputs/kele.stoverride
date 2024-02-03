@@ -53,6 +53,128 @@ rules: #!replace
   - GEOIP,LAN,DIRECT,no-resolve
   - GEOIP,CN,DIRECT,no-resolve
   - MATCH,规则逃逸
+proxy-groups: #!replace
+  - name: 科学上网 | KELE
+    type: select
+    proxies:
+      - 负载均衡 | 香港
+      - 目标节点
+      - DIRECT
+  - name: 目标节点
+    type: select
+    proxies:
+      - REJECT
+      - DIRECT
+      - 香港 01
+      - 香港 02
+      - 香港 03
+      - 香港 04
+      - 香港 05
+      - 香港 06
+      - 香港 07
+      - 香港 08
+      - 香港 09
+      - 香港 10
+      - 香港 11
+      - 香港 12
+      - 香港 13
+      - 香港 14
+      - 香港 15
+      - 香港 16
+      - 香港 17
+      - 香港 18
+      - 香港 19
+      - 香港 20
+  - name: 规则逃逸
+    type: select
+    proxies:
+      - DIRECT
+      - 科学上网 | KELE
+  - name: 数据下载 | IDM
+    type: select
+    proxies:
+      - DIRECT
+      - 科学上网 | KELE
+  - name: 特殊控制 | OpenAI
+    type: select
+    proxies:
+      - REJECT
+      - 香港 01
+      - 香港 02
+      - 香港 03
+      - 香港 04
+      - 香港 05
+      - 香港 06
+      - 香港 07
+      - 香港 08
+      - 香港 09
+      - 香港 10
+      - 香港 11
+      - 香港 12
+      - 香港 13
+      - 香港 14
+      - 香港 15
+      - 香港 16
+      - 香港 17
+      - 香港 18
+      - 香港 19
+      - 香港 20
+  - name: 特殊控制 | Brad
+    type: select
+    proxies:
+      - REJECT
+      - 香港 01
+      - 香港 02
+      - 香港 03
+      - 香港 04
+      - 香港 05
+      - 香港 06
+      - 香港 07
+      - 香港 08
+      - 香港 09
+      - 香港 10
+      - 香港 11
+      - 香港 12
+      - 香港 13
+      - 香港 14
+      - 香港 15
+      - 香港 16
+      - 香港 17
+      - 香港 18
+      - 香港 19
+      - 香港 20
+  - name: 特殊控制 | Copilot
+    type: select
+    proxies:
+      - 科学上网 | KELE
+      - DIRECT
+  - name: 负载均衡 | 香港
+    type: load-balance
+    proxies:
+      - 香港 01
+      - 香港 02
+      - 香港 03
+      - 香港 04
+      - 香港 05
+      - 香港 06
+      - 香港 07
+      - 香港 08
+      - 香港 09
+      - 香港 10
+      - 香港 11
+      - 香港 12
+      - 香港 13
+      - 香港 14
+      - 香港 15
+      - 香港 16
+      - 香港 17
+      - 香港 18
+      - 香港 19
+      - 香港 20
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 72
 rule-providers: #!replace
   addition-idm:
     type: http

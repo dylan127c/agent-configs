@@ -37,10 +37,10 @@ module.exports.output = (yaml, log, name, configuration) => {
 }
 
 function removeSpecificGroupReverse(configuration, searches) {
-    if (!searches.length) {
-        return;
-    }
     const groups = Object.assign(configuration["proxy-groups"]);
+    if (!searches.length) {
+        return groups;
+    }
     searches.forEach(search => {
         const index = groups.findLastIndex(ele => ele.name.includes(search));
         if (index >= 0) {
@@ -52,7 +52,7 @@ function removeSpecificGroupReverse(configuration, searches) {
 
 function removeEmoji(str, removale) {
     if (!removale.length) {
-        return;
+        return str;
     }
     removale.forEach(emoji => {
         str = str.replaceAll(new RegExp(emoji + "\\s*", "g"), "");

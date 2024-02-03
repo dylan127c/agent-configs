@@ -53,6 +53,293 @@ rules: #!replace
   - GEOIP,LAN,DIRECT,no-resolve
   - GEOIP,CN,DIRECT,no-resolve
   - MATCH,规则逃逸
+proxy-groups: #!replace
+  - name: 科学上网 | NEBULAE
+    type: select
+    proxies:
+      - 故障转移 | HK-A
+      - 故障转移 | HK-B
+      - 故障转移 | HK-C
+      - 故障转移 | IEPL 2X
+      - 负载均衡 | 狮城
+      - 负载均衡 | 台湾
+      - 负载均衡 | 美国
+      - 负载均衡 | 日本
+      - 负载均衡 | 德国
+      - 專用節點 | IPv6
+      - 目标节点
+      - DIRECT
+  - name: 目标节点
+    type: select
+    proxies:
+      - REJECT
+      - DIRECT
+      - 🇭🇰 香港二倍专线 坤震
+      - 🇭🇰 香港二倍专线 震巽
+      - 🇭🇰 香港二倍专线 巽坎
+      - 🇭🇰 香港A 帕累托法则
+      - 🇭🇰 香港A 阿贝尔定律
+      - 🇭🇰 香港A 波粒二象性
+      - 🇨🇳 台湾A 波动传播律
+      - 🇸🇬 狮城A 薛定谔方程
+      - 🇸🇬 狮城A 全等同分裂
+      - 🇯🇵 日本A 康普顿散射
+      - 🇺🇸 美国A 超流体描述
+      - 🇺🇸 美国A 玻尔兹曼律
+      - 🇩🇪 德国A 帕塞瓦尔律
+      - 🇭🇰 香港B 海森堡原理
+      - 🇭🇰 香港B 希尔伯特线
+      - 🇭🇰 香港B 传导傅里叶
+      - 🇨🇳 台湾B 相变热力学
+      - 🇸🇬 狮城B 麦克斯韦组
+      - 🇸🇬 狮城B 庞加莱猜想
+      - 🇯🇵 日本B 波尔兹曼律
+      - 🇺🇸 美国B 菲涅耳方程
+      - 🇺🇸 美国B 斯特藩定律
+      - 🇩🇪 德国B 德布罗意波
+      - 🇭🇰 香港C 应力分布律
+      - 🇭🇰 香港C 电子亲和力
+      - 🇭🇰 香港C 洛伦兹变换
+      - 🇭🇰 香港C 角动量密度
+      - 🇨🇳 台湾C 平衡热力学
+      - 🇸🇬 狮城C 位移电流律
+      - 🇸🇬 狮城C 狄拉克方程
+      - 🇯🇵 日本C 裂纹传播律
+      - 🇺🇸 美国C 光谱分析法
+      - 🇺🇸 美国C 化学键能律
+      - 🇩🇪 德国C 元素核衰律
+      - 🇭🇰 香港v6 理想气体状态式
+      - 🇭🇰 香港v6 热力学第一定律
+      - 🇭🇰 香港v6 波尔兹曼熵统计
+      - 🇨🇳 台湾v6 统计物理熵理论
+      - 🇸🇬 狮城v6 静电场高斯定律
+      - 🇸🇬 狮城v6 阿姆斯特朗定律
+      - 🇯🇵 日本v6 静电力库仑定律
+      - 🇺🇸 美国v6 柯尔莫戈洛夫律
+      - 🇺🇸 美国v6 热力学第二定律
+      - 🇩🇪 德国v6 普朗克辐射定律
+  - name: 规则逃逸
+    type: select
+    proxies:
+      - DIRECT
+      - 科学上网 | NEBULAE
+  - name: 数据下载 | IDM
+    type: select
+    proxies:
+      - DIRECT
+      - 科学上网 | NEBULAE
+  - name: 特殊控制 | OpenAI
+    type: select
+    proxies:
+      - REJECT
+      - 🇭🇰 香港二倍专线 坤震
+      - 🇭🇰 香港二倍专线 震巽
+      - 🇭🇰 香港二倍专线 巽坎
+      - 🇭🇰 香港A 帕累托法则
+      - 🇭🇰 香港A 阿贝尔定律
+      - 🇭🇰 香港A 波粒二象性
+      - 🇨🇳 台湾A 波动传播律
+      - 🇸🇬 狮城A 薛定谔方程
+      - 🇸🇬 狮城A 全等同分裂
+      - 🇯🇵 日本A 康普顿散射
+      - 🇺🇸 美国A 超流体描述
+      - 🇺🇸 美国A 玻尔兹曼律
+      - 🇩🇪 德国A 帕塞瓦尔律
+      - 🇭🇰 香港B 海森堡原理
+      - 🇭🇰 香港B 希尔伯特线
+      - 🇭🇰 香港B 传导傅里叶
+      - 🇨🇳 台湾B 相变热力学
+      - 🇸🇬 狮城B 麦克斯韦组
+      - 🇸🇬 狮城B 庞加莱猜想
+      - 🇯🇵 日本B 波尔兹曼律
+      - 🇺🇸 美国B 菲涅耳方程
+      - 🇺🇸 美国B 斯特藩定律
+      - 🇩🇪 德国B 德布罗意波
+      - 🇭🇰 香港C 应力分布律
+      - 🇭🇰 香港C 电子亲和力
+      - 🇭🇰 香港C 洛伦兹变换
+      - 🇭🇰 香港C 角动量密度
+      - 🇨🇳 台湾C 平衡热力学
+      - 🇸🇬 狮城C 位移电流律
+      - 🇸🇬 狮城C 狄拉克方程
+      - 🇯🇵 日本C 裂纹传播律
+      - 🇺🇸 美国C 光谱分析法
+      - 🇺🇸 美国C 化学键能律
+      - 🇩🇪 德国C 元素核衰律
+      - 🇭🇰 香港v6 理想气体状态式
+      - 🇭🇰 香港v6 热力学第一定律
+      - 🇭🇰 香港v6 波尔兹曼熵统计
+      - 🇨🇳 台湾v6 统计物理熵理论
+      - 🇸🇬 狮城v6 静电场高斯定律
+      - 🇸🇬 狮城v6 阿姆斯特朗定律
+      - 🇯🇵 日本v6 静电力库仑定律
+      - 🇺🇸 美国v6 柯尔莫戈洛夫律
+      - 🇺🇸 美国v6 热力学第二定律
+      - 🇩🇪 德国v6 普朗克辐射定律
+  - name: 特殊控制 | Brad
+    type: select
+    proxies:
+      - REJECT
+      - 🇭🇰 香港二倍专线 坤震
+      - 🇭🇰 香港二倍专线 震巽
+      - 🇭🇰 香港二倍专线 巽坎
+      - 🇭🇰 香港A 帕累托法则
+      - 🇭🇰 香港A 阿贝尔定律
+      - 🇭🇰 香港A 波粒二象性
+      - 🇨🇳 台湾A 波动传播律
+      - 🇸🇬 狮城A 薛定谔方程
+      - 🇸🇬 狮城A 全等同分裂
+      - 🇯🇵 日本A 康普顿散射
+      - 🇺🇸 美国A 超流体描述
+      - 🇺🇸 美国A 玻尔兹曼律
+      - 🇩🇪 德国A 帕塞瓦尔律
+      - 🇭🇰 香港B 海森堡原理
+      - 🇭🇰 香港B 希尔伯特线
+      - 🇭🇰 香港B 传导傅里叶
+      - 🇨🇳 台湾B 相变热力学
+      - 🇸🇬 狮城B 麦克斯韦组
+      - 🇸🇬 狮城B 庞加莱猜想
+      - 🇯🇵 日本B 波尔兹曼律
+      - 🇺🇸 美国B 菲涅耳方程
+      - 🇺🇸 美国B 斯特藩定律
+      - 🇩🇪 德国B 德布罗意波
+      - 🇭🇰 香港C 应力分布律
+      - 🇭🇰 香港C 电子亲和力
+      - 🇭🇰 香港C 洛伦兹变换
+      - 🇭🇰 香港C 角动量密度
+      - 🇨🇳 台湾C 平衡热力学
+      - 🇸🇬 狮城C 位移电流律
+      - 🇸🇬 狮城C 狄拉克方程
+      - 🇯🇵 日本C 裂纹传播律
+      - 🇺🇸 美国C 光谱分析法
+      - 🇺🇸 美国C 化学键能律
+      - 🇩🇪 德国C 元素核衰律
+      - 🇭🇰 香港v6 理想气体状态式
+      - 🇭🇰 香港v6 热力学第一定律
+      - 🇭🇰 香港v6 波尔兹曼熵统计
+      - 🇨🇳 台湾v6 统计物理熵理论
+      - 🇸🇬 狮城v6 静电场高斯定律
+      - 🇸🇬 狮城v6 阿姆斯特朗定律
+      - 🇯🇵 日本v6 静电力库仑定律
+      - 🇺🇸 美国v6 柯尔莫戈洛夫律
+      - 🇺🇸 美国v6 热力学第二定律
+      - 🇩🇪 德国v6 普朗克辐射定律
+  - name: 特殊控制 | Copilot
+    type: select
+    proxies:
+      - 科学上网 | NEBULAE
+      - DIRECT
+  - name: 故障转移 | HK-A
+    type: fallback
+    proxies:
+      - 🇭🇰 香港A 波粒二象性
+      - 🇭🇰 香港A 阿贝尔定律
+      - 🇭🇰 香港A 帕累托法则
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    interval: 300
+  - name: 故障转移 | HK-B
+    type: fallback
+    proxies:
+      - 🇭🇰 香港B 传导傅里叶
+      - 🇭🇰 香港B 希尔伯特线
+      - 🇭🇰 香港B 海森堡原理
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    interval: 300
+  - name: 故障转移 | HK-C
+    type: fallback
+    proxies:
+      - 🇭🇰 香港C 角动量密度
+      - 🇭🇰 香港C 洛伦兹变换
+      - 🇭🇰 香港C 电子亲和力
+      - 🇭🇰 香港C 应力分布律
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    interval: 300
+  - name: 故障转移 | IEPL 2X
+    type: fallback
+    proxies:
+      - 🇭🇰 香港二倍专线 巽坎
+      - 🇭🇰 香港二倍专线 震巽
+      - 🇭🇰 香港二倍专线 坤震
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    interval: 300
+  - name: 负载均衡 | 狮城
+    type: load-balance
+    proxies:
+      - 🇸🇬 狮城A 薛定谔方程
+      - 🇸🇬 狮城A 全等同分裂
+      - 🇸🇬 狮城B 麦克斯韦组
+      - 🇸🇬 狮城B 庞加莱猜想
+      - 🇸🇬 狮城C 位移电流律
+      - 🇸🇬 狮城C 狄拉克方程
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 负载均衡 | 台湾
+    type: load-balance
+    proxies:
+      - 🇨🇳 台湾A 波动传播律
+      - 🇨🇳 台湾B 相变热力学
+      - 🇨🇳 台湾C 平衡热力学
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 负载均衡 | 美国
+    type: load-balance
+    proxies:
+      - 🇺🇸 美国A 超流体描述
+      - 🇺🇸 美国A 玻尔兹曼律
+      - 🇺🇸 美国B 菲涅耳方程
+      - 🇺🇸 美国B 斯特藩定律
+      - 🇺🇸 美国C 光谱分析法
+      - 🇺🇸 美国C 化学键能律
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 负载均衡 | 日本
+    type: load-balance
+    proxies:
+      - 🇯🇵 日本A 康普顿散射
+      - 🇯🇵 日本B 波尔兹曼律
+      - 🇯🇵 日本C 裂纹传播律
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 负载均衡 | 德国
+    type: load-balance
+    proxies:
+      - 🇩🇪 德国A 帕塞瓦尔律
+      - 🇩🇪 德国B 德布罗意波
+      - 🇩🇪 德国C 元素核衰律
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 專用節點 | IPv6
+    type: url-test
+    proxies:
+      - REJECT
+      - 🇭🇰 香港v6 理想气体状态式
+      - 🇭🇰 香港v6 热力学第一定律
+      - 🇭🇰 香港v6 波尔兹曼熵统计
+      - 🇨🇳 台湾v6 统计物理熵理论
+      - 🇸🇬 狮城v6 静电场高斯定律
+      - 🇸🇬 狮城v6 阿姆斯特朗定律
+      - 🇯🇵 日本v6 静电力库仑定律
+      - 🇺🇸 美国v6 柯尔莫戈洛夫律
+      - 🇺🇸 美国v6 热力学第二定律
+      - 🇩🇪 德国v6 普朗克辐射定律
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    tolerance: 50
+    interval: 300
 rule-providers: #!replace
   addition-idm:
     type: http
