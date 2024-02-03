@@ -11,6 +11,9 @@
 # 自定义规则匹配顺序：reject.yaml => direct.yaml => ... => proxy.yaml 
 
 payload:
+  # Cloud Flare
+  - '+.challenges.cloudflare.com'
+
   # Google
   - '+.google.com'
   
@@ -30,8 +33,9 @@ payload:
   # Cloud Providers
   - '+.keleofficial.com'
   - '+.touhou.tel'
-  - '+.stash.wiki'
   - '+.newyun.top'
+  - '+.cloverud.com'
+  - '+.stash.wiki'
 
   # PikPak
   - '+.mypikpak.com'
@@ -39,5 +43,5 @@ payload:
   # 其他域名
   - '+.fluidplayer.com'
   - '+.ng.ul4k.com'
-  - '+.cloverud.com'
   - '+.cn.tgstat.com'
+  

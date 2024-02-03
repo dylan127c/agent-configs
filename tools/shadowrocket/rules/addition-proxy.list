@@ -10,6 +10,9 @@
 
 # 自定义规则匹配顺序：reject.yaml => direct.yaml => ... => proxy.yaml 
 
+# Cloud Flare
+DOMAIN-SUFFIX,challenges.cloudflare.com
+
 # Google
 DOMAIN-SUFFIX,google.com
   
@@ -29,8 +32,9 @@ DOMAIN-SUFFIX,api.insight.sitefinity.com
 # Cloud Providers
 DOMAIN-SUFFIX,keleofficial.com
 DOMAIN-SUFFIX,touhou.tel
-DOMAIN-SUFFIX,stash.wiki
 DOMAIN-SUFFIX,newyun.top
+DOMAIN-SUFFIX,cloverud.com
+DOMAIN-SUFFIX,stash.wiki
 
 # PikPak
 DOMAIN-SUFFIX,mypikpak.com
@@ -38,5 +42,5 @@ DOMAIN-SUFFIX,mypikpak.com
 # 其他域名
 DOMAIN-SUFFIX,fluidplayer.com
 DOMAIN-SUFFIX,ng.ul4k.com
-DOMAIN-SUFFIX,cloverud.com
 DOMAIN-SUFFIX,cn.tgstat.com
+  
