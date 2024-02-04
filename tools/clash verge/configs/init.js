@@ -9,6 +9,8 @@ function main(params) {
         configuration = clover;
     } else if (identification.includes("新雲")) {
         configuration = nebulae;
+    } else if (identification.includes("Fanrr")) {
+        configuration = fanrr;
     } else {
         return params;
     }

@@ -1,0 +1,542 @@
+name: fanrr
+desc: Replace original configuration file.
+dns: #!replace
+  enable: false
+  ipv6: false
+  listen: 0.0.0.0:53
+  use-hosts: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 192.18.0.1/16
+  fake-ip-filter:
+    - "*.lan"
+    - localhost.ptlogin2.qq.com
+    - +.stun.*.*
+    - +.stun.*.*.*
+    - +.stun.*.*.*.*
+    - +.stun.*.*.*.*.*
+    - "*.n.n.srv.nintendo.net"
+    - +.stun.playstation.net
+    - xbox.*.*.microsoft.com
+    - "*.*.xboxlive.com"
+    - "*.msftncsi.com"
+    - "*.msftconnecttest.com"
+    - "*.logon.battlenet.com.cn"
+    - "*.logon.battle.net"
+    - WORKGROUP
+  default-nameserver:
+    - 119.29.29.29
+    - 223.5.5.5
+  nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+rules: #!replace
+  - RULE-SET,addition-idm,数据下载 | IDM
+  - RULE-SET,addition-reject,REJECT
+  - RULE-SET,addition-direct,DIRECT
+  - RULE-SET,addition-openai,特殊控制 | OpenAI
+  - RULE-SET,addition-brad,特殊控制 | Brad
+  - RULE-SET,addition-copilot,特殊控制 | Copilot
+  - RULE-SET,addition-proxy,科学上网 | FANRR
+  - RULE-SET,original-applications,DIRECT
+  - RULE-SET,original-apple,DIRECT
+  - RULE-SET,original-icloud,DIRECT
+  - RULE-SET,original-private,DIRECT
+  - RULE-SET,original-direct,DIRECT
+  - RULE-SET,original-greatfire,科学上网 | FANRR
+  - RULE-SET,original-gfw,科学上网 | FANRR
+  - RULE-SET,original-proxy,科学上网 | FANRR
+  - RULE-SET,original-tld-not-cn,科学上网 | FANRR
+  - RULE-SET,original-reject,REJECT
+  - RULE-SET,original-telegramcidr,科学上网 | FANRR,no-resolve
+  - RULE-SET,original-lancidr,DIRECT,no-resolve
+  - RULE-SET,original-cncidr,DIRECT,no-resolve
+  - GEOIP,LAN,DIRECT,no-resolve
+  - GEOIP,CN,DIRECT,no-resolve
+  - MATCH,规则逃逸
+proxy-groups: #!replace
+  - name: 科学上网 | FANRR
+    type: select
+    proxies:
+      - 故障转移 | HK-N
+      - 故障转移 | HK-G
+      - 负载均衡 | 狮城
+      - 负载均衡 | 台湾
+      - 负载均衡 | 美国
+      - 负载均衡 | 日本
+      - 负载均衡 | 英国
+      - 其他節點
+      - 目标节点
+      - DIRECT
+  - name: 目标节点
+    type: select
+    proxies:
+      - REJECT
+      - DIRECT
+      - 💥Remaining traffic：649.99 GB
+      - ⏰NO please update
+      - 🎮Expire date：💯long term effective
+      - 🇭🇰 Hong Kong 1
+      - 🇭🇰 Hong Kong 2
+      - 🇭🇰 Hong Kong 3
+      - 🇭🇰 Hong Kong 4
+      - 🇭🇰 Hong Kong 5
+      - 🇭🇰 Hong Kong 6
+      - 🇭🇰 Hong Kong 7
+      - 🇭🇰 Hong Kong 8
+      - 🇭🇰 Hong Kong 9
+      - 🇭🇰 Hong Kong 10 GAME 3X SZ
+      - 🇭🇰 Hong Kong 11 GAME 3X SZ
+      - 🇭🇰 Hong Kong 12 GAME 3X SZ
+      - 🇭🇰 Hong Kong 13 GAME 3X SZ
+      - 🇭🇰 Hong Kong 14
+      - 🇨🇳 Taiwan 1
+      - 🇨🇳 Taiwan 2
+      - 🇨🇳 Taiwan 3
+      - 🇨🇳 Taiwan 4
+      - 🇨🇳 Taiwan 5
+      - 🇨🇳 Taiwan 6
+      - 🇨🇳 Taiwan 7
+      - 🇨🇳 Taiwan 8
+      - 🇯🇵 Japan 1
+      - 🇯🇵 Japan 2
+      - 🇯🇵 Japan 3
+      - 🇯🇵 Japan 4
+      - 🇯🇵 Japan 5
+      - 🇯🇵 Japan 6
+      - 🇯🇵 Japan 7
+      - 🇯🇵 Japan 8
+      - 🇯🇵 Japan 9
+      - 📺 Japan 0.5X
+      - 🇸🇬 Singapore 1
+      - 🇸🇬 Singapore 2
+      - 🇸🇬 Singapore 3
+      - 🇸🇬 Singapore 4
+      - 🇸🇬 Singapore 5
+      - 🇸🇬 Singapore 6
+      - 📺 Singapore  0.5X
+      - 🇺🇸 United States 1
+      - 🇺🇸 United States 2
+      - 🇺🇸 United States 3
+      - 🇺🇸 United States 4
+      - 🇺🇸 United States 5 L.A
+      - 🇺🇸 United States 6
+      - 🇺🇸 United States 7 原生 CA 3X
+      - 📺 United States 8 NYC 0.1x
+      - 🇺🇸 United States 9 原生 L.A 3X
+      - 🇬🇧 United Kingdom 1
+      - 🇬🇧 United Kingdom 2
+      - 🇬🇧 United Kingdom 3 原生 3X
+      - 🇬🇧 United Kingdom 4 原生 3X
+      - 🇦🇺 澳大利亚 原生 Victoria 3X
+      - 🇰🇷 韩国 原生 Seoul 5X
+      - 🇰🇷 韩国 原生2 South Korea
+      - 🇦🇺 澳大利亚 Australia 2
+      - 🇮🇸 冰岛 原生 Iceland
+      - 🇮🇳 印度 India
+      - 🇨🇦 加拿大 Canada
+      - 🇲🇾 马来西亚 Kuala Lumpur
+      - 🇦🇶 南极洲 Antarctica GZ
+      - 🇦🇪 阿联酋  迪拜 United Arab Emirates
+      - 🇫🇷 法国 France
+      - 🇹🇷 土耳其 Turkey 5X
+      - 🇻🇳 越南 Thành 原生 3X
+      - 🇵🇭 菲律宾 原生 Philippines 3X
+      - 🇧🇷 巴西 Brazil
+      - 🇱🇺 卢森堡 Luxembourg
+      - 🇩🇪 德国 Hessen
+      - 🇲🇴 澳门 Macao SAR China GZ
+  - name: 规则逃逸
+    type: select
+    proxies:
+      - DIRECT
+      - 科学上网 | FANRR
+  - name: 数据下载 | IDM
+    type: select
+    proxies:
+      - DIRECT
+      - 科学上网 | FANRR
+  - name: 特殊控制 | OpenAI
+    type: select
+    proxies:
+      - REJECT
+      - 💥Remaining traffic：649.99 GB
+      - ⏰NO please update
+      - 🎮Expire date：💯long term effective
+      - 🇭🇰 Hong Kong 1
+      - 🇭🇰 Hong Kong 2
+      - 🇭🇰 Hong Kong 3
+      - 🇭🇰 Hong Kong 4
+      - 🇭🇰 Hong Kong 5
+      - 🇭🇰 Hong Kong 6
+      - 🇭🇰 Hong Kong 7
+      - 🇭🇰 Hong Kong 8
+      - 🇭🇰 Hong Kong 9
+      - 🇭🇰 Hong Kong 10 GAME 3X SZ
+      - 🇭🇰 Hong Kong 11 GAME 3X SZ
+      - 🇭🇰 Hong Kong 12 GAME 3X SZ
+      - 🇭🇰 Hong Kong 13 GAME 3X SZ
+      - 🇭🇰 Hong Kong 14
+      - 🇨🇳 Taiwan 1
+      - 🇨🇳 Taiwan 2
+      - 🇨🇳 Taiwan 3
+      - 🇨🇳 Taiwan 4
+      - 🇨🇳 Taiwan 5
+      - 🇨🇳 Taiwan 6
+      - 🇨🇳 Taiwan 7
+      - 🇨🇳 Taiwan 8
+      - 🇯🇵 Japan 1
+      - 🇯🇵 Japan 2
+      - 🇯🇵 Japan 3
+      - 🇯🇵 Japan 4
+      - 🇯🇵 Japan 5
+      - 🇯🇵 Japan 6
+      - 🇯🇵 Japan 7
+      - 🇯🇵 Japan 8
+      - 🇯🇵 Japan 9
+      - 📺 Japan 0.5X
+      - 🇸🇬 Singapore 1
+      - 🇸🇬 Singapore 2
+      - 🇸🇬 Singapore 3
+      - 🇸🇬 Singapore 4
+      - 🇸🇬 Singapore 5
+      - 🇸🇬 Singapore 6
+      - 📺 Singapore  0.5X
+      - 🇺🇸 United States 1
+      - 🇺🇸 United States 2
+      - 🇺🇸 United States 3
+      - 🇺🇸 United States 4
+      - 🇺🇸 United States 5 L.A
+      - 🇺🇸 United States 6
+      - 🇺🇸 United States 7 原生 CA 3X
+      - 📺 United States 8 NYC 0.1x
+      - 🇺🇸 United States 9 原生 L.A 3X
+      - 🇬🇧 United Kingdom 1
+      - 🇬🇧 United Kingdom 2
+      - 🇬🇧 United Kingdom 3 原生 3X
+      - 🇬🇧 United Kingdom 4 原生 3X
+      - 🇦🇺 澳大利亚 原生 Victoria 3X
+      - 🇰🇷 韩国 原生 Seoul 5X
+      - 🇰🇷 韩国 原生2 South Korea
+      - 🇦🇺 澳大利亚 Australia 2
+      - 🇮🇸 冰岛 原生 Iceland
+      - 🇮🇳 印度 India
+      - 🇨🇦 加拿大 Canada
+      - 🇲🇾 马来西亚 Kuala Lumpur
+      - 🇦🇶 南极洲 Antarctica GZ
+      - 🇦🇪 阿联酋  迪拜 United Arab Emirates
+      - 🇫🇷 法国 France
+      - 🇹🇷 土耳其 Turkey 5X
+      - 🇻🇳 越南 Thành 原生 3X
+      - 🇵🇭 菲律宾 原生 Philippines 3X
+      - 🇧🇷 巴西 Brazil
+      - 🇱🇺 卢森堡 Luxembourg
+      - 🇩🇪 德国 Hessen
+      - 🇲🇴 澳门 Macao SAR China GZ
+  - name: 特殊控制 | Brad
+    type: select
+    proxies:
+      - REJECT
+      - 💥Remaining traffic：649.99 GB
+      - ⏰NO please update
+      - 🎮Expire date：💯long term effective
+      - 🇭🇰 Hong Kong 1
+      - 🇭🇰 Hong Kong 2
+      - 🇭🇰 Hong Kong 3
+      - 🇭🇰 Hong Kong 4
+      - 🇭🇰 Hong Kong 5
+      - 🇭🇰 Hong Kong 6
+      - 🇭🇰 Hong Kong 7
+      - 🇭🇰 Hong Kong 8
+      - 🇭🇰 Hong Kong 9
+      - 🇭🇰 Hong Kong 10 GAME 3X SZ
+      - 🇭🇰 Hong Kong 11 GAME 3X SZ
+      - 🇭🇰 Hong Kong 12 GAME 3X SZ
+      - 🇭🇰 Hong Kong 13 GAME 3X SZ
+      - 🇭🇰 Hong Kong 14
+      - 🇨🇳 Taiwan 1
+      - 🇨🇳 Taiwan 2
+      - 🇨🇳 Taiwan 3
+      - 🇨🇳 Taiwan 4
+      - 🇨🇳 Taiwan 5
+      - 🇨🇳 Taiwan 6
+      - 🇨🇳 Taiwan 7
+      - 🇨🇳 Taiwan 8
+      - 🇯🇵 Japan 1
+      - 🇯🇵 Japan 2
+      - 🇯🇵 Japan 3
+      - 🇯🇵 Japan 4
+      - 🇯🇵 Japan 5
+      - 🇯🇵 Japan 6
+      - 🇯🇵 Japan 7
+      - 🇯🇵 Japan 8
+      - 🇯🇵 Japan 9
+      - 📺 Japan 0.5X
+      - 🇸🇬 Singapore 1
+      - 🇸🇬 Singapore 2
+      - 🇸🇬 Singapore 3
+      - 🇸🇬 Singapore 4
+      - 🇸🇬 Singapore 5
+      - 🇸🇬 Singapore 6
+      - 📺 Singapore  0.5X
+      - 🇺🇸 United States 1
+      - 🇺🇸 United States 2
+      - 🇺🇸 United States 3
+      - 🇺🇸 United States 4
+      - 🇺🇸 United States 5 L.A
+      - 🇺🇸 United States 6
+      - 🇺🇸 United States 7 原生 CA 3X
+      - 📺 United States 8 NYC 0.1x
+      - 🇺🇸 United States 9 原生 L.A 3X
+      - 🇬🇧 United Kingdom 1
+      - 🇬🇧 United Kingdom 2
+      - 🇬🇧 United Kingdom 3 原生 3X
+      - 🇬🇧 United Kingdom 4 原生 3X
+      - 🇦🇺 澳大利亚 原生 Victoria 3X
+      - 🇰🇷 韩国 原生 Seoul 5X
+      - 🇰🇷 韩国 原生2 South Korea
+      - 🇦🇺 澳大利亚 Australia 2
+      - 🇮🇸 冰岛 原生 Iceland
+      - 🇮🇳 印度 India
+      - 🇨🇦 加拿大 Canada
+      - 🇲🇾 马来西亚 Kuala Lumpur
+      - 🇦🇶 南极洲 Antarctica GZ
+      - 🇦🇪 阿联酋  迪拜 United Arab Emirates
+      - 🇫🇷 法国 France
+      - 🇹🇷 土耳其 Turkey 5X
+      - 🇻🇳 越南 Thành 原生 3X
+      - 🇵🇭 菲律宾 原生 Philippines 3X
+      - 🇧🇷 巴西 Brazil
+      - 🇱🇺 卢森堡 Luxembourg
+      - 🇩🇪 德国 Hessen
+      - 🇲🇴 澳门 Macao SAR China GZ
+  - name: 特殊控制 | Copilot
+    type: select
+    proxies:
+      - 科学上网 | FANRR
+      - DIRECT
+  - name: 故障转移 | HK-N
+    type: fallback
+    proxies:
+      - 🇭🇰 Hong Kong 14
+      - 🇭🇰 Hong Kong 9
+      - 🇭🇰 Hong Kong 8
+      - 🇭🇰 Hong Kong 7
+      - 🇭🇰 Hong Kong 6
+      - 🇭🇰 Hong Kong 5
+      - 🇭🇰 Hong Kong 4
+      - 🇭🇰 Hong Kong 3
+      - 🇭🇰 Hong Kong 2
+      - 🇭🇰 Hong Kong 1
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    interval: 300
+  - name: 故障转移 | HK-G
+    type: fallback
+    proxies:
+      - 🇭🇰 Hong Kong 10 GAME 3X SZ
+      - 🇭🇰 Hong Kong 11 GAME 3X SZ
+      - 🇭🇰 Hong Kong 12 GAME 3X SZ
+      - 🇭🇰 Hong Kong 13 GAME 3X SZ
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    interval: 300
+  - name: 负载均衡 | 狮城
+    type: load-balance
+    proxies:
+      - 🇸🇬 Singapore 1
+      - 🇸🇬 Singapore 2
+      - 🇸🇬 Singapore 3
+      - 🇸🇬 Singapore 4
+      - 🇸🇬 Singapore 5
+      - 🇸🇬 Singapore 6
+      - 📺 Singapore  0.5X
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 负载均衡 | 台湾
+    type: load-balance
+    proxies:
+      - 🇨🇳 Taiwan 1
+      - 🇨🇳 Taiwan 2
+      - 🇨🇳 Taiwan 3
+      - 🇨🇳 Taiwan 4
+      - 🇨🇳 Taiwan 5
+      - 🇨🇳 Taiwan 6
+      - 🇨🇳 Taiwan 7
+      - 🇨🇳 Taiwan 8
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 负载均衡 | 美国
+    type: load-balance
+    proxies:
+      - 🇺🇸 United States 1
+      - 🇺🇸 United States 2
+      - 🇺🇸 United States 3
+      - 🇺🇸 United States 4
+      - 🇺🇸 United States 5 L.A
+      - 🇺🇸 United States 6
+      - 🇺🇸 United States 7 原生 CA 3X
+      - 📺 United States 8 NYC 0.1x
+      - 🇺🇸 United States 9 原生 L.A 3X
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 负载均衡 | 日本
+    type: load-balance
+    proxies:
+      - 🇯🇵 Japan 1
+      - 🇯🇵 Japan 2
+      - 🇯🇵 Japan 3
+      - 🇯🇵 Japan 4
+      - 🇯🇵 Japan 5
+      - 🇯🇵 Japan 6
+      - 🇯🇵 Japan 7
+      - 🇯🇵 Japan 8
+      - 🇯🇵 Japan 9
+      - 📺 Japan 0.5X
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 负载均衡 | 英国
+    type: load-balance
+    proxies:
+      - 🇬🇧 United Kingdom 1
+      - 🇬🇧 United Kingdom 2
+      - 🇬🇧 United Kingdom 3 原生 3X
+      - 🇬🇧 United Kingdom 4 原生 3X
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    strategy: consistent-hashing
+    interval: 300
+  - name: 其他節點
+    type: url-test
+    proxies:
+      - REJECT
+      - 🇦🇺 澳大利亚 原生 Victoria 3X
+      - 🇰🇷 韩国 原生 Seoul 5X
+      - 🇰🇷 韩国 原生2 South Korea
+      - 🇦🇺 澳大利亚 Australia 2
+      - 🇮🇸 冰岛 原生 Iceland
+      - 🇮🇳 印度 India
+      - 🇨🇦 加拿大 Canada
+      - 🇲🇾 马来西亚 Kuala Lumpur
+      - 🇦🇶 南极洲 Antarctica GZ
+      - 🇦🇪 阿联酋  迪拜 United Arab Emirates
+      - 🇫🇷 法国 France
+      - 🇹🇷 土耳其 Turkey 5X
+      - 🇻🇳 越南 Thành 原生 3X
+      - 🇵🇭 菲律宾 原生 Philippines 3X
+      - 🇧🇷 巴西 Brazil
+      - 🇱🇺 卢森堡 Luxembourg
+      - 🇩🇪 德国 Hessen
+      - 🇲🇴 澳门 Macao SAR China GZ
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    tolerance: 50
+    interval: 300
+rule-providers: #!replace
+  addition-idm:
+    type: http
+    behavior: classical
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition/idm.yaml
+    interval: 86400
+  addition-reject:
+    type: http
+    behavior: domain
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition/reject.yaml
+    interval: 86400
+  addition-direct:
+    type: http
+    behavior: domain
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition/direct.yaml
+    interval: 86400
+  addition-openai:
+    type: http
+    behavior: domain
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition/openai.yaml
+    interval: 86400
+  addition-brad:
+    type: http
+    behavior: domain
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition/brad.yaml
+    interval: 86400
+  addition-copilot:
+    type: http
+    behavior: domain
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition/copilot.yaml
+    interval: 86400
+  addition-proxy:
+    type: http
+    behavior: domain
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition/proxy.yaml
+    interval: 86400
+  original-applications:
+    type: http
+    behavior: domain
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/applications.yaml
+    interval: 86400
+  original-apple:
+    type: http
+    behavior: domain
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/apple.yaml
+    interval: 86400
+  original-icloud:
+    type: http
+    behavior: domain
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/icloud.yaml
+    interval: 86400
+  original-private:
+    type: http
+    behavior: domain
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/private.yaml
+    interval: 86400
+  original-direct:
+    type: http
+    behavior: domain
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/direct.yaml
+    interval: 86400
+  original-greatfire:
+    type: http
+    behavior: domain
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/greatfire.yaml
+    interval: 86400
+  original-gfw:
+    type: http
+    behavior: domain
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/gfw.yaml
+    interval: 86400
+  original-proxy:
+    type: http
+    behavior: domain
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/proxy.yaml
+    interval: 86400
+  original-tld-not-cn:
+    type: http
+    behavior: domain
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/tld-not-cn.yaml
+    interval: 86400
+  original-reject:
+    type: http
+    behavior: domain
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/reject.yaml
+    interval: 86400
+  original-telegramcidr:
+    type: http
+    behavior: ipcidr
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/telegramcidr.yaml
+    interval: 86400
+  original-lancidr:
+    type: http
+    behavior: ipcidr
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/lancidr.yaml
+    interval: 86400
+  original-cncidr:
+    type: http
+    behavior: ipcidr
+    url: https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/original/cncidr.yaml
+    interval: 86400
