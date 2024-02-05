@@ -38,14 +38,14 @@ module.exports.parse = async (raw, { axios, yaml, notify, console },
         log.info(mark(funcName), "mode:", Object.values(mode));
 
         /* GENERATE CONFIGURATION */
-        let generateConfiguration = main.generate(log, mode, originalConfiguration, modifiedParams);
+        // let generateConfiguration = main.generate(log, mode, originalConfiguration, modifiedParams);
 
         /* STASH && SHADOWROCKET CONFIGURATION */
-        outputStash(yaml, log, name, generateConfiguration);
-        outputShadowrocket(log, name, generateConfiguration, modifiedParams);
+        // outputStash(yaml, log, name, generateConfiguration);
+        outputShadowrocket(log, name, undefined, modifiedParams);
 
         /* CLASH FOR WINDOWS CONFIGURATION */
-        const result = outputClash(main, yaml, axios, log, mode, originalConfiguration, modifiedParams);
+        const result = outputClash(main, axios, log, mode, originalConfiguration, modifiedParams);
         /* OUTPUT FORMATTED CONFIGURATION STRING */
         return yaml.stringify(result);
     } catch (error) {
@@ -166,7 +166,7 @@ function outputShadowrocket(log, name, output, modifiedParams) {
     }
 }
 
-function outputClash(main, yaml, axios, log, mode, originalConfiguration, modifiedParams) {
+function outputClash(main, axios, log, mode, originalConfiguration, modifiedParams) {
     const funcName = "outputClash"
     /* CLASH FOR WINDOWS CONFIGURATION */
     const modeActual = getStatus(axios, log, mode, modifiedParams); // GET NEW(REAL) MODE

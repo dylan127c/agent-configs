@@ -29,13 +29,6 @@ payload:
   - '+.gigabyte.com'
   - '+.telerik.com'
   - '+.api.insight.sitefinity.com'
-  
-  # Cloud Providers
-  - '+.keleofficial.com'
-  - '+.touhou.tel'
-  - '+.newyun.top'
-  - '+.cloverud.com'
-  - '+.stash.wiki'
 
   # PikPak
   - '+.mypikpak.com'
@@ -44,4 +37,5 @@ payload:
   - '+.fluidplayer.com'
   - '+.ng.ul4k.com'
   - '+.cn.tgstat.com'
+  - '+.stash.wiki'
   

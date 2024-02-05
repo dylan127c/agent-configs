@@ -57,9 +57,9 @@ proxy-groups: #!replace
   - name: 科学上网 | NEBULAE
     type: select
     proxies:
+      - 延时检测 | PROVISIONAL
       - 故障转移 | HK-A
       - 故障转移 | HK-B
-      - 故障转移 | PROVISIONAL
       - 负载均衡 | 狮城
       - 负载均衡 | 台湾
       - 负载均衡 | 美国
@@ -228,8 +228,8 @@ proxy-groups: #!replace
     url: https://www.gstatic.com/generate_204
     lazy: true
     interval: 300
-  - name: 故障转移 | PROVISIONAL
-    type: fallback
+  - name: 延时检测 | PROVISIONAL
+    type: url-test
     proxies:
       - 🇭🇰 香港优选 申鹤
       - 🇭🇰 香港优选 香菱
@@ -241,6 +241,7 @@ proxy-groups: #!replace
       - 🇯🇵 日本优选 刻晴
     url: https://www.gstatic.com/generate_204
     lazy: true
+    tolerance: 50
     interval: 300
   - name: 负载均衡 | 狮城
     type: load-balance

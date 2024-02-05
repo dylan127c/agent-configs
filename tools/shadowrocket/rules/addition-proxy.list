@@ -28,13 +28,6 @@ DOMAIN-SUFFIX,listary.com
 DOMAIN-SUFFIX,gigabyte.com
 DOMAIN-SUFFIX,telerik.com
 DOMAIN-SUFFIX,api.insight.sitefinity.com
-  
-# Cloud Providers
-DOMAIN-SUFFIX,keleofficial.com
-DOMAIN-SUFFIX,touhou.tel
-DOMAIN-SUFFIX,newyun.top
-DOMAIN-SUFFIX,cloverud.com
-DOMAIN-SUFFIX,stash.wiki
 
 # PikPak
 DOMAIN-SUFFIX,mypikpak.com
@@ -43,4 +36,5 @@ DOMAIN-SUFFIX,mypikpak.com
 DOMAIN-SUFFIX,fluidplayer.com
 DOMAIN-SUFFIX,ng.ul4k.com
 DOMAIN-SUFFIX,cn.tgstat.com
+DOMAIN-SUFFIX,stash.wiki
   

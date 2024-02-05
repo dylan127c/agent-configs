@@ -7,10 +7,16 @@ function mark(name) {
 }
 
 module.exports.output = (log, name, configuration, profile) => {
-    const funcName = "output";
 
+    
+    const funcName = "output";
+    
     delete require.cache[require.resolve("./settings.json")];
     const settings = require("./settings.json");
+    
+    transformRules(log, profile, settings);
+
+    return;
 
     /* THE "_" OR " " IS DEFAULT SEPARATOR. */
     const symbol = name.includes("_") ?
@@ -73,7 +79,6 @@ module.exports.output = (log, name, configuration, profile) => {
     } catch (error) {
         log.error(mark(funcName), error);
     }
-    transformRules(log, profile, settings);
 }
 
 function transformRules(log, profile, settings) {
