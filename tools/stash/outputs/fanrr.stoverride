@@ -72,9 +72,6 @@ proxy-groups: #!replace
     proxies:
       - REJECT
       - DIRECT
-      - 💥Remaining traffic：649.99 GB
-      - ⏰NO please update
-      - 🎮Expire date：💯long term effective
       - 🇭🇰 Hong Kong 1
       - 🇭🇰 Hong Kong 2
       - 🇭🇰 Hong Kong 3
@@ -159,9 +156,6 @@ proxy-groups: #!replace
     type: select
     proxies:
       - REJECT
-      - 💥Remaining traffic：649.99 GB
-      - ⏰NO please update
-      - 🎮Expire date：💯long term effective
       - 🇭🇰 Hong Kong 1
       - 🇭🇰 Hong Kong 2
       - 🇭🇰 Hong Kong 3
@@ -236,9 +230,6 @@ proxy-groups: #!replace
     type: select
     proxies:
       - REJECT
-      - 💥Remaining traffic：649.99 GB
-      - ⏰NO please update
-      - 🎮Expire date：💯long term effective
       - 🇭🇰 Hong Kong 1
       - 🇭🇰 Hong Kong 2
       - 🇭🇰 Hong Kong 3

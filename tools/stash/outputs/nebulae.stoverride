@@ -59,6 +59,7 @@ proxy-groups: #!replace
     proxies:
       - 故障转移 | HK-A
       - 故障转移 | HK-B
+      - 故障转移 | PROVISIONAL
       - 负载均衡 | 狮城
       - 负载均衡 | 台湾
       - 负载均衡 | 美国
@@ -72,7 +73,14 @@ proxy-groups: #!replace
     proxies:
       - REJECT
       - DIRECT
-      - 新云备战不死节点
+      - 🇯🇵 日本优选 刻晴
+      - 🇭🇰 香港优选 钟离
+      - 🇭🇰 香港优选 重云
+      - 🇭🇰 香港优选 温迪
+      - 🇭🇰 香港优选 凝光
+      - 🇭🇰 香港优选 优菈
+      - 🇭🇰 香港优选 香菱
+      - 🇭🇰 香港优选 申鹤
       - 🇭🇰 香港 波粒二象性
       - 🇭🇰 香港 帕累托法则
       - 🇭🇰 香港 阿贝尔定律
@@ -117,7 +125,14 @@ proxy-groups: #!replace
     type: select
     proxies:
       - REJECT
-      - 新云备战不死节点
+      - 🇯🇵 日本优选 刻晴
+      - 🇭🇰 香港优选 钟离
+      - 🇭🇰 香港优选 重云
+      - 🇭🇰 香港优选 温迪
+      - 🇭🇰 香港优选 凝光
+      - 🇭🇰 香港优选 优菈
+      - 🇭🇰 香港优选 香菱
+      - 🇭🇰 香港优选 申鹤
       - 🇭🇰 香港 波粒二象性
       - 🇭🇰 香港 帕累托法则
       - 🇭🇰 香港 阿贝尔定律
@@ -152,7 +167,14 @@ proxy-groups: #!replace
     type: select
     proxies:
       - REJECT
-      - 新云备战不死节点
+      - 🇯🇵 日本优选 刻晴
+      - 🇭🇰 香港优选 钟离
+      - 🇭🇰 香港优选 重云
+      - 🇭🇰 香港优选 温迪
+      - 🇭🇰 香港优选 凝光
+      - 🇭🇰 香港优选 优菈
+      - 🇭🇰 香港优选 香菱
+      - 🇭🇰 香港优选 申鹤
       - 🇭🇰 香港 波粒二象性
       - 🇭🇰 香港 帕累托法则
       - 🇭🇰 香港 阿贝尔定律
@@ -191,18 +213,32 @@ proxy-groups: #!replace
   - name: 故障转移 | HK-A
     type: fallback
     proxies:
-      - 🇭🇰 香港 阿贝尔定律
-      - 🇭🇰 香港 帕累托法则
       - 🇭🇰 香港 波粒二象性
+      - 🇭🇰 香港 帕累托法则
+      - 🇭🇰 香港 阿贝尔定律
     url: https://www.gstatic.com/generate_204
     lazy: true
     interval: 300
   - name: 故障转移 | HK-B
     type: fallback
     proxies:
-      - 🇭🇰 香港 希尔伯特线
-      - 🇭🇰 香港 海森堡原理
       - 🇭🇰 香港 传导傅里叶
+      - 🇭🇰 香港 海森堡原理
+      - 🇭🇰 香港 希尔伯特线
+    url: https://www.gstatic.com/generate_204
+    lazy: true
+    interval: 300
+  - name: 故障转移 | PROVISIONAL
+    type: fallback
+    proxies:
+      - 🇭🇰 香港优选 申鹤
+      - 🇭🇰 香港优选 香菱
+      - 🇭🇰 香港优选 优菈
+      - 🇭🇰 香港优选 凝光
+      - 🇭🇰 香港优选 温迪
+      - 🇭🇰 香港优选 重云
+      - 🇭🇰 香港优选 钟离
+      - 🇯🇵 日本优选 刻晴
     url: https://www.gstatic.com/generate_204
     lazy: true
     interval: 300

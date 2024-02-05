@@ -535,6 +535,12 @@ const fanrr = () => {
         additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition",
         additionRemoteType: "yaml",
 
+        removal: [
+            "Remaining traffic",
+            "NO please update",
+            "Expire date"
+        ],
+
         replacement: {
             "Hong Kong": "香港",
             "Taiwan": "台湾",
@@ -659,6 +665,7 @@ const nebulae = () => {
     const mainGroups = [
         "🌃 故障转移 | HK-A",
         "🌃 故障转移 | HK-B",
+        "🌃 故障转移 | PROVISIONAL",
         // "🌃 故障转移 | HK-C",
         // "🌃 故障转移 | IEPL 2X",
         "🎑 负载均衡 | 狮城",
@@ -678,8 +685,9 @@ const nebulae = () => {
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | NEBULAE", "DIRECT"] },
-        { name: "🌃 故障转移 | HK-A", type: "fallback", proxies: [], append: /香港\s(帕|阿|波)/gm, reverse: /香港/gm },
-        { name: "🌃 故障转移 | HK-B", type: "fallback", proxies: [], append: /香港\s(海|希|传)/gm, reverse: /香港/gm },
+        { name: "🌃 故障转移 | HK-A", type: "fallback", proxies: [], append: /香港\s(帕|阿|波)/gm },
+        { name: "🌃 故障转移 | HK-B", type: "fallback", proxies: [], append: /香港\s(海|希|传)/gm },
+        { name: "🌃 故障转移 | PROVISIONAL", type: "fallback", proxies: [], append: /优选/gm , reverse: /优选/gm},
         // { name: "🌃 故障转移 | HK-C", type: "fallback", proxies: [], append: /香港C\s/gm, reverse: /(?<=\s).+(?=C)/gm },
         // { name: "🌃 故障转移 | IEPL 2X", type: "fallback", proxies: [], append: /二倍专线\s/gm, reverse: /(?<=\s).+(?=二倍专线)/gm},
         { name: "🎑 负载均衡 | 狮城", type: "load-balance", proxies: [], append: /狮城\s/gm },

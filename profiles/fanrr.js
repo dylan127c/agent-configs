@@ -85,6 +85,12 @@ module.exports.configuration = () => {
         additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition",
         additionRemoteType: "yaml",
 
+        removal: [
+            "Remaining traffic",
+            "NO please update",
+            "Expire date"
+        ],
+
         replacement: {
             "Hong Kong": "香港",
             "Taiwan": "台湾",
