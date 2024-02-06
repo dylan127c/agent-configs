@@ -5,11 +5,11 @@ module.exports.configuration = () => {
     ];
     const groups = [
         { name: "🌌 科学上网 | KELE", type: "select", proxies: mainGroups },
-        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
+        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /^((?!流量|到期).)*$/gm },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
-        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
-        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
+        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
+        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | KELE", "DIRECT"] },
         { name: "🌃 负载均衡 | Hong Kong", type: "load-balance", proxies: [], append: /香港/gm },
     ]
@@ -69,11 +69,6 @@ module.exports.configuration = () => {
         additionNativeType: "yaml",
         additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition",
         additionRemoteType: "yaml",
-
-        removal: [
-            "流量",
-            "套餐"
-        ],
 
         replacement: {
             "/香港(?=\\s\\d\\d)/gm": "🇭🇰 香港",

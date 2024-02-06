@@ -345,11 +345,11 @@ const clover = () => {
 
     const groups = [
         { name: "🌌 科学上网 | CLOVER", type: "select", proxies: mainGroups },
-        { name: "🌅 目标节点", type: "select", proxies: ["REJECT"], append: /^(?!剩|套)/gm },
+        { name: "🌅 目标节点", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
-        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^(?!剩|套)/gm },
-        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^(?!剩|套)/gm },
+        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
+        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | CLOVER", "DIRECT"] },
         { name: "🌃 负载均衡 | HK-IEPL", type: "load-balance", proxies: [], append: /(?<=IEPL)香港/gm },
         { name: "🌃 负载均衡 | SG-IEPL", type: "load-balance", proxies: [], append: /(?<=IEPL)新加坡/gm },
@@ -419,11 +419,6 @@ const clover = () => {
         additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition",
         additionRemoteType: "yaml",
 
-        removal: [
-            "流量",
-            "套餐"
-        ],
-
         replacement: {
             "🇹🇼": "🇨🇳",
             "/(?<!\\s)(?=\\d\\d)/gm": " ",
@@ -446,8 +441,8 @@ const clover = () => {
 
 const fanrr = () => {
     const mainGroups = [
-        "🌃 负载均衡 | Hong Kong",
-        "🌃 负载均衡 | Gaming",
+        "🌃 负载均衡 | HK-NORMAL",
+        "🌃 负载均衡 | HK-GAME/3X",
         "🎑 低倍節點 | Streaming",
         "🎑 高倍節點 | Native IP",
         "🌃 负载均衡 | Singapore",
@@ -460,21 +455,21 @@ const fanrr = () => {
 
     const groups = [
         { name: "🌌 科学上网 | FANRR", type: "select", proxies: mainGroups },
-        { name: "🌅 目标節點", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
+        { name: "🌅 目标節點", type: "select", proxies: ["REJECT", "DIRECT"], append: /^((?!traffic|update|date).)*$/gmi },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | FANRR"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | FANRR"] },
-        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
-        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
+        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^((?!traffic|update|date).)*$/gmi },
+        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^((?!traffic|update|date).)*$/gmi },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | FANRR", "DIRECT"] },
         { name: "🎑 低倍節點 | Streaming", type: "select", proxies: ["REJECT"], append: /📺/gm },
-        { name: "🎑 高倍節點 | Native IP", type: "select", proxies: ["REJECT"], append: /[^.]\d[Xx]$/gm },
-        { name: "🌃 负载均衡 | Hong Kong", type: "load-balance", proxies: [], append: /Kong\s\d\d?$/gm, reverse: /Kong/gm },
-        { name: "🌃 负载均衡 | Gaming", type: "load-balance", proxies: [], append: /Kong.+GAME/gm },
-        { name: "🌃 负载均衡 | Singapore", type: "load-balance", proxies: [], append: /Singapore.+[^Xx]$/gm },
-        { name: "🌃 负载均衡 | Taiwan", type: "load-balance", proxies: [], append: /Taiwan.+[^Xx]$/gm },
-        { name: "🌃 负载均衡 | United States", type: "load-balance", proxies: [], append: /United States.+[^Xx]$/gm },
-        { name: "🌃 负载均衡 | Japan", type: "load-balance", proxies: [], append: /Japan.+[^Xx]$/gm },
-        { name: "🌃 负载均衡 | United Kingdom", type: "load-balance", proxies: [], append: /United Kingdom.+[^Xx]$/gm },
+        { name: "🎑 高倍節點 | Native IP", type: "select", proxies: ["REJECT"], append: /[^.]\dx$/gmi },
+        { name: "🌃 负载均衡 | HK-NORMAL", type: "load-balance", proxies: [], append: /^.*kong((?!game).)*$/gmi, reverse: /kong/gmi },
+        { name: "🌃 负载均衡 | HK-GAME/3X", type: "load-balance", proxies: [], append: /kong.*game/gmi },
+        { name: "🌃 负载均衡 | Singapore", type: "load-balance", proxies: [], append: /singapore.*[^x]$/gmi },
+        { name: "🌃 负载均衡 | Taiwan", type: "load-balance", proxies: [], append: /taiwan.*[^x]$/gmi },
+        { name: "🌃 负载均衡 | United States", type: "load-balance", proxies: [], append: /states.*[^x]$/gmi },
+        { name: "🌃 负载均衡 | Japan", type: "load-balance", proxies: [], append: /japan.*[^x]$/gmi },
+        { name: "🌃 负载均衡 | United Kingdom", type: "load-balance", proxies: [], append: /kingdom.*[^x]$/gmi },
     ]
 
     const additionRules = [
@@ -533,12 +528,6 @@ const fanrr = () => {
         additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition",
         additionRemoteType: "yaml",
 
-        removal: [
-            "Remaining traffic",
-            "NO please update",
-            "Expire date"
-        ],
-
         proxiesSpecialized: {
             proxiesAddition: [{
                 name: "🔄️ v2rayN | Global",
@@ -560,11 +549,11 @@ const kele = () => {
     ];
     const groups = [
         { name: "🌌 科学上网 | KELE", type: "select", proxies: mainGroups },
-        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
+        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /^((?!流量|到期).)*$/gm },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
-        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
-        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
+        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
+        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | KELE", "DIRECT"] },
         { name: "🌃 负载均衡 | Hong Kong", type: "load-balance", proxies: [], append: /香港/gm },
     ]
@@ -625,11 +614,6 @@ const kele = () => {
         additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition",
         additionRemoteType: "yaml",
 
-        removal: [
-            "流量",
-            "套餐"
-        ],
-
         replacement: {
             "/香港(?=\\s\\d\\d)/gm": "🇭🇰 香港",
         },
@@ -673,16 +657,16 @@ const nebulae = () => {
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | NEBULAE", "DIRECT"] },
-        { name: "🌃 负载均衡 | HK-PRIORITY", type: "load-balance", proxies: [], append: /香港\s(?=波粒二象性|传导傅里叶)/gm },
-        { name: "🌃 负载均衡 | HK-ALL", type: "load-balance", proxies: [], append: /香港\s(?!波粒二象性|传导傅里叶)/gm },
-        { name: "🌃 负载均衡 | HK-IEPL/2X", type: "load-balance", proxies: [], append: /香港二倍/gm, reverse: /(?<=\s).+(?=二倍)/gm },
-        { name: "🌃 负载均衡 | Singapore", type: "load-balance", proxies: [], append: /狮城\s/gm },
-        { name: "🌃 负载均衡 | Taiwan", type: "load-balance", proxies: [], append: /台湾\s/gm },
-        { name: "🌃 负载均衡 | United States", type: "load-balance", proxies: [], append: /美国\s/gm },
-        { name: "🌃 负载均衡 | Japan", type: "load-balance", proxies: [], append: /日本\s/gm },
-        { name: "🌃 负载均衡 | Germany", type: "load-balance", proxies: [], append: /德国\s/gm },
-        { name: "🎑 其他專線 | REST-IEPL/2X", type: "select", proxies: ["REJECT"], append: /(?<!香港)二倍/gm },
-        { name: "🎑 專用節點 | IPv6", type: "select", proxies: ["REJECT"], append: /v6\s/gm },
+        { name: "🌃 负载均衡 | HK-PRIORITY", type: "load-balance", proxies: [], append: /香港.*(?:波粒|传导).*/gm },
+        { name: "🌃 负载均衡 | HK-ALL", type: "load-balance", proxies: [], append: /^.*香港((?!波粒|传导|专线|v6).)*$/gmi },
+        { name: "🌃 负载均衡 | HK-IEPL/2X", type: "load-balance", proxies: [], append: /香港.*专线/gm, reverse: /香港/gm },
+        { name: "🌃 负载均衡 | Singapore", type: "load-balance", proxies: [], append: /^.*狮城((?!专线|v6).)*$/gmi },
+        { name: "🌃 负载均衡 | Taiwan", type: "load-balance", proxies: [], append: /^.*台湾((?!专线|v6).)*$/gmi },
+        { name: "🌃 负载均衡 | United States", type: "load-balance", proxies: [], append: /^.*美国((?!专线|v6).)*$/gmi },
+        { name: "🌃 负载均衡 | Japan", type: "load-balance", proxies: [], append: /^.*日本((?!专线|v6).)*$/gmi },
+        { name: "🌃 负载均衡 | Germany", type: "load-balance", proxies: [], append: /^.*德国((?!专线|v6).)*$/gmi },
+        { name: "🎑 其他專線 | REST-IEPL/2X", type: "select", proxies: ["REJECT"], append: /^((?!香港).)*专线/gm },
+        { name: "🎑 專用節點 | IPv6", type: "select", proxies: ["REJECT"], append: /v6/gmi },
     ]
 
     const additionRules = [
@@ -769,7 +753,7 @@ const orient = () => {
         "🌅 目标节点",
     ];
 
-    const specificRegex = /韩国|德国|土耳其|巴西|新加坡\s01|日本|阿根廷|澳大利亚|英国/gm;
+    const specificRegex = /韩国|德国|土耳其|巴西|新加坡|日本|阿根廷|澳大利亚|英国/gm;
     const groups = [
         { name: "🌌 科学上网 | ORIENT", type: "select", proxies: mainGroups },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
@@ -778,11 +762,11 @@ const orient = () => {
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: specificRegex },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | ORIENT", "DIRECT"] },
-        { name: "🌃 负载均衡 | SZ/HK-IEPL", type: "load-balance", append: /香港 \d\d 移动.+/gm },
-        { name: "🌃 负载均衡 | SH/HK-IEPL", type: "load-balance", append: /香港 \d\d 电信.+/gm },
-        { name: "🌃 负载均衡 | SH/JP-IEPL", type: "load-balance", append: /日本 \d\d [^A-Z].+/gm },
-        { name: "🌃 负载均衡 | Hong Kong", type: "load-balance", append: /香港\s\d\d [A-Z].+$/gm },
-        { name: "🌃 负载均衡 | Japan", type: "load-balance", append: /日本\s\d\d [A-Z]/gm },
+        { name: "🌃 负载均衡 | SZ/HK-IEPL", type: "load-balance", append: /深港/gm },
+        { name: "🌃 负载均衡 | SH/HK-IEPL", type: "load-balance", append: /沪港/gm },
+        { name: "🌃 负载均衡 | SH/JP-IEPL", type: "load-balance", append: /沪日/gm },
+        { name: "🌃 负载均衡 | Hong Kong", type: "load-balance", append: /^.*香港((?!专线).)*$/gm },
+        { name: "🌃 负载均衡 | Japan", type: "load-balance", append: /^.*日本((?!专线).)*$/gm },
     ];
 
     const additionRules = [

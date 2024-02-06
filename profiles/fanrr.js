@@ -1,7 +1,7 @@
 module.exports.configuration = () => {
     const mainGroups = [
-        "🌃 负载均衡 | Hong Kong",
-        "🌃 负载均衡 | Gaming",
+        "🌃 负载均衡 | HK-NORMAL",
+        "🌃 负载均衡 | HK-GAME/3X",
         "🎑 低倍節點 | Streaming",
         "🎑 高倍節點 | Native IP",
         "🌃 负载均衡 | Singapore",
@@ -14,21 +14,21 @@ module.exports.configuration = () => {
 
     const groups = [
         { name: "🌌 科学上网 | FANRR", type: "select", proxies: mainGroups },
-        { name: "🌅 目标節點", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
+        { name: "🌅 目标節點", type: "select", proxies: ["REJECT", "DIRECT"], append: /^((?!traffic|update|date).)*$/gmi },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | FANRR"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | FANRR"] },
-        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
-        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
+        { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^((?!traffic|update|date).)*$/gmi },
+        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^((?!traffic|update|date).)*$/gmi },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | FANRR", "DIRECT"] },
         { name: "🎑 低倍節點 | Streaming", type: "select", proxies: ["REJECT"], append: /📺/gm },
-        { name: "🎑 高倍節點 | Native IP", type: "select", proxies: ["REJECT"], append: /[^.]\d[Xx]$/gm },
-        { name: "🌃 负载均衡 | Hong Kong", type: "load-balance", proxies: [], append: /Kong\s\d\d?$/gm, reverse: /Kong/gm },
-        { name: "🌃 负载均衡 | Gaming", type: "load-balance", proxies: [], append: /Kong.+GAME/gm },
-        { name: "🌃 负载均衡 | Singapore", type: "load-balance", proxies: [], append: /Singapore.+[^Xx]$/gm },
-        { name: "🌃 负载均衡 | Taiwan", type: "load-balance", proxies: [], append: /Taiwan.+[^Xx]$/gm },
-        { name: "🌃 负载均衡 | United States", type: "load-balance", proxies: [], append: /United States.+[^Xx]$/gm },
-        { name: "🌃 负载均衡 | Japan", type: "load-balance", proxies: [], append: /Japan.+[^Xx]$/gm },
-        { name: "🌃 负载均衡 | United Kingdom", type: "load-balance", proxies: [], append: /United Kingdom.+[^Xx]$/gm },
+        { name: "🎑 高倍節點 | Native IP", type: "select", proxies: ["REJECT"], append: /[^.]\dx$/gmi },
+        { name: "🌃 负载均衡 | HK-NORMAL", type: "load-balance", proxies: [], append: /^.*kong((?!game).)*$/gmi, reverse: /kong/gmi },
+        { name: "🌃 负载均衡 | HK-GAME/3X", type: "load-balance", proxies: [], append: /kong.*game/gmi },
+        { name: "🌃 负载均衡 | Singapore", type: "load-balance", proxies: [], append: /singapore.*[^x]$/gmi },
+        { name: "🌃 负载均衡 | Taiwan", type: "load-balance", proxies: [], append: /taiwan.*[^x]$/gmi },
+        { name: "🌃 负载均衡 | United States", type: "load-balance", proxies: [], append: /states.*[^x]$/gmi },
+        { name: "🌃 负载均衡 | Japan", type: "load-balance", proxies: [], append: /japan.*[^x]$/gmi },
+        { name: "🌃 负载均衡 | United Kingdom", type: "load-balance", proxies: [], append: /kingdom.*[^x]$/gmi },
     ]
 
     const additionRules = [
@@ -86,12 +86,6 @@ module.exports.configuration = () => {
         additionNativeType: "yaml",
         additionRemote: "https://raw.gitmirror.com/dylan127c/proxy-rules/main/commons/rules/addition",
         additionRemoteType: "yaml",
-
-        removal: [
-            "Remaining traffic",
-            "NO please update",
-            "Expire date"
-        ],
 
         proxiesSpecialized: {
             proxiesAddition: [{
