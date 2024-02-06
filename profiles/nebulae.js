@@ -1,18 +1,17 @@
 module.exports.configuration = () => {
     const mainGroups = [
-        "🌇 延时检测 | PROVISIONAL",
-        "🌃 故障转移 | HK-A",
-        "🌃 故障转移 | HK-B",
-        // "🌃 故障转移 | HK-C",
-        // "🌃 故障转移 | IEPL 2X",
-        "🎑 负载均衡 | 狮城",
-        "🎑 负载均衡 | 台湾",
-        "🎑 负载均衡 | 美国",
-        "🎑 负载均衡 | 日本",
-        "🎑 负载均衡 | 德国",
-        "🌇 專用節點 | IPv6",
+        "🌃 负载均衡 | HK-PRIORITY",
+        "🌃 负载均衡 | HK-ALL",
+        "🌃 负载均衡 | HK-IEPL/2X",
+        "🌃 负载均衡 | Singapore",
+        "🌃 负载均衡 | Taiwan",
+        "🌃 负载均衡 | United States",
+        "🌃 负载均衡 | Japan",
+        "🌃 负载均衡 | Germany",
+        "🎑 其他專線 | REST-IEPL/2X",
+        "🎑 專用節點 | IPv6",
         "🌅 目标节点",
-    ].concat(["DIRECT"]);
+    ];
 
     const groups = [
         { name: "🌌 科学上网 | NEBULAE", type: "select", proxies: mainGroups },
@@ -22,17 +21,16 @@ module.exports.configuration = () => {
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | NEBULAE", "DIRECT"] },
-        { name: "🌃 故障转移 | HK-A", type: "fallback", proxies: [], append: /香港\s(帕|阿|波)/gm },
-        { name: "🌃 故障转移 | HK-B", type: "fallback", proxies: [], append: /香港\s(海|希|传)/gm },
-        { name: "🌇 延时检测 | PROVISIONAL", type: "url-test", proxies: [], append: /优选/gm , reverse: /优选/gm},
-        // { name: "🌃 故障转移 | HK-C", type: "fallback", proxies: [], append: /香港C\s/gm, reverse: /(?<=\s).+(?=C)/gm },
-        // { name: "🌃 故障转移 | IEPL 2X", type: "fallback", proxies: [], append: /二倍专线\s/gm, reverse: /(?<=\s).+(?=二倍专线)/gm},
-        { name: "🎑 负载均衡 | 狮城", type: "load-balance", proxies: [], append: /狮城\s/gm },
-        { name: "🎑 负载均衡 | 台湾", type: "load-balance", proxies: [], append: /台湾\s/gm },
-        { name: "🎑 负载均衡 | 美国", type: "load-balance", proxies: [], append: /美国\s/gm },
-        { name: "🎑 负载均衡 | 日本", type: "load-balance", proxies: [], append: /日本\s/gm },
-        { name: "🎑 负载均衡 | 德国", type: "load-balance", proxies: [], append: /德国\s/gm },
-        { name: "🌇 專用節點 | IPv6", type: "url-test", proxies: ["REJECT"], append: /v6\s/gm },
+        { name: "🌃 负载均衡 | HK-PRIORITY", type: "load-balance", proxies: [], append: /香港\s(?=波粒二象性|传导傅里叶)/gm },
+        { name: "🌃 负载均衡 | HK-ALL", type: "load-balance", proxies: [], append: /香港\s(?!波粒二象性|传导傅里叶)/gm },
+        { name: "🌃 负载均衡 | HK-IEPL/2X", type: "load-balance", proxies: [], append: /香港二倍/gm, reverse: /(?<=\s).+(?=二倍)/gm },
+        { name: "🌃 负载均衡 | Singapore", type: "load-balance", proxies: [], append: /狮城\s/gm },
+        { name: "🌃 负载均衡 | Taiwan", type: "load-balance", proxies: [], append: /台湾\s/gm },
+        { name: "🌃 负载均衡 | United States", type: "load-balance", proxies: [], append: /美国\s/gm },
+        { name: "🌃 负载均衡 | Japan", type: "load-balance", proxies: [], append: /日本\s/gm },
+        { name: "🌃 负载均衡 | Germany", type: "load-balance", proxies: [], append: /德国\s/gm },
+        { name: "🎑 其他專線 | REST-IEPL/2X", type: "select", proxies: ["REJECT"], append: /(?<!香港)二倍/gm },
+        { name: "🎑 專用節點 | IPv6", type: "select", proxies: ["REJECT"], append: /v6\s/gm },
     ]
 
     const additionRules = [

@@ -37,12 +37,8 @@ module.exports.parse = async (raw, { axios, yaml, notify, console },
         }
         log.info(mark(funcName), "mode:", Object.values(mode));
 
-        /* GENERATE CONFIGURATION */
-        // let generateConfiguration = main.generate(log, mode, originalConfiguration, modifiedParams);
-
-        /* STASH && SHADOWROCKET CONFIGURATION */
-        // outputStash(yaml, log, name, generateConfiguration);
-        outputShadowrocket(log, name, undefined, modifiedParams);
+        /* TRANSFORM SHADOWROCKET RULES */
+        outputShadowrocket(log, modifiedParams);
 
         /* CLASH FOR WINDOWS CONFIGURATION */
         const result = outputClash(main, axios, log, mode, originalConfiguration, modifiedParams);
@@ -136,29 +132,14 @@ function update(axios, log) {
     }
 }
 
-function outputStash(yaml, log, name, output) {
-    const funcName = "outputStash";
-    try {
-        delete require.cache[require.resolve(settings.stashConfig)];
-        const stash = require(settings.stashConfig);
-        log.info(mark(funcName), "script applied.");
-
-        stash.output(yaml, log, name, output);
-        log.info(mark(funcName), "output completed.");
-    } catch (error) {
-        log.error(mark(funcName), "output failed.")
-        log.error(mark(funcName), error);
-    }
-}
-
-function outputShadowrocket(log, name, output, modifiedParams) {
+function outputShadowrocket(log, modifiedParams) {
     const funcName = "outputShadowrocket";
     try {
         delete require.cache[require.resolve(settings.shadowrocketConfig)];
         const shadowrocket = require(settings.shadowrocketConfig);
         log.info(mark(funcName), "script applied.");
 
-        shadowrocket.output(log, name, output, modifiedParams);
+        shadowrocket.transformRules(log, modifiedParams);
         log.info(mark(funcName), "output completed.");
     } catch (error) {
         log.error(mark(funcName), "output failed.")
@@ -178,21 +159,6 @@ function outputClash(main, axios, log, mode, originalConfiguration, modifiedPara
     nameChanger(generateConfiguration, modifiedParams);
     proxyAdder(generateConfiguration, modifiedParams);
     return generateConfiguration;
-}
-
-function outputClashVerge(log) {
-    const funcName = "outputClashVerge";
-    try {
-        delete require.cache[require.resolve("../clash verge/transform")];
-        const cv = require("../clash verge/transform");
-        log.info(mark(funcName), "script applied.");
-
-        cv.output();
-        log.info(mark(funcName), "output completed.");
-    } catch (error) {
-        log.error(mark(funcName), "output failed.")
-        log.error(mark(funcName), error);
-    }
 }
 
 /**

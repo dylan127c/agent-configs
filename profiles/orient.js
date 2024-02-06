@@ -1,12 +1,12 @@
 module.exports.configuration = () => {
     const mainGroups = [
-        "🌃 故障转移 | 深港移动",
-        "🌃 故障转移 | 沪港电信",
-        "🌃 故障转移 | 沪日电信",
-        "🎑 负载均衡 | 香港",
-        "🎑 负载均衡 | 日本",
+        "🌃 负载均衡 | SZ/HK-IEPL",
+        "🌃 负载均衡 | SH/HK-IEPL",
+        "🌃 负载均衡 | SH/JP-IEPL",
+        "🌃 负载均衡 | Hong Kong",
+        "🌃 负载均衡 | Japan",
         "🌅 目标节点",
-    ].concat(["DIRECT"]);
+    ];
 
     const specificRegex = /韩国|德国|土耳其|巴西|新加坡\s01|日本|阿根廷|澳大利亚|英国/gm;
     const groups = [
@@ -17,11 +17,11 @@ module.exports.configuration = () => {
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: specificRegex },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | ORIENT", "DIRECT"] },
-        { name: "🌃 故障转移 | 深港移动", type: "fallback", append: /香港 \d\d 移动.+/gm },
-        { name: "🌃 故障转移 | 沪港电信", type: "fallback", append: /香港 \d\d 电信.+/gm },
-        { name: "🌃 故障转移 | 沪日电信", type: "fallback", append: /日本 \d\d [^A-Z].+/gm },
-        { name: "🎑 负载均衡 | 香港", type: "load-balance", append: /香港\s\d\d [A-Z].+$/gm },
-        { name: "🎑 负载均衡 | 日本", type: "load-balance", append: /日本\s\d\d [A-Z]/gm },
+        { name: "🌃 负载均衡 | SZ/HK-IEPL", type: "load-balance", append: /香港 \d\d 移动.+/gm },
+        { name: "🌃 负载均衡 | SH/HK-IEPL", type: "load-balance", append: /香港 \d\d 电信.+/gm },
+        { name: "🌃 负载均衡 | SH/JP-IEPL", type: "load-balance", append: /日本 \d\d [^A-Z].+/gm },
+        { name: "🌃 负载均衡 | Hong Kong", type: "load-balance", append: /香港\s\d\d [A-Z].+$/gm },
+        { name: "🌃 负载均衡 | Japan", type: "load-balance", append: /日本\s\d\d [A-Z]/gm },
     ];
 
     const additionRules = [

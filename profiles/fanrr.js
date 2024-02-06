@@ -1,32 +1,34 @@
 module.exports.configuration = () => {
     const mainGroups = [
-        "🌃 故障转移 | HK-N",
-        "🌃 故障转移 | HK-G",
-        "🎑 负载均衡 | 狮城",
-        "🎑 负载均衡 | 台湾",
-        "🎑 负载均衡 | 美国",
-        "🎑 负载均衡 | 日本",
-        "🎑 负载均衡 | 英国",
-        "🌇 其他節點",
-        "🌅 目标节点",
-    ].concat(["DIRECT"]);
+        "🌃 负载均衡 | Hong Kong",
+        "🌃 负载均衡 | Gaming",
+        "🎑 低倍節點 | Streaming",
+        "🎑 高倍節點 | Native IP",
+        "🌃 负载均衡 | Singapore",
+        "🌃 负载均衡 | Taiwan",
+        "🌃 负载均衡 | United States",
+        "🌃 负载均衡 | Japan",
+        "🌃 负载均衡 | United Kingdom",
+        "🌅 目标節點",
+    ];
 
     const groups = [
         { name: "🌌 科学上网 | FANRR", type: "select", proxies: mainGroups },
-        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
+        { name: "🌅 目标節點", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | FANRR"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | FANRR"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | FANRR", "DIRECT"] },
-        { name: "🌃 故障转移 | HK-N", type: "fallback", proxies: [], append: /Kong\s\d\d?$/gm, reverse: /Kong/gm },
-        { name: "🌃 故障转移 | HK-G", type: "fallback", proxies: [], append: /Kong.+GAME/gm },
-        { name: "🎑 负载均衡 | 狮城", type: "load-balance", proxies: [], append: /Singapore/gm },
-        { name: "🎑 负载均衡 | 台湾", type: "load-balance", proxies: [], append: /Taiwan/gm },
-        { name: "🎑 负载均衡 | 美国", type: "load-balance", proxies: [], append: /United States/gm },
-        { name: "🎑 负载均衡 | 日本", type: "load-balance", proxies: [], append: /Japan/gm },
-        { name: "🎑 负载均衡 | 英国", type: "load-balance", proxies: [], append: /United Kingdom/gm },
-        { name: "🌇 其他節點", type: "url-test", proxies: ["REJECT"], append: /^\W{4}\s\W/gm },
+        { name: "🎑 低倍節點 | Streaming", type: "select", proxies: ["REJECT"], append: /📺/gm },
+        { name: "🎑 高倍節點 | Native IP", type: "select", proxies: ["REJECT"], append: /[^.]\d[Xx]$/gm },
+        { name: "🌃 负载均衡 | Hong Kong", type: "load-balance", proxies: [], append: /Kong\s\d\d?$/gm, reverse: /Kong/gm },
+        { name: "🌃 负载均衡 | Gaming", type: "load-balance", proxies: [], append: /Kong.+GAME/gm },
+        { name: "🌃 负载均衡 | Singapore", type: "load-balance", proxies: [], append: /Singapore.+[^Xx]$/gm },
+        { name: "🌃 负载均衡 | Taiwan", type: "load-balance", proxies: [], append: /Taiwan.+[^Xx]$/gm },
+        { name: "🌃 负载均衡 | United States", type: "load-balance", proxies: [], append: /United States.+[^Xx]$/gm },
+        { name: "🌃 负载均衡 | Japan", type: "load-balance", proxies: [], append: /Japan.+[^Xx]$/gm },
+        { name: "🌃 负载均衡 | United Kingdom", type: "load-balance", proxies: [], append: /United Kingdom.+[^Xx]$/gm },
     ]
 
     const additionRules = [
@@ -90,15 +92,6 @@ module.exports.configuration = () => {
             "NO please update",
             "Expire date"
         ],
-
-        replacement: {
-            "Hong Kong": "香港",
-            "Taiwan": "台湾",
-            "Japan": "日本",
-            "Singapore": "狮城",
-            "United States": "美国",
-            "United Kingdom": "英国",
-        },
 
         proxiesSpecialized: {
             proxiesAddition: [{
