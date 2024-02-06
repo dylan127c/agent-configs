@@ -11,7 +11,9 @@ function main(params) {
         configuration = nebulae;
     } else if (identification.includes("Fanrr")) {
         configuration = fanrr;
-    } else {
+    } else if (identification.includes("SWIFT")) {
+        configuration = swift;
+    }else {
         return params;
     }
     let mode = {
