@@ -58,7 +58,6 @@ module.exports.updateCheck = (axios, log) => {
  */
 function updateRules(axios, log) {
     const funcName = "updateRules";
-    const allCompleted = true;
     const promises = settings.files.map(fileName => {
         return axios({
             method: "get",
@@ -72,7 +71,6 @@ function updateRules(axios, log) {
                     ),
                     res.data, 'utf8',
                     (err) => {
-                        `=`
                         if (err) {
                             log.info(mark(funcName), "update failure:", fileName + ".yaml");
                             log.info(mark(funcName), err);
@@ -87,20 +85,15 @@ function updateRules(axios, log) {
         }).catch(err => {
             log.info(mark(funcName), "axios errors occurred:", fileName + ".yaml");
             log.info(mark(funcName), err);
-            allCompleted = false;
-            return Promise.resolve();
+            return Promise.reject();
         });
     });
     Promise.all(promises)
         .then(() => {
-            if (allCompleted) {
-                updateTimestamp(log);
-            } else {
-                log.info(mark(funcName), "some updates failed, timestamp won't update this time.");
-            }
+            updateTimestamp(log);
         })
         .catch(err => {
-            log.info(mark(funcName), "promise.all errors occurred.");
+            log.info(mark(funcName), "some updates failed, timestamp won't update this time.");
             log.info(mark(funcName), err);
         });
 }
