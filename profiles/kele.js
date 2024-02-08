@@ -1,18 +1,18 @@
 module.exports.configuration = () => {
-    const mainGroups = [
-        "🌃 负载均衡 | Hong Kong",
-        "🌅 目标节点",
-    ];
-    const groups = [
-        { name: "🌌 科学上网 | KELE", type: "select", proxies: mainGroups },
-        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /^((?!流量|到期).)*$/gm },
+
+    const mainGroup = [{ name: "🌌 科学上网 | KELE", type: "select" },];
+    const ruleRequiredGroups = [
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | KELE", "DIRECT"] },
+    ];
+    const mainRequiredGroups = [
         { name: "🌃 负载均衡 | Hong Kong", type: "load-balance", proxies: [], append: /香港/gm },
-    ]
+        { name: "🌅 目标节点", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
+    ];
+
 
     const additionRules = [
         "RULE-SET,idm,🌆 数据下载 | IDM",
@@ -45,9 +45,11 @@ module.exports.configuration = () => {
     ];
 
     return {
-        groups: groups,
+        mainGroup: mainGroup,
+        ruleRequiredGroups: ruleRequiredGroups,
+        mainRequiredGroups: mainRequiredGroups,
+
         endRules: endRules,
-        connector: "-",
         initScript: "h:/onedrive/repositories/proxy rules/commons/configs/basis",
 
         defaultBehavior: "domain",

@@ -15,6 +15,8 @@ const TOLERANCE = 50;
 const MAIN_NETWORK_INDEX = 0;
 const REJECT = "REJECT";
 const DIRECT = "DIRECT";
+const CONNECTOR = "-";
+const DEFAULT_PROXY = "REJECT";
 
 /** @method {@link getRuleProviders} */
 const FILE = "file";
@@ -75,7 +77,7 @@ function getRules(modifiedParams, identifiers) {
             return arr;
         }
         const provisional = rules.map(ele => {
-            return ele.replace(",", ",".concat(prefix, modifiedParams.connector));
+            return ele.replace(",", ",".concat(prefix, CONNECTOR));
         });
         arr = arr.concat(provisional);
     });
@@ -91,78 +93,98 @@ function getProxyGroups(modifiedParams, configuraion) {
         })
     }
 
+    const groupsAll = modifiedParams.hasOwnProperty("mainRequiredGroups") ?
+        [modifiedParams.mainGroup, modifiedParams.ruleRequiredGroups, modifiedParams.mainRequiredGroups] :
+        [modifiedParams.mainGroup, modifiedParams.ruleRequiredGroups]
+
     const arr = [];
-    modifiedParams.groups.forEach(group => {
-        const groupConstruct = {
-            name: group.name,
-            type: group.type,
-            proxies: group.hasOwnProperty("proxies") ? Array.from(group.proxies) : [],
-        };
+    for (let i = 0; i < groupsAll.length; i++) {
+        for (let j = 0; j < groupsAll[i].length; j++) {
+            const group = groupsAll[i][j];
+            const groupConstruct = {
+                name: group.name,
+                type: group.type,
+                proxies: group.hasOwnProperty("proxies") ? Array.from(group.proxies) : [],
+            };
 
-        if (group.type !== SELECT) {
-            groupConstruct.url = HEALTH_CHECK_URL;
-            groupConstruct.lazy = LAZY_TESTING;
+            if (group.type !== SELECT) {
+                groupConstruct.url = HEALTH_CHECK_URL;
+                groupConstruct.lazy = LAZY_TESTING;
 
-            /* CONSISTENT-HASHING IS DEFAULT STRATEGY */
-            if (group.type === LOAD_BALANCE) {
-                groupConstruct.strategy = STRATEGY;
+                /* CONSISTENT-HASHING IS DEFAULT STRATEGY */
+                if (group.type === LOAD_BALANCE) {
+                    groupConstruct.strategy = STRATEGY;
+                }
+                if (group.type === URL_TEST) {
+                    groupConstruct.tolerance = TOLERANCE;
+                }
+                /* ALLOW CUSTOMIZE HEALTH CHECK INTERVAL */
+                if (modifiedParams.hasOwnProperty("interval")) {
+                    groupConstruct.interval = modifiedParams.interval;
+                } else {
+                    groupConstruct.interval = TEST_INTERVAL;
+                }
             }
-            if (group.type === URL_TEST) {
-                groupConstruct.tolerance = TOLERANCE;
-            }
-            /* ALLOW CUSTOMIZE HEALTH CHECK INTERVAL */
-            if (modifiedParams.hasOwnProperty("interval")) {
-                groupConstruct.interval = modifiedParams.interval;
-            } else {
-                groupConstruct.interval = TEST_INTERVAL;
-            }
-        }
 
-        const conditions = [];
-        if (group.hasOwnProperty("append")) {
-            configuraion.proxies.forEach(proxy => {
-                /* GET THE CONDITIONS FOR RESERSING SORTING */
-                if (group.hasOwnProperty("reverse")) {
-                    const condition = proxy.name.match(group.reverse);
-                    if (condition && condition.length) {
-                        conditions.push(condition[0]);
+            if (i === 0) {
+                if (groupsAll.length === 2) {
+                    /* DEFAULT PROXIES ADDING TO AVOID EMPTY GROUP PROXIES */
+                    groupConstruct.proxies.push(DEFAULT_PROXY);
+                    configuraion.proxies.forEach(proxy => {
+                        groupConstruct.proxies.push(proxy.name);
+                    });
+                }
+                arr.push(groupConstruct);
+                break;
+            }
+
+            const conditions = [];
+            if (group.hasOwnProperty("append")) {
+                configuraion.proxies.forEach(proxy => {
+                    /* GET THE CONDITIONS FOR RESERSING SORTING */
+                    if (group.hasOwnProperty("reverse")) {
+                        const condition = proxy.name.match(group.reverse);
+                        if (condition && condition.length) {
+                            conditions.push(condition[0]);
+                        }
                     }
-                }
-                if (proxy.name.match(group.append)) {
-                    groupConstruct.proxies.push(proxy.name);
-                }
-            });
-        }
-
-        /* REVERSE SORTING BASED ON CONDITIONS */
-        if (conditions.length) {
-            const ordered = [];
-            [...new Set(conditions)].forEach(condition => {
-                const saver = [];
-                groupConstruct.proxies.forEach(name => {
-                    if (name.match(condition)) {
-                        saver.unshift(name);
+                    if (proxy.name.match(group.append)) {
+                        groupConstruct.proxies.push(proxy.name);
                     }
                 });
-                saver.forEach(name => {
-                    ordered.push(name);
-                });
-            });
-            groupConstruct.proxies = Array.from(ordered);
-        }
+            }
 
-        /* DEFAULT PROXIES BEHAVIOR TO REMOVE UNQUALIFIED GROUP'S PROXIES */
-        if (groupConstruct.proxies.length === 0) {
-            const index = arr[MAIN_NETWORK_INDEX].proxies.indexOf(group.name);
-            arr[MAIN_NETWORK_INDEX].proxies.splice(index, 1);
-        } else if (groupConstruct.proxies.length === 1 &&
-            (groupConstruct.proxies[0] === REJECT || groupConstruct.proxies[0] === DIRECT)) {
-            const index = arr[MAIN_NETWORK_INDEX].proxies.indexOf(group.name);
-            arr[MAIN_NETWORK_INDEX].proxies.splice(index, 1);
-        } else {
+            /* REVERSE SORTING BASED ON CONDITIONS */
+            if (conditions.length) {
+                const ordered = [];
+                [...new Set(conditions)].forEach(condition => {
+                    const saver = [];
+                    groupConstruct.proxies.forEach(name => {
+                        if (name.match(condition)) {
+                            saver.unshift(name);
+                        }
+                    });
+                    saver.forEach(name => {
+                        ordered.push(name);
+                    });
+                });
+                groupConstruct.proxies = Array.from(ordered);
+            }
+
+            /* DEFAULT PROXIES BEHAVIOR TO REMOVE UNQUALIFIED GROUP'S PROXIES */
+            if (i === 2) {
+                if (groupConstruct.proxies.length === 0) {
+                    continue;
+                } else if (groupConstruct.proxies.length === 1 &&
+                    (groupConstruct.proxies[0] === REJECT || groupConstruct.proxies[0] === DIRECT)) {
+                    continue;
+                } else {
+                    arr[0].proxies.push(groupConstruct.name);
+                }
+            }
             arr.push(groupConstruct);
         }
-    })
+    }
     return arr;
 }
 
@@ -174,7 +196,7 @@ function getRuleProviders(mode, modifiedParams) {
             return ele.replace(",no-resolve", "").match(/(?<=,).+(?=,)/gm).toString();
         });
         ruleNames.forEach(name => {
-            ruleProviders[modifiedParams.additionPrefix.concat(modifiedParams.connector + name)] = {
+            ruleProviders[modifiedParams.additionPrefix.concat(CONNECTOR + name)] = {
                 type: mode.additionStatus ? FILE : HTTP,
                 behavior: getBehavior(modifiedParams, name),
                 [link]: mode.additionStatus ?
@@ -190,7 +212,7 @@ function getRuleProviders(mode, modifiedParams) {
             return ele.replace(/^.+?,/gm, "").replace(/,.+$/gm, "");
         });
         ruleNames.forEach(name => {
-            ruleProviders[modifiedParams.originalPrefix.concat(modifiedParams.connector + name)] = {
+            ruleProviders[modifiedParams.originalPrefix.concat(CONNECTOR + name)] = {
                 type: mode.originalStatus ? FILE : HTTP,
                 behavior: getBehavior(modifiedParams, name),
                 [link]: mode.originalStatus ?

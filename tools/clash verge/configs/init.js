@@ -23,7 +23,7 @@ function main(params) {
 
     /* WHITELIST MODE REVERSE DEFAULT GROUP FOR MATCH RULES */
     const provisional = configuration();
-    provisional.groups.forEach(element => {
+    provisional.ruleRequiredGroups.forEach(element => {
         if (element.name.match("规则逃逸")) {
             const reversed = element.proxies.reverse();
             element.proxies = reversed;

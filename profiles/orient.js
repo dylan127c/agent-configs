@@ -1,27 +1,22 @@
 module.exports.configuration = () => {
-    const mainGroups = [
-        "🌃 负载均衡 | SZ/HK-IEPL",
-        "🌃 负载均衡 | SH/HK-IEPL",
-        "🌃 负载均衡 | SH/JP-IEPL",
-        "🌃 负载均衡 | Hong Kong",
-        "🌃 负载均衡 | Japan",
-        "🌅 目标节点",
-    ];
-
+    
     const specificRegex = /韩国|德国|土耳其|巴西|新加坡|日本|阿根廷|澳大利亚|英国/gm;
-    const groups = [
-        { name: "🌌 科学上网 | ORIENT", type: "select", proxies: mainGroups },
-        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
+    
+    const mainGroup = [{ name: "🌌 科学上网 | ORIENT", type: "select" },];
+    const ruleRequiredGroups = [
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: specificRegex },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | ORIENT", "DIRECT"] },
+    ];
+    const mainRequiredGroups = [
         { name: "🌃 负载均衡 | SZ/HK-IEPL", type: "load-balance", append: /深港/gm },
         { name: "🌃 负载均衡 | SH/HK-IEPL", type: "load-balance", append: /沪港/gm },
         { name: "🌃 负载均衡 | SH/JP-IEPL", type: "load-balance", append: /沪日/gm },
         { name: "🌃 负载均衡 | Hong Kong", type: "load-balance", append: /^.*香港((?!专线).)*$/gm },
         { name: "🌃 负载均衡 | Japan", type: "load-balance", append: /^.*日本((?!专线).)*$/gm },
+        { name: "🌅 目标节点", type: "select", proxies: ["REJECT"], append: /.+/gm },
     ];
 
     const additionRules = [
@@ -57,9 +52,11 @@ module.exports.configuration = () => {
     ];
 
     return {
-        groups: groups,
+        mainGroup: mainGroup,
+        ruleRequiredGroups: ruleRequiredGroups,
+        mainRequiredGroups: mainRequiredGroups,
+
         endRules: endRules,
-        connector: "-",
         initScript: "h:/onedrive/repositories/proxy rules/commons/configs/basis",
 
         defaultBehavior: "domain",

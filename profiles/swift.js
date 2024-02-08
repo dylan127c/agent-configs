@@ -1,27 +1,21 @@
 module.exports.configuration = () => {
-    const mainGroups = [
-        "🌃 负载均衡 | Hong Kong",
-        "🌃 负载均衡 | Singapore",
-        "🌃 负载均衡 | Taiwan",
-        "🌃 负载均衡 | United States",
-        "🌃 负载均衡 | Japan",
-        "🌅 目标節點",
-    ];
 
-    const groups = [
-        { name: "🌌 科学上网 | SWIFT", type: "select", proxies: mainGroups },
-        { name: "🌅 目标節點", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gmi },
+    const mainGroup = [{ name: "🌌 科学上网 | SWIFT", type: "select" },];
+    const ruleRequiredGroups = [
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | SWIFT"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | SWIFT"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gmi },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gmi },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | SWIFT", "DIRECT"] },
+    ];
+    const mainRequiredGroups = [
         { name: "🌃 负载均衡 | Hong Kong", type: "load-balance", proxies: [], append: /🇭🇰/gmi },
         { name: "🌃 负载均衡 | Singapore", type: "load-balance", proxies: [], append: /🇸🇬/gmi },
         { name: "🌃 负载均衡 | Taiwan", type: "load-balance", proxies: [], append: /🇹🇼/gmi },
         { name: "🌃 负载均衡 | United States", type: "load-balance", proxies: [], append: /🇺🇸/gmi },
         { name: "🌃 负载均衡 | Japan", type: "load-balance", proxies: [], append: /🇯🇵/gmi },
-    ]
+        { name: "🌅 目标節點", type: "select", proxies: ["REJECT"], append: /.+/gmi },
+    ];
 
     const additionRules = [
         "RULE-SET,idm,🌆 数据下载 | IDM",
@@ -54,9 +48,11 @@ module.exports.configuration = () => {
     ];
 
     return {
-        groups: groups,
+        mainGroup: mainGroup,
+        ruleRequiredGroups: ruleRequiredGroups,
+        mainRequiredGroups: mainRequiredGroups,
+
         endRules: endRules,
-        connector: "-",
         initScript: "h:/onedrive/repositories/proxy rules/commons/configs/basis",
 
         defaultBehavior: "domain",

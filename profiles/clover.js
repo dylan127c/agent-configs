@@ -1,26 +1,14 @@
 module.exports.configuration = () => {
-    const mainGroups = [
-        "🌃 负载均衡 | HK-IEPL",
-        "🌃 负载均衡 | HK-TRANS",
-        "🌃 负载均衡 | SG-IEPL",
-        "🌃 负载均衡 | SG-TRANS",
-        "🌃 负载均衡 | TW-IEPL",
-        "🌃 负载均衡 | TW-TRANS",
-        "🌃 负载均衡 | KR-IEPL",
-        "🌃 负载均衡 | KR-TRANS",
-        "🌃 负载均衡 | JP-IEPL",
-        "🌃 负载均衡 | JP-TRANS",
-        "🌅 目标节点",
-    ];
 
-    const groups = [
-        { name: "🌌 科学上网 | CLOVER", type: "select", proxies: mainGroups },
-        { name: "🌅 目标节点", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
+    const mainGroup = [{ name: "🌌 科学上网 | CLOVER", type: "select" }];
+    const ruleRequiredGroups = [
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | CLOVER", "DIRECT"] },
+    ];
+    const mainRequiredGroups = [
         { name: "🌃 负载均衡 | HK-IEPL", type: "load-balance", proxies: [], append: /(?<=IEPL)香港/gm },
         { name: "🌃 负载均衡 | SG-IEPL", type: "load-balance", proxies: [], append: /(?<=IEPL)新加坡/gm },
         { name: "🌃 负载均衡 | TW-IEPL", type: "load-balance", proxies: [], append: /(?<=IEPL)台湾/gm },
@@ -30,8 +18,9 @@ module.exports.configuration = () => {
         { name: "🌃 负载均衡 | SG-TRANS", type: "load-balance", proxies: [], append: /(?<!IEPL)新加坡/gm },
         { name: "🌃 负载均衡 | TW-TRANS", type: "load-balance", proxies: [], append: /(?<!IEPL)台湾/gm },
         { name: "🌃 负载均衡 | KR-TRANS", type: "load-balance", proxies: [], append: /(?<!IEPL)韩国/gm },
-        { name: "🌃 负载均衡 | JP-TRANS", type: "load-balance", proxies: [], append: /(?<!IEPL)日本/gm }
-    ]
+        { name: "🌃 负载均衡 | JP-TRANS", type: "load-balance", proxies: [], append: /(?<!IEPL)日本/gm },
+        { name: "🌅 目标节点", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
+    ];
 
     const additionRules = [
         "RULE-SET,idm,🌆 数据下载 | IDM",
@@ -64,9 +53,11 @@ module.exports.configuration = () => {
     ];
 
     return {
-        groups: groups,
+        mainGroup: mainGroup,
+        ruleRequiredGroups: ruleRequiredGroups,
+        mainRequiredGroups: mainRequiredGroups,
+
         endRules: endRules,
-        connector: "-",
         initScript: "h:/onedrive/repositories/proxy rules/commons/configs/basis",
 
         defaultBehavior: "domain",

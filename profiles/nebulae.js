@@ -1,26 +1,14 @@
 module.exports.configuration = () => {
-    const mainGroups = [
-        "🌃 负载均衡 | HK-PRIORITY",
-        "🌃 负载均衡 | HK-ALL",
-        "🌃 负载均衡 | HK-IEPL/2X",
-        "🌃 负载均衡 | Singapore",
-        "🌃 负载均衡 | Taiwan",
-        "🌃 负载均衡 | United States",
-        "🌃 负载均衡 | Japan",
-        "🌃 负载均衡 | Germany",
-        "🎑 其他專線 | REST-IEPL/2X",
-        "🎑 專用節點 | IPv6",
-        "🌅 目标节点",
-    ];
-
-    const groups = [
-        { name: "🌌 科学上网 | NEBULAE", type: "select", proxies: mainGroups },
-        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
+    
+    const mainGroup = [{ name: "🌌 科学上网 | NEBULAE", type: "select" },];
+    const ruleRequiredGroups = [
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | NEBULAE", "DIRECT"] },
+    ];
+    const mainRequiredGroups = [
         { name: "🌃 负载均衡 | HK-PRIORITY", type: "load-balance", proxies: [], append: /香港.*(?:波粒|传导).*/gm },
         { name: "🌃 负载均衡 | HK-ALL", type: "load-balance", proxies: [], append: /^.*香港((?!波粒|传导|专线|v6).)*$/gmi },
         { name: "🌃 负载均衡 | HK-IEPL/2X", type: "load-balance", proxies: [], append: /香港.*专线/gm, reverse: /香港/gm },
@@ -31,7 +19,8 @@ module.exports.configuration = () => {
         { name: "🌃 负载均衡 | Germany", type: "load-balance", proxies: [], append: /^.*德国((?!专线|v6).)*$/gmi },
         { name: "🎑 其他專線 | REST-IEPL/2X", type: "select", proxies: ["REJECT"], append: /^((?!香港).)*专线/gm },
         { name: "🎑 專用節點 | IPv6", type: "select", proxies: ["REJECT"], append: /v6/gmi },
-    ]
+        { name: "🌅 目标节点", type: "select", proxies: ["REJECT"], append: /.+/gm },
+    ];
 
     const additionRules = [
         "RULE-SET,idm,🌆 数据下载 | IDM",
@@ -64,9 +53,11 @@ module.exports.configuration = () => {
     ];
 
     return {
-        groups: groups,
+        mainGroup: mainGroup,
+        ruleRequiredGroups: ruleRequiredGroups,
+        mainRequiredGroups: mainRequiredGroups,
+
         endRules: endRules,
-        connector: "-",
         initScript: "h:/onedrive/repositories/proxy rules/commons/configs/basis",
 
         defaultBehavior: "domain",

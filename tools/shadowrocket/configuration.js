@@ -1,6 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 
+const CONNECTOR = "-";
+
 const FILE_NAME = path.basename(__filename).replace(".js", "");
 function mark(name) {
     return FILE_NAME + "." + name + " =>";
@@ -39,7 +41,7 @@ function transform(log, profile, settings, identifier) {
         const inputPath = path.join(native, sourceFile);
         const outputPath = path.join(
             path.resolve(__dirname, settings.rules),
-            prefix.concat(profile.connector, fileName, ".list")
+            prefix.concat(CONNECTOR, fileName, ".list")
         );
         try {
             let fileContent = fs.readFileSync(inputPath, "utf-8");

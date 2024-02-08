@@ -1,25 +1,14 @@
 module.exports.configuration = () => {
-    const mainGroups = [
-        "🌃 负载均衡 | HK-NORMAL",
-        "🌃 负载均衡 | HK-GAME/3X",
-        "🎑 低倍節點 | Streaming",
-        "🎑 高倍節點 | Native IP",
-        "🌃 负载均衡 | Singapore",
-        "🌃 负载均衡 | Taiwan",
-        "🌃 负载均衡 | United States",
-        "🌃 负载均衡 | Japan",
-        "🌃 负载均衡 | United Kingdom",
-        "🌅 目标節點",
-    ];
 
-    const groups = [
-        { name: "🌌 科学上网 | FANRR", type: "select", proxies: mainGroups },
-        { name: "🌅 目标節點", type: "select", proxies: ["REJECT", "DIRECT"], append: /^((?!traffic|update|date).)*$/gmi },
+    const mainGroup = [{ name: "🌌 科学上网 | FANRR", type: "select" },];
+    const ruleRequiredGroups = [
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | FANRR"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | FANRR"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^((?!traffic|update|date).)*$/gmi },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^((?!traffic|update|date).)*$/gmi },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | FANRR", "DIRECT"] },
+    ];
+    const mainRequiredGroups = [
         { name: "🎑 低倍節點 | Streaming", type: "select", proxies: ["REJECT"], append: /📺/gm },
         { name: "🎑 高倍節點 | Native IP", type: "select", proxies: ["REJECT"], append: /[^.]\dx$/gmi },
         { name: "🌃 负载均衡 | HK-NORMAL", type: "load-balance", proxies: [], append: /^.*kong((?!premium).)*$/gmi },
@@ -29,7 +18,8 @@ module.exports.configuration = () => {
         { name: "🌃 负载均衡 | United States", type: "load-balance", proxies: [], append: /states.*[^x]$/gmi },
         { name: "🌃 负载均衡 | Japan", type: "load-balance", proxies: [], append: /japan.*[^x]$/gmi },
         { name: "🌃 负载均衡 | United Kingdom", type: "load-balance", proxies: [], append: /kingdom.*[^x]$/gmi },
-    ]
+        { name: "🌅 目标節點", type: "select", proxies: ["REJECT"], append: /^((?!traffic|update|date).)*$/gmi },
+    ];
 
     const additionRules = [
         "RULE-SET,idm,🌆 数据下载 | IDM",
@@ -62,9 +52,11 @@ module.exports.configuration = () => {
     ];
 
     return {
-        groups: groups,
+        mainGroup: mainGroup,
+        ruleRequiredGroups: ruleRequiredGroups,
+        mainRequiredGroups: mainRequiredGroups,
+
         endRules: endRules,
-        connector: "-",
         initScript: "h:/onedrive/repositories/proxy rules/commons/configs/basis",
 
         defaultBehavior: "domain",

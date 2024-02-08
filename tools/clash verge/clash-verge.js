@@ -15,6 +15,8 @@ const TOLERANCE = 50;
 const MAIN_NETWORK_INDEX = 0;
 const REJECT = "REJECT";
 const DIRECT = "DIRECT";
+const CONNECTOR = "-";
+const DEFAULT_PROXY = "REJECT";
 
 /** @method {@link getRuleProviders} */
 const FILE = "file";
@@ -73,7 +75,7 @@ function getRules(modifiedParams, identifiers) {
             return arr;
         }
         const provisional = rules.map(ele => {
-            return ele.replace(",", ",".concat(prefix, modifiedParams.connector));
+            return ele.replace(",", ",".concat(prefix, CONNECTOR));
         });
         arr = arr.concat(provisional);
     });
@@ -89,78 +91,98 @@ function getProxyGroups(modifiedParams, configuraion) {
         })
     }
 
+    const groupsAll = modifiedParams.hasOwnProperty("mainRequiredGroups") ?
+        [modifiedParams.mainGroup, modifiedParams.ruleRequiredGroups, modifiedParams.mainRequiredGroups] :
+        [modifiedParams.mainGroup, modifiedParams.ruleRequiredGroups]
+
     const arr = [];
-    modifiedParams.groups.forEach(group => {
-        const groupConstruct = {
-            name: group.name,
-            type: group.type,
-            proxies: group.hasOwnProperty("proxies") ? Array.from(group.proxies) : [],
-        };
+    for (let i = 0; i < groupsAll.length; i++) {
+        for (let j = 0; j < groupsAll[i].length; j++) {
+            const group = groupsAll[i][j];
+            const groupConstruct = {
+                name: group.name,
+                type: group.type,
+                proxies: group.hasOwnProperty("proxies") ? Array.from(group.proxies) : [],
+            };
 
-        if (group.type !== SELECT) {
-            groupConstruct.url = HEALTH_CHECK_URL;
-            groupConstruct.lazy = LAZY_TESTING;
+            if (group.type !== SELECT) {
+                groupConstruct.url = HEALTH_CHECK_URL;
+                groupConstruct.lazy = LAZY_TESTING;
 
-            /* CONSISTENT-HASHING IS DEFAULT STRATEGY */
-            if (group.type === LOAD_BALANCE) {
-                groupConstruct.strategy = STRATEGY;
+                /* CONSISTENT-HASHING IS DEFAULT STRATEGY */
+                if (group.type === LOAD_BALANCE) {
+                    groupConstruct.strategy = STRATEGY;
+                }
+                if (group.type === URL_TEST) {
+                    groupConstruct.tolerance = TOLERANCE;
+                }
+                /* ALLOW CUSTOMIZE HEALTH CHECK INTERVAL */
+                if (modifiedParams.hasOwnProperty("interval")) {
+                    groupConstruct.interval = modifiedParams.interval;
+                } else {
+                    groupConstruct.interval = TEST_INTERVAL;
+                }
             }
-            if (group.type === URL_TEST) {
-                groupConstruct.tolerance = TOLERANCE;
-            }
-            /* ALLOW CUSTOMIZE HEALTH CHECK INTERVAL */
-            if (modifiedParams.hasOwnProperty("interval")) {
-                groupConstruct.interval = modifiedParams.interval;
-            } else {
-                groupConstruct.interval = TEST_INTERVAL;
-            }
-        }
 
-        const conditions = [];
-        if (group.hasOwnProperty("append")) {
-            configuraion.proxies.forEach(proxy => {
-                /* GET THE CONDITIONS FOR RESERSING SORTING */
-                if (group.hasOwnProperty("reverse")) {
-                    const condition = proxy.name.match(group.reverse);
-                    if (condition && condition.length) {
-                        conditions.push(condition[0]);
+            if (i === 0) {
+                if (groupsAll.length === 2) {
+                    /* DEFAULT PROXIES ADDING TO AVOID EMPTY GROUP PROXIES */
+                    groupConstruct.proxies.push(DEFAULT_PROXY);
+                    configuraion.proxies.forEach(proxy => {
+                        groupConstruct.proxies.push(proxy.name);
+                    });
+                }
+                arr.push(groupConstruct);
+                break;
+            }
+
+            const conditions = [];
+            if (group.hasOwnProperty("append")) {
+                configuraion.proxies.forEach(proxy => {
+                    /* GET THE CONDITIONS FOR RESERSING SORTING */
+                    if (group.hasOwnProperty("reverse")) {
+                        const condition = proxy.name.match(group.reverse);
+                        if (condition && condition.length) {
+                            conditions.push(condition[0]);
+                        }
                     }
-                }
-                if (proxy.name.match(group.append)) {
-                    groupConstruct.proxies.push(proxy.name);
-                }
-            });
-        }
-
-        /* REVERSE SORTING BASED ON CONDITIONS */
-        if (conditions.length) {
-            const ordered = [];
-            [...new Set(conditions)].forEach(condition => {
-                const saver = [];
-                groupConstruct.proxies.forEach(name => {
-                    if (name.match(condition)) {
-                        saver.unshift(name);
+                    if (proxy.name.match(group.append)) {
+                        groupConstruct.proxies.push(proxy.name);
                     }
                 });
-                saver.forEach(name => {
-                    ordered.push(name);
-                });
-            });
-            groupConstruct.proxies = Array.from(ordered);
-        }
+            }
 
-        /* DEFAULT PROXIES BEHAVIOR TO REMOVE UNQUALIFIED GROUP'S PROXIES */
-        if (groupConstruct.proxies.length === 0) {
-            const index = arr[MAIN_NETWORK_INDEX].proxies.indexOf(group.name);
-            arr[MAIN_NETWORK_INDEX].proxies.splice(index, 1);
-        } else if (groupConstruct.proxies.length === 1 &&
-            (groupConstruct.proxies[0] === REJECT || groupConstruct.proxies[0] === DIRECT)) {
-            const index = arr[MAIN_NETWORK_INDEX].proxies.indexOf(group.name);
-            arr[MAIN_NETWORK_INDEX].proxies.splice(index, 1);
-        } else {
+            /* REVERSE SORTING BASED ON CONDITIONS */
+            if (conditions.length) {
+                const ordered = [];
+                [...new Set(conditions)].forEach(condition => {
+                    const saver = [];
+                    groupConstruct.proxies.forEach(name => {
+                        if (name.match(condition)) {
+                            saver.unshift(name);
+                        }
+                    });
+                    saver.forEach(name => {
+                        ordered.push(name);
+                    });
+                });
+                groupConstruct.proxies = Array.from(ordered);
+            }
+
+            /* DEFAULT PROXIES BEHAVIOR TO REMOVE UNQUALIFIED GROUP'S PROXIES */
+            if (i === 2) {
+                if (groupConstruct.proxies.length === 0) {
+                    continue;
+                } else if (groupConstruct.proxies.length === 1 &&
+                    (groupConstruct.proxies[0] === REJECT || groupConstruct.proxies[0] === DIRECT)) {
+                    continue;
+                } else {
+                    arr[0].proxies.push(groupConstruct.name);
+                }
+            }
             arr.push(groupConstruct);
         }
-    })
+    }
     return arr;
 }
 
@@ -172,7 +194,7 @@ function getRuleProviders(mode, modifiedParams) {
             return ele.replace(",no-resolve", "").match(/(?<=,).+(?=,)/gm).toString();
         });
         ruleNames.forEach(name => {
-            ruleProviders[modifiedParams.additionPrefix.concat(modifiedParams.connector + name)] = {
+            ruleProviders[modifiedParams.additionPrefix.concat(CONNECTOR + name)] = {
                 type: mode.additionStatus ? FILE : HTTP,
                 behavior: getBehavior(modifiedParams, name),
                 [link]: mode.additionStatus ?
@@ -188,7 +210,7 @@ function getRuleProviders(mode, modifiedParams) {
             return ele.replace(/^.+?,/gm, "").replace(/,.+$/gm, "");
         });
         ruleNames.forEach(name => {
-            ruleProviders[modifiedParams.originalPrefix.concat(modifiedParams.connector + name)] = {
+            ruleProviders[modifiedParams.originalPrefix.concat(CONNECTOR + name)] = {
                 type: mode.originalStatus ? FILE : HTTP,
                 behavior: getBehavior(modifiedParams, name),
                 [link]: mode.originalStatus ?
@@ -334,28 +356,16 @@ function build() {
 }
 
 const clover = () => {
-    const mainGroups = [
-        "🌃 负载均衡 | HK-IEPL",
-        "🌃 负载均衡 | HK-TRANS",
-        "🌃 负载均衡 | SG-IEPL",
-        "🌃 负载均衡 | SG-TRANS",
-        "🌃 负载均衡 | TW-IEPL",
-        "🌃 负载均衡 | TW-TRANS",
-        "🌃 负载均衡 | KR-IEPL",
-        "🌃 负载均衡 | KR-TRANS",
-        "🌃 负载均衡 | JP-IEPL",
-        "🌃 负载均衡 | JP-TRANS",
-        "🌅 目标节点",
-    ];
 
-    const groups = [
-        { name: "🌌 科学上网 | CLOVER", type: "select", proxies: mainGroups },
-        { name: "🌅 目标节点", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
+    const mainGroup = [{ name: "🌌 科学上网 | CLOVER", type: "select" }];
+    const ruleRequiredGroups = [
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | CLOVER", "DIRECT"] },
+    ];
+    const mainRequiredGroups = [
         { name: "🌃 负载均衡 | HK-IEPL", type: "load-balance", proxies: [], append: /(?<=IEPL)香港/gm },
         { name: "🌃 负载均衡 | SG-IEPL", type: "load-balance", proxies: [], append: /(?<=IEPL)新加坡/gm },
         { name: "🌃 负载均衡 | TW-IEPL", type: "load-balance", proxies: [], append: /(?<=IEPL)台湾/gm },
@@ -365,8 +375,9 @@ const clover = () => {
         { name: "🌃 负载均衡 | SG-TRANS", type: "load-balance", proxies: [], append: /(?<!IEPL)新加坡/gm },
         { name: "🌃 负载均衡 | TW-TRANS", type: "load-balance", proxies: [], append: /(?<!IEPL)台湾/gm },
         { name: "🌃 负载均衡 | KR-TRANS", type: "load-balance", proxies: [], append: /(?<!IEPL)韩国/gm },
-        { name: "🌃 负载均衡 | JP-TRANS", type: "load-balance", proxies: [], append: /(?<!IEPL)日本/gm }
-    ]
+        { name: "🌃 负载均衡 | JP-TRANS", type: "load-balance", proxies: [], append: /(?<!IEPL)日本/gm },
+        { name: "🌅 目标节点", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
+    ];
 
     const additionRules = [
         "RULE-SET,idm,🌆 数据下载 | IDM",
@@ -399,9 +410,11 @@ const clover = () => {
     ];
 
     return {
-        groups: groups,
+        mainGroup: mainGroup,
+        ruleRequiredGroups: ruleRequiredGroups,
+        mainRequiredGroups: mainRequiredGroups,
+
         endRules: endRules,
-        connector: "-",
         initScript: "h:/onedrive/repositories/proxy rules/commons/configs/basis",
 
         defaultBehavior: "domain",
@@ -445,27 +458,16 @@ const clover = () => {
 }
 
 const fanrr = () => {
-    const mainGroups = [
-        "🌃 负载均衡 | HK-NORMAL",
-        "🌃 负载均衡 | HK-GAME/3X",
-        "🎑 低倍節點 | Streaming",
-        "🎑 高倍節點 | Native IP",
-        "🌃 负载均衡 | Singapore",
-        "🌃 负载均衡 | Taiwan",
-        "🌃 负载均衡 | United States",
-        "🌃 负载均衡 | Japan",
-        "🌃 负载均衡 | United Kingdom",
-        "🌅 目标節點",
-    ];
 
-    const groups = [
-        { name: "🌌 科学上网 | FANRR", type: "select", proxies: mainGroups },
-        { name: "🌅 目标節點", type: "select", proxies: ["REJECT", "DIRECT"], append: /^((?!traffic|update|date).)*$/gmi },
+    const mainGroup = [{ name: "🌌 科学上网 | FANRR", type: "select" },];
+    const ruleRequiredGroups = [
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | FANRR"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | FANRR"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^((?!traffic|update|date).)*$/gmi },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^((?!traffic|update|date).)*$/gmi },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | FANRR", "DIRECT"] },
+    ];
+    const mainRequiredGroups = [
         { name: "🎑 低倍節點 | Streaming", type: "select", proxies: ["REJECT"], append: /📺/gm },
         { name: "🎑 高倍節點 | Native IP", type: "select", proxies: ["REJECT"], append: /[^.]\dx$/gmi },
         { name: "🌃 负载均衡 | HK-NORMAL", type: "load-balance", proxies: [], append: /^.*kong((?!premium).)*$/gmi },
@@ -475,7 +477,8 @@ const fanrr = () => {
         { name: "🌃 负载均衡 | United States", type: "load-balance", proxies: [], append: /states.*[^x]$/gmi },
         { name: "🌃 负载均衡 | Japan", type: "load-balance", proxies: [], append: /japan.*[^x]$/gmi },
         { name: "🌃 负载均衡 | United Kingdom", type: "load-balance", proxies: [], append: /kingdom.*[^x]$/gmi },
-    ]
+        { name: "🌅 目标節點", type: "select", proxies: ["REJECT"], append: /^((?!traffic|update|date).)*$/gmi },
+    ];
 
     const additionRules = [
         "RULE-SET,idm,🌆 数据下载 | IDM",
@@ -508,9 +511,11 @@ const fanrr = () => {
     ];
 
     return {
-        groups: groups,
+        mainGroup: mainGroup,
+        ruleRequiredGroups: ruleRequiredGroups,
+        mainRequiredGroups: mainRequiredGroups,
+
         endRules: endRules,
-        connector: "-",
         initScript: "h:/onedrive/repositories/proxy rules/commons/configs/basis",
 
         defaultBehavior: "domain",
@@ -548,20 +553,20 @@ const fanrr = () => {
 }
 
 const kele = () => {
-    const mainGroups = [
-        "🌃 负载均衡 | Hong Kong",
-        "🌅 目标节点",
-    ];
-    const groups = [
-        { name: "🌌 科学上网 | KELE", type: "select", proxies: mainGroups },
-        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /^((?!流量|到期).)*$/gm },
+
+    const mainGroup = [{ name: "🌌 科学上网 | KELE", type: "select" },];
+    const ruleRequiredGroups = [
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | KELE", "DIRECT"] },
+    ];
+    const mainRequiredGroups = [
         { name: "🌃 负载均衡 | Hong Kong", type: "load-balance", proxies: [], append: /香港/gm },
-    ]
+        { name: "🌅 目标节点", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
+    ];
+
 
     const additionRules = [
         "RULE-SET,idm,🌆 数据下载 | IDM",
@@ -594,9 +599,11 @@ const kele = () => {
     ];
 
     return {
-        groups: groups,
+        mainGroup: mainGroup,
+        ruleRequiredGroups: ruleRequiredGroups,
+        mainRequiredGroups: mainRequiredGroups,
+
         endRules: endRules,
-        connector: "-",
         initScript: "h:/onedrive/repositories/proxy rules/commons/configs/basis",
 
         defaultBehavior: "domain",
@@ -640,28 +647,16 @@ const kele = () => {
 }
 
 const nebulae = () => {
-    const mainGroups = [
-        "🌃 负载均衡 | HK-PRIORITY",
-        "🌃 负载均衡 | HK-ALL",
-        "🌃 负载均衡 | HK-IEPL/2X",
-        "🌃 负载均衡 | Singapore",
-        "🌃 负载均衡 | Taiwan",
-        "🌃 负载均衡 | United States",
-        "🌃 负载均衡 | Japan",
-        "🌃 负载均衡 | Germany",
-        "🎑 其他專線 | REST-IEPL/2X",
-        "🎑 專用節點 | IPv6",
-        "🌅 目标节点",
-    ];
-
-    const groups = [
-        { name: "🌌 科学上网 | NEBULAE", type: "select", proxies: mainGroups },
-        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
+    
+    const mainGroup = [{ name: "🌌 科学上网 | NEBULAE", type: "select" },];
+    const ruleRequiredGroups = [
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | NEBULAE", "DIRECT"] },
+    ];
+    const mainRequiredGroups = [
         { name: "🌃 负载均衡 | HK-PRIORITY", type: "load-balance", proxies: [], append: /香港.*(?:波粒|传导).*/gm },
         { name: "🌃 负载均衡 | HK-ALL", type: "load-balance", proxies: [], append: /^.*香港((?!波粒|传导|专线|v6).)*$/gmi },
         { name: "🌃 负载均衡 | HK-IEPL/2X", type: "load-balance", proxies: [], append: /香港.*专线/gm, reverse: /香港/gm },
@@ -672,7 +667,8 @@ const nebulae = () => {
         { name: "🌃 负载均衡 | Germany", type: "load-balance", proxies: [], append: /^.*德国((?!专线|v6).)*$/gmi },
         { name: "🎑 其他專線 | REST-IEPL/2X", type: "select", proxies: ["REJECT"], append: /^((?!香港).)*专线/gm },
         { name: "🎑 專用節點 | IPv6", type: "select", proxies: ["REJECT"], append: /v6/gmi },
-    ]
+        { name: "🌅 目标节点", type: "select", proxies: ["REJECT"], append: /.+/gm },
+    ];
 
     const additionRules = [
         "RULE-SET,idm,🌆 数据下载 | IDM",
@@ -705,9 +701,11 @@ const nebulae = () => {
     ];
 
     return {
-        groups: groups,
+        mainGroup: mainGroup,
+        ruleRequiredGroups: ruleRequiredGroups,
+        mainRequiredGroups: mainRequiredGroups,
+
         endRules: endRules,
-        connector: "-",
         initScript: "h:/onedrive/repositories/proxy rules/commons/configs/basis",
 
         defaultBehavior: "domain",
@@ -749,29 +747,24 @@ const nebulae = () => {
 }
 
 const orient = () => {
-    const mainGroups = [
-        "🌃 负载均衡 | SZ/HK-IEPL",
-        "🌃 负载均衡 | SH/HK-IEPL",
-        "🌃 负载均衡 | SH/JP-IEPL",
-        "🌃 负载均衡 | Hong Kong",
-        "🌃 负载均衡 | Japan",
-        "🌅 目标节点",
-    ];
-
+    
     const specificRegex = /韩国|德国|土耳其|巴西|新加坡|日本|阿根廷|澳大利亚|英国/gm;
-    const groups = [
-        { name: "🌌 科学上网 | ORIENT", type: "select", proxies: mainGroups },
-        { name: "🌅 目标节点", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gm },
+    
+    const mainGroup = [{ name: "🌌 科学上网 | ORIENT", type: "select" },];
+    const ruleRequiredGroups = [
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: specificRegex },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | ORIENT", "DIRECT"] },
+    ];
+    const mainRequiredGroups = [
         { name: "🌃 负载均衡 | SZ/HK-IEPL", type: "load-balance", append: /深港/gm },
         { name: "🌃 负载均衡 | SH/HK-IEPL", type: "load-balance", append: /沪港/gm },
         { name: "🌃 负载均衡 | SH/JP-IEPL", type: "load-balance", append: /沪日/gm },
         { name: "🌃 负载均衡 | Hong Kong", type: "load-balance", append: /^.*香港((?!专线).)*$/gm },
         { name: "🌃 负载均衡 | Japan", type: "load-balance", append: /^.*日本((?!专线).)*$/gm },
+        { name: "🌅 目标节点", type: "select", proxies: ["REJECT"], append: /.+/gm },
     ];
 
     const additionRules = [
@@ -807,9 +800,11 @@ const orient = () => {
     ];
 
     return {
-        groups: groups,
+        mainGroup: mainGroup,
+        ruleRequiredGroups: ruleRequiredGroups,
+        mainRequiredGroups: mainRequiredGroups,
+
         endRules: endRules,
-        connector: "-",
         initScript: "h:/onedrive/repositories/proxy rules/commons/configs/basis",
 
         defaultBehavior: "domain",
@@ -858,29 +853,23 @@ const orient = () => {
 }
 
 const swift = () => {
-    const mainGroups = [
-        "🌃 负载均衡 | Hong Kong",
-        "🌃 负载均衡 | Singapore",
-        "🌃 负载均衡 | Taiwan",
-        "🌃 负载均衡 | United States",
-        "🌃 负载均衡 | Japan",
-        "🌅 目标節點",
-    ];
 
-    const groups = [
-        { name: "🌌 科学上网 | SWIFT", type: "select", proxies: mainGroups },
-        { name: "🌅 目标節點", type: "select", proxies: ["REJECT", "DIRECT"], append: /.+/gmi },
+    const mainGroup = [{ name: "🌌 科学上网 | SWIFT", type: "select" },];
+    const ruleRequiredGroups = [
         { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | SWIFT"] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | SWIFT"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gmi },
         { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gmi },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | SWIFT", "DIRECT"] },
+    ];
+    const mainRequiredGroups = [
         { name: "🌃 负载均衡 | Hong Kong", type: "load-balance", proxies: [], append: /🇭🇰/gmi },
         { name: "🌃 负载均衡 | Singapore", type: "load-balance", proxies: [], append: /🇸🇬/gmi },
         { name: "🌃 负载均衡 | Taiwan", type: "load-balance", proxies: [], append: /🇹🇼/gmi },
         { name: "🌃 负载均衡 | United States", type: "load-balance", proxies: [], append: /🇺🇸/gmi },
         { name: "🌃 负载均衡 | Japan", type: "load-balance", proxies: [], append: /🇯🇵/gmi },
-    ]
+        { name: "🌅 目标節點", type: "select", proxies: ["REJECT"], append: /.+/gmi },
+    ];
 
     const additionRules = [
         "RULE-SET,idm,🌆 数据下载 | IDM",
@@ -913,9 +902,11 @@ const swift = () => {
     ];
 
     return {
-        groups: groups,
+        mainGroup: mainGroup,
+        ruleRequiredGroups: ruleRequiredGroups,
+        mainRequiredGroups: mainRequiredGroups,
+
         endRules: endRules,
-        connector: "-",
         initScript: "h:/onedrive/repositories/proxy rules/commons/configs/basis",
 
         defaultBehavior: "domain",
@@ -977,7 +968,7 @@ function main(params) {
 
     /* WHITELIST MODE REVERSE DEFAULT GROUP FOR MATCH RULES */
     const provisional = configuration();
-    provisional.groups.forEach(element => {
+    provisional.ruleRequiredGroups.forEach(element => {
         if (element.name.match("规则逃逸")) {
             const reversed = element.proxies.reverse();
             element.proxies = reversed;
