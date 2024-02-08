@@ -12,7 +12,9 @@ const TEST_INTERVAL = 300;
 const LAZY_TESTING = true;
 const STRATEGY = "consistent-hashing";
 const TOLERANCE = 50;
-const DEFAULT_PROXY = "DIRECT";
+const MAIN_NETWORK_INDEX = 0;
+const REJECT = "REJECT";
+const DIRECT = "DIRECT";
 
 /** @method {@link getRuleProviders} */
 const FILE = "file";
@@ -149,14 +151,17 @@ function getProxyGroups(modifiedParams, configuraion) {
             groupConstruct.proxies = Array.from(ordered);
         }
 
-        /* DEFAULT PROXIES ADDING TO AVOID EMPTY GROUP PROXIES */
-        if (!groupConstruct.proxies.length) {
-            groupConstruct.proxies.push(DEFAULT_PROXY);
-            configuraion.proxies.forEach(proxy => {
-                groupConstruct.proxies.push(proxy.name);
-            });
+        /* DEFAULT PROXIES BEHAVIOR TO REMOVE UNQUALIFIED GROUP'S PROXIES */
+        if (groupConstruct.proxies.length === 0) {
+            const index = arr[MAIN_NETWORK_INDEX].proxies.indexOf(group.name);
+            arr[MAIN_NETWORK_INDEX].proxies.splice(index, 1);
+        } else if (groupConstruct.proxies.length === 1 &&
+            (groupConstruct.proxies[0] === REJECT || groupConstruct.proxies[0] === DIRECT)) {
+            const index = arr[MAIN_NETWORK_INDEX].proxies.indexOf(group.name);
+            arr[MAIN_NETWORK_INDEX].proxies.splice(index, 1);
+        } else {
+            arr.push(groupConstruct);
         }
-        arr.push(groupConstruct);
     })
     return arr;
 }
