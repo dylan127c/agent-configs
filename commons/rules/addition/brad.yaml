@@ -1,4 +1,5 @@
 payload:
   # Google Brad
+  - '+.gemini.google.com'
   - '+.bard.google.com'
   - '+.gemini.google.com'

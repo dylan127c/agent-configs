@@ -4,10 +4,10 @@ module.exports.configuration = () => {
     
     const mainGroup = [{ name: "🌌 科学上网 | ORIENT", type: "select" },];
     const ruleRequiredGroups = [
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
+        { name: "🌠 规则逃逸", type: "select", proxies: ["🌌 科学上网 | ORIENT", "DIRECT",] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: specificRegex },
-        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
+        { name: "🌄 特殊控制 | Gemini", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | ORIENT", "DIRECT"] },
     ];
     const mainRequiredGroups = [
@@ -24,7 +24,7 @@ module.exports.configuration = () => {
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
-        "RULE-SET,brad,🌄 特殊控制 | Brad",
+        "RULE-SET,brad,🌄 特殊控制 | Gemini",
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
         "RULE-SET,proxy,🌌 科学上网 | ORIENT",
     ];
@@ -81,7 +81,6 @@ module.exports.configuration = () => {
 
         replacement: {
             "🇹🇼": "🇨🇳",
-            "卢森堡": "🇺🇳 卢森堡",
             "（流媒体）": "",
             "/(?<=\\s\\d\\d)\\s.+(?=（)/gm": "",
             "/(?<=\\s\\d\\d)\\s.+$/gm": "",

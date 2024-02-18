@@ -5,7 +5,7 @@ function main(params) {
         configuration = orient;
     } else if (identification.includes("🥤")) {
         configuration = kele;
-    } else if (identification.includes("Clover")) {
+    } else if (identification.includes("节点选择")) {
         configuration = clover;
     } else if (identification.includes("新雲")) {
         configuration = nebulae;

@@ -64,11 +64,17 @@ module.exports.build = () => {
     ];
     initConfiguration.dns["default-nameserver"] = [
         "119.29.29.29",
+        "119.28.28.28",
         "223.5.5.5",
+        "223.6.6.6",
     ];
     initConfiguration.dns.nameserver = [
         "https://doh.pub/dns-query",
+        "https://1.12.12.12/dns-query",
+        "https://120.53.53.53/dns-query",
         "https://dns.alidns.com/dns-query",
+        "https://223.5.5.5/dns-query",
+        "https://223.6.6.6/dns-query",
     ];
     // initConfiguration.dns.fallback = [
     //     "https://doh.dns.sb/dns-query",

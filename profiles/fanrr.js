@@ -2,22 +2,24 @@ module.exports.configuration = () => {
 
     const mainGroup = [{ name: "🌌 科学上网 | FANRR", type: "select" },];
     const ruleRequiredGroups = [
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | FANRR"] },
+        { name: "🌠 规则逃逸", type: "select", proxies: ["🌌 科学上网 | FANRR", "DIRECT",] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | FANRR"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^((?!traffic|update|date).)*$/gmi },
-        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^((?!traffic|update|date).)*$/gmi },
+        { name: "🌄 特殊控制 | Gemini", type: "select", proxies: ["REJECT"], append: /^((?!traffic|update|date).)*$/gmi },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | FANRR", "DIRECT"] },
     ];
     const mainRequiredGroups = [
-        { name: "🎑 低倍節點 | Streaming", type: "select", proxies: ["REJECT"], append: /📺/gm },
-        { name: "🎑 高倍節點 | Native IP", type: "select", proxies: ["REJECT"], append: /[^.]\dx$/gmi },
-        { name: "🌃 负载均衡 | HK-NORMAL", type: "load-balance", proxies: [], append: /^.*kong((?!premium).)*$/gmi },
-        { name: "🌃 负载均衡 | HK-GAME/3X", type: "load-balance", proxies: [], append: /kong.*premium/gmi },
-        { name: "🌃 负载均衡 | Singapore", type: "load-balance", proxies: [], append: /singapore.*[^x]$/gmi },
-        { name: "🌃 负载均衡 | Taiwan", type: "load-balance", proxies: [], append: /taiwan.*[^x]$/gmi },
-        { name: "🌃 负载均衡 | United States", type: "load-balance", proxies: [], append: /states.*[^x]$/gmi },
-        { name: "🌃 负载均衡 | Japan", type: "load-balance", proxies: [], append: /japan.*[^x]$/gmi },
+        { name: "🌃 负载均衡 | Hong Kong", type: "load-balance", proxies: [], append: /^.*kong((?!premium).)*[^x]$/gmi },
+        { name: "🌃 负载均衡 | Singapore", type: "load-balance", proxies: [], append: /^.*singapore((?!premium).)*[^x]$/gmi },
+        { name: "🌃 负载均衡 | Taiwan", type: "load-balance", proxies: [], append: /^.*taiwan((?!premium).)*[^x]$/gmi },
         { name: "🌃 负载均衡 | United Kingdom", type: "load-balance", proxies: [], append: /kingdom.*[^x]$/gmi },
+        { name: "🌃 负载均衡 | Japan", type: "load-balance", proxies: [], append: /japan.*[^x]$/gmi },
+        { name: "🌃 负载均衡 | United States", type: "load-balance", proxies: [], append: /states.*[^x]$/gmi },
+        { name: "🌃 负载均衡 | HK-PRE/3X", type: "load-balance", proxies: [], append: /kong.*premium/gmi },
+        { name: "🌃 负载均衡 | SG-PRE/3X", type: "load-balance", proxies: [], append: /singapore.*premium/gmi },
+        { name: "🌃 负载均衡 | TW-PRE/3X", type: "load-balance", proxies: [], append: /taiwan.*premium/gmi },
+        { name: "🎑 低倍節點 | Stream", type: "select", proxies: ["REJECT"], append: /📺/gm },
+        { name: "🎑 高倍節點 | Native IP", type: "select", proxies: ["REJECT"], append: /[^.]\dx$/gmi },
         { name: "🌅 目标節點", type: "select", proxies: ["REJECT"], append: /^((?!traffic|update|date).)*$/gmi },
     ];
 
@@ -26,7 +28,7 @@ module.exports.configuration = () => {
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
-        "RULE-SET,brad,🌄 特殊控制 | Brad",
+        "RULE-SET,brad,🌄 特殊控制 | Gemini",
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
         "RULE-SET,proxy,🌌 科学上网 | FANRR",
     ];

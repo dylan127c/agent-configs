@@ -2,10 +2,10 @@ module.exports.configuration = () => {
 
     const mainGroup = [{ name: "🌌 科学上网 | CLOVER", type: "select" }];
     const ruleRequiredGroups = [
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
+        { name: "🌠 规则逃逸", type: "select", proxies: [ "🌌 科学上网 | CLOVER", "DIRECT",] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
-        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
+        { name: "🌄 特殊控制 | Gemini", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | CLOVER", "DIRECT"] },
     ];
     const mainRequiredGroups = [
@@ -27,7 +27,7 @@ module.exports.configuration = () => {
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
-        "RULE-SET,brad,🌄 特殊控制 | Brad",
+        "RULE-SET,brad,🌄 特殊控制 | Gemini",
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
         "RULE-SET,proxy,🌌 科学上网 | CLOVER",
     ];

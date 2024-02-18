@@ -12,7 +12,6 @@ const TEST_INTERVAL = 300;
 const LAZY_TESTING = true;
 const STRATEGY = "consistent-hashing";
 const TOLERANCE = 50;
-const MAIN_NETWORK_INDEX = 0;
 const REJECT = "REJECT";
 const DIRECT = "DIRECT";
 const CONNECTOR = "-";
@@ -298,11 +297,17 @@ function build() {
     ];
     initConfiguration.dns["default-nameserver"] = [
         "119.29.29.29",
+        "119.28.28.28",
         "223.5.5.5",
+        "223.6.6.6",
     ];
     initConfiguration.dns.nameserver = [
         "https://doh.pub/dns-query",
+        "https://1.12.12.12/dns-query",
+        "https://120.53.53.53/dns-query",
         "https://dns.alidns.com/dns-query",
+        "https://223.5.5.5/dns-query",
+        "https://223.6.6.6/dns-query",
     ];
     // initConfiguration.dns.fallback = [
     //     "https://doh.dns.sb/dns-query",
@@ -359,10 +364,10 @@ const clover = () => {
 
     const mainGroup = [{ name: "🌌 科学上网 | CLOVER", type: "select" }];
     const ruleRequiredGroups = [
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
+        { name: "🌠 规则逃逸", type: "select", proxies: [ "🌌 科学上网 | CLOVER", "DIRECT",] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | CLOVER"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
-        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
+        { name: "🌄 特殊控制 | Gemini", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | CLOVER", "DIRECT"] },
     ];
     const mainRequiredGroups = [
@@ -384,7 +389,7 @@ const clover = () => {
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
-        "RULE-SET,brad,🌄 特殊控制 | Brad",
+        "RULE-SET,brad,🌄 特殊控制 | Gemini",
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
         "RULE-SET,proxy,🌌 科学上网 | CLOVER",
     ];
@@ -461,22 +466,24 @@ const fanrr = () => {
 
     const mainGroup = [{ name: "🌌 科学上网 | FANRR", type: "select" },];
     const ruleRequiredGroups = [
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | FANRR"] },
+        { name: "🌠 规则逃逸", type: "select", proxies: ["🌌 科学上网 | FANRR", "DIRECT",] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | FANRR"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^((?!traffic|update|date).)*$/gmi },
-        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^((?!traffic|update|date).)*$/gmi },
+        { name: "🌄 特殊控制 | Gemini", type: "select", proxies: ["REJECT"], append: /^((?!traffic|update|date).)*$/gmi },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | FANRR", "DIRECT"] },
     ];
     const mainRequiredGroups = [
-        { name: "🎑 低倍節點 | Streaming", type: "select", proxies: ["REJECT"], append: /📺/gm },
-        { name: "🎑 高倍節點 | Native IP", type: "select", proxies: ["REJECT"], append: /[^.]\dx$/gmi },
-        { name: "🌃 负载均衡 | HK-NORMAL", type: "load-balance", proxies: [], append: /^.*kong((?!premium).)*$/gmi },
-        { name: "🌃 负载均衡 | HK-GAME/3X", type: "load-balance", proxies: [], append: /kong.*premium/gmi },
-        { name: "🌃 负载均衡 | Singapore", type: "load-balance", proxies: [], append: /singapore.*[^x]$/gmi },
-        { name: "🌃 负载均衡 | Taiwan", type: "load-balance", proxies: [], append: /taiwan.*[^x]$/gmi },
-        { name: "🌃 负载均衡 | United States", type: "load-balance", proxies: [], append: /states.*[^x]$/gmi },
-        { name: "🌃 负载均衡 | Japan", type: "load-balance", proxies: [], append: /japan.*[^x]$/gmi },
+        { name: "🌃 负载均衡 | Hong Kong", type: "load-balance", proxies: [], append: /^.*kong((?!premium).)*[^x]$/gmi },
+        { name: "🌃 负载均衡 | Singapore", type: "load-balance", proxies: [], append: /^.*singapore((?!premium).)*[^x]$/gmi },
+        { name: "🌃 负载均衡 | Taiwan", type: "load-balance", proxies: [], append: /^.*taiwan((?!premium).)*[^x]$/gmi },
         { name: "🌃 负载均衡 | United Kingdom", type: "load-balance", proxies: [], append: /kingdom.*[^x]$/gmi },
+        { name: "🌃 负载均衡 | Japan", type: "load-balance", proxies: [], append: /japan.*[^x]$/gmi },
+        { name: "🌃 负载均衡 | United States", type: "load-balance", proxies: [], append: /states.*[^x]$/gmi },
+        { name: "🌃 负载均衡 | HK-PRE/3X", type: "load-balance", proxies: [], append: /kong.*premium/gmi },
+        { name: "🌃 负载均衡 | SG-PRE/3X", type: "load-balance", proxies: [], append: /singapore.*premium/gmi },
+        { name: "🌃 负载均衡 | TW-PRE/3X", type: "load-balance", proxies: [], append: /taiwan.*premium/gmi },
+        { name: "🎑 低倍節點 | Stream", type: "select", proxies: ["REJECT"], append: /📺/gm },
+        { name: "🎑 高倍節點 | Native IP", type: "select", proxies: ["REJECT"], append: /[^.]\dx$/gmi },
         { name: "🌅 目标節點", type: "select", proxies: ["REJECT"], append: /^((?!traffic|update|date).)*$/gmi },
     ];
 
@@ -485,7 +492,7 @@ const fanrr = () => {
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
-        "RULE-SET,brad,🌄 特殊控制 | Brad",
+        "RULE-SET,brad,🌄 特殊控制 | Gemini",
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
         "RULE-SET,proxy,🌌 科学上网 | FANRR",
     ];
@@ -556,10 +563,10 @@ const kele = () => {
 
     const mainGroup = [{ name: "🌌 科学上网 | KELE", type: "select" },];
     const ruleRequiredGroups = [
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
+        { name: "🌠 规则逃逸", type: "select", proxies: ["🌌 科学上网 | KELE", "DIRECT",] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | KELE"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
-        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
+        { name: "🌄 特殊控制 | Gemini", type: "select", proxies: ["REJECT"], append: /^((?!流量|到期).)*$/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | KELE", "DIRECT"] },
     ];
     const mainRequiredGroups = [
@@ -573,7 +580,7 @@ const kele = () => {
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
-        "RULE-SET,brad,🌄 特殊控制 | Brad",
+        "RULE-SET,brad,🌄 特殊控制 | Gemini",
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
         "RULE-SET,proxy,🌌 科学上网 | KELE",
     ];
@@ -647,26 +654,22 @@ const kele = () => {
 }
 
 const nebulae = () => {
-    
+
     const mainGroup = [{ name: "🌌 科学上网 | NEBULAE", type: "select" },];
     const ruleRequiredGroups = [
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
+        { name: "🌠 规则逃逸", type: "select", proxies: ["🌌 科学上网 | NEBULAE", "DIRECT",] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
-        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
+        { name: "🌄 特殊控制 | Gemini", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | NEBULAE", "DIRECT"] },
     ];
     const mainRequiredGroups = [
-        { name: "🌃 负载均衡 | HK-PRIORITY", type: "load-balance", proxies: [], append: /香港.*(?:波粒|传导).*/gm },
-        { name: "🌃 负载均衡 | HK-ALL", type: "load-balance", proxies: [], append: /^.*香港((?!波粒|传导|专线|v6).)*$/gmi },
-        { name: "🌃 负载均衡 | HK-IEPL/2X", type: "load-balance", proxies: [], append: /香港.*专线/gm, reverse: /香港/gm },
-        { name: "🌃 负载均衡 | Singapore", type: "load-balance", proxies: [], append: /^.*狮城((?!专线|v6).)*$/gmi },
-        { name: "🌃 负载均衡 | Taiwan", type: "load-balance", proxies: [], append: /^.*台湾((?!专线|v6).)*$/gmi },
-        { name: "🌃 负载均衡 | United States", type: "load-balance", proxies: [], append: /^.*美国((?!专线|v6).)*$/gmi },
-        { name: "🌃 负载均衡 | Japan", type: "load-balance", proxies: [], append: /^.*日本((?!专线|v6).)*$/gmi },
-        { name: "🌃 负载均衡 | Germany", type: "load-balance", proxies: [], append: /^.*德国((?!专线|v6).)*$/gmi },
-        { name: "🎑 其他專線 | REST-IEPL/2X", type: "select", proxies: ["REJECT"], append: /^((?!香港).)*专线/gm },
-        { name: "🎑 專用節點 | IPv6", type: "select", proxies: ["REJECT"], append: /v6/gmi },
+        { name: "🌃 负载均衡 | Hong Kong", type: "load-balance", proxies: [], append: /^.*香港.*$/gmi },
+        { name: "🌃 负载均衡 | Singapore", type: "load-balance", proxies: [], append: /^.*新加坡.*$/gmi },
+        { name: "🌃 负载均衡 | Taiwan", type: "load-balance", proxies: [], append: /^.*台湾.*$/gmi },
+        { name: "🌃 负载均衡 | United States", type: "load-balance", proxies: [], append: /^.*美国.*$/gmi },
+        { name: "🌃 负载均衡 | Japan", type: "load-balance", proxies: [], append: /^.*日本.*$/gmi },
+        { name: "🌃 负载均衡 | United Kingdom", type: "load-balance", proxies: [], append: /^.*英国.*$/gmi },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT"], append: /.+/gm },
     ];
 
@@ -675,7 +678,7 @@ const nebulae = () => {
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
-        "RULE-SET,brad,🌄 特殊控制 | Brad",
+        "RULE-SET,brad,🌄 特殊控制 | Gemini",
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
         "RULE-SET,proxy,🌌 科学上网 | NEBULAE",
     ];
@@ -752,10 +755,10 @@ const orient = () => {
     
     const mainGroup = [{ name: "🌌 科学上网 | ORIENT", type: "select" },];
     const ruleRequiredGroups = [
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
+        { name: "🌠 规则逃逸", type: "select", proxies: ["🌌 科学上网 | ORIENT", "DIRECT",] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | ORIENT"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: specificRegex },
-        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
+        { name: "🌄 特殊控制 | Gemini", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | ORIENT", "DIRECT"] },
     ];
     const mainRequiredGroups = [
@@ -772,7 +775,7 @@ const orient = () => {
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
-        "RULE-SET,brad,🌄 特殊控制 | Brad",
+        "RULE-SET,brad,🌄 特殊控制 | Gemini",
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
         "RULE-SET,proxy,🌌 科学上网 | ORIENT",
     ];
@@ -829,7 +832,6 @@ const orient = () => {
 
         replacement: {
             "🇹🇼": "🇨🇳",
-            "卢森堡": "🇺🇳 卢森堡",
             "（流媒体）": "",
             "/(?<=\\s\\d\\d)\\s.+(?=（)/gm": "",
             "/(?<=\\s\\d\\d)\\s.+$/gm": "",
@@ -856,10 +858,10 @@ const swift = () => {
 
     const mainGroup = [{ name: "🌌 科学上网 | SWIFT", type: "select" },];
     const ruleRequiredGroups = [
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | SWIFT"] },
+        { name: "🌠 规则逃逸", type: "select", proxies: ["🌌 科学上网 | SWIFT", "DIRECT",] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | SWIFT"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gmi },
-        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gmi },
+        { name: "🌄 特殊控制 | Gemini", type: "select", proxies: ["REJECT"], append: /.+/gmi },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | SWIFT", "DIRECT"] },
     ];
     const mainRequiredGroups = [
@@ -876,7 +878,7 @@ const swift = () => {
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
-        "RULE-SET,brad,🌄 特殊控制 | Brad",
+        "RULE-SET,brad,🌄 特殊控制 | Gemini",
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
         "RULE-SET,proxy,🌌 科学上网 | SWIFT",
     ];
@@ -950,7 +952,7 @@ function main(params) {
         configuration = orient;
     } else if (identification.includes("🥤")) {
         configuration = kele;
-    } else if (identification.includes("Clover")) {
+    } else if (identification.includes("节点选择")) {
         configuration = clover;
     } else if (identification.includes("新雲")) {
         configuration = nebulae;

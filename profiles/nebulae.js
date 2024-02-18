@@ -1,24 +1,20 @@
 module.exports.configuration = () => {
-    
+
     const mainGroup = [{ name: "🌌 科学上网 | NEBULAE", type: "select" },];
     const ruleRequiredGroups = [
-        { name: "🌠 规则逃逸", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
+        { name: "🌠 规则逃逸", type: "select", proxies: ["🌌 科学上网 | NEBULAE", "DIRECT",] },
         { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
-        { name: "🌄 特殊控制 | Brad", type: "select", proxies: ["REJECT"], append: /.+/gm },
+        { name: "🌄 特殊控制 | Gemini", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | NEBULAE", "DIRECT"] },
     ];
     const mainRequiredGroups = [
-        { name: "🌃 负载均衡 | HK-PRIORITY", type: "load-balance", proxies: [], append: /香港.*(?:波粒|传导).*/gm },
-        { name: "🌃 负载均衡 | HK-ALL", type: "load-balance", proxies: [], append: /^.*香港((?!波粒|传导|专线|v6).)*$/gmi },
-        { name: "🌃 负载均衡 | HK-IEPL/2X", type: "load-balance", proxies: [], append: /香港.*专线/gm, reverse: /香港/gm },
-        { name: "🌃 负载均衡 | Singapore", type: "load-balance", proxies: [], append: /^.*狮城((?!专线|v6).)*$/gmi },
-        { name: "🌃 负载均衡 | Taiwan", type: "load-balance", proxies: [], append: /^.*台湾((?!专线|v6).)*$/gmi },
-        { name: "🌃 负载均衡 | United States", type: "load-balance", proxies: [], append: /^.*美国((?!专线|v6).)*$/gmi },
-        { name: "🌃 负载均衡 | Japan", type: "load-balance", proxies: [], append: /^.*日本((?!专线|v6).)*$/gmi },
-        { name: "🌃 负载均衡 | Germany", type: "load-balance", proxies: [], append: /^.*德国((?!专线|v6).)*$/gmi },
-        { name: "🎑 其他專線 | REST-IEPL/2X", type: "select", proxies: ["REJECT"], append: /^((?!香港).)*专线/gm },
-        { name: "🎑 專用節點 | IPv6", type: "select", proxies: ["REJECT"], append: /v6/gmi },
+        { name: "🌃 负载均衡 | Hong Kong", type: "load-balance", proxies: [], append: /^.*香港.*$/gmi },
+        { name: "🌃 负载均衡 | Singapore", type: "load-balance", proxies: [], append: /^.*新加坡.*$/gmi },
+        { name: "🌃 负载均衡 | Taiwan", type: "load-balance", proxies: [], append: /^.*台湾.*$/gmi },
+        { name: "🌃 负载均衡 | United States", type: "load-balance", proxies: [], append: /^.*美国.*$/gmi },
+        { name: "🌃 负载均衡 | Japan", type: "load-balance", proxies: [], append: /^.*日本.*$/gmi },
+        { name: "🌃 负载均衡 | United Kingdom", type: "load-balance", proxies: [], append: /^.*英国.*$/gmi },
         { name: "🌅 目标节点", type: "select", proxies: ["REJECT"], append: /.+/gm },
     ];
 
@@ -27,7 +23,7 @@ module.exports.configuration = () => {
         "RULE-SET,reject,REJECT",
         "RULE-SET,direct,DIRECT",
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
-        "RULE-SET,brad,🌄 特殊控制 | Brad",
+        "RULE-SET,brad,🌄 特殊控制 | Gemini",
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
         "RULE-SET,proxy,🌌 科学上网 | NEBULAE",
     ];

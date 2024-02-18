@@ -12,7 +12,6 @@ const TEST_INTERVAL = 300;
 const LAZY_TESTING = true;
 const STRATEGY = "consistent-hashing";
 const TOLERANCE = 50;
-const MAIN_NETWORK_INDEX = 0;
 const REJECT = "REJECT";
 const DIRECT = "DIRECT";
 const CONNECTOR = "-";
