@@ -13,7 +13,9 @@ function main(params) {
         configuration = fanrr;
     } else if (identification.includes("SWIFT")) {
         configuration = swift;
-    }else {
+    } else if (identification.includes("手动切换")) {
+        configuration = panda;
+    } else {
         return params;
     }
     let mode = {

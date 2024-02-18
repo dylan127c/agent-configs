@@ -6,7 +6,8 @@ const NEW_LINE = "\n\n";
 
 module.exports.output = () => {
   const mainCode = fs.readFileSync(path.resolve(__dirname, settings.main), "utf-8")
-    .replace(/^.+require.+$\n/gm, "")
+    .replace(/^.*delete.*$/gm, "")
+    .replace(/^.*const\sbuild.*$/gm, "")
     .replace("module.exports.", "function ")
     .replace(" = (", "(")
     .replace(") =>", ")");
