@@ -8,7 +8,7 @@ function main(params) {
     } else if (identification.includes("节点选择")) {
         configuration = clover;
     } else if (identification.includes("新雲")) {
-        configuration = nebulae;
+        configuration = newyun;
     } else if (identification.includes("Fanrr")) {
         configuration = fanrr;
     } else if (identification.includes("SWIFT")) {

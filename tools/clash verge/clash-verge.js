@@ -639,8 +639,6 @@ const kele = () => {
             "/香港(?=\\s\\d\\d)/gm": "🇭🇰 香港",
         },
 
-        interval: 72,
-
         proxiesSpecialized: {
             proxiesAddition: [{
                 name: "🔄️ v2rayN | Global",
@@ -655,15 +653,15 @@ const kele = () => {
     }
 }
 
-const nebulae = () => {
+const newyun = () => {
 
-    const mainGroup = [{ name: "🌌 科学上网 | NEBULAE", type: "select" },];
+    const mainGroup = [{ name: "🌌 科学上网 | NEWYUN", type: "select" },];
     const ruleRequiredGroups = [
-        { name: "🌠 规则逃逸", type: "select", proxies: ["🌌 科学上网 | NEBULAE", "DIRECT",] },
-        { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEBULAE"] },
+        { name: "🌠 规则逃逸", type: "select", proxies: ["🌌 科学上网 | NEWYUN", "DIRECT",] },
+        { name: "🌆 数据下载 | IDM", type: "select", proxies: ["DIRECT", "🌌 科学上网 | NEWYUN"] },
         { name: "🌄 特殊控制 | OpenAI", type: "select", proxies: ["REJECT"], append: /.+/gm },
         { name: "🌄 特殊控制 | Gemini", type: "select", proxies: ["REJECT"], append: /.+/gm },
-        { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | NEBULAE", "DIRECT"] },
+        { name: "🌄 特殊控制 | Copilot", type: "select", proxies: ["🌌 科学上网 | NEWYUN", "DIRECT"] },
     ];
     const mainRequiredGroups = [
         { name: "🌃 负载均衡 | Hong Kong", type: "load-balance", proxies: [], append: /^.*香港.*$/gmi },
@@ -682,7 +680,7 @@ const nebulae = () => {
         "RULE-SET,openai,🌄 特殊控制 | OpenAI",
         "RULE-SET,brad,🌄 特殊控制 | Gemini",
         "RULE-SET,copilot,🌄 特殊控制 | Copilot",
-        "RULE-SET,proxy,🌌 科学上网 | NEBULAE",
+        "RULE-SET,proxy,🌌 科学上网 | NEWYUN",
     ];
     const originalRules = [
         "RULE-SET,applications,DIRECT",
@@ -690,12 +688,12 @@ const nebulae = () => {
         "RULE-SET,icloud,DIRECT",
         "RULE-SET,private,DIRECT",
         "RULE-SET,direct,DIRECT",
-        "RULE-SET,greatfire,🌌 科学上网 | NEBULAE",
-        "RULE-SET,gfw,🌌 科学上网 | NEBULAE",
-        "RULE-SET,proxy,🌌 科学上网 | NEBULAE",
-        "RULE-SET,tld-not-cn,🌌 科学上网 | NEBULAE",
+        "RULE-SET,greatfire,🌌 科学上网 | NEWYUN",
+        "RULE-SET,gfw,🌌 科学上网 | NEWYUN",
+        "RULE-SET,proxy,🌌 科学上网 | NEWYUN",
+        "RULE-SET,tld-not-cn,🌌 科学上网 | NEWYUN",
         "RULE-SET,reject,REJECT",
-        "RULE-SET,telegramcidr,🌌 科学上网 | NEBULAE,no-resolve",
+        "RULE-SET,telegramcidr,🌌 科学上网 | NEWYUN,no-resolve",
         "RULE-SET,lancidr,DIRECT,no-resolve",
         "RULE-SET,cncidr,DIRECT,no-resolve"
     ];
@@ -1049,7 +1047,7 @@ function main(params) {
     } else if (identification.includes("节点选择")) {
         configuration = clover;
     } else if (identification.includes("新雲")) {
-        configuration = nebulae;
+        configuration = newyun;
     } else if (identification.includes("Fanrr")) {
         configuration = fanrr;
     } else if (identification.includes("SWIFT")) {

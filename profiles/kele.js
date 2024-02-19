@@ -76,8 +76,6 @@ module.exports.configuration = () => {
             "/香港(?=\\s\\d\\d)/gm": "🇭🇰 香港",
         },
 
-        interval: 72,
-
         proxiesSpecialized: {
             proxiesAddition: [{
                 name: "🔄️ v2rayN | Global",
