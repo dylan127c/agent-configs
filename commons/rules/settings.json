@@ -1,23 +1,110 @@
 {
-    "server": "https://raw.gitmirror.com/Loyalsoldier/clash-rules/release",
-    "type": "txt",
-    "files": [
-        "apple",
-        "applications",
-        "cncidr",
-        "direct",
-        "gfw",
-        "greatfire",
-        "icloud",
-        "lancidr",
-        "private",
-        "proxy",
-        "reject",
-        "telegramcidr",
-        "tld-not-cn"
-    ],
-    "savePath": "./original",
-    "saveType": "yaml",
     "timestamp": "./updateTimestamp.log",
-    "interval": 168
+    "interval": 168,
+    "list": [
+        {
+            "updateUrl": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/apple.txt",
+            "savePath": "./original",
+            "saveName": "apple",
+            "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/applications.txt",
+            "savePath": "./original",
+            "saveName": "applications",
+            "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/cncidr.txt",
+            "savePath": "./original",
+            "saveName": "cncidr",
+            "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/direct.txt",
+            "savePath": "./original",
+            "saveName": "direct",
+            "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/gfw.txt",
+            "savePath": "./original",
+            "saveName": "gfw",
+            "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/greatfire.txt",
+            "savePath": "./original",
+            "saveName": "greatfire",
+            "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/icloud.txt",
+            "savePath": "./original",
+            "saveName": "icloud",
+            "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/lancidr.txt",
+            "savePath": "./original",
+            "saveName": "lancidr",
+            "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt",
+            "savePath": "./original",
+            "saveName": "private",
+            "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/proxy.txt",
+            "savePath": "./original",
+            "saveName": "proxy",
+            "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt",
+            "savePath": "./original",
+            "saveName": "reject",
+            "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/telegramcidr.txt",
+            "savePath": "./original",
+            "saveName": "telegramcidr",
+            "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/tld-not-cn.txt",
+            "savePath": "./original",
+            "saveName": "tld-not-cn",
+            "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GitHub/GitHub_No_Resolve.yaml",
+            "savePath": "./special",
+            "saveName": "github",
+            "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Steam/Steam_No_Resolve.yaml",
+            "savePath": "./special",
+            "saveName": "steam",
+            "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube_No_Resolve.yaml",
+            "savePath": "./special",
+            "saveName": "youtube",
+            "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PikPak/PikPak_No_Resolve.yaml",
+            "savePath": "./special",
+            "saveName": "pikpak",
+            "saveType": "yaml"
+        }
+
+        
+    ]
 }

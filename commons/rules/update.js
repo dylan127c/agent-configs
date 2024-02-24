@@ -58,32 +58,32 @@ module.exports.updateCheck = (axios, log) => {
  */
 function updateRules(axios, log) {
     const funcName = "updateRules";
-    const promises = settings.files.map(fileName => {
+    const promises = settings.list.map(detail => {
         return axios({
             method: "get",
-            url: settings.server + "/" + fileName + "." + settings.type,
+            url: detail.updateUrl,
         }).then(res => {
             return new Promise((resolve, reject) => {
                 fs.writeFile(
                     path.resolve(
-                        path.resolve(__dirname, settings.savePath),
-                        fileName + "." + settings.saveType
+                        path.resolve(__dirname, detail.savePath),
+                        detail.saveName + "." + detail.saveType
                     ),
                     res.data, 'utf8',
                     (err) => {
                         if (err) {
-                            log.info(mark(funcName), "update failure:", fileName + ".yaml");
+                            log.info(mark(funcName), "update failure:", detail.saveName + ".yaml");
                             log.info(mark(funcName), err);
                             reject(err);
                         } else {
-                            log.info(mark(funcName), "up-to-date:", fileName + ".yaml");
+                            log.info(mark(funcName), "up-to-date:", detail.saveName + ".yaml");
                             resolve();
                         }
                     }
                 );
             });
         }).catch(err => {
-            log.info(mark(funcName), "axios errors occurred:", fileName + ".yaml");
+            log.info(mark(funcName), "axios errors occurred:", detail.saveName + ".yaml");
             log.info(mark(funcName), err);
             return Promise.reject();
         });
