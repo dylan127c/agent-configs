@@ -127,6 +127,9 @@ function main() {
     delete require.cache[require.resolve(settings.update)];
     const update = require(settings.update);
 
+    delete require.cache[require.resolve(settings.transform)];
+    const transform = require(settings.transform);
+
     params = build();
     params["proxy-providers"] = getProxyProvider();
     params["rules"] = RULES;
@@ -139,6 +142,7 @@ function main() {
 
     /* !!! ASYNC FUNCTIOAN !!! */
     update.updateCheck(axios, log);
+    transform.transformRules(log);
   } catch (error) {
     console.log(error);
   }

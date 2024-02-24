@@ -2,5 +2,6 @@
     "cfw": "C:/Users/dylan/.config/clash/profiles/1708716559547.yml",
     "cv": "C:/Users/dylan/.config/clash-verge/profiles/l6M08DE3aaWN.yaml",
     "log": "../commons/lib/log",
-    "update": "../commons/rules/update"
+    "update": "../commons/rules/update",
+    "transform": "../loon/transform"
 }

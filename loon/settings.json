@@ -1,0 +1,41 @@
+{
+    "rules": "./rules",
+    "replacement": {
+        "PROCESS-NAME": {
+            "^payload:\n": "",
+            "^  #": "#",
+            "^  - ": ""
+        },
+        "DOMAIN-SUFFIX": {
+            "^payload:\n": "",
+            "^  #": "#",
+            "^.+?'\\+?\\.?": "DOMAIN-SUFFIX,",
+            "'$": ""
+        },
+        "IP-CIDR": {
+            "^payload:\n": "",
+            "^  #": "#",
+            "^  - '": "IP-CIDR,",
+            "'$": ""
+        }
+    },
+    "classical": "PROCESS-NAME",
+    "domain": "DOMAIN-SUFFIX",
+    "ipcidr": "IP-CIDR",
+    "defaultBehavior": "domain",
+    "behavior": {
+        "classical": [
+            "pikpak",
+            "applications"
+        ],
+        "ipcidr": [
+            "telegramcidr",
+            "lancidr",
+            "cncidr"
+        ]
+    },
+    "originalPrefix": "original",
+    "originalNative": "h:/onedrive/repositories/proxy rules/commons/rules/original",
+    "additionPrefix": "addition",
+    "additionNative": "h:/onedrive/repositories/proxy rules/commons/rules/addition"
+}
