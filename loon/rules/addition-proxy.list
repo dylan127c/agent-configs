@@ -10,7 +10,6 @@
 
 # 自定义规则匹配顺序：reject.yaml => direct.yaml => ... => proxy.yaml 
 
-payload:
 # Cloud Flare
 DOMAIN-SUFFIX,challenges.cloudflare.com
 

@@ -10,7 +10,6 @@
 
 # 自定义规则匹配顺序：reject.yaml => direct.yaml => ... => proxy.yaml 
 
-payload:
 # 以下某些域名会影响Edge浏览器新标签页的加载，但国内可以直连。
 DOMAIN-SUFFIX,go.microsoft.com
 DOMAIN-SUFFIX,edge.microsoft.com
