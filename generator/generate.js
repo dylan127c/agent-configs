@@ -42,8 +42,8 @@ const PROVIDER_GROUPS = {
     { name: "PREMIUM-SG", type: "load-balance", filter: "(?i)singapore.*premium" },
     { name: "PREMIUM-TW", type: "load-balance", filter: "(?i)taiwan.*premium" },
     { name: "PREMIUM-JP", type: "load-balance", filter: "(?i)japan.*premium" },
-    { name: "Streaming", type: "load-balance", filter: "📺" },
-    { name: "Native/IP", type: "load-balance", filter: "(?i)[^.][0-9]x$" },
+    // { name: "Streaming", type: "load-balance", filter: "📺" },
+    // { name: "Native/IP", type: "load-balance", filter: "(?i)[^.][0-9]x$" },
   ],
   "XY": [
     { name: "HK", type: "load-balance", filter: "香港.*" },
@@ -115,37 +115,30 @@ const HEALTH_CHECK = {
 };
 
 const fs = require("fs");
-const yaml = require('yaml');
-const axios = require("axios");
-const settings = require("./settings.json");
+const path = require("path");
 
-function main() {
-  try {
-    delete require.cache[require.resolve(settings.log)];
-    const log = require(settings.log)(console);
+const FILE_NAME = path.basename(__filename).replace(".js", "");
+function mark(name) {
+  return FILE_NAME + "." + name + " =>";
+}
 
-    delete require.cache[require.resolve(settings.update)];
-    const update = require(settings.update);
+function generate(log, yaml) {
+  const funcName = "generate";
 
-    delete require.cache[require.resolve(settings.transform)];
-    const transform = require(settings.transform);
+  delete require.cache[require.resolve("./settings.json")];
+  const settings = require("./settings.json");
 
-    params = build();
-    params["proxy-providers"] = getProxyProvider();
-    params["rules"] = RULES;
-    params["rule-providers"] = getRuleProvider(RULES);
-    params["proxy-groups"] = getProxyGroups();
+  params = build();
+  params["proxy-providers"] = getProxyProvider();
+  params["rules"] = RULES;
+  params["rule-providers"] = getRuleProvider(RULES);
+  params["proxy-groups"] = getProxyGroups();
 
-    const detail = "# upload=0; download=2330019758080; total=10995116277760; expire=4102329600;";
-    const output = detail + "\n" + yaml.stringify(params);
-    fs.writeFileSync(settings.cv, output, "utf-8");
+  const detail = "# upload=0; download=2330019758080; total=10995116277760; expire=4102329600;";
+  const output = detail + "\n" + yaml.stringify(params);
 
-    /* !!! ASYNC FUNCTIOAN !!! */
-    update.updateCheck(axios, log);
-    transform.transformRules(log);
-  } catch (error) {
-    console.log(error);
-  }
+  fs.writeFileSync(settings.cv, output, "utf-8");
+  log.info(mark(funcName), "done.");
 }
 
 function getProxyGroups() {
@@ -343,4 +336,4 @@ function build() {
   return initConfiguration;
 }
 
-module.exports = { main };
+module.exports = { generate };

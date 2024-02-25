@@ -8,8 +8,8 @@ function mark(name) {
     return FILE_NAME + "." + name + " =>";
 }
 
-module.exports.transformRules = (log) => {
-    const funcName = "transformRules";
+module.exports.transform = (log) => {
+    const funcName = "transform";
 
     delete require.cache[require.resolve("./settings.json")];
     const settings = require("./settings.json");
@@ -23,7 +23,7 @@ module.exports.transformRules = (log) => {
     ["original", "addition"].forEach(identifier => {
         transform(log, settings, identifier);
     })
-    log.info(mark(funcName), "transform completed.")
+    log.info(mark(funcName), "done.")
 }
 
 function transform(log, settings, identifier) {

@@ -1,0 +1,7 @@
+{
+    "logPath": "./run.log",
+    "generator": "./generator/generate",
+    "log": "./commons/lib/log",
+    "update": "./commons/rules/update",
+    "transform": "./loon/transform"
+}

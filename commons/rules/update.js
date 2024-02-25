@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+
 const FILE_NAME = path.basename(__filename).replace(".js", "");
 function mark(name) {
     return FILE_NAME + "." + name + " =>";
@@ -21,14 +22,14 @@ const formatter = require("../lib/date-formatter")
  * @param {function} axios 网络请求框架
  * @param {object} log 控制台调试对象
  */
-module.exports.updateCheck = (axios, log) => {
+module.exports.updateCheck = (log, axios) => {
     const funcName = "updateCheck";
     fs.readFile(path.resolve(__dirname, settings.timestamp),
         "utf-8",
         (err, data) => {
             if (err) {
                 log.info(mark(funcName), "initiate rules.");
-                updateRules(axios, log);
+                update(log, axios);
             } else {
                 const savedTimestamp = parseInt(data);
                 const currentTimestamp = Date.now();
@@ -37,7 +38,7 @@ module.exports.updateCheck = (axios, log) => {
 
                 if (intervalInHours >= settings.interval) {
                     log.info(mark(funcName), "update rules.");
-                    updateRules(axios, log);
+                    update(log, axios);
                 } else {
                     log.info(mark(funcName), "update suspended.");
                     log.info(mark(funcName), "last updated:", formatter.getFormatDate(new Date(savedTimestamp)));
@@ -56,8 +57,8 @@ module.exports.updateCheck = (axios, log) => {
  * @param {function} axios 网络请求框架
  * @param {object} log 控制台调试对象
  */
-function updateRules(axios, log) {
-    const funcName = "updateRules";
+function update(log, axios) {
+    const funcName = "update";
     const promises = settings.list.map(detail => {
         return axios({
             method: "get",
@@ -90,6 +91,7 @@ function updateRules(axios, log) {
     });
     Promise.all(promises)
         .then(() => {
+            log.info(mark(funcName), "done.");
             updateTimestamp(log);
         })
         .catch(err => {
