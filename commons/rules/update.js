@@ -63,6 +63,11 @@ function update(log, axios) {
         return axios({
             method: "get",
             url: detail.updateUrl,
+            proxy: {
+                protocol: "http",
+                host: "127.0.0.1",
+                port: 13766
+            }
         }).then(res => {
             return new Promise((resolve, reject) => {
                 fs.writeFile(

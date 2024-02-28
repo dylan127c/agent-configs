@@ -1,49 +1,66 @@
 const GROUPS = [
   { name: "🎇 Comprehensive", type: "select", proxies: ["REJECT", "🌅 SPECIFIC-LINE"], use: false },
-  { name: "🌠 Escape", type: "select", proxies: ["DIRECT"], use: false },
-  { name: "🎆 PikPak", type: "select", proxies: ["REJECT"], use: false },
+  { name: "🌠 CFWHit", type: "select", proxies: ["DIRECT", "🌅 SPECIFIC-LINE"], use: false },
+  { name: "🌠 PcapEscape", type: "select", proxies: ["DIRECT", "🌅 SPECIFIC-LINE"], use: false },
   { name: "🎆 OpenAI", type: "select", proxies: ["REJECT"], use: false },
   { name: "🎆 Gemini", type: "select", proxies: ["REJECT"], use: false },
-  { name: "🎆 GitHub", type: "select", proxies: ["REJECT"], use: false },
-  { name: "🎆 YouTube", type: "select", proxies: ["REJECT"], use: false },
   { name: "🎆 Copilot", type: "select", proxies: ["REJECT"], use: false },
+  { name: "🎆 YouTube", type: "select", proxies: ["REJECT"], use: false },
+  { name: "🎆 GitHub", type: "select", proxies: ["REJECT"], use: false },
   { name: "🎆 Steam", type: "select", proxies: ["REJECT"], use: false },
-  { name: "🌅 SPECIFIC-LINE", type: "select", proxies: ["REJECT"], use: true, filter: "^[^(📮|⏰|💥|🎮|剩|套|地|续)]" },
+  { name: "🎆 Bilibili", type: "select", proxies: ["DIRECT"], use: false },
+  { name: "🌠 FinalEscape", type: "select", proxies: ["DIRECT", "🌅 SPECIFIC-LINE"], use: false },
+  { name: "🌅 SPECIFIC-LINE", type: "select", proxies: ["REJECT"], use: true, all: true, filter: "^[^(📮|⏰|💥|🎮|剩|套|地|续)]" },
+  { name: "🛂 SWIFT", type: "select", proxies: ["REJECT"], use: true, provider: ["SW"] },
+  { name: "🛂 CLOVER", type: "select", proxies: ["REJECT"], use: true, provider: ["CL"], filter: "^[^(剩|套)]" },
+  { name: "🛂 FANRR", type: "select", proxies: ["REJECT"], use: true, provider: ["FR"], filter: "^[^(📮|⏰|💥|🎮)]" },
+  { name: "🛂 XINYUN", type: "select", proxies: ["REJECT"], use: true, provider: ["XY"], filter: "^[^(地|续)]" },
+  { name: "🛂 KELE", type: "select", proxies: ["REJECT"], use: true, provider: ["KL"], filter: "^[^(剩|套)]" },
 ];
 
 const PROVIDER_GROUPS = {
-  "CL": [
-    { name: "HK-IEPL", type: "load-balance", filter: "(?<=IEPL).*(?:香港)" },
-    { name: "SG-IEPL", type: "load-balance", filter: "(?<=IEPL).*(?:新加坡)" },
-    { name: "TW-IEPL", type: "load-balance", filter: "(?<=IEPL).*(?:台湾)" },
-    { name: "KR-IEPL", type: "load-balance", filter: "(?<=IEPL).*(?:韩国)" },
-    { name: "JP-IEPL", type: "load-balance", filter: "(?<=IEPL).*(?:日本)" },
-    { name: "HK-TRANS", type: "load-balance", filter: "^(?!.*(?:IEPL)).*香港" },
-    { name: "SG-TRANS", type: "load-balance", filter: "^(?!.*(?:IEPL)).*新加坡" },
-    { name: "TW-TRANS", type: "load-balance", filter: "^(?!.*(?:IEPL)).*台湾" },
-    { name: "KR-TRANS", type: "load-balance", filter: "^(?!.*(?:IEPL)).*韩国" },
-    { name: "JP-TRANS", type: "load-balance", filter: "^(?!.*(?:IEPL)).*日本" },
-  ],
   "SW": [
-    { name: "HK", type: "load-balance", filter: "🇭🇰" },
-    { name: "SG", type: "load-balance", filter: "🇸🇬" },
-    { name: "TW", type: "load-balance", filter: "🇹🇼" },
-    { name: "US", type: "load-balance", filter: "🇺🇸" },
-    { name: "JP", type: "load-balance", filter: "🇯🇵" },
+    { name: "HK-LB", type: "load-balance", filter: "🇭🇰" },
+    { name: "SG-LB", type: "load-balance", filter: "🇸🇬" },
+    { name: "TW-LB", type: "load-balance", filter: "🇹🇼" },
+    { name: "US-LB", type: "load-balance", filter: "🇺🇸" },
+    { name: "JP-LB", type: "load-balance", filter: "🇯🇵" },
+    { name: "HK-UT", type: "url-test", filter: "🇭🇰" },
+    { name: "SG-UT", type: "url-test", filter: "🇸🇬" },
+    { name: "TW-UT", type: "url-test", filter: "🇹🇼" },
+    { name: "US-UT", type: "url-test", filter: "🇺🇸" },
+    { name: "JP-UT", type: "url-test", filter: "🇯🇵" },
+  ],
+  "CL": [
+    { name: "HK-IEPL-LB", type: "load-balance", filter: "(?<=IEPL).*(?:香港)" },
+    { name: "SG-IEPL-LB", type: "load-balance", filter: "(?<=IEPL).*(?:新加坡)" },
+    { name: "TW-IEPL-LB", type: "load-balance", filter: "(?<=IEPL).*(?:台湾)" },
+    { name: "KR-IEPL-LB", type: "load-balance", filter: "(?<=IEPL).*(?:韩国)" },
+    { name: "JP-IEPL-LB", type: "load-balance", filter: "(?<=IEPL).*(?:日本)" },
+    { name: "HK-TRANS-LB", type: "load-balance", filter: "^(?!.*(?:IEPL)).*香港" },
+    { name: "SG-TRANS-LB", type: "load-balance", filter: "^(?!.*(?:IEPL)).*新加坡" },
+    { name: "TW-TRANS-LB", type: "load-balance", filter: "^(?!.*(?:IEPL)).*台湾" },
+    { name: "KR-TRANS-LB", type: "load-balance", filter: "^(?!.*(?:IEPL)).*韩国" },
+    { name: "JP-TRANS-LB", type: "load-balance", filter: "^(?!.*(?:IEPL)).*日本" },
+    { name: "HK-IEPL-UT", type: "url-test", filter: "(?<=IEPL).*(?:香港)" },
+    { name: "SG-IEPL-UT", type: "url-test", filter: "(?<=IEPL).*(?:新加坡)" },
+    { name: "TW-IEPL-UT", type: "url-test", filter: "(?<=IEPL).*(?:台湾)" },
+    { name: "KR-IEPL-UT", type: "url-test", filter: "(?<=IEPL).*(?:韩国)" },
+    { name: "JP-IEPL-UT", type: "url-test", filter: "(?<=IEPL).*(?:日本)" },
+    { name: "HK-TRANS-UT", type: "url-test", filter: "^(?!.*(?:IEPL)).*香港" },
+    { name: "SG-TRANS-UT", type: "url-test", filter: "^(?!.*(?:IEPL)).*新加坡" },
+    { name: "TW-TRANS-UT", type: "url-test", filter: "^(?!.*(?:IEPL)).*台湾" },
+    { name: "KR-TRANS-UT", type: "url-test", filter: "^(?!.*(?:IEPL)).*韩国" },
+    { name: "JP-TRANS-UT", type: "url-test", filter: "^(?!.*(?:IEPL)).*日本" },
   ],
   "FR": [
     { name: "HK", type: "load-balance", filter: "(?i)^.*kong((?!premium).)*$" },
-    { name: "SG", type: "load-balance", filter: "(?i)^.*singapore((?!premium).)*[^x]$" },
-    { name: "TW", type: "load-balance", filter: "(?i)^.*taiwan((?!premium).)*[^x]$" },
     { name: "US", type: "load-balance", filter: "(?i)^.*states((?!premium).)*[^x]$" },
     { name: "JP", type: "load-balance", filter: "(?i)^.*japan((?!premium).)*[^x]$" },
-    { name: "UK", type: "load-balance", filter: "(?i)^.*kingdom((?!premium).)*[^x]$" },
     { name: "PREMIUM-HK", type: "load-balance", filter: "(?i)hong.*premium" },
     { name: "PREMIUM-SG", type: "load-balance", filter: "(?i)singapore.*premium" },
     { name: "PREMIUM-TW", type: "load-balance", filter: "(?i)taiwan.*premium" },
     { name: "PREMIUM-JP", type: "load-balance", filter: "(?i)japan.*premium" },
-    // { name: "Streaming", type: "load-balance", filter: "📺" },
-    // { name: "Native/IP", type: "load-balance", filter: "(?i)[^.][0-9]x$" },
   ],
   "XY": [
     { name: "HK", type: "load-balance", filter: "香港.*" },
@@ -61,14 +78,15 @@ const PROVIDER_GROUPS = {
 const RULE_PROVIDER_PATH = "h:/onedrive/repositories/proxy rules/commons/rules/";
 const RULE_PROVIDER_TYPE = "yaml";
 const RULES = [
+  "PROCESS-NAME,clash-win64.exe,🌠 CFWHit",
   "RULE-SET,addition-reject,REJECT",
   "RULE-SET,addition-direct,DIRECT",
-  "RULE-SET,addition-pikpak,🎆 PikPak",
-  "RULE-SET,addition-copilot,🎆 Copilot",
   "RULE-SET,addition-openai,🎆 OpenAI",
   "RULE-SET,addition-gemini,🎆 Gemini",
-  "RULE-SET,special-github,🎆 GitHub",
+  "RULE-SET,addition-copilot,🎆 Copilot",
+  "RULE-SET,special-bilibili,🎆 Bilibili",
   "RULE-SET,special-youtube,🎆 YouTube",
+  "RULE-SET,special-github,🎆 GitHub",
   "RULE-SET,special-steam,🎆 Steam",
   "RULE-SET,addition-proxy,🎇 Comprehensive",
   "RULE-SET,original-applications,DIRECT",
@@ -86,7 +104,8 @@ const RULES = [
   "RULE-SET,original-cncidr,DIRECT,no-resolve",
   "GEOIP,LAN,DIRECT,no-resolve",
   "GEOIP,CN,DIRECT,no-resolve",
-  "MATCH,🌠 Escape"
+  "IN-TYPE,HTTPS,🌠 PcapEscape",
+  "MATCH,🌠 FinalEscape"
 ];
 
 const PROXY_PROVIDER_PATH = "c:/users/dylan/.config/clash-verge/profiles/";
@@ -100,12 +119,30 @@ const PROXY_PROVIDERS_MAP = {
 };
 
 const FLAG = { HK: "🇭🇰", SG: "🇸🇬", TW: "🇹🇼", US: "🇺🇸", JP: "🇯🇵", UK: "🇬🇧", KR: "🇰🇷", UN: "🇺🇳" };
-const LOAD_BALANCE = {
+
+const LOAD_BALANCE = "load-balance"
+const LOAD_BALANCE_PARAMS = {
   url: "https://www.gstatic.com/generate_204",
   lazy: true,
   strategy: "consistent-hashing",
   interval: 300
 };
+
+const URL_TEST = "url-test";
+const URL_TEST_PARAMS = {
+  url: "https://www.gstatic.com/generate_204",
+  lazy: true,
+  tolerance: 50,
+  interval: 300
+};
+
+const FALLBACK = "fallback";
+const FALLBACK_PARAMS = {
+  url: "https://www.gstatic.com/generate_204",
+  lazy: true,
+  interval: 300
+};
+
 const HEALTH_CHECK = {
   "health-check": {
     enable: true,
@@ -156,17 +193,23 @@ function getProxyGroups() {
   }
 
   const groupsArr = [];
-  GROUPS.forEach(ele => {
+  GROUPS.forEach(preset => {
     const group = {};
-    group.name = ele.name;
-    group.type = ele.type;
-    if (!ele.use) {
-      ele.proxies = ele.proxies.concat(providerGroupsName);
+    group.name = preset.name;
+    group.type = preset.type;
+    if (preset.hasOwnProperty("use") && !preset.use) {
+      preset.proxies = preset.proxies.concat(providerGroupsName);
     } else {
-      group.use = Object.keys(PROXY_PROVIDERS_MAP);
-      group.filter = ele.filter;
+      if (preset.hasOwnProperty("all") && preset.all) {
+        group.use = Object.keys(PROXY_PROVIDERS_MAP);
+      } else {
+        group.use = preset.provider;
+      }
+      if (preset.hasOwnProperty("filter")) {
+        group.filter = preset.filter;
+      }
     }
-    group.proxies = ele.proxies;
+    group.proxies = preset.proxies;
     groupsArr.push(group);
   });
 
@@ -177,7 +220,12 @@ function getProxyGroups() {
       group.type = detail.type;
       group.filter = detail.filter
       group.use = [provider];
-      groupsArr.push(Object.assign(group, LOAD_BALANCE));
+
+      if (detail.type === LOAD_BALANCE) {
+        groupsArr.push(Object.assign(group, LOAD_BALANCE_PARAMS));
+      } else if (detail.type === URL_TEST) {
+        groupsArr.push(Object.assign(group, URL_TEST_PARAMS));
+      }
     })
   }
   return groupsArr;
@@ -185,8 +233,8 @@ function getProxyGroups() {
 
 function getRuleProvider(rules) {
   const provider = {};
-  rules.forEach(ele => {
-    const arr = ele.match(/(?<=RULE-SET,)[a-z-]*(?=,)/gm);
+  rules.forEach(rule => {
+    const arr = rule.match(/(?<=RULE-SET,)[a-z-]*(?=,)/gm);
     if (arr && arr.length) {
       const providerName = arr[0];
       provider[providerName] = {};

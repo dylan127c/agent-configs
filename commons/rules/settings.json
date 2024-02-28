@@ -103,8 +103,12 @@
             "savePath": "./special",
             "saveName": "pikpak",
             "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/BiliBili/BiliBili_No_Resolve.yaml",
+            "savePath": "./special",
+            "saveName": "bilibili",
+            "saveType": "yaml"
         }
-
-        
     ]
 }
