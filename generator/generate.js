@@ -1,7 +1,8 @@
 const GROUPS = [
   { name: "🎇 Comprehensive", type: "select", proxies: ["REJECT", "🌅 SPECIFIC-LINE"], use: false },
+  { name: "🌠 Http(s)Escape", type: "select", proxies: ["🎇 Comprehensive", "🌅 SPECIFIC-LINE"], use: false },
+  { name: "🌠 Socks(5)Escape", type: "select", proxies: ["DIRECT", "🌅 SPECIFIC-LINE"], use: false },
   { name: "🌠 CFWHit", type: "select", proxies: ["DIRECT", "🌅 SPECIFIC-LINE"], use: false },
-  { name: "🌠 PcapEscape", type: "select", proxies: ["DIRECT", "🌅 SPECIFIC-LINE"], use: false },
   { name: "🎆 OpenAI", type: "select", proxies: ["REJECT"], use: false },
   { name: "🎆 Gemini", type: "select", proxies: ["REJECT"], use: false },
   { name: "🎆 Copilot", type: "select", proxies: ["REJECT"], use: false },
@@ -104,7 +105,9 @@ const RULES = [
   "RULE-SET,original-cncidr,DIRECT,no-resolve",
   "GEOIP,LAN,DIRECT,no-resolve",
   "GEOIP,CN,DIRECT,no-resolve",
-  "IN-TYPE,HTTPS,🌠 PcapEscape",
+  "IN-TYPE,HTTP,🌠 Http(s)Escape",
+  "IN-TYPE,HTTPS,🌠 Http(s)Escape",
+  "IN-TYPE,SOCKS5,🌠 Socks(5)Escape",
   "MATCH,🌠 FinalEscape"
 ];
 
