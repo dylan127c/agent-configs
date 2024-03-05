@@ -42,8 +42,7 @@ function generate(log, yaml) {
   params["rule-providers"] = getRuleProvider(RULES);
   params["proxy-groups"] = getProxyGroups();
 
-  const detail = "# upload=0; download=2330019758080; total=10995116277760; expire=4102329600;";
-  const output = detail + "\n" + yaml.stringify(params);
+  const output = yaml.stringify(params);
 
   fs.writeFileSync(settings.cv, output, "utf-8");
   log.info(mark(funcName), "done.");

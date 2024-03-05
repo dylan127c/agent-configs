@@ -4,6 +4,7 @@ const GROUPS = [
     { name: "🌠 Socks(5)Escape", type: "select", proxies: ["DIRECT", "🌅 SPECIFIC-LINE"], use: false },
     { name: "🎆 OpenAI", type: "select", proxies: ["REJECT"], use: false },
     { name: "🎆 GitHub", type: "select", proxies: ["REJECT"], use: false },
+    { name: "🎆 Claude", type: "select", proxies: ["REJECT"], use: false },
     { name: "🎆 Gemini", type: "select", proxies: ["REJECT"], use: false },
     { name: "🎆 Copilot", type: "select", proxies: ["REJECT"], use: false },
     { name: "🌠 CFWHit", type: "select", proxies: ["DIRECT", "🌅 SPECIFIC-LINE"], use: false },
@@ -54,6 +55,20 @@ const PROVIDER_GROUPS = {
         { name: "KR-TRANS-UT", type: "url-test", filter: "^(?!.*(?:IEPL)).*韩国" },
         { name: "JP-TRANS-UT", type: "url-test", filter: "^(?!.*(?:IEPL)).*日本" },
     ],
+    "XY": [
+        { name: "HK-LB", type: "load-balance", filter: "香港.*" },
+        { name: "SG-LB", type: "load-balance", filter: "(?:狮城|新加坡).*" },
+        { name: "JP-LB", type: "load-balance", filter: "日本.*" },
+        { name: "US-LB", type: "load-balance", filter: "美国.*" },
+        { name: "TW-LB", type: "load-balance", filter: "台湾.*" },
+        { name: "UK-LB", type: "load-balance", filter: "英国.*" },
+        { name: "HK-UT", type: "url-test", filter: "香港.*" },
+        { name: "SG-UT", type: "url-test", filter: "(?:狮城|新加坡).*" },
+        { name: "JP-UT", type: "url-test", filter: "日本.*" },
+        { name: "US-UT", type: "url-test", filter: "美国.*" },
+        { name: "TW-UT", type: "url-test", filter: "台湾.*" },
+        { name: "UK-UT", type: "url-test", filter: "英国.*" },
+    ],
     "FR": [
         { name: "HK", type: "load-balance", filter: "(?i)^.*kong((?!premium).)*$" },
         { name: "US", type: "load-balance", filter: "(?i)^.*states((?!premium).)*[^x]$" },
@@ -63,27 +78,10 @@ const PROVIDER_GROUPS = {
         { name: "PREMIUM-TW", type: "load-balance", filter: "(?i)taiwan.*premium" },
         { name: "PREMIUM-JP", type: "load-balance", filter: "(?i)japan.*premium" },
     ],
-    "XY": [
-        { name: "HK", type: "load-balance", filter: "香港.*" },
-        { name: "SG", type: "load-balance", filter: "(?:狮城|新加坡).*" },
-        { name: "JP", type: "load-balance", filter: "日本.*" },
-        { name: "US", type: "load-balance", filter: "美国.*" },
-        { name: "TW", type: "load-balance", filter: "台湾.*" },
-        { name: "UK", type: "load-balance", filter: "英国.*" },
-    ],
     "KL": [
         { name: "HK", type: "load-balance", filter: "香港.*" },
     ]
 };
-
-const IPCIDR = "ipcidr";
-const CLASSICAL = "classical";
-const DOMAIN = "domain";
-
-const TYPE_MAP = {
-    IPCIDR: ["cidr"],
-    CLASSICAL: ["special", "application"],
-}
 
 const RULE_PROVIDER_PATH = "h:/onedrive/repositories/proxy rules/commons/rules/";
 const RULE_PROVIDER_TYPE = "yaml";
@@ -94,6 +92,7 @@ const RULES = [
     "RULE-SET,addition-openai,🎆 OpenAI",
     "RULE-SET,addition-gemini,🎆 Gemini",
     "RULE-SET,addition-copilot,🎆 Copilot",
+    "RULE-SET,special-claude,🎆 Claude",
     "RULE-SET,special-bilibili,🎆 Bilibili",
     "RULE-SET,special-youtube,🎆 YouTube",
     "RULE-SET,special-github,🎆 GitHub",
@@ -131,6 +130,15 @@ const PROXY_PROVIDERS_MAP = {
 };
 
 const FLAG = { HK: "🇭🇰", SG: "🇸🇬", TW: "🇹🇼", US: "🇺🇸", JP: "🇯🇵", UK: "🇬🇧", KR: "🇰🇷", UN: "🇺🇳" };
+
+const IPCIDR = "ipcidr";
+const CLASSICAL = "classical";
+const DOMAIN = "domain";
+
+const TYPE_MAP = {
+    IPCIDR: ["cidr"],
+    CLASSICAL: ["special", "application"],
+}
 
 const LOAD_BALANCE = "load-balance"
 const LOAD_BALANCE_PARAMS = {
