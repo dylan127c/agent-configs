@@ -52,77 +52,118 @@ profile:
   tracing: true
 bind-address: "*"
 proxies:
-  - name: 🔀 CV_WHITELIST
-    type: http
-    server: 127.0.0.1
-    port: 13766
-    udp: true
-  - name: 🔀 CV_BLACKLIST
+  - name: 🟨 WHITELIST_SOCKS
     type: socks5
     server: 127.0.0.1
     port: 13766
     udp: true
+  - name: 🟥 BLACKLIST_HTTPS
+    type: http
+    server: 127.0.0.1
+    port: 13766
+    udp: true
 proxy-groups:
-  - name: 🛃 GOOGLE
+  - name: 🛃 GOOGLE CHROME
     type: select
     proxies:
-      - 🔀 CV_WHITELIST
-      - 🔀 CV_BLACKLIST
+      - 🟨 WHITELIST_SOCKS
+      - 🟥 BLACKLIST_HTTPS
+      - DIRECT
+  - name: 🛃 MICROSOFT EDGE
+    type: select
+    proxies:
+      - 🟨 WHITELIST_SOCKS
+      - 🟥 BLACKLIST_HTTPS
       - DIRECT
   - name: 🛃 GITHUB
     type: select
     proxies:
-      - 🔀 CV_WHITELIST
-      - 🔀 CV_BLACKLIST
+      - 🟨 WHITELIST_SOCKS
+      - 🟥 BLACKLIST_HTTPS
+      - DIRECT
+  - name: 🛃 ONEDRIVE
+    type: select
+    proxies:
+      - 🟨 WHITELIST_SOCKS
+      - 🟥 BLACKLIST_HTTPS
+      - DIRECT
+  - name: 🛃 GOOGLE DRIVE
+    type: select
+    proxies:
+      - 🟨 WHITELIST_SOCKS
+      - 🟥 BLACKLIST_HTTPS
+      - DIRECT
+  - name: 🛃 INTELLIJ IDEA
+    type: select
+    proxies:
+      - 🟨 WHITELIST_SOCKS
+      - 🟥 BLACKLIST_HTTPS
+      - DIRECT
+  - name: 🛃 PYCHARM
+    type: select
+    proxies:
+      - 🟨 WHITELIST_SOCKS
+      - 🟥 BLACKLIST_HTTPS
+      - DIRECT
+  - name: 🛃 VSCODE
+    type: select
+    proxies:
+      - 🟨 WHITELIST_SOCKS
+      - 🟥 BLACKLIST_HTTPS
       - DIRECT
   - name: 🛃 GITKRAKEN
     type: select
     proxies:
-      - 🔀 CV_WHITELIST
-      - 🔀 CV_BLACKLIST
+      - 🟨 WHITELIST_SOCKS
+      - 🟥 BLACKLIST_HTTPS
       - DIRECT
   - name: 🛃 POTPLAYER
     type: select
     proxies:
-      - 🔀 CV_WHITELIST
-      - 🔀 CV_BLACKLIST
+      - 🟨 WHITELIST_SOCKS
+      - 🟥 BLACKLIST_HTTPS
       - DIRECT
   - name: 🛃 NODE.JS
     type: select
     proxies:
-      - 🔀 CV_WHITELIST
-      - 🔀 CV_BLACKLIST
+      - 🟨 WHITELIST_SOCKS
+      - 🟥 BLACKLIST_HTTPS
       - DIRECT
   - name: 🛃 IDM
     type: select
     proxies:
-      - 🔀 CV_BLACKLIST
-      - 🔀 CV_WHITELIST
+      - 🟥 BLACKLIST_HTTPS
+      - 🟨 WHITELIST_SOCKS
       - DIRECT
   - name: 🛃 PIKPAK
     type: select
     proxies:
-      - 🔀 CV_BLACKLIST
-      - 🔀 CV_WHITELIST
+      - 🟥 BLACKLIST_HTTPS
+      - 🟨 WHITELIST_SOCKS
       - DIRECT
   - name: 🛃 STEAM
     type: select
     proxies:
-      - 🔀 CV_BLACKLIST
-      - 🔀 CV_WHITELIST
+      - 🟥 BLACKLIST_HTTPS
+      - 🟨 WHITELIST_SOCKS
       - DIRECT
   - name: 🛃 VMWARE.NAT
     type: select
     proxies:
       - DIRECT
-      - 🔀 CV_WHITELIST
-      - 🔀 CV_BLACKLIST
+      - 🟨 WHITELIST_SOCKS
+      - 🟥 BLACKLIST_HTTPS
 rules:
-  - DOMAIN-KEYWORD,google,🛃 GOOGLE
   - DOMAIN-SUFFIX,github.com,🛃 GITHUB
   - DOMAIN-SUFFIX,githubusercontent.com,🛃 GITHUB
-  - PROCESS-NAME,googledrivefs.exe,🛃 GOOGLE
+  - PROCESS-NAME,chrome.exe,🛃 GOOGLE CHROME
+  - PROCESS-NAME,msedge.exe,🛃 MICROSOFT EDGE
+  - PROCESS-NAME,onedrive.exe,🛃 ONEDRIVE
+  - PROCESS-NAME,googledrivefs.exe,🛃 GOOGLE DRIVE
   - PROCESS-NAME,idman.exe,🛃 IDM
+  - PROCESS-NAME,code.exe,🛃 VSCODE
+  - PROCESS-NAME,idea64.exe,🛃 INTELLIJ IDEA
+  - PROCESS-NAME,pycharm64.exe,🛃 PYCHARM
   - PROCESS-NAME,pikpak.exe,🛃 PIKPAK
   - PROCESS-NAME,downloadserver.exe,🛃 PIKPAK
   - PROCESS-NAME,gitkraken.exe,🛃 GITKRAKEN
