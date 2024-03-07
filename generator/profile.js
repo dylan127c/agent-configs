@@ -1,7 +1,7 @@
 const GROUPS = [
     { name: "🎇 Comprehensive", type: "select", proxies: ["REJECT", "🌅 SPECIFIC-LINE"], use: false },
-    { name: "🌠 FinalSocks(5)", type: "select", proxies: ["🎇 Comprehensive", "🌅 SPECIFIC-LINE"], use: false },
-    { name: "🌠 FinalHttp(s)", type: "select", proxies: ["DIRECT", "🌅 SPECIFIC-LINE"], use: false },
+    { name: "🌠 HttpsEscape", type: "select", proxies: ["🎇 Comprehensive", "🌅 SPECIFIC-LINE"], use: false },
+    { name: "🌠 SocksEscape", type: "select", proxies: ["DIRECT", "🌅 SPECIFIC-LINE"], use: false },
     { name: "🎆 PikPak", type: "select", proxies: ["DIRECT"], use: false },
     { name: "🎆 OpenAI", type: "select", proxies: ["REJECT"], use: false },
     { name: "🎆 GitHub", type: "select", proxies: ["REJECT"], use: false },
@@ -92,9 +92,9 @@ const RULES = [
     "AND,((PROCESS-NAME,msedge.exe),(IN-TYPE,HTTPS)),🎇 Comprehensive",
     "AND,((PROCESS-NAME,pcapsvc.exe),(IN-TYPE,SOCKS5)),DIRECT",
     "AND,((PROCESS-NAME,pcapsvc.exe),(IN-TYPE,HTTPS)),🎇 Comprehensive",
-    "IN-TYPE,SOCKS5,🌠 FinalSocks(5)",
-    "IN-TYPE,HTTP,🌠 FinalHttp(s)",
-    "IN-TYPE,HTTPS,🌠 FinalHttp(s)",
+    "IN-TYPE,SOCKS5,🌠 SocksEscape",
+    "IN-TYPE,HTTP,🌠 HttpsEscape",
+    "IN-TYPE,HTTPS,🌠 HttpsEscape",
     "MATCH,🌠 FinalEscape"
 ];
 
