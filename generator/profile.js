@@ -90,6 +90,8 @@ const RULES = [
     "GEOIP,CN,DIRECT,no-resolve",
     "AND,((PROCESS-NAME,msedge.exe),(IN-TYPE,SOCKS5)),DIRECT",
     "AND,((PROCESS-NAME,msedge.exe),(IN-TYPE,HTTPS)),🎇 Comprehensive",
+    "AND,((PROCESS-NAME,pcapsvc.exe),(IN-TYPE,SOCKS5)),DIRECT",
+    "AND,((PROCESS-NAME,pcapsvc.exe),(IN-TYPE,HTTPS)),🎇 Comprehensive",
     "IN-TYPE,SOCKS5,🌠 FinalSocks(5)",
     "IN-TYPE,HTTP,🌠 FinalHttp(s)",
     "IN-TYPE,HTTPS,🌠 FinalHttp(s)",
@@ -99,11 +101,11 @@ const RULES = [
 const PROXY_PROVIDER_PATH = "c:/users/dylan/.config/clash-verge/profiles/";
 const PROXY_PROVIDER_TYPE = "yaml";
 const PROXY_PROVIDERS_MAP = {
-    "CL": "rVHWildVA4kE",
-    "XY": "rrs4tf1oAqZD",
-    "SW": "rgdpxDKzALxP",
-    "FR": "rTvDYQBQb8EX",
-    "KL": "rKHPVl529aYE"
+    "CL": "rSdFtH4ObdA9",
+    "XY": "rvsEzDmmDgbQ",
+    "SW": "rJMe6hhgkXaX",
+    "FR": "rn5AYTWlsFb8",
+    "KL": "rovcGFFcUS0A"
 };
 
 const FLAG = { HK: "🇭🇰", SG: "🇸🇬", TW: "🇹🇼", US: "🇺🇸", JP: "🇯🇵", UK: "🇬🇧", KR: "🇰🇷", UN: "🇺🇳" };
