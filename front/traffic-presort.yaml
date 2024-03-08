@@ -159,7 +159,6 @@ proxy-groups:
 rules:
   - PROCESS-NAME,clash-meta.exe,DIRECT
   - PROCESS-NAME,pcapsvc.exe,DIRECT
-  - RULE-SET,addition-openai,🛃 OPENAI
   - DOMAIN-SUFFIX,github.com,🛃 GITHUB
   - DOMAIN-SUFFIX,githubusercontent.com,🛃 GITHUB
   - PROCESS-NAME,msedge.exe,🛃 MICROSOFT EDGE
@@ -181,9 +180,3 @@ rules:
   - PROCESS-NAME,steamwebhelper.exe,🛃 STEAM
   - PROCESS-NAME,vmnat.exe,🛃 VMWARE.NAT
   - MATCH,DIRECT
-rule-providers:
-  addition-openai:
-    type: file
-    behavior: domain
-    path: h:/onedrive/repositories/proxy rules/commons/rules/addition/openai.yaml
-    interval: 86400
