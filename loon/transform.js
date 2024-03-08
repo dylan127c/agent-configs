@@ -29,7 +29,7 @@ module.exports.transform = (log) => {
 function transform(log, settings, identifier) {
     const funcName = "transform";
 
-    const native = settings[identifier + "Native"];
+    const native = path.resolve(__dirname, settings[identifier + "Native"]);
     const prefix = settings[identifier + "Prefix"];
 
     if (!fs.existsSync(native)) {

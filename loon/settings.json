@@ -35,7 +35,7 @@
         ]
     },
     "originalPrefix": "original",
-    "originalNative": "h:/github/agent configs/commons/rules/original",
+    "originalNative": "../commons/rules/original",
     "additionPrefix": "addition",
-    "additionNative": "h:/github/agent configs/commons/rules/addition"
+    "additionNative": "../commons/rules/addition"
 }
