@@ -35,7 +35,7 @@
         ]
     },
     "originalPrefix": "original",
-    "originalNative": "h:/onedrive/repositories/proxy rules/commons/rules/original",
+    "originalNative": "h:/github/agent configs/commons/rules/original",
     "additionPrefix": "addition",
-    "additionNative": "h:/onedrive/repositories/proxy rules/commons/rules/addition"
+    "additionNative": "h:/github/agent configs/commons/rules/addition"
 }

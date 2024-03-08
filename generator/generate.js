@@ -1,3 +1,29 @@
+const fs = require("fs");
+const path = require("path");
+
+const FILE_NAME = path.basename(__filename).replace(".js", "");
+function mark(name) {
+  return FILE_NAME + "." + name + " =>";
+}
+
+function homepath() {
+  return process.env.homepath.replace(/^\\/gm, "c:\\");
+}
+
+const providers = path.join(homepath(), ".run/providers.js");
+try {
+  delete require.cache[require.resolve(providers)];
+} catch (error) {
+  console.log("%HOMEPATH%/.RUN/PROVIDERS.JS WAS NOT FOUND.");
+}
+
+const {
+  PROXY_PROVIDER_PATH,
+  PROXY_PROVIDER_TYPE,
+  PROXY_PROVIDERS_MAP,
+  ALL_PROFILES_OUTPUT
+} = require(providers);
+
 delete require.cache[require.resolve("./profile.js")];
 const {
   GROUPS,
@@ -9,9 +35,6 @@ const {
   RULE_PROVIDER_PATH,
   RULE_PROVIDER_TYPE,
   RULES,
-  PROXY_PROVIDER_PATH,
-  PROXY_PROVIDER_TYPE,
-  PROXY_PROVIDERS_MAP,
   FLAG,
   LOAD_BALANCE,
   LOAD_BALANCE_PARAMS,
@@ -22,19 +45,8 @@ const {
   HEALTH_CHECK
 } = require("./profile.js");
 
-const fs = require("fs");
-const path = require("path");
-
-const FILE_NAME = path.basename(__filename).replace(".js", "");
-function mark(name) {
-  return FILE_NAME + "." + name + " =>";
-}
-
 function generate(log, yaml) {
   const funcName = "generate";
-
-  delete require.cache[require.resolve("./settings.json")];
-  const settings = require("./settings.json");
 
   params = build();
   params["proxy-providers"] = getProxyProvider();
@@ -44,7 +56,13 @@ function generate(log, yaml) {
 
   const output = yaml.stringify(params);
 
-  fs.writeFileSync(settings.cv, output, "utf-8");
+  fs.writeFileSync(
+    path.join(
+      homepath(),
+      PROXY_PROVIDER_PATH,
+      ALL_PROFILES_OUTPUT.replace(/$/gm, "." + RULE_PROVIDER_TYPE)
+    ),
+    output, "utf-8");
   log.info(mark(funcName), "done.");
 }
 
@@ -110,7 +128,7 @@ function getRuleProvider(rules) {
       provider[providerName] = {};
       provider[providerName].type = "file";
       provider[providerName].behavior = getBehavior(providerName);
-      provider[providerName].path = RULE_PROVIDER_PATH + providerName.replace("-", "/").replace(/$/gm, "." + RULE_PROVIDER_TYPE);
+      provider[providerName].path = path.resolve(__dirname, RULE_PROVIDER_PATH, providerName.replace("-", "/").replace(/$/gm, "." + RULE_PROVIDER_TYPE));
       provider[providerName].interval = 86400;
     }
   });
@@ -132,7 +150,7 @@ function getProxyProvider() {
   for (const [providerName, fileName] of Object.entries(PROXY_PROVIDERS_MAP)) {
     provider[providerName] = {};
     provider[providerName].type = "file";
-    provider[providerName].path = PROXY_PROVIDER_PATH + fileName + "." + PROXY_PROVIDER_TYPE;
+    provider[providerName].path = path.join(homepath(), PROXY_PROVIDER_PATH) + fileName + "." + PROXY_PROVIDER_TYPE;
     provider[providerName] = Object.assign(provider[providerName], HEALTH_CHECK);
   }
   return provider;

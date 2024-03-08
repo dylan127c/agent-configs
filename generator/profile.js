@@ -60,7 +60,7 @@ const PROVIDER_GROUPS = {
     ]
 };
 
-const RULE_PROVIDER_PATH = "h:/onedrive/repositories/proxy rules/commons/rules/";
+const RULE_PROVIDER_PATH = "../commons/rules/";
 const RULE_PROVIDER_TYPE = "yaml";
 const RULES = [
     "RULE-SET,addition-reject,REJECT",
@@ -97,16 +97,6 @@ const RULES = [
     "IN-TYPE,HTTPS,🌠 HttpsEscape",
     "MATCH,🌠 FinalEscape"
 ];
-
-const PROXY_PROVIDER_PATH = "c:/users/dylan/.config/clash-verge/profiles/";
-const PROXY_PROVIDER_TYPE = "yaml";
-const PROXY_PROVIDERS_MAP = {
-    "CL": "rSdFtH4ObdA9",
-    "XY": "rvsEzDmmDgbQ",
-    "SW": "rJMe6hhgkXaX",
-    "FR": "rn5AYTWlsFb8",
-    "KL": "rovcGFFcUS0A"
-};
 
 const FLAG = { HK: "🇭🇰", SG: "🇸🇬", TW: "🇹🇼", US: "🇺🇸", JP: "🇯🇵", UK: "🇬🇧", KR: "🇰🇷", UN: "🇺🇳" };
 
@@ -160,9 +150,6 @@ module.exports = {
     RULE_PROVIDER_PATH,
     RULE_PROVIDER_TYPE,
     RULES,
-    PROXY_PROVIDER_PATH,
-    PROXY_PROVIDER_TYPE,
-    PROXY_PROVIDERS_MAP,
     FLAG,
     LOAD_BALANCE,
     LOAD_BALANCE_PARAMS,
