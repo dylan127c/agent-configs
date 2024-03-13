@@ -1,6 +1,6 @@
-/****************************************************************************************
- ***  Copy and paste this config into the %homepath/.run/ folder before modifying it. ***
- ****************************************************************************************/
+/********************************************************************************
+ ***  Copy and paste this config into the ~/.run/ folder before modifying it. ***
+ ********************************************************************************/
 
 const PROXY_PROVIDER_PATH = "/.config/clash-verge/profiles/";
 const PROXY_PROVIDER_TYPE = "yaml";
