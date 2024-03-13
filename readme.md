@@ -1,14 +1,10 @@
-## PROXY RULES
+## AGENT CONFIGS
 
-📡 ONLY FOR PERSONAL USE!!! 
-
-### PURPOSE
-
-For quickly generating clash configuration files.
+For quickly generating clash configuration files. And this repo is only for personal use.
 
 ### DEPENDENCE
 
-Script requires node.js and the support of the following modules:
+Script requires Node.js and the support of the following modules:
 
 ```bash
 npm install yaml
