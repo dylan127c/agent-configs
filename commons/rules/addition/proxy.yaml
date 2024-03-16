@@ -29,9 +29,6 @@ payload:
   - '+.gigabyte.com'
   - '+.telerik.com'
   - '+.api.insight.sitefinity.com'
-
-  # PikPak
-  - '+.mypikpak.com'
   
   # 其他域名
   - '+.fluidplayer.com'

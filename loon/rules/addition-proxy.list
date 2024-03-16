@@ -28,9 +28,6 @@ DOMAIN-SUFFIX,listary.com
 DOMAIN-SUFFIX,gigabyte.com
 DOMAIN-SUFFIX,telerik.com
 DOMAIN-SUFFIX,api.insight.sitefinity.com
-
-# PikPak
-DOMAIN-SUFFIX,mypikpak.com
   
 # 其他域名
 DOMAIN-SUFFIX,fluidplayer.com
