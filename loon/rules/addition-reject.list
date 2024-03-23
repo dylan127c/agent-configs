@@ -10,7 +10,6 @@
 
 # 自定义规则匹配顺序：reject.yaml => direct.yaml => ... => proxy.yaml 
 
-payload:
 # Edge浏览器每次打开标签都会请求以下某些域名，这导致了加载缓慢。
 DOMAIN-SUFFIX,prod-eastasia.access-point.cloudmessaging.edge.microsoft.com
 DOMAIN-SUFFIX,browser.events.data.msn.cn
