@@ -11,6 +11,7 @@ const GROUPS = [
     { name: "🎆 Steam", type: "select", proxies: ["DIRECT"], use: false },
     { name: "🌠 FinalEscape", type: "select", proxies: ["DIRECT", "🌅 SPECIFIC-LINE"], use: false },
     { name: "🌅 SPECIFIC-LINE", type: "select", proxies: ["REJECT"], use: true, all: true, filter: "^[^(📮|⏰|💥|🎮|剩|套|地|续)]" },
+    { name: "🛂 ORIENT", type: "select", proxies: ["REJECT"], use: true, provider: ["OR"] },
     { name: "🛂 SWIFT", type: "select", proxies: ["REJECT"], use: true, provider: ["SW"] },
     { name: "🛂 CLOVER", type: "select", proxies: ["REJECT"], use: true, provider: ["CL"], filter: "^[^(剩|套)]" },
     { name: "🛂 FANRR", type: "select", proxies: ["REJECT"], use: true, provider: ["FR"], filter: "^[^(📮|⏰|💥|🎮)]" },
@@ -19,6 +20,17 @@ const GROUPS = [
 ];
 
 const PROVIDER_GROUPS = {
+    "OR": [
+        { name: "HK-IEPL/CM", type: "url-test", filter: "深港专线" },
+        { name: "HK-IEPL/CT", type: "url-test", filter: "沪港专线" },
+        { name: "JP-IEPL/CT", type: "url-test", filter: "沪日专线" },
+        { name: "HK", type: "url-test", filter: "香港.*(?:HK|BGP)" },
+        { name: "JP", type: "url-test", filter: "日本.*(?:Akamai|IIJ|NTT)" },
+        { name: "TW", type: "url-test", filter: "台湾.*" },
+        { name: "SG", type: "url-test", filter: "新加坡.*" },
+        { name: "US", type: "url-test", filter: "美国.*" },
+        { name: "KR", type: "url-test", filter: "韩国.*" },
+    ],
     "SW": [
         { name: "HK", type: "url-test", filter: "🇭🇰" },
         { name: "SG", type: "url-test", filter: "🇸🇬" },
