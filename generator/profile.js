@@ -15,7 +15,7 @@ const GROUPS = [
     { name: "🛂 SWIFT", type: "select", proxies: ["REJECT"], use: true, provider: ["SW"] },
     { name: "🛂 CLOVER", type: "select", proxies: ["REJECT"], use: true, provider: ["CL"], filter: "^[^(剩|套)]" },
     { name: "🛂 FANRR", type: "select", proxies: ["REJECT"], use: true, provider: ["FR"], filter: "^[^(📮|⏰|💥|🎮)]" },
-    { name: "🛂 XINYUN", type: "select", proxies: ["REJECT"], use: true, provider: ["XY"], filter: "^[^(地|续)]" },
+    { name: "🛂 XINYUN", type: "select", proxies: ["REJECT"], use: true, provider: ["XY"], filter: "^[^(地|续|防)]" },
     { name: "🛂 KELE", type: "select", proxies: ["REJECT"], use: true, provider: ["KL"], filter: "^[^(剩|套)]" },
 ];
 
