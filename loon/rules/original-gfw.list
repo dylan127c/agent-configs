@@ -339,6 +339,7 @@ DOMAIN-SUFFIX,appdownloader.net
 DOMAIN-SUFFIX,appledaily.com
 DOMAIN-SUFFIX,appledaily.com.hk
 DOMAIN-SUFFIX,appledaily.com.tw
+DOMAIN-SUFFIX,apps.evozi.com
 DOMAIN-SUFFIX,appshopper.com
 DOMAIN-SUFFIX,appsocks.net
 DOMAIN-SUFFIX,appspot.com
@@ -348,6 +349,7 @@ DOMAIN-SUFFIX,ar.hao123.com
 DOMAIN-SUFFIX,archive.fo
 DOMAIN-SUFFIX,archive.is
 DOMAIN-SUFFIX,archive.li
+DOMAIN-SUFFIX,archive.md
 DOMAIN-SUFFIX,archive.org
 DOMAIN-SUFFIX,archive.ph
 DOMAIN-SUFFIX,archive.today
@@ -635,7 +637,6 @@ DOMAIN-SUFFIX,blogger.com
 DOMAIN-SUFFIX,blogimg.jp
 DOMAIN-SUFFIX,bloglines.com
 DOMAIN-SUFFIX,bloglovin.com
-DOMAIN-SUFFIX,blogs.icerocket.com
 DOMAIN-SUFFIX,blogs.libraryinformationtechnology.com
 DOMAIN-SUFFIX,blogs.tampabay.com
 DOMAIN-SUFFIX,blogs.yahoo.co.jp
@@ -818,6 +819,7 @@ DOMAIN-SUFFIX,c-span.org
 DOMAIN-SUFFIX,c-spanvideo.org
 DOMAIN-SUFFIX,c100tibet.org
 DOMAIN-SUFFIX,c2cx.com
+DOMAIN-SUFFIX,cableav.tv
 DOMAIN-SUFFIX,cablegatesearch.net
 DOMAIN-SUFFIX,cachinese.com
 DOMAIN-SUFFIX,cacnw.com
@@ -897,6 +899,7 @@ DOMAIN-SUFFIX,cdn-images.mailchimp.com
 DOMAIN-SUFFIX,cdn-telegram.org
 DOMAIN-SUFFIX,cdn.assets.lfpcontent.com
 DOMAIN-SUFFIX,cdn.helixstudios.net
+DOMAIN-SUFFIX,cdn.jwplayer.com
 DOMAIN-SUFFIX,cdn.printfriendly.com
 DOMAIN-SUFFIX,cdn.seatguru.com
 DOMAIN-SUFFIX,cdn.softlayer.net
@@ -1046,6 +1049,7 @@ DOMAIN-SUFFIX,chubold.com
 DOMAIN-SUFFIX,chubun.com
 DOMAIN-SUFFIX,churchinhongkong.org
 DOMAIN-SUFFIX,chushigangdrug.ch
+DOMAIN-SUFFIX,ciciai.com
 DOMAIN-SUFFIX,cienen.com
 DOMAIN-SUFFIX,cineastentreff.de
 DOMAIN-SUFFIX,cipfg.org
@@ -1175,6 +1179,7 @@ DOMAIN-SUFFIX,costco.com
 DOMAIN-SUFFIX,cotweet.com
 DOMAIN-SUFFIX,counter.social
 DOMAIN-SUFFIX,coursehero.com
+DOMAIN-SUFFIX,coze.com
 DOMAIN-SUFFIX,cpj.org
 DOMAIN-SUFFIX,cq99.us
 DOMAIN-SUFFIX,crackle.com
@@ -1608,6 +1613,7 @@ DOMAIN-SUFFIX,etaa.org.au
 DOMAIN-SUFFIX,etadult.com
 DOMAIN-SUFFIX,etaiwannews.com
 DOMAIN-SUFFIX,etherdelta.com
+DOMAIN-SUFFIX,ethermine.org
 DOMAIN-SUFFIX,etherscan.io
 DOMAIN-SUFFIX,etizer.org
 DOMAIN-SUFFIX,etokki.com
@@ -1644,6 +1650,7 @@ DOMAIN-SUFFIX,eyny.com
 DOMAIN-SUFFIX,ezpc.tk
 DOMAIN-SUFFIX,ezpeer.com
 DOMAIN-SUFFIX,ezua.com
+DOMAIN-SUFFIX,f2pool.com
 DOMAIN-SUFFIX,f8.com
 DOMAIN-SUFFIX,fa.gov.tw
 DOMAIN-SUFFIX,facebook.br
@@ -2650,6 +2657,7 @@ DOMAIN-SUFFIX,hrcchina.org
 DOMAIN-SUFFIX,hrcir.com
 DOMAIN-SUFFIX,hrea.org
 DOMAIN-SUFFIX,hrichina.org
+DOMAIN-SUFFIX,hrntt.org
 DOMAIN-SUFFIX,hrtsea.com
 DOMAIN-SUFFIX,hrw.org
 DOMAIN-SUFFIX,hrweb.org
@@ -2735,6 +2743,7 @@ DOMAIN-SUFFIX,ibros.org
 DOMAIN-SUFFIX,ibvpn.com
 DOMAIN-SUFFIX,icams.com
 DOMAIN-SUFFIX,ice.audionow.com
+DOMAIN-SUFFIX,icedrive.net
 DOMAIN-SUFFIX,icij.org
 DOMAIN-SUFFIX,icl-fi.org
 DOMAIN-SUFFIX,icoco.com
@@ -3656,6 +3665,7 @@ DOMAIN-SUFFIX,newlandmagazine.com.au
 DOMAIN-SUFFIX,newmitbbs.com
 DOMAIN-SUFFIX,newnews.ca
 DOMAIN-SUFFIX,news.cnyes.com
+DOMAIN-SUFFIX,news.ebc.net.tw
 DOMAIN-SUFFIX,news.hk.msn.com
 DOMAIN-SUFFIX,news.msn.com.tw
 DOMAIN-SUFFIX,news.nationalgeographic.com
@@ -3754,6 +3764,7 @@ DOMAIN-SUFFIX,noxinfluencer.com
 DOMAIN-SUFFIX,noypf.com
 DOMAIN-SUFFIX,npa.go.jp
 DOMAIN-SUFFIX,npa.gov.tw
+DOMAIN-SUFFIX,npm.gov.tw
 DOMAIN-SUFFIX,npnt.me
 DOMAIN-SUFFIX,nps.gov
 DOMAIN-SUFFIX,npsboost.com
@@ -4132,6 +4143,7 @@ DOMAIN-SUFFIX,postimg.org
 DOMAIN-SUFFIX,posts.careerengine.us
 DOMAIN-SUFFIX,potato.im
 DOMAIN-SUFFIX,potvpn.com
+DOMAIN-SUFFIX,pourquoi.tw
 DOMAIN-SUFFIX,power.com
 DOMAIN-SUFFIX,powerapple.com
 DOMAIN-SUFFIX,powercx.com
@@ -4370,6 +4382,7 @@ DOMAIN-SUFFIX,ronjoneswriter.com
 DOMAIN-SUFFIX,roodo.com
 DOMAIN-SUFFIX,rosechina.net
 DOMAIN-SUFFIX,rotten.com
+DOMAIN-SUFFIX,rou.video
 DOMAIN-SUFFIX,rsdlmonitor.com
 DOMAIN-SUFFIX,rsf-chinese.org
 DOMAIN-SUFFIX,rsf.org
@@ -6081,6 +6094,7 @@ DOMAIN-SUFFIX,yzzk.com
 DOMAIN-SUFFIX,z-lib.org
 DOMAIN-SUFFIX,zacebook.com
 DOMAIN-SUFFIX,zalmos.com
+DOMAIN-SUFFIX,zamimg.com
 DOMAIN-SUFFIX,zannel.com
 DOMAIN-SUFFIX,zaobao.com
 DOMAIN-SUFFIX,zaobao.com.sg
