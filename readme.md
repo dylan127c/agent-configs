@@ -54,6 +54,12 @@ node -e "require('./run').run()"
 
 Command above will also checks whether the rule files need to be updated, meanwhile, converts these files into Loon supported rules files.
 
-All output logs will be stored in log files with the same name as the script.
+Some file search tool support to run command line directly, such as Listary: 
+
+<div align="center"><img src="images/readme.images/Snipaste_2024-07-14_05-24-09.png" alt="Snipaste_2024-07-14_05-24-09" style="width:60%;" /></div>
+
+By using them, there is no need to activate the terminal so frequently.
+
+Beside, all output logs are stored in log files with the same name as the script.
 
 Note that the rule conversion always occurs regardless of whether the rule files need to be updated.
