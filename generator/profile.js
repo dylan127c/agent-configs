@@ -10,7 +10,7 @@ const GROUPS = [
     { name: "🎆 Copilot", type: "select", proxies: ["REJECT"], use: false },
     { name: "🎆 YouTube", type: "select", proxies: ["REJECT"], use: false },
     { name: "🎆 Steam", type: "select", proxies: ["DIRECT"], use: false },
-    { name: "🌠 FinalEscape", type: "select", proxies: ["DIRECT", "🌅 SPECIFIC-LINE"], use: false },
+    { name: "🌠 FinalEscape", type: "select", proxies: ["DIRECT", "🎇 Comprehensive", "🌅 SPECIFIC-LINE"], use: false },
     { name: "🌅 SPECIFIC-LINE", type: "select", proxies: ["REJECT"], use: true, all: true, filter: "^[^(📮|⏰|💥|🎮|剩|套|地|续)]" },
     // { name: "🛂 ORIENT", type: "select", proxies: ["REJECT"], use: true, provider: ["OR"] },
     { name: "🛂 SWIFT", type: "select", proxies: ["REJECT"], use: true, provider: ["SW"] },
