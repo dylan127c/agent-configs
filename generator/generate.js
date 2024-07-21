@@ -21,13 +21,13 @@ const {
   PROXY_PROVIDER_PATH,
   PROXY_PROVIDER_TYPE,
   PROXY_PROVIDERS_MAP,
-  ALL_PROFILES_OUTPUT
+  ALL_PROFILES_OUTPUT,
+  GROUPS,
+  PROVIDER_GROUPS,
 } = require(providers);
 
 delete require.cache[require.resolve("./profile.js")];
 const {
-  GROUPS,
-  PROVIDER_GROUPS,
   IPCIDR,
   CLASSICAL,
   DOMAIN,
@@ -42,7 +42,7 @@ const {
   URL_TEST_PARAMS,
   FALLBACK,
   FALLBACK_PARAMS,
-  HEALTH_CHECK
+  HEALTH_CHECK,
 } = require("./profile.js");
 
 function generate(log, yaml) {
