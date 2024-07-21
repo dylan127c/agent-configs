@@ -6,7 +6,7 @@ Quickly generating Clash configuration files.
 
 In fact, as long as you can get the subscription configuration file which provided by the service provider, then you can use this project to generate the new configuration file even without using the Clash GUI.
 
-Of course, by modifying few core code, also you can get that file by just providing the subscription link. But in any case, users generally choose to use the Clash GUI on Windows system, so it is more appropriate to leave the task of obtaining the service configuration file to Clash GUI.
+Of course, by modifying few core code, also you can get that new configuration file by just providing the subscription link. But in any case, users generally choose to use the Clash GUI on Windows system, so it is more appropriate to leave the task of obtaining the service configuration file to Clash GUI.
 
 ### DEPENDENCE
 
@@ -21,7 +21,7 @@ Global installation (-g) is not recommended.
 
 ### CONFIGURATION
 
-The key configuration files are located in the `generator` directory.
+Those key configuration files are located in the `generator` directory.
 
 #### profile.js
 
@@ -45,7 +45,7 @@ This file contains some basic configuration that doesn't change often, therefore
 
 ### USAGE
 
-After completing the configuration of the `profile.js` file, the following command can used to generate the specific clash configuration:
+After completing the configuration of the `profile.js` file, the following command can be used to generate the specific clash configuration:
 
 ```bash
 node -e "require('./run').run()"
