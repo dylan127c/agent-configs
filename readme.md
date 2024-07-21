@@ -1,6 +1,12 @@
 ## AGENT CONFIGS
 
-For quickly generating clash configuration files. And this repo is only for personal use.
+Quickly generating Clash configuration files. 
+
+<div align="center"><img src="images/readme.images/Snipaste_2024-07-22_04-02-57.png" alt="Snipaste_2024-07-22_04-02-57" style="width:70%;" /></div>
+
+In fact, as long as you can get the subscription configuration file which provided by the service provider, then you can use this project to generate the new configuration file even without using the Clash GUI.
+
+Of course, by modifying few core code, also you can get that file by just providing the subscription link. But in any case, users generally choose to use the Clash GUI on Windows system, so it is more appropriate to leave the task of obtaining the service configuration file to Clash GUI.
 
 ### DEPENDENCE
 
@@ -11,55 +17,49 @@ npm install yaml
 npm install axios
 ```
 
-Global installation (-g) is not recommended for modules.
+Global installation (-g) is not recommended.
 
 ### CONFIGURATION
 
 The key configuration files are located in the `generator` directory.
 
-#### providers.js
-
-Used to configure information about `proxy-providers`.
-
-In order to allow different hosts to use the same configuration, `providers.js` needs to be placed in the `%homepath%/.run/` directory.
-
-|        PARMAS         |                       USAGE                        |
-| :-------------------: | :------------------------------------------------: |
-| `PROXY_PROVIDER_PATH` |                 Configs file path.                 |
-| `PROXY_PROVIDER_TYPE` |                 Configs file type.                 |
-| `PROXY_PROVIDERS_MAP` | Mapping between provider and its config file name. |
-| `ALL_PROFILES_OUTPUT` |                 Final config name.                 |
-
-Note that the key in the `PROXY_PROVIDERS_MAP` parameter is the proxy provider, which needs to correspond to the key of the `PROVIDER_GROUPS` parameter in `profile.js`.
-
 #### profile.js
 
-Used to configure information about `rules`, `rule-providers` and `proxy-groups`.
+This file contains some user-customized configuration:
 
-|        PARMAS        |          USAGE          |
-| :------------------: | :---------------------: |
-|       `GROUPS`       |      Gourp policy.      |
-|  `PROVIDER_GROUPS`   |    Provider policy.     |
-| `RULE_PROVIDER_PATH` |     Rule file path.     |
-| `RULE_PROVIDER_TYPE` |     Rule file type.     |
-|       `RULES`        | Specific traffic rules. |
+|        PARMAS         |                         DISCRIPTION                          |
+| :-------------------: | :----------------------------------------------------------: |
+| `PROXY_PROVIDER_PATH` |                location of all config files.                 |
+| `PROXY_PROVIDER_TYPE` |                  file type of config file.                   |
+| `PROXY_PROVIDERS_MAP` |    mapping between provider names and config file names.     |
+| `ALL_PROFILES_OUTPUT` |                file name of generated config.                |
+|   `PROVIDER_GROUPS`   | details of constructing specific proxy group for each provider.. |
+|       `GROUPS`        |             details of user-defined proxy group.             |
+|        `RULES`        |                details of distribution rules.                |
+
+Note that the script requires the `profile.js` file to be placed under the `%homepath%/.run/` directory.
+
+#### params.js
+
+This file contains some basic configuration that doesn't change often, therefore it can be ignored.
 
 ### USAGE
 
-The following command is used to generate configuration：
+After completing the configuration of the `profile.js` file, the following command can used to generate the specific clash configuration:
 
 ```bash
 node -e "require('./run').run()"
 ```
 
-Command above will also checks whether the rule files need to be updated, meanwhile, converts these files into Loon supported rules files.
+Command above will also checks whether the rule files need to be updated or not, meanwhile, converts these files into Loon supported rules files.
 
-Some file search tool support to run command line directly, such as Listary: 
+Note that the rule conversion always occurs regardless of whether the rule files need to be updated. Beside, all output logs are stored in log files with the same name as the script.
+
+### TIPS
+
+Some File Search Tool support to run command line directly, such as Listary: 
 
 <div align="center"><img src="images/readme.images/Snipaste_2024-07-14_05-24-09.png" alt="Snipaste_2024-07-14_05-24-09" style="width:60%;" /></div>
 
 By using them, there is no need to activate the terminal so frequently.
 
-Beside, all output logs are stored in log files with the same name as the script.
-
-Note that the rule conversion always occurs regardless of whether the rule files need to be updated.
