@@ -4,9 +4,9 @@ Quickly generating Clash configuration files.
 
 <div align="center"><img src="images/readme.images/Snipaste_2024-07-22_04-02-57.png" alt="Snipaste_2024-07-22_04-02-57" style="width:70%;" /></div>
 
-In fact, as long as you can get the subscription configuration file which provided by the service provider, then you can use this project to generate the new configuration file even without using the Clash GUI.
+In fact, if you have the subscription configuration file which provided by the service provider already, then you can directly use those files to generate the new configuration file, at that time the Clash GUI could be useless.
 
-Of course, by modifying few core code, also you can get that new configuration file by just providing the subscription link. But in any case, users generally choose to use the Clash GUI on Windows system, so it is more appropriate to leave the task of obtaining the service configuration file to Clash GUI.
+Of course, by modifying few core code, you can get that new configuration file by just providing the subscription link. But in any case, users generally choose to use the Clash GUI on Windows system, so it is more appropriate to leave the task of obtaining the service configuration file to Clash GUI.
 
 ### DEPENDENCE
 
