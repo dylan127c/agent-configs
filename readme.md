@@ -10,14 +10,14 @@ Of course, by modifying few core code, also you can get that new configuration f
 
 ### DEPENDENCE
 
-Script requires Node.js and the support of the following modules:
+Script requires the support of Node.js and these following modules:
 
 ```bash
 npm install yaml
 npm install axios
 ```
 
-Global installation (-g) is not recommended.
+NOTE: Global installation (-g) is not recommended.
 
 ### CONFIGURATION
 
