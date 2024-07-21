@@ -2,18 +2,18 @@
     "rules": "./rules",
     "replacement": {
         "PROCESS-NAME": {
-            "^payload:\r\n": "",
+            "^payload:$\n": "",
             "^  #": "#",
             "^  - ": ""
         },
         "DOMAIN-SUFFIX": {
-            "^payload:\r\n": "",
+            "^payload:$\n": "",
             "^  #": "#",
             "^.+?'\\+?\\.?": "DOMAIN-SUFFIX,",
             "'$": ""
         },
         "IP-CIDR": {
-            "^payload:\r\n": "",
+            "^payload:$\n": "",
             "^  #": "#",
             "^  - '": "IP-CIDR,",
             "'$": ""
