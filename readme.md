@@ -55,6 +55,8 @@ Command above will also checks whether the rule files need to be updated or not,
 
 Note that the rule conversion always occurs regardless of whether the rule files need to be updated. Beside, all output logs are stored in log files with the same name as the script.
 
+For more details: [HERE](./deploy.md).
+
 ### TIPS
 
 Some File Search Tool support to run command line directly, such as Listary: 
