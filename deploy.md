@@ -22,7 +22,7 @@ npm install yaml, axios
 
 2. 关闭 Clash 字段过滤：
 
-<div align="center"><img src="Snipaste_2024-07-22_11-20-42.png" alt="Snipaste_2024-07-22_11-20-42" style="width:60%;" /></div>
+<div align="center"><img src="images/deploy.images/Snipaste_2024-07-22_11-20-42.png" alt="Snipaste_2024-07-22_11-20-42" style="width:60%;" /></div>
 
 3. 建立空白本地配置：
 
