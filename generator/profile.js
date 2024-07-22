@@ -69,7 +69,12 @@ const GROUPS = [
     { name: "🛂 CLOVER", type: "select", proxies: ["REJECT"], use: true, provider: [PROVIDER_B], filter: "^[^(剩|套)]" },
     { name: "🛂 FANRR", type: "select", proxies: ["REJECT"], use: true, provider: [PROVIDER_C], filter: "^[^(剩|套)]" },
     { name: "🛂 KELE", type: "select", proxies: ["REJECT"], use: true, provider: [PROVIDER_D], filter: "^[^(剩|套)]" },
+    { name: "🌅 ALL-IN-ONE", type: "select", proxies: ["REJECT"], use: true, provider: [PROVIDER_A, PROVIDER_B, PROVIDER_C, PROVIDER_D], filter: "^[^(剩|套)]"}
 ];
+
+/***************************************************************************
+ ***   Rules must be compatible with the specific clash kernel version.  ***
+ ***************************************************************************/
 
 const RULES = [
     "RULE-SET,addition-reject,REJECT",
