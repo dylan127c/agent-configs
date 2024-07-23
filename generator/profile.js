@@ -51,26 +51,36 @@ const PROVIDER_GROUPS = {
     ]
 };
 
+const AUTO_GROUPS = ["🇭🇰 HK-AUTO", "🇸🇬 SG-AUTO", "🇹🇼 TW-AUTO", "🇯🇵 JP-AUTO", "🇰🇷 KR-AUTO"];
+const DEFAULT_DIRECT = ["DIRECT"].concat(AUTO_GROUPS);
+const DEFAULT_REJECT = ["REJECT"].concat(AUTO_GROUPS);
+const DEFAULT_MIX_UP = ["🎇 Comprehensive", "🌅 Specific"].concat(AUTO_GROUPS);
+
 const GROUPS = [
-    { name: "🎇 Comprehensive", type: "select", proxies: ["REJECT", "🌅 SPECIFIC-LINE"], use: false },
-    { name: "🌠 SocksEscape", type: "select", proxies: ["DIRECT", "🎇 Comprehensive", "🌅 SPECIFIC-LINE"], use: false },
-    { name: "🌠 HttpsEscape", type: "select", proxies: ["🎇 Comprehensive", "🌅 SPECIFIC-LINE"], use: false },
-    { name: "🌠 PcapsvcEscape", type: "select", proxies: ["🎇 Comprehensive"], use: false },
-    { name: "🎆 PikPak", type: "select", proxies: ["DIRECT", "🎇 Comprehensive"], use: false },
-    { name: "🎆 OpenAI", type: "select", proxies: ["REJECT", "🎇 Comprehensive"], use: false },
-    { name: "🎆 GitHub", type: "select", proxies: ["REJECT", "🎇 Comprehensive"], use: false },
-    { name: "🎆 Gemini", type: "select", proxies: ["REJECT", "🎇 Comprehensive"], use: false },
-    { name: "🎆 Copilot", type: "select", proxies: ["REJECT", "🎇 Comprehensive"], use: false },
-    { name: "🎆 YouTube", type: "select", proxies: ["REJECT", "🎇 Comprehensive"], use: false },
-    { name: "🎆 Steam", type: "select", proxies: ["DIRECT", "🎇 Comprehensive"], use: false },
-    { name: "🌠 FinalEscape", type: "select", proxies: ["DIRECT", "🎇 Comprehensive", "🌅 SPECIFIC-LINE"], use: false },
-    { name: "🌅 SPECIFIC-LINE", type: "select", proxies: ["REJECT"], use: true, all: true, filter: "^[^(剩|套)]" },
+    { name: "🎇 Comprehensive", type: "select", proxies: ["REJECT", "🌅 Specific"].concat(AUTO_GROUPS), use: false },
+    { name: "🌠 SocksEsc", type: "select", proxies: ["DIRECT"].concat(DEFAULT_MIX_UP), use: false },
+    { name: "🌠 HttpsEsc", type: "select", proxies: DEFAULT_MIX_UP, use: false },
+    { name: "🌠 PcapsEsc", type: "select", proxies: DEFAULT_MIX_UP, use: false },
+    { name: "🎆 PikPak", type: "select", proxies: DEFAULT_DIRECT, use: false },
+    { name: "🎆 Steam", type: "select", proxies: DEFAULT_DIRECT, use: false },
+    { name: "🎆 OpenAI", type: "select", proxies: DEFAULT_REJECT, use: false },
+    { name: "🎆 GitHub", type: "select", proxies: DEFAULT_REJECT, use: false },
+    { name: "🎆 Gemini", type: "select", proxies: DEFAULT_REJECT, use: false },
+    { name: "🎆 Copilot", type: "select", proxies: DEFAULT_REJECT, use: false },
+    { name: "🎆 YouTube", type: "select", proxies: DEFAULT_REJECT, use: false },
+    { name: "🌅 Specific", type: "select", proxies: ["REJECT"], use: true, all: true, filter: "^[^(剩|套)]" },
+    { name: "🌌 BlackHole", type: "select", proxies: ["DIRECT"].concat(DEFAULT_MIX_UP), use: false },
     { name: "🛂 SWIFT", type: "select", proxies: ["REJECT"], use: true, provider: [PROVIDER_A] },
     { name: "🛂 CLOVER", type: "select", proxies: ["REJECT"], use: true, provider: [PROVIDER_B], filter: "^[^(剩|套)]" },
     { name: "🛂 FANRR", type: "select", proxies: ["REJECT"], use: true, provider: [PROVIDER_C], filter: "^[^(剩|套)]" },
     { name: "🛂 KELE", type: "select", proxies: ["REJECT"], use: true, provider: [PROVIDER_D], filter: "^[^(剩|套)]" },
-    { name: "🌅 ALL-IN-ONE", type: "select", proxies: ["REJECT"], use: true, provider: [PROVIDER_A, PROVIDER_B, PROVIDER_C, PROVIDER_D], filter: "^[^(剩|套)]"}
+    { name: "🇭🇰 HK-AUTO", type: "url-test", use: false, filter: "HK" },
+    { name: "🇸🇬 SG-AUTO", type: "url-test", use: false, filter: "SG" },
+    { name: "🇹🇼 TW-AUTO", type: "url-test", use: false, filter: "TW" },
+    { name: "🇯🇵 JP-AUTO", type: "url-test", use: false, filter: "JP" },
+    { name: "🇰🇷 KR-AUTO", type: "url-test", use: false, filter: "KR" },
 ];
+
 
 /***************************************************************************
  ***   Rules must be compatible with the specific clash kernel version.  ***
@@ -102,14 +112,11 @@ const RULES = [
     "RULE-SET,original-cncidr,DIRECT,no-resolve",
     "GEOIP,LAN,DIRECT,no-resolve",
     "GEOIP,CN,DIRECT,no-resolve",
-    // "AND,((PROCESS-NAME,msedge.exe),(IN-TYPE,SOCKS5)),DIRECT",
-    // "AND,((PROCESS-NAME,msedge.exe),(IN-TYPE,HTTPS)),🎇 Comprehensive",
-    // "AND,((PROCESS-NAME,pcapsvc.exe),(IN-TYPE,SOCKS5)),DIRECT",
-    "AND,((PROCESS-NAME,pcapsvc.exe),(IN-TYPE,HTTPS)),🌠 PcapsvcEscape",
-    "IN-TYPE,SOCKS5,🌠 SocksEscape",
-    "IN-TYPE,HTTP,🌠 HttpsEscape",
-    "IN-TYPE,HTTPS,🌠 HttpsEscape",
-    "MATCH,🌠 FinalEscape"
+    "AND,((PROCESS-NAME,pcapsvc.exe),(IN-TYPE,SOCKS5)),DIRECT",
+    "AND,((PROCESS-NAME,pcapsvc.exe),(IN-TYPE,HTTPS)),🌠 PcapsEsc",
+    "OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS)),🌠 HttpsEsc",
+    "IN-TYPE,SOCKS5,🌠 SocksEsc",
+    "MATCH,🌌 BlackHole"
 ];
 
 module.exports = {

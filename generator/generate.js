@@ -87,7 +87,11 @@ function getProxyGroups() {
     group.name = preset.name;
     group.type = preset.type;
     if (preset.hasOwnProperty("use") && !preset.use) {
-      preset.proxies = preset.proxies.concat(providerGroupsName);
+      if (preset.hasOwnProperty("filter")) {
+        preset.proxies = providerGroupsName.filter(name => new RegExp(preset.filter).test(name));
+      } else {
+        preset.proxies = preset.proxies.concat(providerGroupsName);
+      }
     } else {
       if (preset.hasOwnProperty("all") && preset.all) {
         group.use = Object.keys(PROXY_PROVIDERS_MAP);
