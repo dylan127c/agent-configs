@@ -86,11 +86,26 @@ function getProxyGroups() {
     const group = {};
     group.name = preset.name;
     group.type = preset.type;
+
+    if (preset.hasOwnProperty("append") && !preset.append) {
+      if (preset.proxies) {
+        group.proxies = preset.proxies;
+      } else {
+        group.proxies = [].concat(providerGroupsName);
+      }
+      groupsArr.push(getTypeParams(group));
+      return;
+    }
+
     if (preset.hasOwnProperty("use") && !preset.use) {
       if (preset.hasOwnProperty("filter")) {
-        preset.proxies = providerGroupsName.filter(name => new RegExp(preset.filter).test(name));
+        preset.proxies = preset.proxies === undefined ?
+          [].concat(providerGroupsName.filter(name => new RegExp(preset.filter).test(name))) :
+          preset.proxies.concat(providerGroupsName.filter(name => new RegExp(preset.filter).test(name)));
       } else {
-        preset.proxies = preset.proxies.concat(providerGroupsName);
+        preset.proxies = preset.proxies === undefined ?
+          [].concat(providerGroupsName) :
+          preset.proxies.concat(providerGroupsName);
       }
     } else {
       if (preset.hasOwnProperty("all") && preset.all) {
@@ -103,7 +118,7 @@ function getProxyGroups() {
       }
     }
     group.proxies = preset.proxies;
-    groupsArr.push(group);
+    groupsArr.push(getTypeParams(group));
   });
 
   for (const [provider, details] of Object.entries(PROVIDER_GROUPS)) {
@@ -114,14 +129,22 @@ function getProxyGroups() {
       group.filter = detail.filter
       group.use = [provider];
 
-      if (detail.type === LOAD_BALANCE) {
-        groupsArr.push(Object.assign(group, LOAD_BALANCE_PARAMS));
-      } else if (detail.type === URL_TEST) {
-        groupsArr.push(Object.assign(group, URL_TEST_PARAMS));
-      }
+      groupsArr.push(getTypeParams(group));
     })
   }
   return groupsArr;
+}
+
+
+function getTypeParams(group) {
+  if (group.type === LOAD_BALANCE) {
+    return Object.assign(group, LOAD_BALANCE_PARAMS);
+  } else if (group.type === URL_TEST) {
+    return Object.assign(group, URL_TEST_PARAMS);
+  } else if (group.type === FALLBACK) {
+    return Object.assign(group, FALLBACK_PARAMS);
+  }
+  return group;
 }
 
 function getRuleProvider(rules) {

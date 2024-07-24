@@ -40,9 +40,6 @@ const PROVIDER_GROUPS = {
         { name: "US", type: "url-test", filter: "(?i)^.*states.*[^L]$" },
         { name: "JP", type: "url-test", filter: "(?i)^.*japan.*[^L]$" },
         { name: "KR", type: "url-test", filter: "(?i)^.*korea.*[^L]$" },
-        { name: "HK-IEPL", type: "url-test", filter: "(?i)^.*kong.*L$" },
-        { name: "SG-IEPL", type: "url-test", filter: "(?i)^.*singapore.*L$" },
-        { name: "TW-IEPL", type: "url-test", filter: "(?i)^.*taiwan.*L$" },
     ],
     [PROVIDER_D]: [
         { name: "HK-CM", type: "load-balance", filter: "cm-hk" },
@@ -51,34 +48,30 @@ const PROVIDER_GROUPS = {
     ]
 };
 
-const AUTO_GROUPS = ["🇭🇰 HK-AUTO", "🇸🇬 SG-AUTO", "🇹🇼 TW-AUTO", "🇯🇵 JP-AUTO", "🇰🇷 KR-AUTO"];
+const AUTO_GROUPS = ["🇸🇬 SG-AUTO", "🇭🇰 HK-AUTO", "🇹🇼 TW-AUTO", "🇯🇵 JP-AUTO", "🇰🇷 KR-AUTO"];
 const DEFAULT_DIRECT = ["DIRECT"].concat(AUTO_GROUPS);
 const DEFAULT_REJECT = ["REJECT"].concat(AUTO_GROUPS);
-const DEFAULT_MIX_UP = ["🎇 Comprehensive", "🌅 Specific"].concat(AUTO_GROUPS);
+const ADD_ON_FILTER = "^[^(剩|套)]";
 
 const GROUPS = [
-    { name: "🎇 Comprehensive", type: "select", proxies: ["REJECT", "🌅 Specific"].concat(AUTO_GROUPS), use: false },
-    { name: "🌠 SocksEsc", type: "select", proxies: ["DIRECT"].concat(DEFAULT_MIX_UP), use: false },
-    { name: "🌠 HttpsEsc", type: "select", proxies: DEFAULT_MIX_UP, use: false },
-    { name: "🌠 PcapsEsc", type: "select", proxies: DEFAULT_MIX_UP, use: false },
-    { name: "🎆 PikPak", type: "select", proxies: DEFAULT_DIRECT, use: false },
-    { name: "🎆 Steam", type: "select", proxies: DEFAULT_DIRECT, use: false },
-    { name: "🎆 OpenAI", type: "select", proxies: DEFAULT_REJECT, use: false },
-    { name: "🎆 GitHub", type: "select", proxies: DEFAULT_REJECT, use: false },
-    { name: "🎆 Gemini", type: "select", proxies: DEFAULT_REJECT, use: false },
-    { name: "🎆 Copilot", type: "select", proxies: DEFAULT_REJECT, use: false },
-    { name: "🎆 YouTube", type: "select", proxies: DEFAULT_REJECT, use: false },
-    { name: "🌅 Specific", type: "select", proxies: ["REJECT"], use: true, all: true, filter: "^[^(剩|套)]" },
-    { name: "🌌 BlackHole", type: "select", proxies: ["DIRECT"].concat(DEFAULT_MIX_UP), use: false },
-    { name: "🛂 SWIFT", type: "select", proxies: ["REJECT"], use: true, provider: [PROVIDER_A] },
-    { name: "🛂 CLOVER", type: "select", proxies: ["REJECT"], use: true, provider: [PROVIDER_B], filter: "^[^(剩|套)]" },
-    { name: "🛂 FANRR", type: "select", proxies: ["REJECT"], use: true, provider: [PROVIDER_C], filter: "^[^(剩|套)]" },
-    { name: "🛂 KELE", type: "select", proxies: ["REJECT"], use: true, provider: [PROVIDER_D], filter: "^[^(剩|套)]" },
-    { name: "🇭🇰 HK-AUTO", type: "url-test", use: false, filter: "HK" },
-    { name: "🇸🇬 SG-AUTO", type: "url-test", use: false, filter: "SG" },
-    { name: "🇹🇼 TW-AUTO", type: "url-test", use: false, filter: "TW" },
-    { name: "🇯🇵 JP-AUTO", type: "url-test", use: false, filter: "JP" },
-    { name: "🇰🇷 KR-AUTO", type: "url-test", use: false, filter: "KR" },
+    { name: "🎇 Comprehensive", type: "select", proxies: DEFAULT_DIRECT, append: false },
+    { name: "🟩 PikPak", type: "select", proxies: ["REJECT"], append: true, use: false },
+    { name: "🟦 Copilot", type: "select", proxies: ["REJECT"], append: true, use: false },
+    { name: "🟦 Gemini", type: "select", proxies: ["REJECT"], append: true, use: false },
+    { name: "🟦 OpenAI", type: "select", proxies: ["REJECT"], append: true, use: false },
+    { name: "🌠 PcapsEsc", type: "fallback", proxies: AUTO_GROUPS, append: false },
+    { name: "🟧 GitHub", type: "fallback", proxies: AUTO_GROUPS, append: false },
+    { name: "🟧 Steam", type: "fallback", proxies: AUTO_GROUPS, append: false },
+    { name: "🌌 BlackHole", type: "select", proxies: DEFAULT_DIRECT, append: false },
+    { name: "🎆 SW-ALL", type: "select", proxies: ["REJECT"], append: true, use: true, provider: [PROVIDER_A], filter: ADD_ON_FILTER },
+    { name: "🎆 CL-ALL", type: "select", proxies: ["REJECT"], append: true, use: true, provider: [PROVIDER_B], filter: ADD_ON_FILTER },
+    { name: "🎆 FR-ALL", type: "select", proxies: ["REJECT"], append: true, use: true, provider: [PROVIDER_C], filter: ADD_ON_FILTER },
+    { name: "🎆 KL-ALL", type: "select", proxies: ["REJECT"], append: true, use: true, provider: [PROVIDER_D], filter: ADD_ON_FILTER },
+    { name: "🇭🇰 HK-AUTO", type: "url-test", append: true, use: false, filter: "HK" },
+    { name: "🇸🇬 SG-AUTO", type: "url-test", append: true, use: false, filter: "SG" },
+    { name: "🇹🇼 TW-AUTO", type: "url-test", append: true, use: false, filter: "TW" },
+    { name: "🇯🇵 JP-AUTO", type: "url-test", append: true, use: false, filter: "JP" },
+    { name: "🇰🇷 KR-AUTO", type: "url-test", append: true, use: false, filter: "KR" },
 ];
 
 
@@ -89,19 +82,18 @@ const GROUPS = [
 const RULES = [
     "RULE-SET,addition-reject,REJECT",
     "RULE-SET,addition-direct,DIRECT",
-    "RULE-SET,addition-openai,🎆 OpenAI",
-    "RULE-SET,addition-gemini,🎆 Gemini",
-    "RULE-SET,addition-copilot,🎆 Copilot",
-    "RULE-SET,special-youtube,🎆 YouTube",
-    "RULE-SET,special-github,🎆 GitHub",
-    "RULE-SET,special-steam,🎆 Steam",
+    "RULE-SET,addition-openai,🟦 OpenAI",
+    "RULE-SET,addition-gemini,🟦 Gemini",
+    "RULE-SET,addition-copilot,🟦 Copilot",
+    "RULE-SET,special-github,🟧 GitHub",
+    "RULE-SET,special-steam,🟧 Steam",
     "RULE-SET,addition-proxy,🎇 Comprehensive",
     "RULE-SET,original-applications,DIRECT",
     "RULE-SET,original-apple,DIRECT",
     "RULE-SET,original-icloud,DIRECT",
     "RULE-SET,original-private,DIRECT",
     "RULE-SET,original-direct,DIRECT",
-    "RULE-SET,special-pikpak,🎆 PikPak",
+    "RULE-SET,special-pikpak,🟩 PikPak",
     "RULE-SET,original-greatfire,🎇 Comprehensive",
     "RULE-SET,original-gfw,🎇 Comprehensive",
     "RULE-SET,original-proxy,🎇 Comprehensive",
@@ -114,8 +106,8 @@ const RULES = [
     "GEOIP,CN,DIRECT,no-resolve",
     "AND,((PROCESS-NAME,pcapsvc.exe),(IN-TYPE,SOCKS5)),DIRECT",
     "AND,((PROCESS-NAME,pcapsvc.exe),(IN-TYPE,HTTPS)),🌠 PcapsEsc",
-    "OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS)),🌠 HttpsEsc",
-    "IN-TYPE,SOCKS5,🌠 SocksEsc",
+    "OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS)),🎇 Comprehensive",
+    "IN-TYPE,SOCKS5,DIRECT",
     "MATCH,🌌 BlackHole"
 ];
 
