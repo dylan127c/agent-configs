@@ -115,6 +115,14 @@
             "savePath": "./special",
             "saveName": "claude",
             "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram_No_Resolve.yaml",
+            "savePath": "./special",
+            "saveName": "telegram",
+            "saveType": "yaml"
         }
+
+        
     ]
 }

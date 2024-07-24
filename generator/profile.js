@@ -48,18 +48,19 @@ const PROVIDER_GROUPS = {
     ]
 };
 
-const AUTO_GROUPS = ["🇸🇬 SG-AUTO", "🇭🇰 HK-AUTO", "🇹🇼 TW-AUTO", "🇯🇵 JP-AUTO", "🇰🇷 KR-AUTO"];
+const AUTO_GROUPS = ["🇸🇬 SG-AUTO", "🇭🇰 HK-AUTO", "🇹🇼 TW-AUTO", "🇯🇵 JP-AUTO", "🇰🇷 KR-AUTO", "🇺🇸 US-AUTO"];
 const DEFAULT_DIRECT = ["DIRECT"].concat(AUTO_GROUPS);
 const DEFAULT_REJECT = ["REJECT"].concat(AUTO_GROUPS);
 const ADD_ON_FILTER = "^[^(剩|套)]";
 
 const GROUPS = [
-    { name: "🎇 Comprehensive", type: "select", proxies: DEFAULT_DIRECT, append: false },
+    { name: "🌠 Comprehensive", type: "select", proxies: DEFAULT_DIRECT, append: false },
     { name: "🟩 PikPak", type: "select", proxies: ["REJECT"], append: true, use: false },
     { name: "🟦 Copilot", type: "select", proxies: ["REJECT"], append: true, use: false },
     { name: "🟦 Gemini", type: "select", proxies: ["REJECT"], append: true, use: false },
     { name: "🟦 OpenAI", type: "select", proxies: ["REJECT"], append: true, use: false },
-    { name: "🌠 PcapsEsc", type: "fallback", proxies: AUTO_GROUPS, append: false },
+    { name: "🎇 PcapEsc", type: "fallback", proxies: AUTO_GROUPS, append: false },
+    { name: "🟧 Telegram", type: "fallback", proxies: AUTO_GROUPS, append: false },
     { name: "🟧 GitHub", type: "fallback", proxies: AUTO_GROUPS, append: false },
     { name: "🟧 Steam", type: "fallback", proxies: AUTO_GROUPS, append: false },
     { name: "🌌 BlackHole", type: "select", proxies: DEFAULT_DIRECT, append: false },
@@ -72,6 +73,7 @@ const GROUPS = [
     { name: "🇹🇼 TW-AUTO", type: "url-test", append: true, use: false, filter: "TW" },
     { name: "🇯🇵 JP-AUTO", type: "url-test", append: true, use: false, filter: "JP" },
     { name: "🇰🇷 KR-AUTO", type: "url-test", append: true, use: false, filter: "KR" },
+    { name: "🇺🇸 US-AUTO", type: "url-test", append: true, use: false, filter: "US" },
 ];
 
 
@@ -85,28 +87,29 @@ const RULES = [
     "RULE-SET,addition-openai,🟦 OpenAI",
     "RULE-SET,addition-gemini,🟦 Gemini",
     "RULE-SET,addition-copilot,🟦 Copilot",
+    "RULE-SET,special-telegram,🟧 Telegram",
     "RULE-SET,special-github,🟧 GitHub",
     "RULE-SET,special-steam,🟧 Steam",
-    "RULE-SET,addition-proxy,🎇 Comprehensive",
+    "RULE-SET,addition-proxy,🌠 Comprehensive",
     "RULE-SET,original-applications,DIRECT",
     "RULE-SET,original-apple,DIRECT",
     "RULE-SET,original-icloud,DIRECT",
     "RULE-SET,original-private,DIRECT",
     "RULE-SET,original-direct,DIRECT",
     "RULE-SET,special-pikpak,🟩 PikPak",
-    "RULE-SET,original-greatfire,🎇 Comprehensive",
-    "RULE-SET,original-gfw,🎇 Comprehensive",
-    "RULE-SET,original-proxy,🎇 Comprehensive",
-    "RULE-SET,original-tld-not-cn,🎇 Comprehensive",
+    "RULE-SET,original-greatfire,🌠 Comprehensive",
+    "RULE-SET,original-gfw,🌠 Comprehensive",
+    "RULE-SET,original-proxy,🌠 Comprehensive",
+    "RULE-SET,original-tld-not-cn,🌠 Comprehensive",
     "RULE-SET,original-reject,REJECT",
-    "RULE-SET,original-telegramcidr,🎇 Comprehensive,no-resolve",
+    "RULE-SET,original-telegramcidr,🌠 Comprehensive,no-resolve",
     "RULE-SET,original-lancidr,DIRECT,no-resolve",
     "RULE-SET,original-cncidr,DIRECT,no-resolve",
     "GEOIP,LAN,DIRECT,no-resolve",
     "GEOIP,CN,DIRECT,no-resolve",
     "AND,((PROCESS-NAME,pcapsvc.exe),(IN-TYPE,SOCKS5)),DIRECT",
-    "AND,((PROCESS-NAME,pcapsvc.exe),(IN-TYPE,HTTPS)),🌠 PcapsEsc",
-    "OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS)),🎇 Comprehensive",
+    "AND,((PROCESS-NAME,pcapsvc.exe),(IN-TYPE,HTTPS)),🎇 PcapEsc",
+    "OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS)),🌠 Comprehensive",
     "IN-TYPE,SOCKS5,DIRECT",
     "MATCH,🌌 BlackHole"
 ];
