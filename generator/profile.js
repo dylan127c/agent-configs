@@ -10,21 +10,23 @@ const PROVIDER_A = "SW";
 const PROVIDER_B = "CL";
 const PROVIDER_C = "FR";
 const PROVIDER_D = "KL";
+const PROVIDER_E = "XF";
 
 const PROXY_PROVIDERS_MAP = {
     [PROVIDER_A]: "rJMe6hhgkXaX",
     [PROVIDER_B]: "rSdFtH4ObdA9",
     [PROVIDER_C]: "rn5AYTWlsFb8",
     [PROVIDER_D]: "ruSoFEnwBdIJ",
+    [PROVIDER_E]: "r3skwCrlQaeY",
 };
 
 const PROVIDER_GROUPS = {
     [PROVIDER_A]: [
-        { name: "HK", type: "url-test", filter: "🇭🇰" },
-        { name: "SG", type: "url-test", filter: "🇸🇬" },
-        { name: "TW", type: "url-test", filter: "🇹🇼" },
-        { name: "US", type: "url-test", filter: "🇺🇸" },
-        { name: "JP", type: "url-test", filter: "🇯🇵" },
+        { name: "HK", type: "url-test", filter: "HK" },
+        { name: "SG", type: "url-test", filter: "SG" },
+        { name: "TW", type: "url-test", filter: "TW" },
+        { name: "US", type: "url-test", filter: "US" },
+        { name: "JP", type: "url-test", filter: "JP" },
     ],
     [PROVIDER_B]: [
         { name: "HK", type: "url-test", filter: "(?<=IEPL).*(?:香港)" },
@@ -41,20 +43,27 @@ const PROVIDER_GROUPS = {
         { name: "JP", type: "url-test", filter: "(?i)^.*japan.*[^L]$" },
         { name: "KR", type: "url-test", filter: "(?i)^.*korea.*[^L]$" },
     ],
+    [PROVIDER_E]: [
+        { name: "HK", type: "load-balance", filter: ".+香港.+" },
+        { name: "SG", type: "load-balance", filter: ".+新加坡.+" },
+        { name: "TW", type: "load-balance", filter: ".+台湾.+" },
+        { name: "US", type: "load-balance", filter: ".+美国.+" },
+        { name: "JP", type: "load-balance", filter: ".+日本.+" },
+    ],
     [PROVIDER_D]: [
         { name: "HK-CM", type: "load-balance", filter: "cm-hk" },
         { name: "HK-CU", type: "load-balance", filter: "cu-hk" },
         { name: "HK-CT", type: "load-balance", filter: "ct-hk" },
-    ]
+    ],
 };
 
 const AUTO_GROUPS = ["🇸🇬 SG-AUTO", "🇭🇰 HK-AUTO", "🇹🇼 TW-AUTO", "🇯🇵 JP-AUTO", "🇰🇷 KR-AUTO", "🇺🇸 US-AUTO"];
 const DEFAULT_DIRECT = ["DIRECT"].concat(AUTO_GROUPS);
 const DEFAULT_REJECT = ["REJECT"].concat(AUTO_GROUPS);
-const ADD_ON_FILTER = "^[^(剩|套)]";
+const ADD_ON_FILTER = "^(?!.*套餐)(?!.*剩余)(?!.*XF).*$";
 
 const GROUPS = [
-    { name: "🌠 Comprehensive", type: "select", proxies: DEFAULT_DIRECT, append: false },
+    { name: "🌠 Comprehensive", type: "fallback", proxies: AUTO_GROUPS, append: false },
     { name: "🟩 PikPak", type: "select", proxies: ["REJECT"], append: true, use: false },
     { name: "🟦 Copilot", type: "select", proxies: ["REJECT"], append: true, use: false },
     { name: "🟦 Gemini", type: "select", proxies: ["REJECT"], append: true, use: false },
@@ -68,6 +77,7 @@ const GROUPS = [
     { name: "🎆 CL-ALL", type: "select", proxies: ["REJECT"], append: true, use: true, provider: [PROVIDER_B], filter: ADD_ON_FILTER },
     { name: "🎆 FR-ALL", type: "select", proxies: ["REJECT"], append: true, use: true, provider: [PROVIDER_C], filter: ADD_ON_FILTER },
     { name: "🎆 KL-ALL", type: "select", proxies: ["REJECT"], append: true, use: true, provider: [PROVIDER_D], filter: ADD_ON_FILTER },
+    { name: "🎆 XF-ALL", type: "select", proxies: ["REJECT"], append: true, use: true, provider: [PROVIDER_E], filter: ADD_ON_FILTER },
     { name: "🇭🇰 HK-AUTO", type: "url-test", append: true, use: false, filter: "HK" },
     { name: "🇸🇬 SG-AUTO", type: "url-test", append: true, use: false, filter: "SG" },
     { name: "🇹🇼 TW-AUTO", type: "url-test", append: true, use: false, filter: "TW" },
@@ -88,6 +98,7 @@ const RULES = [
     "RULE-SET,addition-gemini,🟦 Gemini",
     "RULE-SET,addition-copilot,🟦 Copilot",
     "RULE-SET,special-telegram,🟧 Telegram",
+    "RULE-SET,original-telegramcidr,🟧 Telegram",
     "RULE-SET,special-github,🟧 GitHub",
     "RULE-SET,special-steam,🟧 Steam",
     "RULE-SET,addition-proxy,🌠 Comprehensive",
@@ -102,7 +113,6 @@ const RULES = [
     "RULE-SET,original-proxy,🌠 Comprehensive",
     "RULE-SET,original-tld-not-cn,🌠 Comprehensive",
     "RULE-SET,original-reject,REJECT",
-    "RULE-SET,original-telegramcidr,🌠 Comprehensive,no-resolve",
     "RULE-SET,original-lancidr,DIRECT,no-resolve",
     "RULE-SET,original-cncidr,DIRECT,no-resolve",
     "GEOIP,LAN,DIRECT,no-resolve",

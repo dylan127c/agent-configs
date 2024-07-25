@@ -25,14 +25,14 @@ const URL_TEST_PARAMS = {
     url: "http://www.gstatic.com/generate_204",
     tolerance: 50,
     lazy: false,
-    interval: 300
+    interval: 120
 };
 
 const FALLBACK = "fallback";
 const FALLBACK_PARAMS = {
     url: "http://www.gstatic.com/generate_204",
     lazy: false,
-    interval: 300
+    interval: 30
 };
 
 const HEALTH_CHECK = {
