@@ -19,6 +19,7 @@ DOMAIN-SUFFIX,api.msn.cn
 DOMAIN-SUFFIX,business.bing.com
 DOMAIN-SUFFIX,substrate.office.com
 DOMAIN-SUFFIX,c.msn.cn
+DOMAIN-SUFFIX,ntp.msn.cn
 
 # Malicious websites
 DOMAIN-SUFFIX,mixcrack.net

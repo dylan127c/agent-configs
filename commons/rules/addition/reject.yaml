@@ -20,6 +20,7 @@ payload:
   - '+.business.bing.com'
   - '+.substrate.office.com'
   - '+.c.msn.cn'
+  - '+.ntp.msn.cn'
 
   # Malicious websites
   - '+.mixcrack.net'

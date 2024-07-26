@@ -25,7 +25,6 @@ payload:
   # 以下域名用于加载Microsoft Edge新标签页，它们可能影响浏览器的加载速度。
   # DIRECT模式为默认模式，按需使用PROXY。
   # REJECT可能可以加快浏览器的启动速度。
-  - '+.ntp.msn.cn'
   - '+.assets.msn.cn'
   - '+.assets2.msn.cn'
 
