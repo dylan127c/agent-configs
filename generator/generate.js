@@ -87,38 +87,33 @@ function getProxyGroups() {
     group.name = preset.name;
     group.type = preset.type;
 
-    if (preset.hasOwnProperty("append") && !preset.append) {
-      if (preset.proxies) {
-        group.proxies = preset.proxies;
-      } else {
+    if (preset.hasOwnProperty("proxies")) {
+      group.proxies = preset.proxies;
+    } else {
+      group.proxies = [];
+    }
+
+    if (!preset.hasOwnProperty("append") || !preset.append) {
+      if (isEmptyArray(group.proxies)) {
         group.proxies = [].concat(providerGroupsName);
       }
-      groupsArr.push(getTypeParams(group));
+      groupsArr.push(addTypeParams(group));
       return;
     }
 
-    if (preset.hasOwnProperty("use") && !preset.use) {
-      if (preset.hasOwnProperty("filter")) {
-        preset.proxies = preset.proxies === undefined ?
-          [].concat(providerGroupsName.filter(name => new RegExp(preset.filter).test(name))) :
-          preset.proxies.concat(providerGroupsName.filter(name => new RegExp(preset.filter).test(name)));
-      } else {
-        preset.proxies = preset.proxies === undefined ?
-          [].concat(providerGroupsName) :
-          preset.proxies.concat(providerGroupsName);
-      }
-    } else {
-      if (preset.hasOwnProperty("all") && preset.all) {
-        group.use = Object.keys(PROXY_PROVIDERS_MAP);
-      } else {
-        group.use = preset.provider;
-      }
+    if (preset.hasOwnProperty("provider") && !isEmptyArray(preset.provider)) {
+      group.use = preset.provider;
       if (preset.hasOwnProperty("filter")) {
         group.filter = preset.filter;
       }
+    } else {
+      if (preset.hasOwnProperty("filter")) {
+        group.proxies = group.proxies.concat(providerGroupsName.filter(name => new RegExp(preset.filter, "i").test(name)));
+      } else {
+        group.proxies = group.proxies.concat(providerGroupsName);
+      }
     }
-    group.proxies = preset.proxies;
-    groupsArr.push(getTypeParams(group));
+    groupsArr.push(addTypeParams(group));
   });
 
   for (const [provider, details] of Object.entries(PROVIDER_GROUPS)) {
@@ -126,25 +121,29 @@ function getProxyGroups() {
       const group = {};
       group.name = detail.name;
       group.type = detail.type;
+      group.proxies = ["REJECT"];
       group.filter = detail.filter
       group.use = [provider];
 
-      groupsArr.push(getTypeParams(group));
+      groupsArr.push(addTypeParams(group));
     })
   }
   return groupsArr;
-}
 
-
-function getTypeParams(group) {
-  if (group.type === LOAD_BALANCE) {
-    return Object.assign(group, LOAD_BALANCE_PARAMS);
-  } else if (group.type === URL_TEST) {
-    return Object.assign(group, URL_TEST_PARAMS);
-  } else if (group.type === FALLBACK) {
-    return Object.assign(group, FALLBACK_PARAMS);
+  function addTypeParams(group) {
+    if (group.type === LOAD_BALANCE) {
+      return Object.assign(group, LOAD_BALANCE_PARAMS);
+    } else if (group.type === URL_TEST) {
+      return Object.assign(group, URL_TEST_PARAMS);
+    } else if (group.type === FALLBACK) {
+      return Object.assign(group, FALLBACK_PARAMS);
+    }
+    return group;
   }
-  return group;
+  
+  function isEmptyArray(arr) {
+    return Array.isArray(arr) && arr.length === 0;
+  }
 }
 
 function getRuleProvider(rules) {

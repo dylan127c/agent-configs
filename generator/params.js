@@ -16,23 +16,23 @@ const LOAD_BALANCE = "load-balance"
 const LOAD_BALANCE_PARAMS = {
     url: "http://www.gstatic.com/generate_204",
     strategy: "consistent-hashing",
-    lazy: false,
-    interval: 300
+    lazy: true,
+    interval: 300,
 };
 
 const URL_TEST = "url-test";
 const URL_TEST_PARAMS = {
     url: "http://www.gstatic.com/generate_204",
     tolerance: 50,
-    lazy: false,
-    interval: 120
+    lazy: true,
+    interval: 300,
 };
-
+ 
 const FALLBACK = "fallback";
 const FALLBACK_PARAMS = {
     url: "http://www.gstatic.com/generate_204",
     lazy: false,
-    interval: 30
+    interval: 300,
 };
 
 const HEALTH_CHECK = {
