@@ -23,6 +23,9 @@ payload:
   - '+.raw.githubusercontent.com'
   - '+.gitkraken.com'
 
+  # AI Comprehensive Website
+  - '+.lobehub.com'
+
   # Frameworks && Toolkits
   - '+.docker.com'
   - '+.listary.com'

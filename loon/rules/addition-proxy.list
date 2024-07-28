@@ -22,6 +22,9 @@ DOMAIN-SUFFIX,github.io
 DOMAIN-SUFFIX,raw.githubusercontent.com
 DOMAIN-SUFFIX,gitkraken.com
 
+# AI Comprehensive Website
+DOMAIN-SUFFIX,lobehub.com
+
 # Frameworks && Toolkits
 DOMAIN-SUFFIX,docker.com
 DOMAIN-SUFFIX,listary.com

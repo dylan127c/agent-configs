@@ -99,9 +99,8 @@ function update(log, axios) {
             log.info(mark(funcName), "done.");
             updateTimestamp(log);
         })
-        .catch(err => {
+        .catch(() => {
             log.info(mark(funcName), "some updates failed, timestamp won't update this time.");
-            log.info(mark(funcName), err);
         });
 }
 
@@ -118,12 +117,8 @@ function updateTimestamp(log) {
     const currentTimestamp = Date.now();
     fs.writeFile(path.resolve(__dirname, settings.timestamp),
         currentTimestamp.toString(),
-        (err) => {
-            if (err) {
-                log.info(mark(funcName), err);
-            } else {
-                log.info(mark(funcName), "timestamp file updated:",
-                    formatter.getFormatDate(new Date(currentTimestamp)));
-            }
+        () => {
+            log.info(mark(funcName), "timestamp file updated:",
+                formatter.getFormatDate(new Date(currentTimestamp)));
         });
 }
