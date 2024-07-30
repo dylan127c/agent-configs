@@ -14,6 +14,7 @@ payload:
   # 以下某些域名会影响Edge浏览器新标签页的加载，但国内可以直连。
   - '+.go.microsoft.com'
   - '+.edge.microsoft.com'
+  - '+.ntp.msn.cn'
 
   # AdGuard Windows用以下域名完成广告过滤，使用直连模式即可。
   - '+.injections.adguard.org'

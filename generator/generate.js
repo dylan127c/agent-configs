@@ -10,23 +10,6 @@ function homepath() {
   return process.env.homepath.replace(/^\\/gm, "c:\\");
 }
 
-const providers = path.join(homepath(), ".run/profile.js");
-try {
-  delete require.cache[require.resolve(providers)];
-} catch (error) {
-  console.log("%HOMEPATH%/.RUN/profile.js WAS NOT FOUND.");
-}
-
-const {
-  PROXY_PROVIDER_PATH,
-  PROXY_PROVIDER_TYPE,
-  PROXY_PROVIDERS_MAP,
-  ALL_PROFILES_OUTPUT,
-  PROVIDER_GROUPS,
-  GROUPS,
-  RULES,
-} = require(providers);
-
 delete require.cache[require.resolve("./params.js")];
 const {
   IPCIDR,
@@ -43,8 +26,29 @@ const {
   FALLBACK,
   FALLBACK_PARAMS,
   HEALTH_CHECK,
+  PROFILE_PATH,
   BASIC_BUILT,
 } = require("./params.js");
+
+const profile = PROFILE_PATH === "" ?
+  path.join(homepath(), ".run/profile.js") :
+  PROFILE_PATH;
+
+try {
+  delete require.cache[require.resolve(profile)];
+} catch (error) {
+  console.log("User-defined profile.js OR %HOMEPATH%/.RUN/profile.js WAS NOT FOUND.");
+}
+
+const {
+  PROXY_PROVIDER_PATH,
+  PROXY_PROVIDER_TYPE,
+  PROXY_PROVIDERS_MAP,
+  ALL_PROFILES_OUTPUT,
+  PROVIDER_GROUPS,
+  GROUPS,
+  RULES,
+} = require(profile);
 
 function generate(log, yaml) {
   const funcName = "generate";
@@ -140,7 +144,7 @@ function getProxyGroups() {
     }
     return group;
   }
-  
+
   function isEmptyArray(arr) {
     return Array.isArray(arr) && arr.length === 0;
   }

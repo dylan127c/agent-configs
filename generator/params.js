@@ -1,3 +1,5 @@
+const PROFILE_PATH = "";
+
 const RULE_PROVIDER_PATH = "../commons/rules/";
 const RULE_PROVIDER_TYPE = "yaml";
 
@@ -17,7 +19,7 @@ const LOAD_BALANCE_PARAMS = {
     url: "http://www.gstatic.com/generate_204",
     strategy: "consistent-hashing",
     lazy: true,
-    interval: 300,
+    interval: 280,
 };
 
 const URL_TEST = "url-test";
@@ -25,7 +27,7 @@ const URL_TEST_PARAMS = {
     url: "http://www.gstatic.com/generate_204",
     tolerance: 50,
     lazy: true,
-    interval: 300,
+    interval: 280,
 };
  
 const FALLBACK = "fallback";
@@ -103,6 +105,7 @@ const BASIC_BUILT = () => {
         "*.*.xboxlive.com",
         "*.msftncsi.com",
         "*.msftconnecttest.com",
+        "*.ipv6.microsoft.com",
         "*.logon.battlenet.com.cn",
         "*.logon.battle.net",
         "WORKGROUP"
@@ -174,5 +177,6 @@ module.exports = {
     FALLBACK,
     FALLBACK_PARAMS,
     HEALTH_CHECK,
+    PROFILE_PATH,
     BASIC_BUILT,
 };  
