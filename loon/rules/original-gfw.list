@@ -314,7 +314,6 @@ DOMAIN-SUFFIX,api-verify.recaptcha.net
 DOMAIN-SUFFIX,api.ai
 DOMAIN-SUFFIX,api.dropboxapi.com
 DOMAIN-SUFFIX,api.linksalpha.com
-DOMAIN-SUFFIX,api.proxlet.com
 DOMAIN-SUFFIX,api.pureapk.com
 DOMAIN-SUFFIX,api.recaptcha.net
 DOMAIN-SUFFIX,apiary.io
@@ -428,6 +427,7 @@ DOMAIN-SUFFIX,axios.com
 DOMAIN-SUFFIX,axureformac.com
 DOMAIN-SUFFIX,azerbaycan.tv
 DOMAIN-SUFFIX,azerimix.com
+DOMAIN-SUFFIX,azirevpn.com
 DOMAIN-SUFFIX,azubu.tv
 DOMAIN-SUFFIX,azurewebsites.net
 DOMAIN-SUFFIX,b-ok.cc
@@ -617,7 +617,6 @@ DOMAIN-SUFFIX,blog.lester850.info
 DOMAIN-SUFFIX,blog.martinoei.com
 DOMAIN-SUFFIX,blog.pathtosharepoint.com
 DOMAIN-SUFFIX,blog.pentalogic.net
-DOMAIN-SUFFIX,blog.qooza.hk
 DOMAIN-SUFFIX,blog.ranxiang.com
 DOMAIN-SUFFIX,blog.sina.com.tw
 DOMAIN-SUFFIX,blog.sogoo.org
@@ -805,6 +804,7 @@ DOMAIN-SUFFIX,buy.yahoo.com.tw
 DOMAIN-SUFFIX,buzzhand.com
 DOMAIN-SUFFIX,buzzhand.net
 DOMAIN-SUFFIX,buzzorange.com
+DOMAIN-SUFFIX,buzzsprout.com
 DOMAIN-SUFFIX,bvpn.com
 DOMAIN-SUFFIX,bwgyhw.com
 DOMAIN-SUFFIX,bwh1.net
@@ -1098,6 +1098,7 @@ DOMAIN-SUFFIX,club1069.com
 DOMAIN-SUFFIX,clubhouseapi.com
 DOMAIN-SUFFIX,clyp.it
 DOMAIN-SUFFIX,cmcn.org
+DOMAIN-SUFFIX,cmegroup.com
 DOMAIN-SUFFIX,cmi.org.tw
 DOMAIN-SUFFIX,cmp.hku.hk
 DOMAIN-SUFFIX,cms.gov
@@ -1268,7 +1269,6 @@ DOMAIN-SUFFIX,dalailama-archives.org
 DOMAIN-SUFFIX,dalailama.com
 DOMAIN-SUFFIX,dalailama.mn
 DOMAIN-SUFFIX,dalailama.ru
-DOMAIN-SUFFIX,dalailama.usc.edu
 DOMAIN-SUFFIX,dalailama80.org
 DOMAIN-SUFFIX,dalailamacenter.org
 DOMAIN-SUFFIX,dalailamafellows.org
@@ -2796,6 +2796,7 @@ DOMAIN-SUFFIX,im88.tw
 DOMAIN-SUFFIX,imageab.com
 DOMAIN-SUFFIX,imagefap.com
 DOMAIN-SUFFIX,imageflea.com
+DOMAIN-SUFFIX,imageglass.org
 DOMAIN-SUFFIX,images-gaytube.com
 DOMAIN-SUFFIX,images.comico.tw
 DOMAIN-SUFFIX,imageshack.us
@@ -2913,7 +2914,9 @@ DOMAIN-SUFFIX,iuhrdf.org
 DOMAIN-SUFFIX,iuksky.com
 DOMAIN-SUFFIX,ivacy.com
 DOMAIN-SUFFIX,iverycd.com
+DOMAIN-SUFFIX,ivonblog.com
 DOMAIN-SUFFIX,ivpn.net
+DOMAIN-SUFFIX,iwara.tv
 DOMAIN-SUFFIX,ixquick.com
 DOMAIN-SUFFIX,ixxx.com
 DOMAIN-SUFFIX,iyouport.com
@@ -2927,6 +2930,7 @@ DOMAIN-SUFFIX,jable.tv
 DOMAIN-SUFFIX,jamaat.org
 DOMAIN-SUFFIX,jamestown.org
 DOMAIN-SUFFIX,jamyangnorbu.com
+DOMAIN-SUFFIX,jan.ai
 DOMAIN-SUFFIX,jandyx.com
 DOMAIN-SUFFIX,janwongphoto.com
 DOMAIN-SUFFIX,japan-whores.com
@@ -4020,8 +4024,6 @@ DOMAIN-SUFFIX,pemulihan.or.id
 DOMAIN-SUFFIX,pen.io
 DOMAIN-SUFFIX,penchinese.com
 DOMAIN-SUFFIX,penchinese.net
-DOMAIN-SUFFIX,pengyulong.com
-DOMAIN-SUFFIX,penisbot.com
 DOMAIN-SUFFIX,penthouse.com
 DOMAIN-SUFFIX,pentoy.hk
 DOMAIN-SUFFIX,peoplebookcafe.com
@@ -4037,7 +4039,6 @@ DOMAIN-SUFFIX,persiankitty.com
 DOMAIN-SUFFIX,phapluan.org
 DOMAIN-SUFFIX,phayul.com
 DOMAIN-SUFFIX,philborges.com
-DOMAIN-SUFFIX,philly.com
 DOMAIN-SUFFIX,phmsociety.org
 DOMAIN-SUFFIX,phncdn.com
 DOMAIN-SUFFIX,phobos.apple.com
@@ -4284,12 +4285,10 @@ DOMAIN-SUFFIX,raindrop.io
 DOMAIN-SUFFIX,raizoji.or.jp
 DOMAIN-SUFFIX,ramcity.com.au
 DOMAIN-SUFFIX,rangwang.biz
-DOMAIN-SUFFIX,rangzen.com
 DOMAIN-SUFFIX,rangzen.net
 DOMAIN-SUFFIX,rangzen.org
 DOMAIN-SUFFIX,ranyunfei.com
 DOMAIN-SUFFIX,rapbull.net
-DOMAIN-SUFFIX,rapidgator.net
 DOMAIN-SUFFIX,rapidmoviez.com
 DOMAIN-SUFFIX,rapidvpn.com
 DOMAIN-SUFFIX,rarbgprx.org
@@ -4792,6 +4791,7 @@ DOMAIN-SUFFIX,storagenewsletter.com
 DOMAIN-SUFFIX,store.steampowered.com
 DOMAIN-SUFFIX,stories.google
 DOMAIN-SUFFIX,storify.com
+DOMAIN-SUFFIX,storj.io
 DOMAIN-SUFFIX,storm.mg
 DOMAIN-SUFFIX,stormmediagroup.com
 DOMAIN-SUFFIX,stoweboyd.com
@@ -5126,10 +5126,12 @@ DOMAIN-SUFFIX,tibetsupportgroup.org
 DOMAIN-SUFFIX,tibetswiss.ch
 DOMAIN-SUFFIX,tibettelegraph.com
 DOMAIN-SUFFIX,tibettimes.net
+DOMAIN-SUFFIX,tibettruth.com
 DOMAIN-SUFFIX,tibetwrites.org
 DOMAIN-SUFFIX,ticket.com.tw
 DOMAIN-SUFFIX,tigervpn.com
 DOMAIN-SUFFIX,tiktok.com
+DOMAIN-SUFFIX,tiktokv.com
 DOMAIN-SUFFIX,tiltbrush.com
 DOMAIN-SUFFIX,timdir.com
 DOMAIN-SUFFIX,time.com
@@ -5474,6 +5476,7 @@ DOMAIN-SUFFIX,urlparser.com
 DOMAIN-SUFFIX,us.to
 DOMAIN-SUFFIX,usacn.com
 DOMAIN-SUFFIX,usaip.eu
+DOMAIN-SUFFIX,uscardforum.com
 DOMAIN-SUFFIX,uscnpm.org
 DOMAIN-SUFFIX,userapi.nytlog.com
 DOMAIN-SUFFIX,users.skynet.be

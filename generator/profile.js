@@ -13,10 +13,10 @@ const PROVIDER_D = "XF";
 const PROVIDER_E = "KL";
 
 const PROXY_PROVIDERS_MAP = {
-    [PROVIDER_A]: "rJMe6hhgkXaX",
+    [PROVIDER_A]: "r7KSipTmZJib",
     [PROVIDER_B]: "rSdFtH4ObdA9",
     [PROVIDER_C]: "rn5AYTWlsFb8",
-    [PROVIDER_D]: "r3skwCrlQaeY",
+    [PROVIDER_D]: "r3zNoGNk328x",
     [PROVIDER_E]: "ruSoFEnwBdIJ",
 };
 
@@ -71,24 +71,26 @@ const DEFAULT_REJECT = ["REJECT"].concat(AUTO_GROUPS);
 const ADD_ON_FILTER = "^(?!.*套餐)(?!.*剩余)(?!.*XF).*$";
 
 const GROUPS = [
-    { name: "🌠 Comprehensive", type: "select", proxies: AUTO_GROUPS },
-    { name: "🟦 PikPak", type: "select", proxies: DEFAULT_REJECT },
-    { name: "🟩 OpenAI", type: "select", proxies: DEFAULT_REJECT },
+    { name: "🌠 Comprehensive", type: "select", proxies: ["🏴‍☠️ SPECIFIC-NODE"].concat(AUTO_GROUPS) },
+    { name: "🟥 OpenAI", type: "select", proxies: ["REJECT"], append: true, provider: [PROVIDER_A, PROVIDER_B, PROVIDER_C, PROVIDER_D, PROVIDER_E], filter: ADD_ON_FILTER },
     { name: "🟩 Copilot", type: "select", proxies: DEFAULT_REJECT },
     { name: "🟩 Gemini", type: "select", proxies: DEFAULT_REJECT },
+    { name: "🟦 PikPak", type: "select", proxies: DEFAULT_REJECT },
     { name: "🟧 Reddit", type: "select", proxies: DEFAULT_REJECT },
     { name: "🟧 Telegram", type: "select", proxies: DEFAULT_REJECT },
     { name: "🟧 GitHub", type: "select", proxies: DEFAULT_REJECT },
-    { name: "🟧 Steam", type: "select", proxies: DEFAULT_REJECT },
+    { name: "🟧 Steam", type: "select", proxies: DEFAULT_DIRECT },
+    { name: "🟧 Epic", type: "select", proxies: DEFAULT_DIRECT },
     { name: "🎇 PcapEsc", type: "select", proxies: MAIN_GROUPS },
     { name: "🌌 BlackHole", type: "select", proxies: DEFAULT_DIRECT },
+    { name: "🏴‍☠️ SPECIFIC-NODE", type: "url-test", append: true },
     { name: "🇭🇰 SLOT-HK", type: "fallback", proxies: ["REJECT"], append: true, filter: "HK" },
     { name: "🇸🇬 SLOT-SG", type: "fallback", proxies: ["REJECT"], append: true, filter: "SG" },
     { name: "🇹🇼 SLOT-TW", type: "fallback", proxies: ["REJECT"], append: true, filter: "TW" },
     { name: "🇯🇵 SLOT-JP", type: "fallback", proxies: ["REJECT"], append: true, filter: "JP" },
     { name: "🇺🇸 SLOT-US", type: "fallback", proxies: ["REJECT"], append: true, filter: "US" },
     { name: "🇰🇷 SLOT-KR", type: "fallback", proxies: ["REJECT"], append: true, filter: "KR" },
-    { name: "🇺🇳 SLOT-SP", type: "fallback", proxies: ["REJECT"], append: true, filter: "(KL|XF)" },
+    { name: "🇺🇳 SLOT-SP", type: "select", proxies: ["REJECT"], append: true, filter: "(KL|XF)" },
     { name: "🎆 SWIFT", type: "select", proxies: ["REJECT"], append: true, provider: [PROVIDER_A], filter: ADD_ON_FILTER },
     { name: "🎆 CLOVER", type: "select", proxies: ["REJECT"], append: true, provider: [PROVIDER_B], filter: ADD_ON_FILTER },
     { name: "🎆 FANRR", type: "select", proxies: ["REJECT"], append: true, provider: [PROVIDER_C], filter: ADD_ON_FILTER },
@@ -104,7 +106,7 @@ const GROUPS = [
 const RULES = [
     "RULE-SET,addition-reject,REJECT",
     "RULE-SET,addition-direct,DIRECT",
-    "RULE-SET,addition-openai,🟩 OpenAI",
+    "RULE-SET,addition-openai,🟥 OpenAI",
     "RULE-SET,addition-gemini,🟩 Gemini",
     "RULE-SET,addition-copilot,🟩 Copilot",
     "RULE-SET,special-reddit,🟧 Reddit",
@@ -112,6 +114,7 @@ const RULES = [
     "RULE-SET,original-telegramcidr,🟧 Telegram,no-resolve",
     "RULE-SET,special-github,🟧 GitHub",
     "RULE-SET,special-steam,🟧 Steam",
+    "RULE-SET,special-epic,🟧 Epic",
     "RULE-SET,addition-proxy,🌠 Comprehensive",
     "RULE-SET,original-applications,DIRECT",
     "RULE-SET,original-apple,DIRECT",

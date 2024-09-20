@@ -34,3 +34,6 @@ payload:
   - '+.ihaxs.com'
   - '+.kanshuv.com'
   - '+.newyun.io'
+
+  # 技术论坛
+  - '+.linux.do'
