@@ -13,7 +13,7 @@ const PROVIDER_D = "XF";
 const PROVIDER_E = "KL";
 
 const PROXY_PROVIDERS_MAP = {
-    [PROVIDER_A]: "r7KSipTmZJib",
+    [PROVIDER_A]: "rgz4yTSVjiEf",
     [PROVIDER_B]: "rSdFtH4ObdA9",
     [PROVIDER_C]: "rn5AYTWlsFb8",
     [PROVIDER_D]: "r3zNoGNk328x",
@@ -62,7 +62,7 @@ const PROVIDER_GROUPS = {
  ***  CV FALLBACK allow adjust but can't reset, REJECT rules can fix it. ***
  ***************************************************************************/
 
-const MAIN_GROUPS = ["🌠 Comprehensive", "REJECT"];
+const MAIN_GROUPS = ["🌠 Comprehensive", "DIRECT"];
 
 const AUTO_GROUPS = ["🇭🇰 SLOT-HK", "🇸🇬 SLOT-SG", "🇹🇼 SLOT-TW", "🇯🇵 SLOT-JP", "🇺🇸 SLOT-US", "🇰🇷 SLOT-KR", "🇺🇳 SLOT-SP"];
 const DEFAULT_DIRECT = ["DIRECT"].concat(AUTO_GROUPS);
@@ -72,6 +72,7 @@ const ADD_ON_FILTER = "^(?!.*套餐)(?!.*剩余)(?!.*XF).*$";
 
 const GROUPS = [
     { name: "🌠 Comprehensive", type: "select", proxies: ["🏴‍☠️ SPECIFIC-NODE"].concat(AUTO_GROUPS) },
+    { name: "🎇 FireFoxEsc", type: "select", proxies: MAIN_GROUPS.slice().reverse() },
     { name: "🟥 OpenAI", type: "select", proxies: ["REJECT"], append: true, provider: [PROVIDER_A, PROVIDER_B, PROVIDER_C, PROVIDER_D, PROVIDER_E], filter: ADD_ON_FILTER },
     { name: "🟩 Copilot", type: "select", proxies: DEFAULT_REJECT },
     { name: "🟩 Gemini", type: "select", proxies: DEFAULT_REJECT },
@@ -83,7 +84,7 @@ const GROUPS = [
     { name: "🟧 Epic", type: "select", proxies: DEFAULT_DIRECT },
     { name: "🎇 PcapEsc", type: "select", proxies: MAIN_GROUPS },
     { name: "🌌 BlackHole", type: "select", proxies: DEFAULT_DIRECT },
-    { name: "🏴‍☠️ SPECIFIC-NODE", type: "url-test", append: true },
+    { name: "🏴‍☠️ SPECIFIC-NODE", type: "select", append: true },
     { name: "🇭🇰 SLOT-HK", type: "fallback", proxies: ["REJECT"], append: true, filter: "HK" },
     { name: "🇸🇬 SLOT-SG", type: "fallback", proxies: ["REJECT"], append: true, filter: "SG" },
     { name: "🇹🇼 SLOT-TW", type: "fallback", proxies: ["REJECT"], append: true, filter: "TW" },
@@ -95,7 +96,7 @@ const GROUPS = [
     { name: "🎆 CLOVER", type: "select", proxies: ["REJECT"], append: true, provider: [PROVIDER_B], filter: ADD_ON_FILTER },
     { name: "🎆 FANRR", type: "select", proxies: ["REJECT"], append: true, provider: [PROVIDER_C], filter: ADD_ON_FILTER },
     { name: "🎆 XFSS", type: "select", proxies: ["REJECT"], append: true, provider: [PROVIDER_D], filter: ADD_ON_FILTER },
-    { name: "🎆 KELE", type: "select", proxies: ["REJECT"], append: true, provider: [PROVIDER_E], filter: ADD_ON_FILTER },
+    // { name: "🎆 KELE", type: "select", proxies: ["REJECT"], append: true, provider: [PROVIDER_E], filter: ADD_ON_FILTER },
 ];
 
 
@@ -131,6 +132,7 @@ const RULES = [
     "RULE-SET,original-cncidr,DIRECT,no-resolve",
     "GEOIP,LAN,DIRECT,no-resolve",
     "GEOIP,CN,DIRECT,no-resolve",
+    "AND,((PROCESS-NAME,firefox.exe),(IN-TYPE,SOCKS5)),🎇 FireFoxEsc",
     "AND,((PROCESS-NAME,pcapsvc.exe),(IN-TYPE,SOCKS5)),DIRECT",
     "AND,((PROCESS-NAME,pcapsvc.exe),(IN-TYPE,HTTPS)),🎇 PcapEsc",
     "OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS)),🌠 Comprehensive",

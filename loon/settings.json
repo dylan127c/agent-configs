@@ -16,7 +16,7 @@
             "^payload:$\n": "",
             "^\\s*#": "#",
             "^\\s{2}-\\s{1}'": "IP-CIDR,",
-            "'$": ""
+            "'$": ",no-resolve"
         }
     },
     "classical": "PROCESS-NAME",

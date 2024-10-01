@@ -8,32 +8,41 @@
 # 自定义规则会先于远程规则开始匹配，因此常用域名即便存在于远程规则中，
 # 亦可以选择将它们写入自定义规则，以提高匹配速度。
 
-# 自定义规则匹配顺序：reject.yaml => direct.yaml => ... => proxy.yaml 
+# 自定义规则匹配顺序：reject.yaml => direct.yaml => ... => proxy.yaml
 
 payload:
   # 以下某些域名会影响Edge浏览器新标签页的加载，但国内可以直连。
-  - '+.go.microsoft.com'
-  - '+.edge.microsoft.com'
-  - '+.ntp.msn.cn'
+  - "+.go.microsoft.com"
+  - "+.edge.microsoft.com"
+  - "+.ntp.msn.cn"
 
   # AdGuard Windows用以下域名完成广告过滤，使用直连模式即可。
-  - '+.injections.adguard.org'
+  - "+.injections.adguard.org"
 
   # 远程代理规则让以下域名使用代理模式是错误的。
   # 参考：https://adguard.com/kb/zh-CN/general/https-filtering/local-adguard-com-domain/
-  - '+.local.adguard.org'
+  - "+.local.adguard.org"
 
   # 以下域名用于加载Microsoft Edge新标签页，它们可能影响浏览器的加载速度。
   # DIRECT模式为默认模式，按需使用PROXY。
   # REJECT可能可以加快浏览器的启动速度。
-  - '+.assets.msn.cn'
-  - '+.assets2.msn.cn'
+  - "+.assets.msn.cn"
+  - "+.assets2.msn.cn"
 
   # 其他域名
-  - '+.clash.razord.top'
-  - '+.ihaxs.com'
-  - '+.kanshuv.com'
-  - '+.newyun.io'
+  - "+.clash.razord.top"
+  - "+.ihaxs.com"
+  - "+.kanshuv.com"
+  - "+.newyun.io"
 
   # 技术论坛
-  - '+.linux.do'
+  - "+.linux.do"
+
+  # OaiFree
+  - "+.oaifree.com"
+
+  # 360安全
+  - '+.360.com'
+  - '+.360safe.com'
+  - '+.360totalsecurity.com'
+  - '+.360.cn'

@@ -1,9 +1,9 @@
-const PROFILE_PATH = "";
+const PROFILE_PATH = "F:/Documents/GoogleDrive/Synchronous/HomePC/Clash Verge/config/profile.js";
 
 const RULE_PROVIDER_PATH = "../commons/rules/";
 const RULE_PROVIDER_TYPE = "yaml";
 
-const FLAG = { HK: "🇭🇰", SG: "🇸🇬", TW: "🇹🇼", US: "🇺🇸", JP: "🇯🇵", UK: "🇬🇧", KR: "🇰🇷", UN: "🇺🇳" };
+const FLAG = { HK: "🇭🇰", SG: "🇸🇬", TW: "🇹🇼", US: "🇺🇸", JP: "🇯🇵", UK: "🇬🇧", KR: "🇰🇷", MY: "🇲🇾", PL: "🇵🇱", UN: "🏴‍☠️" };
 
 const IPCIDR = "ipcidr";
 const CLASSICAL = "classical";
@@ -29,7 +29,7 @@ const URL_TEST_PARAMS = {
     lazy: false,
     interval: 60,
 };
- 
+
 const FALLBACK = "fallback";
 const FALLBACK_PARAMS = {
     url: "http://www.gstatic.com/generate_204",
@@ -51,12 +51,23 @@ const BASIC_BUILT = () => {
     let initConfiguration = {};
 
     /* BASIC CONFIGURATION */
+    initConfiguration["global-ua"] = "clash.meta";
     initConfiguration["mixed-port"] = 7890;
     initConfiguration["allow-lan"] = false;
     initConfiguration["bind-address"] = "*";
     initConfiguration.mode = "rule";
     initConfiguration["log-level"] = "info";
     initConfiguration.ipv6 = false;
+    initConfiguration["unified-delay"] = true;
+    initConfiguration["tcp-concurrent"] = true;
+    initConfiguration["geodata-mode"] = true;
+    initConfiguration["geodata-loader"] = "standard";
+    initConfiguration["geo-auto-update"] = true;
+    initConfiguration["geo-update-interval"] = 24;
+    initConfiguration["geox-url"] = {
+        geoip: "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat",
+        geosite: "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat",
+    };
     initConfiguration["external-controller"] = "127.0.0.1:9090";
     initConfiguration.secret = "";
 
