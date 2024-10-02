@@ -17,7 +17,7 @@ const TYPE_MAP = {
 const LOAD_BALANCE = "load-balance"
 const LOAD_BALANCE_PARAMS = {
     url: "http://www.gstatic.com/generate_204",
-    strategy: "consistent-hashing",
+    strategy: "round-robin", // *.该模式用于下载资源时选择 round-robin 模式
     lazy: false,
     interval: 60,
 };
@@ -51,15 +51,19 @@ const BASIC_BUILT = () => {
     let initConfiguration = {};
 
     /* BASIC CONFIGURATION */
-    initConfiguration["global-ua"] = "clash.meta";
-    initConfiguration["mixed-port"] = 7890;
-    initConfiguration["allow-lan"] = false;
-    initConfiguration["bind-address"] = "*";
-    initConfiguration.mode = "rule";
+    initConfiguration["mixed-port"] = 7890; // *.下述 7 条规则 Clash Verge 客户端内置，此配置文件的此 7 条规则会被覆盖
     initConfiguration["log-level"] = "info";
+    initConfiguration["allow-lan"] = false;
+    initConfiguration.mode = "rule";
+    initConfiguration["external-controller"] = "127.0.0.1:9090";
+    initConfiguration.secret = "";
     initConfiguration.ipv6 = false;
+
+    initConfiguration["bind-address"] = "*";
+    
     initConfiguration["unified-delay"] = true;
     initConfiguration["tcp-concurrent"] = true;
+    
     initConfiguration["geodata-mode"] = true;
     initConfiguration["geodata-loader"] = "standard";
     initConfiguration["geo-auto-update"] = true;
@@ -67,9 +71,9 @@ const BASIC_BUILT = () => {
     initConfiguration["geox-url"] = {
         geoip: "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat",
         geosite: "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat",
+        mmdb: "https://cdn.jsdelivr.net/gh/Loyalsoldier/geoip@release/Country.mmdb",
+        asn: "https://cdn.jsdelivr.net/gh/Loyalsoldier/geoip@release/GeoLite2-ASN.mmdb",
     };
-    initConfiguration["external-controller"] = "127.0.0.1:9090";
-    initConfiguration.secret = "";
 
     /*
      * DNS
@@ -152,12 +156,13 @@ const BASIC_BUILT = () => {
      * 但需要注意，使用 system 模式需要先添加防火墙规则 Add firewall rules，
      * 同时还要安装、启用服务模式 Service Mode。
      */
+    initConfiguration["interface-name"] = "以太网"; // *.如果指定网卡则 tun.auto-detect-interface 为 false 值
     initConfiguration["tun"] = {
         enable: false,
         stack: "system",
         "auto-route": true,
-        "auto-detect-interface": true,
-        "dns-hijack": ["any:53"]
+        "auto-detect-interface": false, // *.如果存在 interface-name 那么这里为 false 值
+        "dns-hijack": ["any:53"],
     };
 
     /*

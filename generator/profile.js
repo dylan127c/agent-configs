@@ -60,6 +60,9 @@ const PROVIDER_GROUPS = {
         { name: "KR", type: "url-test", filter: "KOR" },
         { name: "MY", type: "url-test", filter: "MYS" },
     ],
+
+    // *.配置文件 params.js 中已将 load-balance 类型策略调整为 round-robin 模式，该策略不适用于日常使用。
+    // *.策略 round-robin 下会把所有的请求分配给策略组内不同的代理节点，这适用于资源的下载。
     [PROVIDER_Z]: [
         { name: "HK", type: "load-balance", filter: "香港" },
         { name: "SG", type: "load-balance", filter: "新加坡" },
@@ -97,7 +100,7 @@ const DEFAULT_REJECT = ["REJECT"].concat(AUTO_GROUPS);
 const ADD_ON_FILTER = "^(?!.*套餐)(?!.*剩余)(?!.*网址)(?!.*(?:请|官|备|此)).*$";
 
 const GROUPS = [
-    { name: "🌠 ALL", type: "select", proxies: AUTO_GROUPS, append: true, filter: "AK|(OR.*IEPL)" },
+    { name: "🌠 ALL", type: "select", proxies: AUTO_GROUPS },
 
     { name: "🟥 OPEN-AI", type: "select", proxies: ["REJECT"], append: true, filter: "^(?!.*(?:LD|FR|XF)).*$" },
     { name: "🟦 PIKPAK", type: "select", append: true, filter: "LD|FR|XF" },
@@ -117,12 +120,12 @@ const GROUPS = [
     { name: "🌐 FANRR", type: "select", proxies: ["REJECT"], append: true, provider: [PROVIDER_C], filter: ADD_ON_FILTER },
     { name: "🌐 XFSS", type: "select", proxies: ["REJECT"], append: true, provider: [PROVIDER_B], filter: ADD_ON_FILTER },
 
-    { name: "🇭🇰 SLOT-HK", type: "fallback", proxies: ["REJECT"], append: true, filter: "^(?!.*(?:SP)).*HK$" },
-    { name: "🇸🇬 SLOT-SG", type: "fallback", proxies: ["REJECT"], append: true, filter: "^(?!.*(?:SP)).*SG$" },
-    { name: "🇹🇼 SLOT-TW", type: "fallback", proxies: ["REJECT"], append: true, filter: "^(?!.*(?:SP)).*TW$" },
-    { name: "🇯🇵 SLOT-JP", type: "fallback", proxies: ["REJECT"], append: true, filter: "^(?!.*(?:SP)).*JP$" },
-    { name: "🇺🇸 SLOT-US", type: "fallback", proxies: ["REJECT"], append: true, filter: "^(?!.*(?:SP)).*US$" },
-    { name: "🇰🇷 SLOT-KR", type: "fallback", proxies: ["REJECT"], append: true, filter: "^(?!.*(?:SP)).*KR$" },
+    { name: "🇭🇰 SLOT-HK", type: "fallback", proxies: ["REJECT"], append: true, filter: "^(?!.*(?:SP)).*HK" },
+    { name: "🇸🇬 SLOT-SG", type: "fallback", proxies: ["REJECT"], append: true, filter: "^(?!.*(?:SP)).*SG" },
+    { name: "🇹🇼 SLOT-TW", type: "fallback", proxies: ["REJECT"], append: true, filter: "^(?!.*(?:SP)).*TW" },
+    { name: "🇯🇵 SLOT-JP", type: "fallback", proxies: ["REJECT"], append: true, filter: "^(?!.*(?:SP)).*JP" },
+    { name: "🇺🇸 SLOT-US", type: "fallback", proxies: ["REJECT"], append: true, filter: "^(?!.*(?:SP)).*US" },
+    { name: "🇰🇷 SLOT-KR", type: "fallback", proxies: ["REJECT"], append: true, filter: "^(?!.*(?:SP)).*KR" },
 
     { name: "⚫ BLACKLIST-ESC", type: "select", proxies: DEFAULT_DIRECT },
 ];
@@ -147,16 +150,16 @@ const RULES = [
 
     /**
      * 特殊说明，某些下载程序有类似 PikPak 内置下载器 DowanloadServer.exe 发起数量庞大 IP 请求的行为。这些 IP 请求
-     * 如果都属于国内 CDN 且分流规则无法判断其所属，那么在白名单模式下，程序扔将会使用 PROXY 反复发起请求。
+     * 如果都属于国内 CDN 且分流规则无法判断其所属，那么在白名单模式下，程序将会使用 PROXY 反复发起请求。
      * 
-     * 这种情况下会产生大量的超时请求，大量超时的请求会让 mihomo 内核误判断为 PROXY 对应的组别出现问题，从而开始对 
+     * 这种情况下会产生大量的超时请求，大量的超时请求会让 mihomo 内核误判断为 PROXY 对应的组别出现问题，从而开始对 
      * PROXY 组别进行反复的延迟测试。
      * 
-     * 这种实际节点没有问题，由分流规则和 MATCH 规则导致的问题，会让程序的内存使用率不断攀升，造成 TUN 模式不稳定的
-     * 情况。不排除时间长的情况下，会造成 MMO 等异常。
+     * 这种实际节点可用，但由分流规则和 MATCH 规则导致的问题，会让程序的内存使用量不断攀升，造成 TUN 模式不稳定的情
+     * 况。不排除在长时间运行程序的情况下，会出现 MMO 等异常现象。
      * 
-     * 推荐慎用白名单模式，特别是对于 BT 下载工具来说。确定软件大多数情况下都会发起国外域名或 IP 请求的情况下，再使
-     * 用白名单，否则还是使用黑名单模式。对于 DIRECT 策略出现大量超时请求的情况，mihomo 内核不会作出进一步的响应。
+     * 建议慎用白名单模式，特别是对于 BT 下载工具来说。确定软件大多数情况下都会发起国外域名或 IP 请求的情况下，再使
+     * 用白名单，否则还是使用黑名单模式，因为对于 DIRECT 策略出现的大量超时请求，mihomo 内核一般不作处理。
      */
     "SUB-RULE,(PROCESS-NAME,DownloadServer.exe)," + BLACKLIST, // *.PIKPAK DOWNLOAD ENGINE
 
@@ -181,7 +184,7 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,IDMan.exe)," + BLACKLIST, // *.IDM
     "SUB-RULE,(PROCESS-NAME,firefoxpwa.exe)," + BLACKLIST, // *.FIREFOX PWA
     "SUB-RULE,(PROCESS-NAME,firefoxpwa-connector.exe)," + BLACKLIST,
-    
+
     "SUB-RULE,(PROCESS-NAME,Clash Verge.exe)," + WHITELIST, // *.CLASH VERGE
     "SUB-RULE,(PROCESS-NAME,pikpak.exe)," + WHITELIST, // *.PIKPAK
     "SUB-RULE,(PROCESS-NAME,PotPlayerMini64.exe)," + WHITELIST, // *.POTPLAYER
