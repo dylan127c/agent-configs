@@ -48,6 +48,8 @@ const {
   PROVIDER_GROUPS,
   GROUPS,
   RULES,
+  SUB_RULES,
+  FULLLIST,
 } = require(profile);
 
 function generate(log, yaml) {
@@ -56,7 +58,8 @@ function generate(log, yaml) {
   params = BASIC_BUILT();
   params["proxy-providers"] = getProxyProvider();
   params["rules"] = RULES;
-  params["rule-providers"] = getRuleProvider(RULES);
+  params["sub-rules"] = SUB_RULES;
+  params["rule-providers"] = getRuleProvider(params, SUB_RULES[FULLLIST]);
   params["proxy-groups"] = getProxyGroups();
 
   const output = yaml.stringify(params);
@@ -150,8 +153,8 @@ function getProxyGroups() {
   }
 }
 
-function getRuleProvider(rules) {
-  const provider = {};
+function getRuleProvider(params, rules) {
+  const provider = params["rule-providers"] || {};
   rules.forEach(rule => {
     const arr = rule.match(/(?<=RULE-SET,)[a-z-]*(?=,)/gm);
     if (arr && arr.length) {
