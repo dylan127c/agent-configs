@@ -29,11 +29,8 @@ payload:
   - "+.assets.msn.cn"
   - "+.assets2.msn.cn"
 
-  # 其他域名
+  # Razord
   - "+.clash.razord.top"
-  - "+.ihaxs.com"
-  - "+.kanshuv.com"
-  - "+.newyun.io"
 
   # 技术论坛
   - "+.linux.do"
@@ -46,3 +43,5 @@ payload:
   - '+.360safe.com'
   - '+.360totalsecurity.com'
   - '+.360.cn'
+
+  - '+.bitwarden.com'

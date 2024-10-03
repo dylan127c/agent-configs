@@ -44,7 +44,9 @@ const HEALTH_CHECK = {
         interval: 300
     }
 };
-
+/**
+ * 基础配置不能添加 global-ua: clash.meta 属性，否则会造成 TUN 模式出现严重错误。
+ */
 const BASIC_BUILT = () => {
 
     /* INITIALIZE */
@@ -102,46 +104,40 @@ const BASIC_BUILT = () => {
      */
     initConfiguration["dns"] = {};
     initConfiguration.dns.enable = false;
+    initConfiguration.dns["use-hosts"] = false; // *.是否使用系统 host 文件的 IP 映射
     initConfiguration.dns.ipv6 = false;
     initConfiguration.dns.listen = "0.0.0.0:53";
-    initConfiguration.dns["use-hosts"] = true;
     initConfiguration.dns["enhanced-mode"] = "fake-ip";
     initConfiguration.dns["fake-ip-range"] = "192.18.0.1/16";
     initConfiguration.dns["fake-ip-filter"] = [
-        "*.lan",
-        "localhost.ptlogin2.qq.com",
-        "+.stun.*.*",
-        "+.stun.*.*.*",
-        "+.stun.*.*.*.*",
-        "+.stun.*.*.*.*.*",
-        "*.n.n.srv.nintendo.net",
-        "+.stun.playstation.net",
-        "xbox.*.*.microsoft.com",
-        "*.*.xboxlive.com",
-        "*.msftncsi.com",
-        "*.msftconnecttest.com",
-        "*.ipv6.microsoft.com",
-        "*.logon.battlenet.com.cn",
-        "*.logon.battle.net",
-        "WORKGROUP"
+        "+.msftncsi.com",
+        "+.msftncsi.com",
+        "+.msftconnecttest.com",
+        "+.time.windows.com",
+        "+.ipv6.microsoft.com",
+        "+.lan",
     ];
     initConfiguration.dns["default-nameserver"] = [
-        "119.29.29.29",
-        "119.28.28.28",
-        "223.5.5.5",
+        "223.5.5.5", // *.Alidns
         "223.6.6.6",
+        "119.29.29.29", // *.DNSPod
+        "119.28.28.28",
+        "101.226.4.6", // *.360DNS
+        "218.30.118.6",
+        "180.76.76.76" // *.BaiduDNS
     ];
     initConfiguration.dns.nameserver = [
-        "https://doh.pub/dns-query",
-        "https://1.12.12.12/dns-query",
-        "https://120.53.53.53/dns-query",
-        "https://dns.alidns.com/dns-query",
+        "https://dns.alidns.com/dns-query", // *.Alidns
         "https://223.5.5.5/dns-query",
         "https://223.6.6.6/dns-query",
+        "https://doh.pub/dns-query", // *.DNSPod
+        "https://1.12.12.12/dns-query",
+        "https://120.53.53.53/dns-query",
+        "https://doh.360.cn" // *.360DNS
     ];
 
     /*
-     * TUN
+     * TUN（仅接管 TCP/UDP 流量）
      *
      * 大部分浏览器默认开启 “安全 DNS” 功能，此功能会影响 TUN 模式劫持 DNS 请求导致反推域名失败，
      * 请在浏览器设置中关闭此功能以保证 TUN 模式正常运行。
@@ -156,12 +152,12 @@ const BASIC_BUILT = () => {
      * 但需要注意，使用 system 模式需要先添加防火墙规则 Add firewall rules，
      * 同时还要安装、启用服务模式 Service Mode。
      */
-    initConfiguration["interface-name"] = "以太网"; // *.如果指定网卡则 tun.auto-detect-interface 为 false 值
+    // initConfiguration["interface-name"] = "以太网"; // *.如果指定网卡则 tun.auto-detect-interface 为 false 值
     initConfiguration["tun"] = {
         enable: false,
         stack: "system",
         "auto-route": true,
-        "auto-detect-interface": false, // *.如果存在 interface-name 那么这里为 false 值
+        "auto-detect-interface": true, // *.如果存在 interface-name 那么这里为 false 值
         "dns-hijack": ["any:53"],
     };
 
@@ -173,7 +169,7 @@ const BASIC_BUILT = () => {
      * 
      * 解决方法：直接在配置中添加 profile 信息，这样就可以使用 clash-tracing 项目来监控 CFW 流量了。
      */
-    initConfiguration["profile"] = { "tracing": true };
+    initConfiguration["profile"] = { "tracing": false };
 
     return initConfiguration;
 }

@@ -18,28 +18,13 @@ payload:
   - '+.google.com'
   
   # GitHub && Git
-  - '+.github.com'
-  - '+.github.io'
-  - '+.raw.githubusercontent.com'
   - '+.gitkraken.com'
 
   # AI Comprehensive Website
   - '+.lobehub.com'
 
-  # Frameworks && Toolkits
+  # Frameworks && Toolkits && Resources
   - '+.docker.com'
   - '+.listary.com'
   - '+.gigabyte.com'
-  - '+.telerik.com'
-  - '+.api.insight.sitefinity.com'
-  
-  # 其他域名
-  - '+.fluidplayer.com'
-  - '+.ng.ul4k.com'
-  - '+.cn.tgstat.com'
-  - '+.stash.wiki'
-  - '+.keleofficial.com'
-  - '+.cloverud.com'
-  - '+.g2.com'
-  - '+.pcgamer.com'
-  - '+.kpkuang.org'
+  - '+.wiki.metacubex.one'

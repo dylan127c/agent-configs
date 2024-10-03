@@ -11,9 +11,6 @@ DOMAIN-SUFFIX,challenges.cloudflare.com
 # Google
 DOMAIN-SUFFIX,google.com
 # GitHub && Git
-DOMAIN-SUFFIX,github.com
-DOMAIN-SUFFIX,github.io
-DOMAIN-SUFFIX,raw.githubusercontent.com
 DOMAIN-SUFFIX,gitkraken.com
 # AI Comprehensive Website
 DOMAIN-SUFFIX,lobehub.com
@@ -21,15 +18,3 @@ DOMAIN-SUFFIX,lobehub.com
 DOMAIN-SUFFIX,docker.com
 DOMAIN-SUFFIX,listary.com
 DOMAIN-SUFFIX,gigabyte.com
-DOMAIN-SUFFIX,telerik.com
-DOMAIN-SUFFIX,api.insight.sitefinity.com
-# 其他域名
-DOMAIN-SUFFIX,fluidplayer.com
-DOMAIN-SUFFIX,ng.ul4k.com
-DOMAIN-SUFFIX,cn.tgstat.com
-DOMAIN-SUFFIX,stash.wiki
-DOMAIN-SUFFIX,keleofficial.com
-DOMAIN-SUFFIX,cloverud.com
-DOMAIN-SUFFIX,g2.com
-DOMAIN-SUFFIX,pcgamer.com
-DOMAIN-SUFFIX,kpkuang.org

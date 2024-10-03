@@ -1,5 +1,5 @@
 payload:
-  # OpenAI ChatGPT
+  # OpenAI
   - '+.openai.com'
   - '+.intercom.io'
   - '+.intercomcdn.com'

@@ -59,6 +59,7 @@ function generate(log, yaml) {
   params["proxy-providers"] = getProxyProvider();
   params["rules"] = RULES;
   params["sub-rules"] = SUB_RULES;
+  params["rule-providers"] = getRuleProvider(params, RULES);
   params["rule-providers"] = getRuleProvider(params, SUB_RULES[FULLLIST]);
   params["proxy-groups"] = getProxyGroups();
 

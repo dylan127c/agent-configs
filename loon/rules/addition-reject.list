@@ -18,6 +18,8 @@ DOMAIN-SUFFIX,c.msn.cn
 # Malicious websites
 DOMAIN-SUFFIX,mixcrack.net
 DOMAIN-SUFFIX,antiadblocksystems.com
+# GitHub Proxy（此域名代理访问超时，已无用）
+DOMAIN-SUFFIX,ghproxy.com
 # Auditing rules from proxy service providers.
 DOMAIN-SUFFIX,beijingspring.com
 DOMAIN-SUFFIX,chinaaffairs.com

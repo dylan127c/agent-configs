@@ -20,11 +20,8 @@
 # REJECT可能可以加快浏览器的启动速度。
   - "+.assets.msn.cn"
   - "+.assets2.msn.cn"
-# 其他域名
+# Razord
   - "+.clash.razord.top"
-  - "+.ihaxs.com"
-  - "+.kanshuv.com"
-  - "+.newyun.io"
 # 技术论坛
   - "+.linux.do"
 # OaiFree
@@ -34,3 +31,5 @@ DOMAIN-SUFFIX,360.com
 DOMAIN-SUFFIX,360safe.com
 DOMAIN-SUFFIX,360totalsecurity.com
 DOMAIN-SUFFIX,360.cn
+
+DOMAIN-SUFFIX,bitwarden.com

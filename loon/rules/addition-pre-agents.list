@@ -1,0 +1,6 @@
+# 某些不纳入管控程序的、依赖代理服务的域名
+DOMAIN-SUFFIX, TCP Traffic
+  - "+.googleusercontent.com"
+DOMAIN-SUFFIX, TCP Traffic
+  - "+.pti.store.microsoft.com" # Svchost.exe
+  - "+.ingest.twitch.tv" # RadeonSoftware.exe
