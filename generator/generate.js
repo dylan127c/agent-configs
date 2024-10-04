@@ -109,16 +109,22 @@ function getProxyGroups() {
       return;
     }
 
-    if (preset.hasOwnProperty("provider") && !isEmptyArray(preset.provider)) {
+    if (!preset.hasOwnProperty("autofilter") && !preset.hasOwnProperty("provider")) {
+      if (isEmptyArray(group.proxies)) {
+        group.proxies = [].concat(providerGroupsName);
+      }
+      groupsArr.push(addTypeParams(group));
+      return;
+    }
+
+    if (preset.hasOwnProperty("autofilter")) {
+      group.proxies = group.proxies.concat(providerGroupsName.filter(name => new RegExp(preset.autofilter, "i").test(name)));
+    }
+
+    if (preset.hasOwnProperty("provider")) {
       group.use = preset.provider;
       if (preset.hasOwnProperty("filter")) {
         group.filter = preset.filter;
-      }
-    } else {
-      if (preset.hasOwnProperty("filter")) {
-        group.proxies = group.proxies.concat(providerGroupsName.filter(name => new RegExp(preset.filter, "i").test(name)));
-      } else {
-        group.proxies = group.proxies.concat(providerGroupsName);
       }
     }
     groupsArr.push(addTypeParams(group));

@@ -25,7 +25,7 @@ const LOAD_BALANCE_PARAMS = {
 const URL_TEST = "url-test";
 const URL_TEST_PARAMS = {
     url: "http://www.gstatic.com/generate_204",
-    tolerance: 50,
+    tolerance: 50, // *.目标节点的延迟小于当前选择节点的延迟至少 tolerance 值时，才会切换到目标节点
     lazy: false,
     interval: 60,
 };
@@ -41,7 +41,7 @@ const HEALTH_CHECK = {
     "health-check": {
         enable: true,
         url: "http://www.gstatic.com/generate_204",
-        interval: 300
+        interval: 86400
     }
 };
 /**

@@ -1,0 +1,3 @@
+# 某些跟下载相关的域名规则
+  - "+.objects.githubusercontent.com"
+  - "+.codeload.githubusercontent.com"
