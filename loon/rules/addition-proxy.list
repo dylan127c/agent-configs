@@ -14,7 +14,8 @@ DOMAIN-SUFFIX,google.com
 DOMAIN-SUFFIX,gitkraken.com
 # AI Comprehensive Website
 DOMAIN-SUFFIX,lobehub.com
-# Frameworks && Toolkits
+# Frameworks && Toolkits && Resources
 DOMAIN-SUFFIX,docker.com
 DOMAIN-SUFFIX,listary.com
 DOMAIN-SUFFIX,gigabyte.com
+DOMAIN-SUFFIX,wiki.metacubex.one
