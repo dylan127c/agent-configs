@@ -1,4 +1,4 @@
-const PROFILE_PATH = "F:/Documents/GoogleDrive/Synchronous/HomePC/Clash Verge/config/profile.js";
+const PROFILE_PATH = "F:/Documents/GoogleDrive/Synchronous/Common/Clash Verge/config/profile.js";
 
 const RULE_PROVIDER_PATH = "../commons/rules/";
 const RULE_PROVIDER_TYPE = "yaml";
