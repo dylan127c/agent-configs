@@ -14,27 +14,36 @@ const TYPE_MAP = {
     CLASSICAL: ["special", "application"],
 }
 
+/**
+ * 节点之间的质量差距不大时，可以选用 load-balance 策略。
+ */
 const LOAD_BALANCE = "load-balance"
 const LOAD_BALANCE_PARAMS = {
     url: "http://www.gstatic.com/generate_204",
-    strategy: "round-robin", // *.该模式用于下载资源时选择 round-robin 模式
+    strategy: "consistent-hashing",
     lazy: false,
-    interval: 60,
+    interval: 300,
 };
 
+/**
+ * 节点之间的质量存在一定差距时，选用 url-test 策略。
+ */
 const URL_TEST = "url-test";
 const URL_TEST_PARAMS = {
     url: "http://www.gstatic.com/generate_204",
     tolerance: 50, // *.目标节点的延迟小于当前选择节点的延迟至少 tolerance 值时，才会切换到目标节点
     lazy: false,
-    interval: 60,
+    interval: 300,
 };
 
+/**
+ * 不同于 load-balance 和 url-test 策略， fallback 更像一种高可用方案。
+ */
 const FALLBACK = "fallback";
 const FALLBACK_PARAMS = {
     url: "http://www.gstatic.com/generate_204",
     lazy: false,
-    interval: 60,
+    interval: 120,
 };
 
 const HEALTH_CHECK = {

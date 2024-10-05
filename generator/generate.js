@@ -101,6 +101,10 @@ function getProxyGroups() {
       group.proxies = [];
     }
 
+    if (preset.hasOwnProperty("interval")) {
+      group.interval = preset.interval;
+    }
+
     if (!preset.hasOwnProperty("append") || !preset.append) {
       if (isEmptyArray(group.proxies)) {
         group.proxies = [].concat(providerGroupsName);
@@ -139,20 +143,43 @@ function getProxyGroups() {
       group.filter = detail.filter
       group.use = [provider];
 
+      if (detail.hasOwnProperty("interval")) {
+        group.interval = detail.interval;
+      }
       groupsArr.push(addTypeParams(group));
     })
   }
   return groupsArr;
 
   function addTypeParams(group) {
-    if (group.type === LOAD_BALANCE) {
-      return Object.assign(group, LOAD_BALANCE_PARAMS);
-    } else if (group.type === URL_TEST) {
-      return Object.assign(group, URL_TEST_PARAMS);
-    } else if (group.type === FALLBACK) {
-      return Object.assign(group, FALLBACK_PARAMS);
+
+    const paramsMap = {
+      [LOAD_BALANCE]: LOAD_BALANCE_PARAMS,
+      [URL_TEST]: URL_TEST_PARAMS,
+      [FALLBACK]: FALLBACK_PARAMS
+    };
+  
+    const defaultParams = paramsMap[group.type] || {};
+    if (Object.keys(defaultParams).length === 0) {
+      return group;
     }
-    return group;
+
+    let saver;
+    if (group.hasOwnProperty("interval")) {
+      saver = group.interval;
+    } else {
+      saver = defaultParams.interval;
+    }
+    return Object.assign(group, defaultParams, { interval: saver });
+
+    // if (group.type === LOAD_BALANCE) {
+    //   return Object.assign(group, LOAD_BALANCE_PARAMS, group.hasOwnProperty("interval") ? { interval: group.interval } : {});
+    // } else if (group.type === URL_TEST) {
+    //   return Object.assign(group, URL_TEST_PARAMS), group.hasOwnProperty("interval") ? { interval: group.interval } : {};
+    // } else if (group.type === FALLBACK) {
+    //   return Object.assign(group, FALLBACK_PARAMS, group.hasOwnProperty("interval") ? { interval: group.interval } : {});
+    // }
+    // return group;
   }
 
   function isEmptyArray(arr) {
