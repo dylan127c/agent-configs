@@ -104,6 +104,9 @@ function getProxyGroups() {
     if (preset.hasOwnProperty("interval")) {
       group.interval = preset.interval;
     }
+    if (preset.hasOwnProperty("lazy")) {
+      group.lazy = preset.lazy;
+    }
 
     if (!preset.hasOwnProperty("append") || !preset.append) {
       if (isEmptyArray(group.proxies)) {
@@ -146,6 +149,9 @@ function getProxyGroups() {
       if (detail.hasOwnProperty("interval")) {
         group.interval = detail.interval;
       }
+      if (detail.hasOwnProperty("lazy")) {
+        group.lazy = detail.lazy;
+      }
       groupsArr.push(addTypeParams(group));
     })
   }
@@ -164,22 +170,16 @@ function getProxyGroups() {
       return group;
     }
 
-    let saver;
-    if (group.hasOwnProperty("interval")) {
-      saver = group.interval;
-    } else {
-      saver = defaultParams.interval;
-    }
-    return Object.assign(group, defaultParams, { interval: saver });
-
-    // if (group.type === LOAD_BALANCE) {
-    //   return Object.assign(group, LOAD_BALANCE_PARAMS, group.hasOwnProperty("interval") ? { interval: group.interval } : {});
-    // } else if (group.type === URL_TEST) {
-    //   return Object.assign(group, URL_TEST_PARAMS), group.hasOwnProperty("interval") ? { interval: group.interval } : {};
-    // } else if (group.type === FALLBACK) {
-    //   return Object.assign(group, FALLBACK_PARAMS, group.hasOwnProperty("interval") ? { interval: group.interval } : {});
+    // let saver;
+    // if (group.hasOwnProperty("interval")) {
+    //   saver = group.interval;
+    // } else {
+    //   saver = defaultParams.interval;
     // }
-    // return group;
+    return Object.assign({}, group, defaultParams, 
+      group.hasOwnProperty("interval") ? {interval: group.interval} : {},
+      group.hasOwnProperty("lazy") ? {lazy: group.lazy} : {}
+    );
   }
 
   function isEmptyArray(arr) {
