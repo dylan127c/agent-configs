@@ -1,8 +1,8 @@
 # 某些不纳入管控程序的、依赖代理服务的域名
 payload:
-  # Anonymous Programs' TCP Traffic
+  # Anonymous Program TCP Traffic
   - "+.googleusercontent.com"
 
-  # Known Programs' TCP Traffic
+  # Known Program TCP Traffic
   - "+.pti.store.microsoft.com" # Svchost.exe
   - "+.ingest.twitch.tv" # RadeonSoftware.exe

@@ -170,12 +170,6 @@ function getProxyGroups() {
       return group;
     }
 
-    // let saver;
-    // if (group.hasOwnProperty("interval")) {
-    //   saver = group.interval;
-    // } else {
-    //   saver = defaultParams.interval;
-    // }
     return Object.assign({}, group, defaultParams, 
       group.hasOwnProperty("interval") ? {interval: group.interval} : {},
       group.hasOwnProperty("lazy") ? {lazy: group.lazy} : {}

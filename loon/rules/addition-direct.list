@@ -7,25 +7,25 @@
 # 亦可以选择将它们写入自定义规则，以提高匹配速度。
 # 自定义规则匹配顺序：reject.yaml => direct.yaml => ... => proxy.yaml
 # 以下某些域名会影响Edge浏览器新标签页的加载，但国内可以直连。
-  - "+.go.microsoft.com"
-  - "+.edge.microsoft.com"
-  - "+.ntp.msn.cn"
+DOMAIN-SUFFIX,go.microsoft.com
+DOMAIN-SUFFIX,edge.microsoft.com
+DOMAIN-SUFFIX,ntp.msn.cn
 # AdGuard Windows用以下域名完成广告过滤，使用直连模式即可。
-  - "+.injections.adguard.org"
+DOMAIN-SUFFIX,injections.adguard.org
 # 远程代理规则让以下域名使用代理模式是错误的。
 # 参考：https://adguard.com/kb/zh-CN/general/https-filtering/local-adguard-com-domain/
-  - "+.local.adguard.org"
+DOMAIN-SUFFIX,local.adguard.org
 # 以下域名用于加载Microsoft Edge新标签页，它们可能影响浏览器的加载速度。
 # DIRECT模式为默认模式，按需使用PROXY。
 # REJECT可能可以加快浏览器的启动速度。
-  - "+.assets.msn.cn"
-  - "+.assets2.msn.cn"
+DOMAIN-SUFFIX,assets.msn.cn
+DOMAIN-SUFFIX,assets2.msn.cn
 # Razord
-  - "+.clash.razord.top"
+DOMAIN-SUFFIX,clash.razord.top
 # 技术论坛
-  - "+.linux.do"
+DOMAIN-SUFFIX,linux.do
 # OaiFree
-  - "+.oaifree.com"
+DOMAIN-SUFFIX,oaifree.com
 # 360安全
 DOMAIN-SUFFIX,360.com
 DOMAIN-SUFFIX,360safe.com

@@ -6,17 +6,17 @@
             "^\\s*#": "#",
             "^\\s{2}-\\s{1}": ""
         },
-        "DOMAIN-SUFFIX": {
-            "^payload:$\n": "",
-            "^\\s*#": "#",
-            "^.+?'\\+?\\.?": "DOMAIN-SUFFIX,",
-            "'$": ""
-        },
         "IP-CIDR": {
             "^payload:$\n": "",
             "^\\s*#": "#",
-            "^\\s{2}-\\s{1}'": "IP-CIDR,",
-            "'$": ",no-resolve"
+            "^\\s{2}-\\s{1}['\"]": "IP-CIDR,",
+            "['\"]$": ",no-resolve"
+        },
+        "DOMAIN-SUFFIX": {
+            "^payload:$\n": "",
+            "^\\s*#": "#",
+            "^.+?['\"]\\+?\\.?": "DOMAIN-SUFFIX,",
+            "['\"]$": ""
         }
     },
     "classical": "PROCESS-NAME",

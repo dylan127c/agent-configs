@@ -49,8 +49,8 @@ const FALLBACK_PARAMS = {
 const HEALTH_CHECK = {
     "health-check": {
         enable: true,
-        url: "http://www.gstatic.com/generate_204",
-        interval: 86400
+        url: "http://www.google.com/generate_204",
+        interval: 300
     }
 };
 /**

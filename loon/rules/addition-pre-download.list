@@ -1,4 +1,2 @@
 # 某些跟下载相关的域名规则
-  - "+.objects.githubusercontent.com"
-  - "+.codeload.githubusercontent.com"
-  - "+.smn3.storagenode.cc"
+DOMAIN-SUFFIX,smn3.storagenode.cc
