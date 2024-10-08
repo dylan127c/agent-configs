@@ -46,6 +46,12 @@ const FALLBACK_PARAMS = {
     interval: 120,
 };
 
+/**
+ * 提供给 proxy-providers 的 health-check 配置。
+ * 
+ * 注意，如果 proxy-groups 中使用了 proxy-providers 提供的节点，那么就必须启用 health-check 功能。
+ * 否则，即便 proxy-groups 中具有 interval 参数，也无法保证 health-check 功能的正常运行。
+ */
 const HEALTH_CHECK = {
     "health-check": {
         enable: true,
