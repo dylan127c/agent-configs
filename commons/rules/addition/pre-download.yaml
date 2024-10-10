@@ -1,3 +1,3 @@
 # 某些跟下载相关的域名规则
 payload:
-  - "+.smn3.storagenode.cc"
+  - DOMAIN-SUFFIX,smn3.storagenode.cc

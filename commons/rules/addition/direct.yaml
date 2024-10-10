@@ -32,16 +32,21 @@ payload:
   # Razord
   - "+.clash.razord.top"
 
-  # 技术论坛
+  # Linux Do
   - "+.linux.do"
 
   # OaiFree
   - "+.oaifree.com"
 
-  # 360安全
+  # 360 安全
   - '+.360.com'
   - '+.360safe.com'
   - '+.360totalsecurity.com'
   - '+.360.cn'
+  - '+.qihoo.com'
 
+  # Bitwarden
   - '+.bitwarden.com'
+
+  # Time.is
+  - '+.time.is'

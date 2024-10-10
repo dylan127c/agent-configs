@@ -11,7 +11,7 @@ const DOMAIN = "domain";
 
 const TYPE_MAP = {
     IPCIDR: ["cidr"],
-    CLASSICAL: ["special", "application"],
+    CLASSICAL: ["special", "application", "pre"],
 }
 
 /**
@@ -184,7 +184,8 @@ const BASIC_BUILT = () => {
      * 
      * 解决方法：直接在配置中添加 profile 信息，这样就可以使用 clash-tracing 项目来监控 CFW 流量了。
      */
-    initConfiguration["profile"] = { "tracing": false };
+    // initConfiguration["profile"] = { "tracing": false };
+    initConfiguration["profile"] = { "store-selected": true };
 
     return initConfiguration;
 }

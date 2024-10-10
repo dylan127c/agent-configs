@@ -23,6 +23,9 @@ payload:
   # AI Comprehensive Website
   - '+.lobehub.com'
 
+  # TOUHOU Project
+  - '+.touhou.tel'
+
   # Frameworks && Toolkits && Resources
   - '+.docker.com'
   - '+.listary.com'

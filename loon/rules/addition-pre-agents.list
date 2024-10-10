@@ -1,6 +1,4 @@
 # 某些不纳入管控程序的、依赖代理服务的域名
-# Anonymous Program TCP Traffic
-DOMAIN-SUFFIX,googleusercontent.com
-# Known Program TCP Traffic
-DOMAIN-SUFFIX,pti.store.microsoft.com" # Svchost.exe
-DOMAIN-SUFFIX,ingest.twitch.tv" # RadeonSoftware.exe
+  - DOMAIN-SUFFIX,googleusercontent.com # Anonymous Program
+  - DOMAIN-SUFFIX,pti.store.microsoft.com # Svchost.exe
+  - DOMAIN-SUFFIX,ingest.twitch.tv # RadeonSoftware.exe
