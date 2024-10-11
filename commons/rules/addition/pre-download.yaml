@@ -1,3 +1,4 @@
 # 某些跟下载相关的域名规则
 payload:
   - DOMAIN-SUFFIX,smn3.storagenode.cc
+  - DOMAIN-SUFFIX,gradle.org

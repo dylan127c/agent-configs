@@ -22,14 +22,17 @@ DOMAIN-SUFFIX,assets.msn.cn
 DOMAIN-SUFFIX,assets2.msn.cn
 # Razord
 DOMAIN-SUFFIX,clash.razord.top
-# 技术论坛
+# Linux Do
 DOMAIN-SUFFIX,linux.do
 # OaiFree
 DOMAIN-SUFFIX,oaifree.com
-# 360安全
+# 360 安全
 DOMAIN-SUFFIX,360.com
 DOMAIN-SUFFIX,360safe.com
 DOMAIN-SUFFIX,360totalsecurity.com
 DOMAIN-SUFFIX,360.cn
-
+DOMAIN-SUFFIX,qihoo.com
+# Bitwarden
 DOMAIN-SUFFIX,bitwarden.com
+# Time.is
+DOMAIN-SUFFIX,time.is

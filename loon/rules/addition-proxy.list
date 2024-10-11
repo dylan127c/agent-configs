@@ -14,6 +14,8 @@ DOMAIN-SUFFIX,google.com
 DOMAIN-SUFFIX,gitkraken.com
 # AI Comprehensive Website
 DOMAIN-SUFFIX,lobehub.com
+# TOUHOU Project
+DOMAIN-SUFFIX,touhou.tel
 # Frameworks && Toolkits && Resources
 DOMAIN-SUFFIX,docker.com
 DOMAIN-SUFFIX,listary.com
