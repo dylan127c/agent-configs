@@ -21,7 +21,7 @@ const LOAD_BALANCE = "load-balance"
 const LOAD_BALANCE_PARAMS = {
     url: "http://www.google.com/generate_204",
     strategy: "consistent-hashing",
-    lazy: false,
+    lazy: true,
     interval: 300,
 };
 
@@ -32,7 +32,7 @@ const URL_TEST = "url-test";
 const URL_TEST_PARAMS = {
     url: "http://www.google.com/generate_204",
     tolerance: 50, // *.目标节点的延迟小于当前选择节点的延迟至少 tolerance 值时，才会切换到目标节点
-    lazy: false,
+    lazy: true,
     interval: 300,
 };
 
@@ -42,7 +42,7 @@ const URL_TEST_PARAMS = {
 const FALLBACK = "fallback";
 const FALLBACK_PARAMS = {
     url: "http://www.google.com/generate_204",
-    lazy: false,
+    lazy: true,
     interval: 120,
 };
 
@@ -148,7 +148,7 @@ const BASIC_BUILT = () => {
         "https://doh.pub/dns-query", // *.DNSPod
         "https://1.12.12.12/dns-query",
         "https://120.53.53.53/dns-query",
-        "https://doh.360.cn" // *.360DNS
+        "https://doh.360.cn/dns-query" // *.360DNS
     ];
 
     /*

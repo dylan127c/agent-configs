@@ -1,5 +1,7 @@
 # 某些不纳入管控程序的、依赖代理服务的域名
 payload:
-  - DOMAIN-SUFFIX,googleusercontent.com # Anonymous Program
+  # Anonymous Programs
+  - DOMAIN-SUFFIX,googleusercontent.com
+
   - DOMAIN-SUFFIX,pti.store.microsoft.com # Svchost.exe
   - DOMAIN-SUFFIX,ingest.twitch.tv # RadeonSoftware.exe
