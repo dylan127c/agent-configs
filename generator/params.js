@@ -119,7 +119,7 @@ const BASIC_BUILT = () => {
      */
     initConfiguration["dns"] = {};
     initConfiguration.dns.enable = false;
-    initConfiguration.dns["use-hosts"] = false; // *.是否使用系统 host 文件的 IP 映射
+    initConfiguration.dns["use-hosts"] = false; // *.是否使用系统 host 文件和 hosts 关键字配置的 IP 映射
     initConfiguration.dns.ipv6 = false;
     initConfiguration.dns.listen = "0.0.0.0:53";
     initConfiguration.dns["enhanced-mode"] = "fake-ip";
