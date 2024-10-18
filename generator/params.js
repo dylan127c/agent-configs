@@ -23,6 +23,8 @@ const LOAD_BALANCE_PARAMS = {
     strategy: "consistent-hashing",
     lazy: true,
     interval: 300,
+    timeout: 2500,
+    'max-failed-times': 2,
     'disable-udp': false,
 };
 
@@ -35,6 +37,8 @@ const URL_TEST_PARAMS = {
     tolerance: 50, // *.目标节点的延迟小于当前选择节点的延迟至少 tolerance 值时，才会切换到目标节点
     lazy: true,
     interval: 300,
+    timeout: 2500,
+    'max-failed-times': 2,
     'disable-udp': false,
 };
 
@@ -46,6 +50,8 @@ const FALLBACK_PARAMS = {
     url: "http://www.google.com/generate_204",
     lazy: true,
     interval: 120,
+    timeout: 2500,
+    'max-failed-times': 2,
     'disable-udp': false,
 };
 
