@@ -26,6 +26,7 @@ const {
   FALLBACK,
   FALLBACK_PARAMS,
   HEALTH_CHECK,
+  OVERRIDE,
   PROFILE_PATH,
   BASIC_BUILT,
 } = require("./params.js");
@@ -41,6 +42,7 @@ try {
 }
 
 const {
+  PROXY_ABSOLUTE_PATH,
   PROXY_PROVIDER_PATH,
   PROXY_PROVIDER_TYPE,
   PROXY_PROVIDERS_MAP,
@@ -66,11 +68,16 @@ function generate(log, yaml) {
   const output = yaml.stringify(params);
 
   fs.writeFileSync(
-    path.join(
-      homepath(),
-      PROXY_PROVIDER_PATH,
-      ALL_PROFILES_OUTPUT.replace(/$/gm, "." + RULE_PROVIDER_TYPE)
-    ),
+    PROXY_ABSOLUTE_PATH ?
+      path.join(
+        PROXY_PROVIDER_PATH,
+        ALL_PROFILES_OUTPUT.replace(/$/gm, "." + RULE_PROVIDER_TYPE)
+      ) :
+      path.join(
+        homepath(),
+        PROXY_PROVIDER_PATH,
+        ALL_PROFILES_OUTPUT.replace(/$/gm, "." + RULE_PROVIDER_TYPE)
+      ),
     output, "utf-8");
   log.info(mark(funcName), "done.");
 }
@@ -79,11 +86,15 @@ function getProxyGroups() {
   const providerGroupsName = [];
   for (const provider in PROVIDER_GROUPS) {
     PROVIDER_GROUPS[provider].forEach(group => {
-      for (const [search, flag] of Object.entries(FLAG)) {
-        if (group.name.includes(search) || search === "UN") {
-          group.name = flag + " " + provider + "-" + group.name;
-          break;
+      if (!group.hasOwnProperty("icon")) {
+        for (const [search, flag] of Object.entries(FLAG)) {
+          if (group.name.includes(search) || search === "UN") {
+            group.name = flag + " " + provider + "-" + group.name;
+            break;
+          }
         }
+      } else {
+        group.name = provider + "-" + group.name;
       }
       providerGroupsName.push(group.name);
     });
@@ -106,6 +117,9 @@ function getProxyGroups() {
     }
     if (preset.hasOwnProperty("lazy")) {
       group.lazy = preset.lazy;
+    }
+    if (preset.hasOwnProperty("icon")) {
+      group.icon = preset.icon;
     }
 
     if (!preset.hasOwnProperty("append") || !preset.append) {
@@ -152,6 +166,9 @@ function getProxyGroups() {
       if (detail.hasOwnProperty("lazy")) {
         group.lazy = detail.lazy;
       }
+      if (detail.hasOwnProperty("icon")) {
+        group.icon = detail.icon;
+      }
       groupsArr.push(addTypeParams(group));
     })
   }
@@ -164,15 +181,15 @@ function getProxyGroups() {
       [URL_TEST]: URL_TEST_PARAMS,
       [FALLBACK]: FALLBACK_PARAMS
     };
-  
+
     const defaultParams = paramsMap[group.type] || {};
     if (Object.keys(defaultParams).length === 0) {
       return group;
     }
 
-    return Object.assign({}, group, defaultParams, 
-      group.hasOwnProperty("interval") ? {interval: group.interval} : {},
-      group.hasOwnProperty("lazy") ? {lazy: group.lazy} : {}
+    return Object.assign({}, group, defaultParams,
+      group.hasOwnProperty("interval") ? { interval: group.interval } : {},
+      group.hasOwnProperty("lazy") ? { lazy: group.lazy } : {},
     );
   }
 
@@ -212,8 +229,11 @@ function getProxyProvider() {
   for (const [providerName, fileName] of Object.entries(PROXY_PROVIDERS_MAP)) {
     provider[providerName] = {};
     provider[providerName].type = "file";
-    provider[providerName].path = path.join(homepath(), PROXY_PROVIDER_PATH) + fileName + "." + PROXY_PROVIDER_TYPE;
-    provider[providerName] = Object.assign(provider[providerName], HEALTH_CHECK);
+    provider[providerName].path = (PROXY_ABSOLUTE_PATH ?
+      PROXY_PROVIDER_PATH :
+      path.join(homepath(), PROXY_PROVIDER_PATH))
+      + fileName + "." + PROXY_PROVIDER_TYPE;
+    provider[providerName] = Object.assign(provider[providerName], HEALTH_CHECK, OVERRIDE);
   }
   return provider;
 }

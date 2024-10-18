@@ -23,6 +23,7 @@ const LOAD_BALANCE_PARAMS = {
     strategy: "consistent-hashing",
     lazy: true,
     interval: 300,
+    'disable-udp': false,
 };
 
 /**
@@ -34,6 +35,7 @@ const URL_TEST_PARAMS = {
     tolerance: 50, // *.目标节点的延迟小于当前选择节点的延迟至少 tolerance 值时，才会切换到目标节点
     lazy: true,
     interval: 300,
+    'disable-udp': false,
 };
 
 /**
@@ -44,6 +46,7 @@ const FALLBACK_PARAMS = {
     url: "http://www.google.com/generate_204",
     lazy: true,
     interval: 120,
+    'disable-udp': false,
 };
 
 /**
@@ -56,9 +59,20 @@ const HEALTH_CHECK = {
     "health-check": {
         enable: true,
         url: "http://www.google.com/generate_204",
+        lazy: true,
         interval: 300
     }
 };
+
+const OVERRIDE = {
+    "override": {
+        "udp": true,
+        "tfo": true,
+        "mptcp": true,
+        "skip-cert-verify": true,
+    }
+};
+
 /**
  * 基础配置不能添加 global-ua: clash.meta 属性，否则会造成 TUN 模式出现严重错误。
  */
@@ -79,7 +93,7 @@ const BASIC_BUILT = () => {
     initConfiguration["bind-address"] = "*";
     
     initConfiguration["unified-delay"] = true;
-    initConfiguration["tcp-concurrent"] = true;
+    initConfiguration["tcp-concurrent"] = true; // *.大大地加速测速
     
     initConfiguration["geodata-mode"] = true;
     initConfiguration["geodata-loader"] = "standard";
@@ -125,7 +139,6 @@ const BASIC_BUILT = () => {
     initConfiguration.dns["enhanced-mode"] = "fake-ip";
     initConfiguration.dns["fake-ip-range"] = "192.18.0.1/16";
     initConfiguration.dns["fake-ip-filter"] = [
-        "+.msftncsi.com",
         "+.msftncsi.com",
         "+.msftconnecttest.com",
         "+.time.windows.com",
@@ -205,6 +218,7 @@ module.exports = {
     FALLBACK,
     FALLBACK_PARAMS,
     HEALTH_CHECK,
+    OVERRIDE,
     PROFILE_PATH,
     BASIC_BUILT,
 };  
