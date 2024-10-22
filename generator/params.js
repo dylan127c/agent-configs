@@ -1,11 +1,15 @@
 const PROFILE_PATH = "d:/program files/mihomo party/data/override/192b4acc89e.js";
 
 const COLLECT_APPEND = true;
-const COLLECT_SYMBOL = "(ALL)";
+const COLLECT_SYMBOL = "-CHECK";
 const COLLECT_TYPE = "select";
 const COLLECT_PROXIES = ["REJECT"];
 const COLLECT_ICON = "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/Airport.png";
 const COLLECT_FILTER = "^(?!.*(?:套|剩|网|请|官|备|此|重)).*$";
+
+const PROXY_PROVIDER_REG = /(?<=[\s-]).*$/;
+const SUBS_COLLECT_REGEX = /(?<=[\s-]).*(?=\[)/;
+const PROXY_GROUPS_REGEX = /(?<=\[).*(?=\])/;
 
 const FLAG = { HK: "🇭🇰", SG: "🇸🇬", TW: "🇹🇼", US: "🇺🇸", JP: "🇯🇵", UK: "🇬🇧", KR: "🇰🇷", MY: "🇲🇾", PL: "🇵🇱", UN: "🏴‍☠️" };
 
@@ -53,7 +57,7 @@ const FALLBACK = "fallback";
 const FALLBACK_PARAMS = {
     url: "http://www.google.com/generate_204",
     lazy: true,
-    interval: 120,
+    interval: 300,
     timeout: 2500,
     'max-failed-times': 2,
     'disable-udp': false,
@@ -264,5 +268,8 @@ module.exports = {
     COLLECT_PROXIES,
     COLLECT_ICON,
     COLLECT_FILTER,
+    PROXY_PROVIDER_REG,
+    SUBS_COLLECT_REGEX,
+    PROXY_GROUPS_REGEX,
     BASIC_BUILT,
 };  

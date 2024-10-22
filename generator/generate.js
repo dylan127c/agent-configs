@@ -6,9 +6,9 @@ function mark(name) {
     return FILE_NAME + "." + name + " =>";
 }
 
-function homepath() {
-    return process.env.homepath.replace(/^\\/gm, "c:\\");
-}
+// function homepath() {
+//     return process.env.homepath.replace(/^\\/gm, "c:\\");
+// }
 
 delete require.cache[require.resolve("./params.js")];
 const {
@@ -32,41 +32,37 @@ const {
     COLLECT_PROXIES,
     COLLECT_ICON,
     COLLECT_FILTER,
+    PROXY_PROVIDER_REG,
+    SUBS_COLLECT_REGEX,
+    PROXY_GROUPS_REGEX,
     BASIC_BUILT,
 } = require("./params.js");
 
-const profile = PROFILE_PATH === "" ?
-    path.join(homepath(), ".run/profile.js") :
-    PROFILE_PATH;
-
-try {
-    delete require.cache[require.resolve(profile)];
-} catch (error) {
-    console.log("User-defined profile.js OR %HOMEPATH%/.RUN/profile.js WAS NOT FOUND.");
-}
-
+delete require.cache[require.resolve(PROFILE_PATH)];
 const {
     OVERRIDE_MAPPING,
-    PROXY_PROVIDER_PATH,
-    PROXY_PROVIDER_TYPE,
     RULES_PROVIDER_TYPE,
     GROUPS,
     RULES,
     SUB_RULES,
     READ_PROVIDER,
-} = require(profile);
-
+} = require(PROFILE_PATH);
 
 function generate(log, yaml) {
     const funcName = "generate";
 
-    const { COMPREHENSIVE_CONFIG_PATH, COMPREHENSIVE_CONFIG_NAME, COMPREHENSIVE_CONFIG_TYPE, PROXY_PROVIDERS_MAP } = READ_PROVIDER(fs, yaml);
+    const {
+        COMPREHENSIVE_CONFIG_PATH,
+        COMPREHENSIVE_CONFIG_NAME,
+        COMPREHENSIVE_CONFIG_TYPE,
+        PROXY_PROVIDERS_MAP
+    } = READ_PROVIDER(fs, yaml);
 
     params = BASIC_BUILT();
     params["proxy-providers"] = getProxyProvider(PROXY_PROVIDERS_MAP);
     params["rules"] = RULES;
     params["sub-rules"] = SUB_RULES;
-    params["rule-providers"] = getRuleProvider(params, yaml, OVERRIDE_MAPPING);
+    params["rule-providers"] = getRuleProvider(params, yaml, OVERRIDE_MAPPING); // *.带 params 参数允许反复调用 getRuleProvider 函数
     params["proxy-groups"] = getProxyGroups(PROXY_PROVIDERS_MAP);
 
     const output = yaml.stringify(params);
@@ -84,7 +80,7 @@ function getProxyGroups(map) {
     const providerGroupsName = [];
     const providerGroups = [];
 
-    for (const [providerName, value] of Object.entries(map)) {
+    for (const [key, value] of Object.entries(map)) {
         if (value.hasOwnProperty("override")) { // *.以防万一可以检查一下是否存在 override 字段
             const script = value.override;
             delete require.cache[require.resolve(script)];
@@ -93,25 +89,36 @@ function getProxyGroups(map) {
             if (GROUP) { // *.如果存在 GROUP 则进行下一步，它可能为 undefined 值
                 if (COLLECT_APPEND) {
                     const collect = {};
-                    collect.name = providerName + COLLECT_SYMBOL;
+
+                    const collectName = formatName(SUBS_COLLECT_REGEX, key);
+                    if (collectName === key) {
+                        collect.name = collectName + COLLECT_SYMBOL;
+                    } else {
+                        collect.name = collectName;
+                    }
+
                     collect.type = COLLECT_TYPE;
                     collect.proxies = COLLECT_PROXIES;
-                    collect.use = [providerName];
+                    collect.use = [formatName(PROXY_PROVIDER_REG, key)];
                     collect.icon = COLLECT_ICON;
                     collect.filter = COLLECT_FILTER;
                     providerCollection.push(collect);
                 }
 
+                let groupName = formatName(PROXY_GROUPS_REGEX, key);
+                if (groupName !== key) {
+                    groupName = groupName.replace("|", "[").replace(/$/gm, "]");
+                }
                 GROUP.forEach(group => {
                     if (!group.hasOwnProperty("icon")) {
                         for (const [search, flag] of Object.entries(FLAG)) {
                             if (group.name.includes(search) || search === "UN") {
-                                group.name = flag + " " + providerName + "-" + group.name;
+                                group.name = flag + " " + groupName + " => " + group.name;
                                 break;
                             }
                         }
                     } else {
-                        group.name = providerName + "-" + group.name;
+                        group.name = groupName + " => " + group.name;
                     }
                     providerGroupsName.push(group.name); // *.将自动生成的分组名称先存储起来，以便后续使用
 
@@ -120,7 +127,7 @@ function getProxyGroups(map) {
                     construct.type = group.type;
                     construct.proxies = ["REJECT"];
                     construct.filter = group.filter
-                    construct.use = [providerName];
+                    construct.use = [formatName(PROXY_PROVIDER_REG, key)];
 
                     if (group.hasOwnProperty("interval")) {
                         construct.interval = group.interval;
@@ -161,7 +168,7 @@ function getProxyGroups(map) {
 
         if (!preset.hasOwnProperty("append") || !preset.append) {
             if (isEmptyArray(group.proxies)) {
-                group.proxies = [].concat(providerGroupsName);
+                group.proxies.push(...providerGroupsName);
             }
             groupsArr.push(addTypeParams(group));
             return; // *.进行下一次迭代
@@ -169,15 +176,15 @@ function getProxyGroups(map) {
 
         if (!preset.hasOwnProperty("autofilter")) {
             if (isEmptyArray(group.proxies)) {
-                group.proxies = [].concat(providerGroupsName);
+                group.proxies.push(...providerGroupsName);
             }
             groupsArr.push(addTypeParams(group));
             return; // *.进行下一次迭代
         }
 
-        group.proxies = group.proxies.concat(
-            providerGroupsName.filter(name => new RegExp(preset.autofilter, "i").test(name))
-        );
+        const filtered = providerGroupsName.filter(name => new RegExp(preset.autofilter, "i").test(name));
+        group.proxies.push(...filtered);
+
         groupsArr.push(addTypeParams(group));
     });
 
@@ -241,13 +248,24 @@ function getRuleProvider(params, yaml, override) {
 
 function getProxyProvider(map) {
     const provider = {};
-    for (const [providerName, value] of Object.entries(map)) {
+    for (const [key, value] of Object.entries(map)) {
+        const providerName = formatName(PROXY_PROVIDER_REG, key);
+
         provider[providerName] = {};
         provider[providerName].type = "file";
-        provider[providerName].path = PROXY_PROVIDER_PATH + value.id + "." + PROXY_PROVIDER_TYPE;
+        provider[providerName].path = value.id;
         provider[providerName] = Object.assign(provider[providerName], HEALTH_CHECK, OVERRIDE);
     }
     return provider;
+}
+
+function formatName(reg, str) {
+    // *.提取名称，不符合正则时使用原名称
+    const result = reg.exec(str);
+    if (result) {
+        return result[0];
+    }
+    return str;
 }
 
 module.exports = { generate };
