@@ -1,4 +1,4 @@
-const PROFILE_PATH = "F:/Documents/GoogleDrive/Synchronous/Clash Config/profile.js";
+const PROFILE_PATH = "d:/program files/mihomo party/data/override/192b4acc89e.js";
 
 const COLLECT_APPEND = true;
 const COLLECT_SYMBOL = "(ALL)";
