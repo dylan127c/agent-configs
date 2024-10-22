@@ -39,6 +39,7 @@ function transform(log, settings, identifier) {
 
     const sourceFiles = fs.readdirSync(native);
     sourceFiles.forEach(sourceFile => {
+        if (sourceFile.includes("pre")) { return; }
         const fileName = removeSuffix(sourceFile);
         const inputPath = path.join(native, sourceFile);
 

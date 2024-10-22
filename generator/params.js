@@ -1,7 +1,11 @@
-const PROFILE_PATH = "F:/Documents/GoogleDrive/Synchronous/Common/Clash Verge/config/profile.js";
+const PROFILE_PATH = "F:/Documents/GoogleDrive/Synchronous/Clash Config/profile.js";
 
-const RULE_PROVIDER_PATH = "../commons/rules/";
-const RULE_PROVIDER_TYPE = "yaml";
+const COLLECT_APPEND = true;
+const COLLECT_SYMBOL = "(ALL)";
+const COLLECT_TYPE = "select";
+const COLLECT_PROXIES = ["REJECT"];
+const COLLECT_ICON = "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/Airport.png";
+const COLLECT_FILTER = "^(?!.*(?:套|剩|网|请|官|备|此|重)).*$";
 
 const FLAG = { HK: "🇭🇰", SG: "🇸🇬", TW: "🇹🇼", US: "🇺🇸", JP: "🇯🇵", UK: "🇬🇧", KR: "🇰🇷", MY: "🇲🇾", PL: "🇵🇱", UN: "🏴‍☠️" };
 
@@ -80,7 +84,8 @@ const OVERRIDE = {
 };
 
 /**
- * 基础配置不能添加 global-ua: clash.meta 属性，否则会造成 TUN 模式出现严重错误。
+ * 许多配置 Mihomo Party 都有提供，默认情况下客户端提供的规则会覆盖本配置文件提供的规则。
+ * 即客户端上的规则其优先级高于配置文件中的规则，为了避免不必要的错误，尽量保持客户端上的规则与本配置一致。
  */
 const BASIC_BUILT = () => {
 
@@ -88,19 +93,31 @@ const BASIC_BUILT = () => {
     let initConfiguration = {};
 
     /* BASIC CONFIGURATION */
-    initConfiguration["mixed-port"] = 7890; // *.下述 7 条规则 Clash Verge 客户端内置，此配置文件的此 7 条规则会被覆盖
-    initConfiguration["log-level"] = "info";
-    initConfiguration["allow-lan"] = false;
+    initConfiguration["mixed-port"] = 13766;
+    initConfiguration["port"] = 0; // *.HTTP(S) 代理端口
+    initConfiguration["socks-port"] = 0; // *.SOCKS5 代理端口
+    initConfiguration["redir-port"] = 0; // *.Redirect 透明代理端口，仅限 Linux(Android) 和 macOS 系统，仅代理 TCP 流量
+    initConfiguration["tproxy-port"] = 0; // *.TProxy 透明代理端口，仅限 Linux(Android) 系统，可代理 TCP/UDP 流量
+
     initConfiguration.mode = "rule";
-    initConfiguration["external-controller"] = "127.0.0.1:9090";
-    initConfiguration.secret = "";
+    initConfiguration["log-level"] = "info";
     initConfiguration.ipv6 = false;
 
+    initConfiguration["allow-lan"] = true;
+    initConfiguration["lan-allowed-ips"] = ["0.0.0.0/0", "::/0"];
+    initConfiguration["lan-disallowed-ips"] = [];
+    initConfiguration.authentication = [];
+    initConfiguration["skip-auth-prefixes"] = ["127.0.0.1/32"];
+
+    initConfiguration["external-controller"] = "127.0.0.1:9090";
+    initConfiguration.secret = "";
+
     initConfiguration["bind-address"] = "*";
-    
-    initConfiguration["unified-delay"] = true;
-    initConfiguration["tcp-concurrent"] = true; // *.大大地加速测速
-    
+    initConfiguration["find-process-mode"] = "strict";
+
+    initConfiguration["unified-delay"] = true; // *.是否启用 RTT 延迟测试
+    initConfiguration["tcp-concurrent"] = true; // *.是否开启 TCP 并发连接数限制
+
     initConfiguration["geodata-mode"] = true;
     initConfiguration["geodata-loader"] = "standard";
     initConfiguration["geo-auto-update"] = true;
@@ -137,11 +154,15 @@ const BASIC_BUILT = () => {
      * 
      * 无论是 CFW 还是 CV，都需要启用服务模式后，才能正常使用 TUN 模式。
      */
+    initConfiguration["hosts"] = {}; // *. hosts 关键字配置的多种类型的映射
     initConfiguration["dns"] = {};
     initConfiguration.dns.enable = false;
-    initConfiguration.dns["use-hosts"] = false; // *.是否使用系统 host 文件和 hosts 关键字配置的 IP 映射
     initConfiguration.dns.ipv6 = false;
     initConfiguration.dns.listen = "0.0.0.0:53";
+    
+    initConfiguration.dns["use-hosts"] = false; // *.是否使用 hosts 关键字配置的映射
+    initConfiguration.dns["use-system-hosts"] = false; // *.是否使用系统 host 文件的 IP 映射
+
     initConfiguration.dns["enhanced-mode"] = "fake-ip";
     initConfiguration.dns["fake-ip-range"] = "192.18.0.1/16";
     initConfiguration.dns["fake-ip-filter"] = [
@@ -151,6 +172,7 @@ const BASIC_BUILT = () => {
         "+.ipv6.microsoft.com",
         "+.lan",
     ];
+
     initConfiguration.dns["default-nameserver"] = [
         "223.5.5.5", // *.Alidns
         "223.6.6.6",
@@ -169,6 +191,12 @@ const BASIC_BUILT = () => {
         "https://120.53.53.53/dns-query",
         "https://doh.360.cn/dns-query" // *.360DNS
     ];
+
+    initConfiguration.dns["respect-rules"] = true;
+    initConfiguration.dns["proxy-server-nameserver"] = initConfiguration.dns.nameserver.slice(); // *.硬拷贝 nameserver 配置
+   
+    initConfiguration.dns.fallback = [];
+    initConfiguration.dns["fallback-filter"] = {};
 
     /*
      * TUN（仅接管 TCP/UDP 流量）
@@ -193,6 +221,9 @@ const BASIC_BUILT = () => {
         "auto-route": true,
         "auto-detect-interface": true, // *.如果存在 interface-name 那么这里为 false 值
         "dns-hijack": ["any:53"],
+        "auto-redirect": false, // *.仅支持 Linux 系统，Windows 系统下配置无效
+        "mtu": 1500,
+        "strict-route": false // *.可能造成问题，建议不启用
     };
 
     /*
@@ -204,7 +235,10 @@ const BASIC_BUILT = () => {
      * 解决方法：直接在配置中添加 profile 信息，这样就可以使用 clash-tracing 项目来监控 CFW 流量了。
      */
     // initConfiguration["profile"] = { "tracing": false };
-    initConfiguration["profile"] = { "store-selected": true };
+    initConfiguration["profile"] = {
+        "store-selected": true,
+        "store-fake-ip": true
+    };
 
     return initConfiguration;
 }
@@ -214,8 +248,6 @@ module.exports = {
     CLASSICAL,
     DOMAIN,
     TYPE_MAP,
-    RULE_PROVIDER_PATH,
-    RULE_PROVIDER_TYPE,
     FLAG,
     LOAD_BALANCE,
     LOAD_BALANCE_PARAMS,
@@ -226,5 +258,11 @@ module.exports = {
     HEALTH_CHECK,
     OVERRIDE,
     PROFILE_PATH,
+    COLLECT_APPEND,
+    COLLECT_SYMBOL,
+    COLLECT_TYPE,
+    COLLECT_PROXIES,
+    COLLECT_ICON,
+    COLLECT_FILTER,
     BASIC_BUILT,
 };  

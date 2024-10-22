@@ -47,6 +47,7 @@ payload:
 
   # Bitwarden
   - '+.bitwarden.com'
+  - '+.bitwarden.net'
 
   # Time.is
   - '+.time.is'
