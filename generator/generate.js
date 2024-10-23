@@ -81,6 +81,7 @@ function getProxyGroups(map) {
     const providerGroups = [];
 
     for (const [key, value] of Object.entries(map)) {
+        const providerName = formatName(PROXY_PROVIDER_REG, key) || key;
         if (value.hasOwnProperty("override")) { // *.以防万一可以检查一下是否存在 override 字段
             const script = value.override;
             delete require.cache[require.resolve(script)];
@@ -89,25 +90,29 @@ function getProxyGroups(map) {
             if (GROUP) { // *.如果存在 GROUP 则进行下一步，它可能为 undefined 值
                 if (COLLECT_APPEND) {
                     const collect = {};
-
-                    const collectName = formatName(SUBS_COLLECT_REGEX, key);
+                    const collectName = formatName(SUBS_COLLECT_REGEX, key) || key;
                     if (collectName === key) {
-                        collect.name = collectName + COLLECT_SYMBOL;
+                        collect.name = collectName + COLLECT_SYMBOL; // *.PROXY PROVIDER 名称不能和 PROXY GROUP 名称相同
                     } else {
                         collect.name = collectName;
                     }
 
                     collect.type = COLLECT_TYPE;
                     collect.proxies = COLLECT_PROXIES;
-                    collect.use = [formatName(PROXY_PROVIDER_REG, key)];
+                    collect.use = [providerName];
                     collect.icon = COLLECT_ICON;
                     collect.filter = COLLECT_FILTER;
                     providerCollection.push(collect);
                 }
 
-                let groupName = formatName(PROXY_GROUPS_REGEX, key);
+                let groupName = formatName(PROXY_GROUPS_REGEX, key) || key;
                 if (groupName !== key) {
-                    groupName = groupName.replace("|", "[").replace(/$/gm, "]");
+                    const saver = groupName.replace(/[-|,]/gm, "[");
+                    if (groupName !== saver) {
+                        groupName = saver.replace(/$/gm, "]"); // *.替换成功，继续替换
+                    } else {
+                        groupName = saver; // *.不存在目标字符，不进行替换
+                    }
                 }
                 GROUP.forEach(group => {
                     if (!group.hasOwnProperty("icon")) {
@@ -127,7 +132,7 @@ function getProxyGroups(map) {
                     construct.type = group.type;
                     construct.proxies = ["REJECT"];
                     construct.filter = group.filter
-                    construct.use = [formatName(PROXY_PROVIDER_REG, key)];
+                    construct.use = [providerName];
 
                     if (group.hasOwnProperty("interval")) {
                         construct.interval = group.interval;
@@ -249,7 +254,7 @@ function getRuleProvider(params, yaml, override) {
 function getProxyProvider(map) {
     const provider = {};
     for (const [key, value] of Object.entries(map)) {
-        const providerName = formatName(PROXY_PROVIDER_REG, key);
+        const providerName = formatName(PROXY_PROVIDER_REG, key) || key;
 
         provider[providerName] = {};
         provider[providerName].type = "file";
@@ -260,12 +265,12 @@ function getProxyProvider(map) {
 }
 
 function formatName(reg, str) {
-    // *.提取名称，不符合正则时使用原名称
+    // *.提取名称，不符合正则时返回 undefined
     const result = reg.exec(str);
     if (result) {
         return result[0];
     }
-    return str;
+    return result;
 }
 
 module.exports = { generate };

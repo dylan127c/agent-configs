@@ -7,8 +7,8 @@ const COLLECT_PROXIES = ["REJECT"];
 const COLLECT_ICON = "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/Airport.png";
 const COLLECT_FILTER = "^(?!.*(?:套|剩|网|请|官|备|此|重)).*$";
 
-const PROXY_PROVIDER_REG = /(?<=[\s-]).*$/;
-const SUBS_COLLECT_REGEX = /(?<=[\s-]).*(?=\[)/;
+const PROXY_PROVIDER_REG = /\b.*/;
+const SUBS_COLLECT_REGEX = /\b.+?\b/;
 const PROXY_GROUPS_REGEX = /(?<=\[).*(?=\])/;
 
 const FLAG = { HK: "🇭🇰", SG: "🇸🇬", TW: "🇹🇼", US: "🇺🇸", JP: "🇯🇵", UK: "🇬🇧", KR: "🇰🇷", MY: "🇲🇾", PL: "🇵🇱", UN: "🏴‍☠️" };
