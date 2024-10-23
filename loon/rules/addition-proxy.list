@@ -3,7 +3,8 @@ DOMAIN-SUFFIX,challenges.cloudflare.com# Google
 DOMAIN-SUFFIX,google.com# GitHub && Git
 DOMAIN-SUFFIX,gitkraken.com# AI Comprehensive Website
 DOMAIN-SUFFIX,lobehub.com# TOUHOU Project
-DOMAIN-SUFFIX,touhou.tel# Frameworks && Toolkits && Resources
+DOMAIN-SUFFIX,touhou.tel# Linux Do
+DOMAIN-SUFFIX,linux.do# Frameworks && Toolkits && Resources
 DOMAIN-SUFFIX,docker.com
 DOMAIN-SUFFIX,listary.com
 DOMAIN-SUFFIX,gigabyte.com

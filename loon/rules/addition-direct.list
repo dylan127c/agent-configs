@@ -6,8 +6,7 @@ DOMAIN-SUFFIX,injections.adguard.org# 远程代理规则让以下域名使用�
 DOMAIN-SUFFIX,local.adguard.org# 以下域名用于加载Microsoft Edge新标签页，它们可能影响浏览器的加载速度。# DIRECT模式为默认模式，按需使用PROXY。# REJECT可能可以加快浏览器的启动速度。
 DOMAIN-SUFFIX,assets.msn.cn
 DOMAIN-SUFFIX,assets2.msn.cn# Razord
-DOMAIN-SUFFIX,clash.razord.top# Linux Do
-DOMAIN-SUFFIX,linux.do# OaiFree
+DOMAIN-SUFFIX,clash.razord.top# OaiFree
 DOMAIN-SUFFIX,oaifree.com# 360 安全
 DOMAIN-SUFFIX,360.com
 DOMAIN-SUFFIX,360safe.com

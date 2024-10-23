@@ -26,6 +26,9 @@ payload:
   # TOUHOU Project
   - '+.touhou.tel'
 
+  # Linux Do
+  - "+.linux.do"
+
   # Frameworks && Toolkits && Resources
   - '+.docker.com'
   - '+.listary.com'

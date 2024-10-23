@@ -32,9 +32,6 @@ payload:
   # Razord
   - "+.clash.razord.top"
 
-  # Linux Do
-  - "+.linux.do"
-
   # OaiFree
   - "+.oaifree.com"
 
