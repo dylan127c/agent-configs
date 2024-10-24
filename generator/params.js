@@ -173,6 +173,8 @@ const BASIC_BUILT = () => {
         "+.msftncsi.com",
         "+.msftconnecttest.com",
         "+.time.windows.com",
+        "+.time.nist.gov",
+        "+.ntp.aliyun.com",
         "+.ipv6.microsoft.com",
         "+.lan",
     ];
