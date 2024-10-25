@@ -16,6 +16,9 @@ payload:
 
   # Google
   - '+.google.com'
+
+  # Cursor
+  - '+.cursor.com'
   
   # GitHub && Git
   - '+.gitkraken.com'

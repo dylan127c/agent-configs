@@ -1,149 +1,105 @@
-/***************************************************************************
- ***  Fill this configuration and place it under %homepath/.run/ folder. ***
- ***************************************************************************/
+/**********************************************************************************
+ *** Add this content to Mihomo Party OVERRIDE SETTING. And record the config's ***
+ *** name like this: 192b4acc89e.js. Finally, setup this path into params.js.   ***
+ **********************************************************************************/
 
-const PROXY_PROVIDER_PATH = "/.config/clash-verge/profiles/";
+const MIHOMO_PARTY = "d:/program files/mihomo party/"; // *.MIHOMO PARTY 安装路径
+const OVERRIDE_MAPPING = MIHOMO_PARTY + "data/override.yaml";
+const PROVIDER_MAPPING = MIHOMO_PARTY + "data/profile.yaml";
+
+const PROXY_PROVIDER_PATH = MIHOMO_PARTY + "data/profiles/";
+const GROUP_PROVIDER_PATH = MIHOMO_PARTY + "data/override/"
 const PROXY_PROVIDER_TYPE = "yaml";
-const ALL_PROFILES_OUTPUT = "lb5bxiDvPOOT";
+const RULES_PROVIDER_TYPE = "yaml";
 
-const PROVIDER_K = "AK";
-const PROVIDER_Y = "OR";
-const PROVIDER_A = "SW";
-const PROVIDER_D = "MC";
-const PROVIDER_Z = "LD";
-const PROVIDER_C = "FR";
-const PROVIDER_B = "XF";
+const READ_PROVIDER = (fs, yaml) => {
+    const file = fs.readFileSync(PROVIDER_MAPPING, "utf8");
+    const result = yaml.parse(file);
 
-const PROXY_PROVIDERS_MAP = {
-    [PROVIDER_K]: "rAiGByko9FG8",
-    [PROVIDER_Y]: "rPtUeRVeo6Qd",
-    [PROVIDER_A]: "rgz4yTSVjiEf",
-    [PROVIDER_D]: "rUFbrlndDbcg",
-    [PROVIDER_Z]: "rwjdN9tg4Ls0",
-    [PROVIDER_C]: "rn5AYTWlsFb8",
-    [PROVIDER_B]: "rPv2M2SID2co",
+    const COMPREHENSIVE_CONFIG_PATH = MIHOMO_PARTY + "data/profiles/";
+    const COMPREHENSIVE_CONFIG_NAME = result.current; // *.当前启用配置需定位到 COMPREHENSIVE_CONFIG 总配置上
+    const COMPREHENSIVE_CONFIG_TYPE = "yaml";
+
+    const PROXY_PROVIDERS_MAP = {};
+    result.items.forEach(item => {
+        if (item.id !== COMPREHENSIVE_CONFIG_NAME && item.override.length !== 0) {
+            // *.只记录存在 override 的数据，不存在 override 值的视为不需要纳入 COMPREHENSIVE_CONFIG 配置
+            // *.还需要确认 override 值是否存在导出的分组规则，这个判断逻辑交由 generate.js 来完成，这里仅记录数据
+            // *.疑似 override 值对应的数组中，只会包含一个元素，那为什么它是数组类型呢？TODO: unknown
+            const detail = {};
+            detail.id = PROXY_PROVIDER_PATH + item.id + "." + PROXY_PROVIDER_TYPE; // *.id 为订阅配置对应的 YAML 文件路径
+            detail.override = GROUP_PROVIDER_PATH + item.override[0]; // *.override 为订阅配置绑定的分组规则 JS 文件路径
+
+            PROXY_PROVIDERS_MAP[item.name] = detail; // *.key 为配置名称，value 包含 id 和 override 两个字段
+        };
+    });
+    return { COMPREHENSIVE_CONFIG_PATH, COMPREHENSIVE_CONFIG_NAME, COMPREHENSIVE_CONFIG_TYPE, PROXY_PROVIDERS_MAP };
 };
 
-const PROVIDER_GROUPS = {
-    [PROVIDER_K]: [
-        { name: "HK", type: "url-test", filter: "HKG" },
-        { name: "SG", type: "url-test", filter: "SGP" },
-        { name: "TW", type: "url-test", filter: "TWN" },
-        { name: "JP", type: "url-test", filter: "JPN" },
-        { name: "US", type: "url-test", filter: "美国" },
-        { name: "KR", type: "url-test", filter: "(?i)KOREA" },
-    ],
-    [PROVIDER_Y]: [
-        { name: "HK-IEPL/CM", type: "url-test", filter: "移动/深港" },
-        { name: "HK-IEPL/CT", type: "url-test", filter: "电信/深港" },
-        { name: "JP-IEPL/CT", type: "url-test", filter: "电信/沪日" },
-        { name: "HK", type: "url-test", filter: "香港.*(?:HK|BGP)" },
-        { name: "JP", type: "url-test", filter: "日本.*(?:Akamai|IIJ|NTT)" },
-        { name: "TW", type: "url-test", filter: "台湾.*" },
-        { name: "SG", type: "url-test", filter: "新加坡.*" },
-        { name: "US", type: "url-test", filter: "美国.*" },
-        { name: "KR", type: "url-test", filter: "韩国.*" },
-    ],
-    [PROVIDER_A]: [
-        { name: "HK", type: "url-test", filter: "HK" },
-        { name: "SG", type: "url-test", filter: "SG" },
-        { name: "TW", type: "url-test", filter: "TW" },
-        { name: "US", type: "url-test", filter: "US" },
-        { name: "JP", type: "url-test", filter: "JP" },
-    ],
-    [PROVIDER_D]: [
-        { name: "HK", type: "url-test", filter: "HK.*[^x]$" },
-        { name: "SG", type: "url-test", filter: "SG" },
-        { name: "TW", type: "url-test", filter: "TW" },
-        { name: "US", type: "url-test", filter: "US" },
-        { name: "JP", type: "url-test", filter: "JP" },
-        { name: "KR", type: "url-test", filter: "KOR" },
-        { name: "MY", type: "url-test", filter: "MYS" },
-    ],
-
-    // *.配置文件 params.js 中已将 load-balance 类型策略调整为 round-robin 模式，该策略不适用于日常使用。
-    // *.策略 round-robin 下会把所有的请求分配给策略组内不同的代理节点，这适用于资源的下载。
-    [PROVIDER_Z]: [
-        { name: "HK", type: "load-balance", filter: "香港" },
-        { name: "SG", type: "load-balance", filter: "新加坡" },
-        { name: "TW", type: "load-balance", filter: "台湾" },
-        { name: "US", type: "load-balance", filter: "美国" },
-        { name: "JP", type: "load-balance", filter: "日本" },
-        { name: "KR", type: "load-balance", filter: "韩国" },
-        { name: "PL", type: "load-balance", filter: "波兰" },
-    ],
-    [PROVIDER_C]: [
-        { name: "HK", type: "load-balance", filter: "(?i)^.*kong.*[^L]$" },
-        { name: "SG", type: "load-balance", filter: "(?i)^.*singapore.*[^L]$" },
-        { name: "TW", type: "load-balance", filter: "(?i)^.*taiwan.*[^L]$" },
-        { name: "US", type: "load-balance", filter: "(?i)^.*states.*[^L]$" },
-        { name: "JP", type: "load-balance", filter: "(?i)^.*japan.*[^L]$" },
-        { name: "KR", type: "load-balance", filter: "(?i)^.*korea.*[^L]$" },
-    ],
-    [PROVIDER_B]: [
-        { name: "HK", type: "load-balance", filter: "香港" },
-        { name: "SG", type: "load-balance", filter: "新加坡" },
-        { name: "TW", type: "load-balance", filter: "台湾" },
-        { name: "US", type: "load-balance", filter: "美国" },
-        { name: "JP", type: "load-balance", filter: "日本" },
-    ],
-};
-
-/***************************************************************************
- ***  CV FALLBACK allow adjust but can't reset, REJECT rules can fix it. ***
- ***************************************************************************/
-
-const AUTO_GROUPS = ["🇭🇰 SLOT-HK", "🇸🇬 SLOT-SG", "🇹🇼 SLOT-TW", "🇯🇵 SLOT-JP", "🇺🇸 SLOT-US", "🇰🇷 SLOT-KR"];
+const AUTO_GROUPS = ["HK", "SG", "TW", "JP", "US", "KR"];
 const DEFAULT_DIRECT = ["DIRECT"].concat(AUTO_GROUPS);
 const DEFAULT_REJECT = ["REJECT"].concat(AUTO_GROUPS);
 
-const ADD_ON_FILTER = "^(?!.*套餐)(?!.*剩余)(?!.*网址)(?!.*(?:请|官|备|此)).*$";
-
 const GROUPS = [
-    { name: "🌠 ALL", type: "select", proxies: AUTO_GROUPS },
-
-    { name: "🟥 OPEN-AI", type: "select", proxies: ["REJECT"], append: true, filter: "^(?!.*(?:LD|FR|XF)).*$" },
-    { name: "🟦 PIKPAK", type: "select", append: true, filter: "LD|FR|XF" },
-    { name: "🟩 COPILOT", type: "select", proxies: DEFAULT_REJECT },
-    { name: "🟩 GEMINI", type: "select", proxies: DEFAULT_REJECT },
-    { name: "🟧 REDDIT", type: "select", proxies: DEFAULT_REJECT },
-    { name: "🟧 TELEGRAM", type: "select", proxies: DEFAULT_REJECT },
-    { name: "🟧 GITHUB", type: "select", proxies: DEFAULT_REJECT },
-    { name: "🟧 STEAM", type: "select", proxies: DEFAULT_DIRECT },
-    { name: "🟧 EPIC", type: "select", proxies: DEFAULT_DIRECT },
-
-    { name: "🌐 ARISAKA", type: "select", proxies: ["REJECT"], append: true, provider: [PROVIDER_K], filter: ADD_ON_FILTER },
-    { name: "🌐 TOUHOU", type: "select", proxies: ["REJECT"], append: true, provider: [PROVIDER_Y], filter: ADD_ON_FILTER },
-    { name: "🌐 SWIFT", type: "select", proxies: ["REJECT"], append: true, provider: [PROVIDER_A], filter: ADD_ON_FILTER },
-    { name: "🌐 MCD", type: "select", proxies: ["REJECT"], append: true, provider: [PROVIDER_D], filter: ADD_ON_FILTER },
-    { name: "🌐 LINUXDO", type: "select", proxies: ["REJECT"], append: true, provider: [PROVIDER_Z], filter: ADD_ON_FILTER },
-    { name: "🌐 FANRR", type: "select", proxies: ["REJECT"], append: true, provider: [PROVIDER_C], filter: ADD_ON_FILTER },
-    { name: "🌐 XFSS", type: "select", proxies: ["REJECT"], append: true, provider: [PROVIDER_B], filter: ADD_ON_FILTER },
-
-    { name: "🇭🇰 SLOT-HK", type: "fallback", proxies: ["REJECT"], append: true, filter: "^(?!.*(?:SP)).*HK" },
-    { name: "🇸🇬 SLOT-SG", type: "fallback", proxies: ["REJECT"], append: true, filter: "^(?!.*(?:SP)).*SG" },
-    { name: "🇹🇼 SLOT-TW", type: "fallback", proxies: ["REJECT"], append: true, filter: "^(?!.*(?:SP)).*TW" },
-    { name: "🇯🇵 SLOT-JP", type: "fallback", proxies: ["REJECT"], append: true, filter: "^(?!.*(?:SP)).*JP" },
-    { name: "🇺🇸 SLOT-US", type: "fallback", proxies: ["REJECT"], append: true, filter: "^(?!.*(?:SP)).*US" },
-    { name: "🇰🇷 SLOT-KR", type: "fallback", proxies: ["REJECT"], append: true, filter: "^(?!.*(?:SP)).*KR" },
-
-    { name: "⚫ BLACKLIST-ESC", type: "select", proxies: DEFAULT_DIRECT },
+    { name: "ALL", type: "select", proxies: AUTO_GROUPS, icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/Available.png" },
+    { name: "DOWNLOAD", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[M|L\\]).*$", icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/Speedtest.png" },
+    
+    { name: "OPENAI", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/lige47/QuanX-icon-rule/main/icon/ChatGPT.png" },
+    { name: "GOOGLEDRIVE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Google_Suite/Drive.png" },
+    { name: "TELEGRAM", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:SG).*$", icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Social_Media/Telegram.png" },
+    { name: "YOUTUBE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[M|L\\]).*$", icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Google_Suite/YouTube.png" },
+    { name: "GITHUB", type: "select", proxies: DEFAULT_REJECT, icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Social_Media/GitHub.png" },
+    { name: "GEMINI", type: "select", proxies: DEFAULT_REJECT, icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Google_Suite/Google.png" },
+    { name: "REDDIT", type: "select", proxies: DEFAULT_REJECT, icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Social_Media/Reddit.png" },
+    { name: "STEAM", type: "select", proxies: DEFAULT_DIRECT, icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/Steam.png" },
+    
+    { name: "HK", type: "fallback", append: true, autofilter: "^.*HK", icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Rounded_Rectangle/Hong_Kong.png" },
+    { name: "SG", type: "fallback", append: true, autofilter: "^.*SG", icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Rounded_Rectangle/Singapore.png" },
+    { name: "TW", type: "fallback", append: true, autofilter: "^.*TW", icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Rounded_Rectangle/Taiwan.png" },
+    { name: "JP", type: "fallback", append: true, autofilter: "^.*JP", icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Rounded_Rectangle/Japan.png" },
+    { name: "US", type: "fallback", append: true, autofilter: "^.*US", icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Rounded_Rectangle/United_States.png" },
+    { name: "KR", type: "fallback", append: true, autofilter: "^.*KR", icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Rounded_Rectangle/South_Korea.png" },
 ];
 
-
-/***************************************************************************
- ***   Rules must be compatible with the specific clash kernel version.  ***
- ***************************************************************************/
-
-const FULLLIST = "fulllist"; // *.FULLLIST GENERALLY FOR BROWSER THAT CAN DYNAMIC ADJUST IN-TYPE PROPERTY
-const BLACKLIST = "blacklist"; // *.FINAL DIRECT, FILTER PROXY RULES, MOST OF THE TIME USE DIRECT CONNECTION
-const WHITELIST = "whitelist"; // *.FINAL PROXY, FILTER DIRECT RULES, MOST OF THE TIME USE PROXY CONNECTION
-const PROXIES = "proxies"; // *.COMPLETE RELIANCE ON AGENTS
+const FULLLIST = "fulllist"; // *.针对浏览器的分流规则，较完整，可根据 HTTP 和 SOCKS5 流量进一步分配策略组
+const DOWNLOAD = "download"; // *.针对下载器或需求代理流量且流量较大的程序，遵循黑名单模式
+const BLACKLIST = "blacklist"; // *.针对普通程序，分流规则遵循黑名单模式，即 MATCH 前匹配 PROXY 策略，MATCH 匹配 DIRECT 策略
+const WHITELIST = "whitelist"; // *.针对普通程序，分流规则遵循白名单模式，即 MATCH 前匹配 DIRECT 策略，MATCH 匹配 PROXY 策略
+const PROXY = "proxy"; // *.针对完全依赖代理的程序，将直接 MATCH 至 PROXY 策略
 
 // *.QUALIFICATION SCREENING
 const RULES = [
-    "SUB-RULE,(PROCESS-NAME,GoogleDriveFS.exe)," + PROXIES, // *.GOOGLE DRIVE
+    "RULE-SET,addition-pre-block,REJECT", // *.需要提前拦截的域名，例如参与 PCDN 的域名，规则为 classical 类型
+    "RULE-SET,addition-pre-agents,ALL", // *.不纳入程序管控，但需要代理服务的域名，规则为 classical 类型
+    "RULE-SET,addition-pre-download,DOWNLOAD", // *.没有使用 DOWNLOAD 子规则的、但存在大量下载流量的域名，规则为 classical 类型
 
+    /**
+     * 浏览器内置直连规则时，这些域名在不使用浏览器代理或代理插件的情况下，会走 TUN 模式
+     * 的全局代理，提前过滤掉可以提高性能。
+     */
+    "AND,((PROCESS-NAME,firefox.exe),(IN-TYPE,TUN)),DIRECT",
+
+    /**
+     * 特殊的程序在确认完全依赖代理后，可以使用 PROXY 子规则，或直接提供代理分组。
+     * 
+     * 由于 GoogleDrive 对节点质量有要求，因此这里直接提供质量较高的代理分组。于其他程序
+     * 而言，如果对节点质量没有要求，那么可以直接使用 PROXY 子规则，它映射 ALL 日常代理。
+     */
+    "PROCESS-NAME,GoogleDriveFS.exe,GOOGLEDRIVE", // *.GOOGLE DRIVE
+
+    /**
+     * 于浏览器而言，需要访问的域名很多，较难区分使用黑名单模式好还是白名单模式好。
+     * 
+     * 这种情况下，使用黑、白名单整合得到的 FULLLIST 会更好。浏览器可以进一步使用
+     * 插件或自带的代理模块，将 TCP 流量区分为 HTTP 流量或 SOCKS 流量。届时浏览器将
+     * 不再使用 TUN 模式提供的全局代理服务，因为内置的代理服务优先级较高。
+     * 
+     * 那么 FULLLIST 就可以根据流量类型进一步控制访问行为，例如让 HTTP 类型的流量
+     * 最终匹配 PROXY 策略，让 SOCKS 类型的流量最终匹配 DIRECT 策略。
+     * 
+     * 疑似 TUN 模式和浏览器的兼容性不是很好，有些网页加载十分缓慢，可能和 TUN 模式
+     * 本身的性能相关，毕竟需要处理的连接很多，还是建议使用 HTTP/SOCKS5 类型。
+     */
     "SUB-RULE,(PROCESS-NAME,firefox.exe)," + FULLLIST, // *.BROWSER
     "SUB-RULE,(PROCESS-NAME,msedge.exe)," + FULLLIST,
     "SUB-RULE,(PROCESS-NAME,chrome.exe)," + FULLLIST,
@@ -161,15 +117,26 @@ const RULES = [
      * 建议慎用白名单模式，特别是对于 BT 下载工具来说。确定软件大多数情况下都会发起国外域名或 IP 请求的情况下，再使
      * 用白名单，否则还是使用黑名单模式，因为对于 DIRECT 策略出现的大量超时请求，mihomo 内核一般不作处理。
      */
-    "SUB-RULE,(PROCESS-NAME,DownloadServer.exe)," + BLACKLIST, // *.PIKPAK DOWNLOAD ENGINE
+    "SUB-RULE,(PROCESS-NAME,DownloadServer.exe)," + DOWNLOAD, // *.PIKPAK DOWNLOAD ENGINE
+    "SUB-RULE,(PROCESS-NAME,IDMan.exe)," + DOWNLOAD, // *.IDM
+    "SUB-RULE,(PROCESS-NAME,PotPlayerMini64.exe)," + DOWNLOAD, // *.POTPLAYER
+    "SUB-RULE,(PROCESS-NAME,PowerToys.Update.exe)," + DOWNLOAD, // *.POWERTOY UPDATER
+    "SUB-RULE,(PROCESS-NAME,draw.io.exe)," + DOWNLOAD, // *.DRAW.IO
 
+    "SUB-RULE,(PROCESS-NAME,java.exe)," + BLACKLIST, // *.JAVA RUNTIME
     "SUB-RULE,(PROCESS-NAME,idea64.exe)," + BLACKLIST, // *.INTELLIJ IDEA
     "SUB-RULE,(PROCESS-NAME,pycharm64.exe)," + BLACKLIST, // *.PYCHARM
+    "SUB-RULE,(PROCESS-NAME,datagrip64.exe)," + BLACKLIST, // *.DATAGRIP
     "SUB-RULE,(PROCESS-NAME,code.exe)," + BLACKLIST, // *.VISUAL STUDIO CODE
+
+    "SUB-RULE,(PROCESS-NAME,Mihomo Party.exe)," + BLACKLIST, // *.MIHOMO PARTY
+    "SUB-RULE,(PROCESS-NAME,thunderbird.exe)," + BLACKLIST, // *.THUNDERBIRD
+    "SUB-RULE,(PROCESS-NAME,PowerToys.exe)," + BLACKLIST, // *.POWERTOY
     "SUB-RULE,(PROCESS-NAME,steam.exe)," + BLACKLIST, // *.STEAM
     "SUB-RULE,(PROCESS-NAME,steamwebhelper.exe)," + BLACKLIST,
     "SUB-RULE,(PROCESS-NAME,steamservice.exe)," + BLACKLIST,
     "SUB-RULE,(PROCESS-NAME,gitkraken.exe)," + BLACKLIST, // *.GITKRAKEN
+    "SUB-RULE,(PROCESS-NAME,Postman.exe)," + BLACKLIST, // *.POSTMAN
     "SUB-RULE,(PROCESS-NAME,node.exe)," + BLACKLIST, // *.NODE.JS
     "SUB-RULE,(PROCESS-NAME,Playnite.DesktopApp.exe)," + BLACKLIST, // *.PLAYNITE
     "SUB-RULE,(PROCESS-NAME,Playnite.FullscreenApp.exe)," + BLACKLIST,
@@ -180,108 +147,130 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,curl.exe)," + BLACKLIST, // *.GITHUB/REPO
     "SUB-RULE,(PROCESS-NAME,ssh.exe)," + BLACKLIST,
     "SUB-RULE,(PROCESS-NAME,git-remote-https.exe)," + BLACKLIST,
-    "SUB-RULE,(PROCESS-NAME,draw.io.exe)," + BLACKLIST, // *.DRAW.IO
-    "SUB-RULE,(PROCESS-NAME,IDMan.exe)," + BLACKLIST, // *.IDM
-    "SUB-RULE,(PROCESS-NAME,firefoxpwa.exe)," + BLACKLIST, // *.FIREFOX PWA
-    "SUB-RULE,(PROCESS-NAME,firefoxpwa-connector.exe)," + BLACKLIST,
 
+    "SUB-RULE,(PROCESS-NAME,Telegram.exe)," + WHITELIST, // *.TELEGRAM
     "SUB-RULE,(PROCESS-NAME,Clash Verge.exe)," + WHITELIST, // *.CLASH VERGE
     "SUB-RULE,(PROCESS-NAME,pikpak.exe)," + WHITELIST, // *.PIKPAK
-    "SUB-RULE,(PROCESS-NAME,PotPlayerMini64.exe)," + WHITELIST, // *.POTPLAYER
 
     "MATCH,DIRECT", // *.MATCH/ESCAPE
 ];
 
+/**
+ * 规则排序原则：访问频次高或优先级高的规则置前，反之置后，尽量让规则匹配。
+ */
 const SUB_RULES = {
     [FULLLIST]: [
         "RULE-SET,addition-reject,REJECT",
         "RULE-SET,addition-direct,DIRECT",
-        "RULE-SET,addition-openai,🟥 OPEN-AI",
-        "RULE-SET,addition-gemini,🟩 GEMINI",
-        "RULE-SET,addition-copilot,🟩 COPILOT",
-        "RULE-SET,special-reddit,🟧 REDDIT",
-        "RULE-SET,special-telegram,🟧 TELEGRAM",
-        "RULE-SET,original-telegramcidr,🟧 TELEGRAM,no-resolve",
-        "RULE-SET,special-github,🟧 GITHUB",
-        "RULE-SET,special-steam,🟧 STEAM",
-        "RULE-SET,special-epic,🟧 EPIC",
-        "RULE-SET,addition-proxy,🌠 ALL",
+        "RULE-SET,addition-proxy,ALL",
+
+        "RULE-SET,addition-openai,OPENAI",
+        "RULE-SET,special-youtube,YOUTUBE",
+        "RULE-SET,special-onedrive,DIRECT",
+        "RULE-SET,addition-gemini,GEMINI",
+        "RULE-SET,addition-copilot,ALL",
+        "RULE-SET,special-reddit,REDDIT",
+        "RULE-SET,special-telegram,TELEGRAM",
+        "RULE-SET,original-telegramcidr,TELEGRAM,no-resolve",
+        "RULE-SET,special-github,GITHUB",
+        "RULE-SET,special-steam,STEAM",
+        "RULE-SET,special-epic,ALL",
+
         "RULE-SET,original-applications,DIRECT",
         "RULE-SET,original-apple,DIRECT",
         "RULE-SET,original-icloud,DIRECT",
         "RULE-SET,original-private,DIRECT",
         "RULE-SET,original-direct,DIRECT",
-        "RULE-SET,special-pikpak,🟦 PIKPAK",
-        "RULE-SET,original-greatfire,🌠 ALL",
-        "RULE-SET,original-gfw,🌠 ALL",
-        "RULE-SET,original-proxy,🌠 ALL",
-        "RULE-SET,original-tld-not-cn,🌠 ALL",
+        "RULE-SET,special-pikpak,ALL", // *.THIS FOR PIKPAK IN BROWSER, NO DOWNLOAD TRAFFIC
+        "RULE-SET,original-greatfire,ALL",
+        "RULE-SET,original-gfw,ALL",
+        "RULE-SET,original-proxy,ALL",
+        "RULE-SET,original-tld-not-cn,ALL",
         "RULE-SET,original-reject,REJECT",
 
         "GEOIP,LAN,DIRECT,no-resolve",
         "GEOIP,CN,DIRECT,no-resolve",
 
         "IN-TYPE,SOCKS5,DIRECT", // *.WHEN TUN MODE ON, PROGRAM WITH PROXY SETUP HAVE IN-TYPE.(HTTP(S)/SOCKS5)
-        "OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS)),🌠 ALL", // *.BROWSER CAN USE ZERO OMEGA TO DISTINGUISH TYPE, ACCOMPLISH QUICK PROXY SWICHING.
+        "OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS)),ALL", // *.BROWSER CAN USE ZERO OMEGA TO DISTINGUISH TYPE, ACCOMPLISH QUICK PROXY SWICHING.
 
-        "MATCH,DIRECT"
+        "MATCH,DIRECT" // *.基本用不上但需要提供
+    ],
+    [DOWNLOAD]: [
+        "RULE-SET,addition-proxy,DOWNLOAD",
+        "RULE-SET,special-pikpak,DOWNLOAD",
+        "RULE-SET,original-greatfire,DOWNLOAD",
+        "RULE-SET,original-gfw,DOWNLOAD",
+        "RULE-SET,original-proxy,DOWNLOAD",
+        "RULE-SET,original-tld-not-cn,DOWNLOAD",
+
+        "MATCH,DIRECT" // *.ELSE NO MATCHING TRAFFIC THAT NEED PROXY CONNECTION  CAN ADD TO PRE-DOWNLOAD RULES
     ],
     [BLACKLIST]: [
         "RULE-SET,addition-reject,REJECT",
-        "RULE-SET,addition-openai,🟥 OPEN-AI",
-        "RULE-SET,addition-gemini,🟩 GEMINI",
-        "RULE-SET,addition-copilot,🟩 COPILOT",
-        "RULE-SET,special-reddit,🟧 REDDIT",
-        "RULE-SET,special-telegram,🟧 TELEGRAM",
-        "RULE-SET,original-telegramcidr,🟧 TELEGRAM,no-resolve",
-        "RULE-SET,special-github,🟧 GITHUB",
-        "RULE-SET,special-steam,🟧 STEAM",
-        "RULE-SET,special-epic,🟧 EPIC",
-        "RULE-SET,addition-proxy,🌠 ALL",
-        "RULE-SET,special-pikpak,🟦 PIKPAK",
-        "RULE-SET,original-greatfire,🌠 ALL",
-        "RULE-SET,original-gfw,🌠 ALL",
-        "RULE-SET,original-proxy,🌠 ALL",
-        "RULE-SET,original-tld-not-cn,🌠 ALL",
+        "RULE-SET,addition-proxy,ALL",
+
+        "RULE-SET,addition-openai,OPENAI",
+        "RULE-SET,special-youtube,YOUTUBE",
+        "RULE-SET,special-onedrive,DIRECT",
+        "RULE-SET,addition-gemini,GEMINI",
+        "RULE-SET,addition-copilot,ALL",
+        "RULE-SET,special-reddit,REDDIT",
+        "RULE-SET,special-telegram,TELEGRAM",
+        "RULE-SET,original-telegramcidr,TELEGRAM,no-resolve",
+        "RULE-SET,special-github,GITHUB",
+        "RULE-SET,special-steam,STEAM",
+        "RULE-SET,special-epic,ALL",
+
+        "RULE-SET,special-pikpak,DOWNLOAD",
+        "RULE-SET,original-greatfire,ALL",
+        "RULE-SET,original-gfw,ALL",
+        "RULE-SET,original-proxy,ALL",
+        "RULE-SET,original-tld-not-cn,ALL",
         "RULE-SET,original-reject,REJECT",
-        "MATCH,⚫ BLACKLIST-ESC" // *.PROGRAM WITH PROXY SETUP ONLY USE TUN MODE AND HAS NOT IN-TYPE PROPERTY, ALL NO MATCHING TRAFFIC GO HERE!!!
+
+        "MATCH,DIRECT"
     ],
     [WHITELIST]: [
         "RULE-SET,addition-reject,REJECT",
         "RULE-SET,addition-direct,DIRECT",
-        "RULE-SET,addition-openai,🟥 OPEN-AI",
-        "RULE-SET,addition-gemini,🟩 GEMINI",
-        "RULE-SET,addition-copilot,🟩 COPILOT",
-        "RULE-SET,special-reddit,🟧 REDDIT",
-        "RULE-SET,special-telegram,🟧 TELEGRAM",
-        "RULE-SET,original-telegramcidr,🟧 TELEGRAM,no-resolve",
-        "RULE-SET,special-github,🟧 GITHUB",
-        "RULE-SET,special-steam,🟧 STEAM",
-        "RULE-SET,special-epic,🟧 EPIC",
+
+        "RULE-SET,addition-openai,OPENAI",
+        "RULE-SET,special-youtube,YOUTUBE",
+        "RULE-SET,special-onedrive,DIRECT",
+        "RULE-SET,addition-gemini,GEMINI",
+        "RULE-SET,addition-copilot,ALL",
+        "RULE-SET,special-reddit,REDDIT",
+        "RULE-SET,special-telegram,TELEGRAM",
+        "RULE-SET,original-telegramcidr,TELEGRAM,no-resolve",
+        "RULE-SET,special-github,GITHUB",
+        "RULE-SET,special-steam,STEAM",
+        "RULE-SET,special-epic,ALL",
+
         "RULE-SET,original-applications,DIRECT",
         "RULE-SET,original-apple,DIRECT",
         "RULE-SET,original-icloud,DIRECT",
         "RULE-SET,original-private,DIRECT",
         "RULE-SET,original-direct,DIRECT",
-        "RULE-SET,special-pikpak,🟦 PIKPAK",
         "RULE-SET,original-reject,REJECT",
+        "RULE-SET,special-pikpak,DOWNLOAD",
+
         "GEOIP,LAN,DIRECT,no-resolve",
         "GEOIP,CN,DIRECT,no-resolve",
-        "MATCH,🌠 ALL" // *.PROGRAM WITH PROXY SETUP ONLY USE TUN MODE AND HAS NOT IN-TYPE PROPERTY, ALL NO MATCHING TRAFFIC GO HERE!!!
+
+        "MATCH,ALL" // *.PROGRAM WITH PROXY SETUP ONLY USE TUN MODE AND HAS NOT IN-TYPE PROPERTY, ALL NO MATCHING TRAFFIC GO HERE!!!
     ],
-    [PROXIES]: [
-        "MATCH,🌠 ALL", // *.COMPLETE RELIANCE ON AGENTS
+    [PROXY]: [
+        "MATCH,ALL", // *.COMPLETE RELIANCE ON AGENTS
     ]
 };
 
 module.exports = {
-    PROXY_PROVIDER_PATH,
-    PROXY_PROVIDER_TYPE,
-    PROXY_PROVIDERS_MAP,
-    ALL_PROFILES_OUTPUT,
-    PROVIDER_GROUPS,
+    OVERRIDE_MAPPING,
+    RULES_PROVIDER_TYPE,
     GROUPS,
     RULES,
     SUB_RULES,
     FULLLIST,
+    READ_PROVIDER,
 };

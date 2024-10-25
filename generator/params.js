@@ -1,11 +1,11 @@
 const PROFILE_PATH = "d:/program files/mihomo party/data/override/192b4acc89e.js";
 
-const COLLECT_APPEND = true;
+const COLLECT_APPEND = true; // *.是否在代理组中添加指定订阅的节点集合
 const COLLECT_SYMBOL = "-CHECK";
 const COLLECT_TYPE = "select";
 const COLLECT_PROXIES = ["REJECT"];
 const COLLECT_ICON = "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/Airport.png";
-const COLLECT_FILTER = "^(?!.*(?:套|剩|网|请|官|备|此|重)).*$";
+const COLLECT_FILTER = "^(?!.*(?:套|剩|网|请|官|备|此|重)).*$"; // *.过滤掉包含指定关键字的节点
 
 const PROXY_PROVIDER_REG = /\b.*/;
 const SUBS_COLLECT_REGEX = /\b.+?\b/;
@@ -23,13 +23,29 @@ const TYPE_MAP = {
 }
 
 /**
- * 节点之间的质量差距不大时，可以选用 load-balance 策略。
+ * 关于嵌套组之间 lazy: false 的问题，该参数不具备传递性。
+ * 
+ * 一个简单的场景，即 A 组为 select 类型，其中嵌套了 B 组 fallback 类型，同时 B 组中嵌套了 C 组 url-test 类型，
+ * 后俩组均设置了 lazy: false 参数。那么：
+ * 
+ * - 当规则匹配 A 组时，它只会使用选中的 B 组节点而不会触发该 B 组的 lazy: false 策略，因为当前直接使用的是 A 组而不是 B 组；
+ * - 同样地，如果特地去对 B 组进行延迟，那么它也不会触发 C 组的 lazy: false 策略，因为延迟测试直接针对的是 B 组而不是 C 组。
+ * 
+ * 一种错觉是认为 lazy: false 参数会传递给所有嵌套组，但实际上软件启动时会对所有组进行一次延迟测试。所以只要节点质量高，
+ * 那网络就不会断连。这便产生了一种错觉，让人误以为 lazy: false 参数生效了（可传递），实际只是因为节点质量高，仅此而已。
+ * 
+ * 所以很多时候会看到订阅提供商会将所有节点集中在一个组中，并直接使用 load-balance 或 url-test 策略，而不使用所谓嵌套组。
+ * 这样能够保证直接使用的永远是 load-balance 或 url-test 策略组，以保证 lazy: false 参数一直生效。
+ */
+
+/**
+ * 节点之间的质量差距不大时，可选用 load-balance 策略。
  */
 const LOAD_BALANCE = "load-balance"
 const LOAD_BALANCE_PARAMS = {
     url: "http://www.google.com/generate_204",
-    strategy: "consistent-hashing",
-    lazy: true,
+    strategy: "consistent-hashing", // *.consistent-hashing：相同域名的请求会被转发到同一个节点
+    lazy: false,
     interval: 300,
     timeout: 2500,
     'max-failed-times': 2,
@@ -37,13 +53,13 @@ const LOAD_BALANCE_PARAMS = {
 };
 
 /**
- * 节点之间的质量存在一定差距时，选用 url-test 策略。
+ * 节点之间的质量存在一定差距时，可选用 url-test 策略。
  */
 const URL_TEST = "url-test";
 const URL_TEST_PARAMS = {
     url: "http://www.google.com/generate_204",
     tolerance: 50, // *.目标节点的延迟小于当前选择节点的延迟至少 tolerance 值时，才会切换到目标节点
-    lazy: true,
+    lazy: false,
     interval: 300,
     timeout: 2500,
     'max-failed-times': 2,
@@ -52,11 +68,13 @@ const URL_TEST_PARAMS = {
 
 /**
  * 不同于 load-balance 和 url-test 策略， fallback 更像一种高可用方案。
+ * 
+ * 提示：GUI 通常会提供一种按节点延迟排序的功能，该功能配合 fallback 时即等同于使用 url-test 策略。
  */
 const FALLBACK = "fallback";
 const FALLBACK_PARAMS = {
     url: "http://www.google.com/generate_204",
-    lazy: true,
+    lazy: false,
     interval: 300,
     timeout: 2500,
     'max-failed-times': 2,
@@ -90,6 +108,8 @@ const OVERRIDE = {
 /**
  * 许多配置 Mihomo Party 都有提供，默认情况下客户端提供的规则会覆盖本配置文件提供的规则。
  * 即客户端上的规则其优先级高于配置文件中的规则，为了避免不必要的错误，尽量保持客户端上的规则与本配置一致。
+ * 
+ * 例如 DNS 配置，仅修改此配置的 DNS 配置是无法生效的，必须在客户端上同步修改 DNS 配置（或只修改客户端上的 DNS 配置）。
  */
 const BASIC_BUILT = () => {
 
@@ -137,7 +157,7 @@ const BASIC_BUILT = () => {
      * DNS
      *
      * TUN 模式下，所有使用 DIRECT 或遇到未添加 no-resolve 的 IP 规则的域名，
-     * 都需要使用到 DNS 规则。
+     * 都需要使用到 DNS 解析服务。
      * 
      * CLASH 将同时使用 nameserver 和 fallback 中的所有 DNS 服务器，来查询
      * 域名的真实 IP 地址，其中 fallback 中的 DNS 解析结果的优先级较高。
@@ -163,7 +183,7 @@ const BASIC_BUILT = () => {
     initConfiguration.dns.enable = false;
     initConfiguration.dns.ipv6 = false;
     initConfiguration.dns.listen = "0.0.0.0:53";
-    
+
     initConfiguration.dns["use-hosts"] = false; // *.是否使用 hosts 关键字配置的映射
     initConfiguration.dns["use-system-hosts"] = false; // *.是否使用系统 host 文件的 IP 映射
 
@@ -200,7 +220,7 @@ const BASIC_BUILT = () => {
 
     initConfiguration.dns["respect-rules"] = true;
     initConfiguration.dns["proxy-server-nameserver"] = initConfiguration.dns.nameserver.slice(); // *.硬拷贝 nameserver 配置
-   
+
     initConfiguration.dns.fallback = [];
     initConfiguration.dns["fallback-filter"] = {};
 
@@ -213,12 +233,12 @@ const BASIC_BUILT = () => {
      * 注意，在 tun.enable = true 时，CFW 会在完成配置更新时自动打开 TUN 模式，这显然不合理。
      * 而对于 CV 来说，无论 tun.enable 的值是什么，TUN 模式都不会被自动打开。
      * 
-     * 因此，建议 tun.enable 保持 false 状态，在需要使用到 TUN 模式时，再手动代开。
+     * 因此，建议 tun.enable 保持 false 状态，在需要使用到 TUN 模式时，再手动打开。
      * 
      * 另外，tun.stack 默认为 gvisor 模式，但该模式兼容性欠佳，因此建议改为 system 模式。
      * 
      * 但需要注意，使用 system 模式需要先添加防火墙规则 Add firewall rules，
-     * 同时还要安装、启用服务模式 Service Mode。
+     * 同时还要安装、启用服务模式 Service Mode（实际就是一个 Windows 服务）。
      */
     // initConfiguration["interface-name"] = "以太网"; // *.如果指定网卡则 tun.auto-detect-interface 为 false 值
     initConfiguration["tun"] = {
@@ -235,10 +255,7 @@ const BASIC_BUILT = () => {
     /*
      * PROFILE
      *
-     * 遗留问题：使用 clash-tracing 项目监控 CFW 流量时，则需要在 ~/.config/clash/config.yaml 中添加 profile 配置。
-     * 但目前 CFW 并无法正确识别该配置，即便将配置写入 config.yaml 中也不会生效。
-     * 
-     * 解决方法：直接在配置中添加 profile 信息，这样就可以使用 clash-tracing 项目来监控 CFW 流量了。
+     * 在配置中添加 profile 信息，这样就可以使用 clash-tracing 项目来监控 CLASH 流量了。
      */
     // initConfiguration["profile"] = { "tracing": false };
     initConfiguration["profile"] = {
