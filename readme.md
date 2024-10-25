@@ -21,27 +21,26 @@ NOTE: Global installation (-g) is not recommended.
 
 ### CONFIGURATION
 
-Those key configuration files are located in the `generator` directory.
-
 #### profile.js
 
-This file contains some user-customized configuration:
-
-|        PARMAS         |                         DISCRIPTION                          |
-| :-------------------: | :----------------------------------------------------------: |
-| `PROXY_PROVIDER_PATH` |                location of all config files.                 |
-| `PROXY_PROVIDER_TYPE` |                  file type of config file.                   |
-| `PROXY_PROVIDERS_MAP` |    mapping between provider names and config file names.     |
-| `ALL_PROFILES_OUTPUT` |                file name of generated config.                |
-|   `PROVIDER_GROUPS`   | details of constructing specific proxy group for each provider.. |
-|       `GROUPS`        |             details of user-defined proxy group.             |
-|        `RULES`        |                details of distribution rules.                |
-
-Note that the script requires the `profile.js` file to be placed under the `%homepath%/.run/` directory.
+Basic configuration of proxy groups and rules.
 
 #### params.js
 
 This file contains some basic configuration that doesn't change often, therefore it can be ignored.
+
+#### generate.js
+
+Responsible for generating configuration files, generally no changes are needed.
+
+<div align="center"><img src="images/readme.images/Snipaste_2024-10-26_06-45-00.png" alt="Snipaste_2024-10-26_06-45-00" style="width:70%;" /></div>
+
+|         OVERRIDE SETUP          |        DESC or REF        |
+| :-----------------------------: | :-----------------------: |
+|         `comprehensive`         | `Integrated Configuraton` |
+|            `profile`            |  `/generator/profile.js`  |
+|           `group-xxx`           | `/generator/override.js`  |
+| `addition/original/special-xxx` |    `/commons/rules/**`    |
 
 ### USAGE
 
@@ -54,8 +53,6 @@ node -e "require('./run').run()"
 Command above will also checks whether the rule files need to be updated or not, meanwhile, converts these files into Loon supported rules files.
 
 Note that the rule conversion always occurs regardless of whether the rule files need to be updated. Beside, all output logs are stored in log files with the same name as the script.
-
-For more details: [HERE](./deploy.md).
 
 ### TIPS
 
