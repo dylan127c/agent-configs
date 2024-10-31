@@ -3,17 +3,20 @@
     "replacement": {
         "PROCESS-NAME": {
             "^payload:$\r\n": "",
+            "^payload:$\n": "",
             "^\\s*#": "#",
             "^\\s{2}-\\s{1}": ""
         },
         "IP-CIDR": {
             "^payload:$\r\n": "",
+            "^payload:$\n": "",
             "^\\s*#": "#",
             "^\\s{2}-\\s{1}['\"]": "IP-CIDR,",
             "['\"]$": ",no-resolve"
         },
         "DOMAIN-SUFFIX": {
             "^payload:$\r\n": "",
+            "^payload:$\n": "",
             "^\\s*#": "#",
             "^.+?['\"]\\+?\\.?": "DOMAIN-SUFFIX,",
             "['\"]$": ""

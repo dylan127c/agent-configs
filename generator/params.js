@@ -4,7 +4,7 @@ const COLLECT_APPEND = true; // *.是否在代理组中添加指定订阅的节�
 const COLLECT_SYMBOL = "-CHECK";
 const COLLECT_TYPE = "select";
 const COLLECT_PROXIES = ["REJECT"];
-const COLLECT_ICON = "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/Airport.png";
+const COLLECT_ICON = "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Airport.png";
 const COLLECT_FILTER = "^(?!.*(?:套|剩|网|请|官|备|此|重)).*$"; // *.过滤掉包含指定关键字的节点
 
 const PROXY_PROVIDER_REG = /\b.*/;
