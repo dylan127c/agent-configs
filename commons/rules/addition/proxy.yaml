@@ -11,9 +11,6 @@
 # 自定义规则匹配顺序：reject.yaml => direct.yaml => ... => proxy.yaml 
 
 payload:
-  # Cloud Flare
-  - '+.challenges.cloudflare.com'
-
   # Google
   - '+.google.com'
 

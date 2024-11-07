@@ -1,0 +1,4 @@
+# https://mihomo.party/docs/guide/override/yaml
+payload:
+  # 有些节点过不去 CloudFlare 验证，单独整一个配置用指定分组来过验证
+  - '+.challenges.cloudflare.com'
