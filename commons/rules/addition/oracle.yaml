@@ -1,0 +1,5 @@
+# https://mihomo.party/docs/guide/override/yaml
+payload:
+  # Oracle
+  - '+.oracle.com'
+  - '+.oraclecloud.com'

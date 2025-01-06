@@ -15,4 +15,5 @@ DOMAIN-SUFFIX,360.cn
 DOMAIN-SUFFIX,qihoo.com# Bitwarden
 DOMAIN-SUFFIX,bitwarden.com
 DOMAIN-SUFFIX,bitwarden.net# Time.is
-DOMAIN-SUFFIX,time.is
+DOMAIN-SUFFIX,time.is# Listary
+DOMAIN-SUFFIX,stripe.com

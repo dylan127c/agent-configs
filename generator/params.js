@@ -5,7 +5,7 @@ const COLLECT_SYMBOL = "-CHECK";
 const COLLECT_TYPE = "select";
 const COLLECT_PROXIES = ["REJECT"];
 const COLLECT_ICON = "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Airport.png";
-const COLLECT_FILTER = "^(?!.*(?:套|剩|网|请|官|备|此|重)).*$"; // *.过滤掉包含指定关键字的节点
+const COLLECT_FILTER = "^(?!.*(?:套|剩|网|请|官|备|此|重|跳)).*$"; // *.过滤掉包含指定关键字的节点
 
 const PROXY_PROVIDER_REG = /\b.*/;
 const SUBS_COLLECT_REGEX = /\b.+?\b/;
@@ -189,7 +189,7 @@ const BASIC_BUILT = () => {
 
     initConfiguration.dns["enhanced-mode"] = "fake-ip";
     initConfiguration.dns["fake-ip-range"] = "192.18.0.1/16";
-    initConfiguration.dns["fake-ip-filter"] = [
+    initConfiguration.dns["fake-ip-filter"] = [ // *.MP 需要到 DNS 配置中添加 fake-ip-filter 参数
         "+.msftncsi.com",
         "+.msftconnecttest.com",
         "+.time.windows.com",
@@ -197,6 +197,12 @@ const BASIC_BUILT = () => {
         "+.ntp.aliyun.com",
         "+.ipv6.microsoft.com",
         "+.lan",
+        "+.mihoyo.com",
+        "+.bhsr.com",
+        "+.anticheatexpert.com",
+        "+.kurogame.com",
+        "+.qq.com",
+        "+.aki-game.com",
     ];
 
     // *.支持 DoH 协议，但域名需为 IP 地址形式（不是所有 IPv4 地址都支持 DoH 协议，因此不能直接将 IPv4 书写为 DoH 协议）
@@ -207,7 +213,9 @@ const BASIC_BUILT = () => {
         "119.28.28.28",
         "101.226.4.6", // *.360DNS
         "218.30.118.6",
-        "180.76.76.76" // *.BaiduDNS
+        "114.114.114.114", // *.114DNS
+        "114.114.115.115",
+        "180.76.76.76", // *.BaiduDNS
     ];
     initConfiguration.dns.nameserver = [
         "https://dns.alidns.com/dns-query", // *.Alidns
@@ -216,7 +224,7 @@ const BASIC_BUILT = () => {
         "https://doh.pub/dns-query", // *.DNSPod
         "https://1.12.12.12/dns-query",
         "https://120.53.53.53/dns-query",
-        "https://doh.360.cn/dns-query" // *.360DNS
+        "https://doh.360.cn/dns-query", // *.360DNS
     ];
 
     initConfiguration.dns["respect-rules"] = true;

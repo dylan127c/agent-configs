@@ -27,6 +27,14 @@ payload:
 
   # GitHub Proxy（此域名代理访问超时，已无用）
   - '+.ghproxy.com'
+
+  # Immersive Translate
+  - '+.immersivetranslate.com'
+  - '+.immersive-translate.owenyoung.com'
+  - '+.immersive-translate.deno.dev'
+
+  # 高危网站
+  - '+.yuanben.io'
   
   # Auditing rules from proxy service providers.
   # - '+.beijingspring.com'

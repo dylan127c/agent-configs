@@ -48,3 +48,6 @@ payload:
 
   # Time.is
   - '+.time.is'
+
+  # Listary
+  - '+.stripe.com'

@@ -9,4 +9,6 @@ DOMAIN-SUFFIX,docker.com
 DOMAIN-SUFFIX,listary.com
 DOMAIN-SUFFIX,gigabyte.com
 DOMAIN-SUFFIX,wiki.metacubex.one
-DOMAIN-SUFFIX,swiftnet.tech
+DOMAIN-SUFFIX,swiftnet.tech# Else Websites
+DOMAIN-SUFFIX,kpkuang.org
+DOMAIN-SUFFIX,ziziys.com

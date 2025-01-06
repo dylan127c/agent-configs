@@ -35,3 +35,7 @@ payload:
   - '+.gigabyte.com'
   - '+.wiki.metacubex.one'
   - '+.swiftnet.tech'
+
+  # Else Websites
+  - '+.kpkuang.org'
+  - '+.ziziys.com'
