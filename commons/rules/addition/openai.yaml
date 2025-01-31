@@ -8,3 +8,4 @@ payload:
   - '+.openaiapi-site.azureedge.net'
   - '+.api.statsig.com'
   - '+.chatgpt.com'
+  - '+.cdn.oaistatic.com'

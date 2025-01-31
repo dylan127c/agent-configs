@@ -39,6 +39,11 @@ function run() {
     // *.并同时将 original/special 字段规则同步到 mihomo rules folder 中，以完成所有规则的同步，符合此前的规则更新逻辑
     const file = fs.readFileSync(settings.override, "utf8");
     const result = yaml.parse(file);
+
+    // *.清空 addition 中的规则，以防从 mihomo 中移除某些规则后，这些规则仍然存在于 commons rules folder 中
+    // *.对于 mihomo 中增删改的规则，它会自行处理，因此不需要在代码中对它们进行操作
+    emptyDirectory("./commons/rules/addition");
+
     result.items.forEach(item => {
       // *.该目录下可能包含一些 .log 和 .js 文件，而规则文件 .yaml 包含对应关键字 addition、original、special 等字段
       // *.逻辑需要根据规则文件对应的关键字字段，来判断文件同步的方向
@@ -66,3 +71,12 @@ function run() {
   }
 }
 module.exports = { run };
+
+// *.清空目录函数
+function emptyDirectory(directory) {
+  const files = fs.readdirSync(directory);
+  for (const file of files) {
+    const fullPath = path.join(directory, file);
+    fs.unlinkSync(fullPath);
+  }
+}

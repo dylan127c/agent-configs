@@ -41,24 +41,28 @@ const DEFAULT_DIRECT = ["DIRECT"].concat(AUTO_GROUPS);
 const DEFAULT_REJECT = ["REJECT"].concat(AUTO_GROUPS);
 
 const GROUPS = [
-    { name: "ALL", type: "select", proxies: AUTO_GROUPS, icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/Available.png" },
-    { name: "DOWNLOAD", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[M|L\\]).*$", icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/Speedtest.png" },
+    { name: "ALL", type: "select", proxies: AUTO_GROUPS, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Available.png" },
+    { name: "DOWNLOAD", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[M|L\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Speedtest.png" },
+    { name: "SPECIFIC", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Target.png" },
     
-    { name: "OPENAI", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/lige47/QuanX-icon-rule/main/icon/ChatGPT.png" },
-    { name: "GOOGLEDRIVE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Google_Suite/Drive.png" },
-    { name: "TELEGRAM", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:SG).*$", icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Social_Media/Telegram.png" },
-    { name: "YOUTUBE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[M|L\\]).*$", icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Google_Suite/YouTube.png" },
-    { name: "GITHUB", type: "select", proxies: DEFAULT_REJECT, icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Social_Media/GitHub.png" },
-    { name: "GEMINI", type: "select", proxies: DEFAULT_REJECT, icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Google_Suite/Google.png" },
-    { name: "REDDIT", type: "select", proxies: DEFAULT_REJECT, icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Social_Media/Reddit.png" },
-    { name: "STEAM", type: "select", proxies: DEFAULT_DIRECT, icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/Steam.png" },
+    { name: "ORACLE", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Oracle_Cloud.png" },
+    { name: "CLAUDE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Claude.png" },
+    { name: "OPENAI", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/ChatGPT.png" },
+    { name: "CLOUDFLARE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cloudflare.png" },
+    { name: "GOOGLEDRIVE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Google_Drive.png" },
+    { name: "TELEGRAM", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:SG).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Telegram.png" },
+    { name: "YOUTUBE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[M|L\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/YouTube.png" },
+    { name: "GITHUB", type: "select", proxies: DEFAULT_REJECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/GitHub.png" },
+    { name: "GEMINI", type: "select", proxies: DEFAULT_REJECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Google.png" },
+    { name: "REDDIT", type: "select", proxies: DEFAULT_REJECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Reddit.png" },
+    { name: "STEAM", type: "select", proxies: DEFAULT_DIRECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Steam.png" },
     
-    { name: "HK", type: "fallback", append: true, autofilter: "^.*HK", icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Rounded_Rectangle/Hong_Kong.png" },
-    { name: "SG", type: "fallback", append: true, autofilter: "^.*SG", icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Rounded_Rectangle/Singapore.png" },
-    { name: "TW", type: "fallback", append: true, autofilter: "^.*TW", icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Rounded_Rectangle/Taiwan.png" },
-    { name: "JP", type: "fallback", append: true, autofilter: "^.*JP", icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Rounded_Rectangle/Japan.png" },
-    { name: "US", type: "fallback", append: true, autofilter: "^.*US", icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Rounded_Rectangle/United_States.png" },
-    { name: "KR", type: "fallback", append: true, autofilter: "^.*KR", icon: "https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Rounded_Rectangle/South_Korea.png" },
+    { name: "HK", type: "fallback", append: true, autofilter: "^.*HK", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
+    { name: "SG", type: "fallback", append: true, autofilter: "^.*SG", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Singapore.png" },
+    { name: "TW", type: "fallback", append: true, autofilter: "^.*TW", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Taiwan.png" },
+    { name: "JP", type: "fallback", append: true, autofilter: "^.*JP", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Japan.png" },
+    { name: "US", type: "fallback", append: true, autofilter: "^.*US", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_United_States.png" },
+    { name: "KR", type: "fallback", append: true, autofilter: "^.*KR", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_South_Korea.png" },
 ];
 
 const FULLLIST = "fulllist"; // *.针对浏览器的分流规则，较完整，可根据 HTTP 和 SOCKS5 流量进一步分配策略组
@@ -77,7 +81,7 @@ const RULES = [
      * 浏览器内置直连规则时，这些域名在不使用浏览器代理或代理插件的情况下，会走 TUN 模式
      * 的全局代理，提前过滤掉可以提高性能。
      */
-    "AND,((PROCESS-NAME,firefox.exe),(IN-TYPE,TUN)),DIRECT",
+    // "AND,((PROCESS-NAME,firefox.exe),(IN-TYPE,TUN)),DIRECT",
 
     /**
      * 特殊的程序在确认完全依赖代理后，可以使用 PROXY 子规则，或直接提供代理分组。
@@ -85,6 +89,7 @@ const RULES = [
      * 由于 GoogleDrive 对节点质量有要求，因此这里直接提供质量较高的代理分组。于其他程序
      * 而言，如果对节点质量没有要求，那么可以直接使用 PROXY 子规则，它映射 ALL 日常代理。
      */
+    "PROCESS-NAME,BitComet.exe,DIRECT", // *.是否启用代理似乎不影响 BITCOMET 的下载策略，因此直接 DIRECT 处理
     "PROCESS-NAME,GoogleDriveFS.exe,GOOGLEDRIVE", // *.GOOGLE DRIVE
 
     /**
@@ -104,6 +109,7 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,msedge.exe)," + FULLLIST,
     "SUB-RULE,(PROCESS-NAME,chrome.exe)," + FULLLIST,
 
+
     /**
      * 特殊说明，某些下载程序有类似 PikPak 内置下载器 DowanloadServer.exe 发起数量庞大 IP 请求的行为。这些 IP 请求
      * 如果都属于国内 CDN 且分流规则无法判断其所属，那么在白名单模式下，程序将会使用 PROXY 反复发起请求。
@@ -122,14 +128,17 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,PotPlayerMini64.exe)," + DOWNLOAD, // *.POTPLAYER
     "SUB-RULE,(PROCESS-NAME,PowerToys.Update.exe)," + DOWNLOAD, // *.POWERTOY UPDATER
     "SUB-RULE,(PROCESS-NAME,draw.io.exe)," + DOWNLOAD, // *.DRAW.IO
-
+    
+    "SUB-RULE,(PROCESS-NAME-REGEX,(?i).*docker.*)," + BLACKLIST, // *.DOCKER DESKTOP
     "SUB-RULE,(PROCESS-NAME,java.exe)," + BLACKLIST, // *.JAVA RUNTIME
     "SUB-RULE,(PROCESS-NAME,idea64.exe)," + BLACKLIST, // *.INTELLIJ IDEA
     "SUB-RULE,(PROCESS-NAME,pycharm64.exe)," + BLACKLIST, // *.PYCHARM
     "SUB-RULE,(PROCESS-NAME,datagrip64.exe)," + BLACKLIST, // *.DATAGRIP
     "SUB-RULE,(PROCESS-NAME,code.exe)," + BLACKLIST, // *.VISUAL STUDIO CODE
-
+    
     "SUB-RULE,(PROCESS-NAME,Mihomo Party.exe)," + BLACKLIST, // *.MIHOMO PARTY
+    "SUB-RULE,(PROCESS-NAME,SunloginClient.exe)," + BLACKLIST, // *.SUNLOGIN
+    "SUB-RULE,(PROCESS-NAME,WeaselServer.exe)," + BLACKLIST, // *.WEASEL SERVER
     "SUB-RULE,(PROCESS-NAME,thunderbird.exe)," + BLACKLIST, // *.THUNDERBIRD
     "SUB-RULE,(PROCESS-NAME,PowerToys.exe)," + BLACKLIST, // *.POWERTOY
     "SUB-RULE,(PROCESS-NAME,steam.exe)," + BLACKLIST, // *.STEAM
@@ -164,7 +173,11 @@ const SUB_RULES = {
         "RULE-SET,addition-direct,DIRECT",
         "RULE-SET,addition-proxy,ALL",
 
+        "RULE-SET,addition-specific,SPECIFIC",
+        "RULE-SET,special-claude,CLAUDE",
+        "RULE-SET,addition-oracle,ORACLE",
         "RULE-SET,addition-openai,OPENAI",
+        "RULE-SET,addition-cloudflare,CLOUDFLARE",
         "RULE-SET,special-youtube,YOUTUBE",
         "RULE-SET,special-onedrive,DIRECT",
         "RULE-SET,addition-gemini,GEMINI",
@@ -210,7 +223,11 @@ const SUB_RULES = {
         "RULE-SET,addition-reject,REJECT",
         "RULE-SET,addition-proxy,ALL",
 
+        "RULE-SET,addition-specific,SPECIFIC",
+        "RULE-SET,special-claude,CLAUDE",
+        "RULE-SET,addition-oracle,ORACLE",
         "RULE-SET,addition-openai,OPENAI",
+        "RULE-SET,addition-cloudflare,CLOUDFLARE",
         "RULE-SET,special-youtube,YOUTUBE",
         "RULE-SET,special-onedrive,DIRECT",
         "RULE-SET,addition-gemini,GEMINI",
@@ -235,7 +252,11 @@ const SUB_RULES = {
         "RULE-SET,addition-reject,REJECT",
         "RULE-SET,addition-direct,DIRECT",
 
+        "RULE-SET,addition-specific,SPECIFIC",
+        "RULE-SET,special-claude,CLAUDE",
+        "RULE-SET,addition-oracle,ORACLE",
         "RULE-SET,addition-openai,OPENAI",
+        "RULE-SET,addition-cloudflare,CLOUDFLARE",
         "RULE-SET,special-youtube,YOUTUBE",
         "RULE-SET,special-onedrive,DIRECT",
         "RULE-SET,addition-gemini,GEMINI",

@@ -1,4 +1,5 @@
-const PROFILE_PATH = "d:/program files/mihomo party/data/override/192b4acc89e.js";
+const PROFILE_SAVE = "h:/github/agent configs/generator/profile.js"; // *.仓库内的配置文件路径（备份）
+const PROFILE_PATH = "d:/program files/mihomo party/data/override/192b4acc89e.js"; // *.MP 覆写内的配置文件路径
 
 const COLLECT_APPEND = true; // *.是否在代理组中添加指定订阅的节点集合
 const COLLECT_SYMBOL = "-CHECK";
@@ -289,6 +290,7 @@ module.exports = {
     FALLBACK_PARAMS,
     HEALTH_CHECK,
     OVERRIDE,
+    PROFILE_SAVE,
     PROFILE_PATH,
     COLLECT_APPEND,
     COLLECT_SYMBOL,

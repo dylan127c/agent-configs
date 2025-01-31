@@ -25,6 +25,7 @@ const {
     FALLBACK_PARAMS,
     HEALTH_CHECK,
     OVERRIDE,
+    PROFILE_SAVE,
     PROFILE_PATH,
     COLLECT_APPEND,
     COLLECT_SYMBOL,
@@ -50,6 +51,9 @@ const {
 
 function generate(log, yaml) {
     const funcName = "generate";
+
+    // *.配置备份，将 PROFILE_PATH 中的配置文件备份到 PROFILE_SAVE 中
+    fs.copyFileSync(PROFILE_PATH, PROFILE_SAVE);
 
     const {
         COMPREHENSIVE_CONFIG_PATH,
