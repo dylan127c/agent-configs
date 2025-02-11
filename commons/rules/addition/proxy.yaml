@@ -36,7 +36,22 @@ payload:
   - '+.wiki.metacubex.one'
   - '+.swiftnet.tech'
 
+  # Bahamut
+  - '+.bahamut.com.tw'
+  - '+.digicert.com'
+  - '+.gamer.com.tw'
+  - '+.gvt1.com'
+  - '+.hinet.net'
+  - '+.viblast.com'
+
+  # Tampermonkey
+  - '+.greasyfork.org'
+
   # Else Websites
   - '+.kpkuang.org'
+  - '+.18p.fun'
+  - '+.18pfun.com'
+  - '+.gohaveababy'
   - '+.ziziys.com'
   - '+.chinaq.biz'
+  - '+.homdgcat.wiki'

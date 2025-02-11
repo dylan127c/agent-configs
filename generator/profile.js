@@ -44,19 +44,19 @@ const GROUPS = [
     { name: "ALL", type: "select", proxies: AUTO_GROUPS, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Available.png" },
     { name: "DOWNLOAD", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[M|L\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Speedtest.png" },
     { name: "SPECIFIC", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Target.png" },
-    
+
     { name: "ORACLE", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Oracle_Cloud.png" },
     { name: "CLAUDE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Claude.png" },
     { name: "OPENAI", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/ChatGPT.png" },
     { name: "CLOUDFLARE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cloudflare.png" },
     { name: "GOOGLEDRIVE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Google_Drive.png" },
+    { name: "GITHUB", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/GitHub.png" },
     { name: "TELEGRAM", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:SG).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Telegram.png" },
     { name: "YOUTUBE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[M|L\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/YouTube.png" },
-    { name: "GITHUB", type: "select", proxies: DEFAULT_REJECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/GitHub.png" },
     { name: "GEMINI", type: "select", proxies: DEFAULT_REJECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Google.png" },
     { name: "REDDIT", type: "select", proxies: DEFAULT_REJECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Reddit.png" },
     { name: "STEAM", type: "select", proxies: DEFAULT_DIRECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Steam.png" },
-    
+
     { name: "HK", type: "fallback", append: true, autofilter: "^.*HK", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
     { name: "SG", type: "fallback", append: true, autofilter: "^.*SG", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Singapore.png" },
     { name: "TW", type: "fallback", append: true, autofilter: "^.*TW", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Taiwan.png" },
@@ -128,15 +128,16 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,PotPlayerMini64.exe)," + DOWNLOAD, // *.POTPLAYER
     "SUB-RULE,(PROCESS-NAME,PowerToys.Update.exe)," + DOWNLOAD, // *.POWERTOY UPDATER
     "SUB-RULE,(PROCESS-NAME,draw.io.exe)," + DOWNLOAD, // *.DRAW.IO
-    
+
     "SUB-RULE,(PROCESS-NAME-REGEX,(?i).*docker.*)," + BLACKLIST, // *.DOCKER DESKTOP
     "SUB-RULE,(PROCESS-NAME,java.exe)," + BLACKLIST, // *.JAVA RUNTIME
     "SUB-RULE,(PROCESS-NAME,idea64.exe)," + BLACKLIST, // *.INTELLIJ IDEA
     "SUB-RULE,(PROCESS-NAME,pycharm64.exe)," + BLACKLIST, // *.PYCHARM
     "SUB-RULE,(PROCESS-NAME,datagrip64.exe)," + BLACKLIST, // *.DATAGRIP
     "SUB-RULE,(PROCESS-NAME,code.exe)," + BLACKLIST, // *.VISUAL STUDIO CODE
-    
+
     "SUB-RULE,(PROCESS-NAME,Mihomo Party.exe)," + BLACKLIST, // *.MIHOMO PARTY
+    "SUB-RULE,(PROCESS-NAME,clash-verge.exe)," + BLACKLIST, // *.CLASH VERGE
     "SUB-RULE,(PROCESS-NAME,SunloginClient.exe)," + BLACKLIST, // *.SUNLOGIN
     "SUB-RULE,(PROCESS-NAME,WeaselServer.exe)," + BLACKLIST, // *.WEASEL SERVER
     "SUB-RULE,(PROCESS-NAME,thunderbird.exe)," + BLACKLIST, // *.THUNDERBIRD
@@ -158,7 +159,6 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,git-remote-https.exe)," + BLACKLIST,
 
     "SUB-RULE,(PROCESS-NAME,Telegram.exe)," + WHITELIST, // *.TELEGRAM
-    "SUB-RULE,(PROCESS-NAME,Clash Verge.exe)," + WHITELIST, // *.CLASH VERGE
     "SUB-RULE,(PROCESS-NAME,pikpak.exe)," + WHITELIST, // *.PIKPAK
 
     "MATCH,DIRECT", // *.MATCH/ESCAPE
