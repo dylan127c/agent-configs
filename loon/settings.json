@@ -29,7 +29,10 @@
     "behavior": {
         "classical": [
             "pikpak",
-            "applications"
+            "applications",
+            "pre-block",
+            "pre-agent",
+            "pre-download"
         ],
         "ipcidr": [
             "telegramcidr",
