@@ -31,7 +31,7 @@
             "pikpak",
             "applications",
             "pre-block",
-            "pre-agent",
+            "pre-agents",
             "pre-download"
         ],
         "ipcidr": [
