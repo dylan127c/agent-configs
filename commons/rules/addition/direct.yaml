@@ -32,9 +32,6 @@ payload:
   # Razord
   - "+.clash.razord.top"
 
-  # OaiFree
-  - "+.oaifree.com"
-
   # 360 安全
   - '+.360.com'
   - '+.360safe.com'

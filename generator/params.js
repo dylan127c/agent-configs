@@ -179,18 +179,49 @@ const BASIC_BUILT = () => {
      * 
      * 无论是 CFW 还是 CV，都需要启用服务模式后，才能正常使用 TUN 模式。
      */
-    initConfiguration["hosts"] = {}; // *. hosts 关键字配置的多种类型的映射
+    initConfiguration["hosts"] = { // *. hosts 关键字配置的多种类型的映射
+        "www.google.com": "216.239.38.120",
+    };
     initConfiguration["dns"] = {};
     initConfiguration.dns.enable = false;
     initConfiguration.dns.ipv6 = false;
     initConfiguration.dns.listen = "0.0.0.0:53";
 
-    initConfiguration.dns["use-hosts"] = false; // *.是否使用 hosts 关键字配置的映射
+    initConfiguration.dns["use-hosts"] = false; // *.是否使用 hosts 关键字配置的映射（疑似无效参数，实测 hosts 配置并不受此参数影响）
     initConfiguration.dns["use-system-hosts"] = true; // *.是否使用系统 host 文件的 IP 映射
 
+    /**
+     * fake-ip 模式建立的映射关系是：域名 → 虚假 IP 地址（无文档记录，但猜测这样才合理）
+     */
     initConfiguration.dns["enhanced-mode"] = "fake-ip";
     initConfiguration.dns["fake-ip-range"] = "192.18.0.1/16";
-    initConfiguration.dns["fake-ip-filter"] = [ // *.MP 需要到 DNS 配置中添加 fake-ip-filter 参数
+
+    /**
+     * fake-ip-filter 中的域名会使用 nameserver 和 fallback 中的 DNS 服务器进行解析，
+     * 以得到真实的 IP 地址，而非使用 fake-ip-range 中的虚假 IP 地址。
+     * 
+     * 其主要的作用是屏蔽特定域名使用 fake-ip 模式进行解析，以保证部分应用能够正常运行。
+     * 
+     * 例如向日葵远程控制软件，使用 fake-ip 模式后会导致无法连接到远程主机。这时候需要
+     * 将下述三个域名添加到 fake-ip-filter 中才能保证正常运行：
+     * 
+     * 1. "+.orayimg.com",
+     * 2. "+.oray.com",
+     * 3. "+.oray.net",
+     * 
+     * 同样，像 QQ 网页版等依赖真实 IP 的应用，也需要添加到 fake-ip-filter 中以避免因解析
+     * 到虚假 IP 导致异常或错误。
+     * 
+     * 最后需注意，即使 fake‑ip‑filter 返回了真实 IP，这个真实 IP 也仅用于建立连接；规则匹配过程
+     * 依然会基于原始的域名来进行判断，即解析得到的真实 IP 在规则匹配时无用，除非原始请求是 IP 请求。
+     * 
+     * 关于如何获得原始域名，浏览器建立 HTTPS 连接时会将原始域名放在 SNI 字段中，这样 CLASH 就能
+     * 拿到原始域名进行规则匹配。
+     * 
+     * 综上，哪些域名需要添加到 fake-ip-filter 中呢？一般来说，非浏览器类应用访问的域名都要考虑
+     * 是否需要添加到 fake-ip-filter 中，比如说游戏、视频、直播等应用。
+     */
+    initConfiguration.dns["fake-ip-filter"] = [ // *.MP 需要到 DNS 配置中添加 fake-ip-filter 参数（优先级高）
         "+.msftncsi.com",
         "+.msftconnecttest.com",
         "+.time.windows.com",

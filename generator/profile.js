@@ -89,8 +89,19 @@ const RULES = [
      * 由于 GoogleDrive 对节点质量有要求，因此这里直接提供质量较高的代理分组。于其他程序
      * 而言，如果对节点质量没有要求，那么可以直接使用 PROXY 子规则，它映射 ALL 日常代理。
      */
-    "PROCESS-NAME,BitComet.exe,DIRECT", // *.是否启用代理似乎不影响 BITCOMET 的下载策略，因此直接 DIRECT 处理
     "PROCESS-NAME,GoogleDriveFS.exe,GOOGLEDRIVE", // *.GOOGLE DRIVE
+
+    /**
+     * TUN 模式下，需要规避掉 BT 下载工具的流量，因为这些工具会发起大量的连接请求，对于 Clash 来说这无异于 DDOS 攻击。
+     * 
+     * 然而，规避 BT 流量的无法依靠配置 Clash 完成，所幸某些 BT 下载工具支持配置下载网卡。
+     * 例如 BitComet 支持使用指定的网卡来完成下载请求，这种时候就可以选择让下载请求走物理网卡，而不使用 TUN 模式的虚拟网卡。
+     * 
+     * 严格来说 PikPak 流量也不应使用 TUN 模式，因为它的下载请求也会很多，可以选择开启另一个 Clash 实例并配置物理网卡名称，让 PikPak 走该实例。
+     */
+    // "PROCESS-NAME,BitComet.exe,DIRECT", // *.是否启用代理似乎不影响 BITCOMET 的下载策略，因此直接 DIRECT 处理
+    // "SUB-RULE,(PROCESS-NAME,DownloadServer.exe)," + DOWNLOAD, // *.PIKPAK DOWNLOAD ENGINE
+
 
     /**
      * 于浏览器而言，需要访问的域名很多，较难区分使用黑名单模式好还是白名单模式好。
@@ -123,7 +134,6 @@ const RULES = [
      * 建议慎用白名单模式，特别是对于 BT 下载工具来说。确定软件大多数情况下都会发起国外域名或 IP 请求的情况下，再使
      * 用白名单，否则还是使用黑名单模式，因为对于 DIRECT 策略出现的大量超时请求，mihomo 内核一般不作处理。
      */
-    "SUB-RULE,(PROCESS-NAME,DownloadServer.exe)," + DOWNLOAD, // *.PIKPAK DOWNLOAD ENGINE
     "SUB-RULE,(PROCESS-NAME,IDMan.exe)," + DOWNLOAD, // *.IDM
     "SUB-RULE,(PROCESS-NAME,PotPlayerMini64.exe)," + DOWNLOAD, // *.POTPLAYER
     "SUB-RULE,(PROCESS-NAME,PowerToys.Update.exe)," + DOWNLOAD, // *.POWERTOY UPDATER
@@ -137,8 +147,6 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,code.exe)," + BLACKLIST, // *.VISUAL STUDIO CODE
 
     "SUB-RULE,(PROCESS-NAME,Mihomo Party.exe)," + BLACKLIST, // *.MIHOMO PARTY
-    "SUB-RULE,(PROCESS-NAME,clash-verge.exe)," + BLACKLIST, // *.CLASH VERGE
-    "SUB-RULE,(PROCESS-NAME,SunloginClient.exe)," + BLACKLIST, // *.SUNLOGIN
     "SUB-RULE,(PROCESS-NAME,WeaselServer.exe)," + BLACKLIST, // *.WEASEL SERVER
     "SUB-RULE,(PROCESS-NAME,thunderbird.exe)," + BLACKLIST, // *.THUNDERBIRD
     "SUB-RULE,(PROCESS-NAME,PowerToys.exe)," + BLACKLIST, // *.POWERTOY
