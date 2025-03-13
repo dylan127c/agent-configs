@@ -104,6 +104,7 @@ DOMAIN-SUFFIX,64wiki.com
 DOMAIN-SUFFIX,66.ca
 DOMAIN-SUFFIX,666kb.com
 DOMAIN-SUFFIX,666pool.cn
+DOMAIN-SUFFIX,69shuba.cx
 DOMAIN-SUFFIX,6do.news
 DOMAIN-SUFFIX,6do.world
 DOMAIN-SUFFIX,6park.com
@@ -998,6 +999,7 @@ DOMAIN-SUFFIX,chaos.social
 DOMAIN-SUFFIX,chapm25.com
 DOMAIN-SUFFIX,character.ai
 DOMAIN-SUFFIX,chat.lmsys.org
+DOMAIN-SUFFIX,chat.openai.com
 DOMAIN-SUFFIX,chatgpt.com
 DOMAIN-SUFFIX,chatnook.com
 DOMAIN-SUFFIX,chaturbate.com
@@ -2178,6 +2180,7 @@ DOMAIN-SUFFIX,gitbook.io
 DOMAIN-SUFFIX,github.blog
 DOMAIN-SUFFIX,github.com
 DOMAIN-SUFFIX,github.io
+DOMAIN-SUFFIX,githubassets.com
 DOMAIN-SUFFIX,githubcopilot.com
 DOMAIN-SUFFIX,githubusercontent.com
 DOMAIN-SUFFIX,gizlen.net
@@ -2446,6 +2449,7 @@ DOMAIN-SUFFIX,google.tt
 DOMAIN-SUFFIX,google.vg
 DOMAIN-SUFFIX,google.vu
 DOMAIN-SUFFIX,google.ws
+DOMAIN-SUFFIX,googleapis.com
 DOMAIN-SUFFIX,googleapps.com
 DOMAIN-SUFFIX,googlearth.com
 DOMAIN-SUFFIX,googleartproject.com
@@ -3464,7 +3468,6 @@ DOMAIN-SUFFIX,mansionpoker.com
 DOMAIN-SUFFIX,manta.com
 DOMAIN-SUFFIX,manyvoices.news
 DOMAIN-SUFFIX,maplew.com
-DOMAIN-SUFFIX,maps.googleapis.com
 DOMAIN-SUFFIX,marc.info
 DOMAIN-SUFFIX,marguerite.su
 DOMAIN-SUFFIX,martau.com
@@ -3700,6 +3703,7 @@ DOMAIN-SUFFIX,multiupload.com
 DOMAIN-SUFFIX,mummysgold.com
 DOMAIN-SUFFIX,murmur.tw
 DOMAIN-SUFFIX,musicade.net
+DOMAIN-SUFFIX,musixmatch.com
 DOMAIN-SUFFIX,muslimvideo.com
 DOMAIN-SUFFIX,muzi.com
 DOMAIN-SUFFIX,muzi.net
@@ -4076,7 +4080,7 @@ DOMAIN-SUFFIX,ontrac.com
 DOMAIN-SUFFIX,oopsforum.com
 DOMAIN-SUFFIX,open.com.hk
 DOMAIN-SUFFIX,open.firstory.me
-DOMAIN-SUFFIX,openai.com
+DOMAIN-SUFFIX,open.spotify.com
 DOMAIN-SUFFIX,openallweb.com
 DOMAIN-SUFFIX,opendemocracy.net
 DOMAIN-SUFFIX,opendn.xyz
@@ -4289,6 +4293,7 @@ DOMAIN-SUFFIX,politicalchina.org
 DOMAIN-SUFFIX,politicalconsultation.org
 DOMAIN-SUFFIX,politiscales.net
 DOMAIN-SUFFIX,poloniex.com
+DOMAIN-SUFFIX,polymarket.com
 DOMAIN-SUFFIX,polymer-project.org
 DOMAIN-SUFFIX,polymerhk.com
 DOMAIN-SUFFIX,poolbinance.com
@@ -4936,7 +4941,6 @@ DOMAIN-SUFFIX,spiderpool.com
 DOMAIN-SUFFIX,spike.com
 DOMAIN-SUFFIX,sports.williamhill.com
 DOMAIN-SUFFIX,spotflux.com
-DOMAIN-SUFFIX,spotify.com
 DOMAIN-SUFFIX,spreadsheet.new
 DOMAIN-SUFFIX,spreadshirt.es
 DOMAIN-SUFFIX,spreaker.com
@@ -5450,7 +5454,6 @@ DOMAIN-SUFFIX,tracfone.com
 DOMAIN-SUFFIX,tradingview.com
 DOMAIN-SUFFIX,trans.wenweipo.com
 DOMAIN-SUFFIX,translate.goog
-DOMAIN-SUFFIX,translate.googleapis.com
 DOMAIN-SUFFIX,transparency.org
 DOMAIN-SUFFIX,treemall.com.tw
 DOMAIN-SUFFIX,trendsmap.com
@@ -5618,6 +5621,7 @@ DOMAIN-SUFFIX,twitturly.com
 DOMAIN-SUFFIX,twitvid.com
 DOMAIN-SUFFIX,twitzap.com
 DOMAIN-SUFFIX,twiyia.com
+DOMAIN-SUFFIX,twkan.com
 DOMAIN-SUFFIX,twnorth.org.tw
 DOMAIN-SUFFIX,twreporter.org
 DOMAIN-SUFFIX,twskype.com
@@ -6047,7 +6051,6 @@ DOMAIN-SUFFIX,wikisource.org
 DOMAIN-SUFFIX,wikiversity.org
 DOMAIN-SUFFIX,wikivoyage.org
 DOMAIN-SUFFIX,wikiwand.com
-DOMAIN-SUFFIX,wikiwiki.jp
 DOMAIN-SUFFIX,wiktionary.org
 DOMAIN-SUFFIX,wildammo.com
 DOMAIN-SUFFIX,williamhill.com

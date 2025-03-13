@@ -1,0 +1,7 @@
+# 如果不想经过大量规则最终仍走 MATCH 提供的 DIRECT 策略，
+# 或存在大量请求亟需提前放行，则可以将配置写在此文档中。
+payload:
+  - PROCESS-NAME,StarRail.exe
+  - PRPCESS-NAME,quark.exe
+  - PRPCESS-NAME,HipsDaemon.exe
+  - PRECESS-NAME,WeChat.exe

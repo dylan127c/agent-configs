@@ -74,6 +74,7 @@ const PROXY = "proxy"; // *.针对完全依赖代理的程序，将直接 MATC
 // *.QUALIFICATION SCREENING
 const RULES = [
     "RULE-SET,addition-pre-block,REJECT", // *.需要提前拦截的域名，例如参与 PCDN 的域名，规则为 classical 类型
+    "RULE-SET,addition-pre-direct,DIRECT", // *.需要提前放行的域名，例如游戏或网盘程序（规则为 classical 类型）
     "RULE-SET,addition-pre-agents,ALL", // *.不纳入程序管控，但需要代理服务的域名，规则为 classical 类型
     "RULE-SET,addition-pre-download,DOWNLOAD", // *.没有使用 DOWNLOAD 子规则的、但存在大量下载流量的域名，规则为 classical 类型
 
