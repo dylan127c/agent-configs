@@ -2,6 +2,6 @@
 # 或存在大量请求亟需提前放行，则可以将配置写在此文档中。
 payload:
   - PROCESS-NAME,StarRail.exe
-  - PRPCESS-NAME,quark.exe
-  - PRPCESS-NAME,HipsDaemon.exe
-  - PRECESS-NAME,WeChat.exe
+  - PROCESS-NAME,quark.exe
+  - PROCESS-NAME,HipsDaemon.exe
+  - PROCESS-NAME,WeChat.exe

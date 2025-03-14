@@ -47,6 +47,10 @@ payload:
   # Tampermonkey
   - '+.greasyfork.org'
 
+  # Hugging Face
+  - '+.huggingface.co'
+  - '+.hf.co'
+
   # Else Websites
   - '+.kpkuang.org'
   - '+.18p.fun'

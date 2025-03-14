@@ -16,7 +16,9 @@ DOMAIN-SUFFIX,gamer.com.tw
 DOMAIN-SUFFIX,gvt1.com
 DOMAIN-SUFFIX,hinet.net
 DOMAIN-SUFFIX,viblast.com# Tampermonkey
-DOMAIN-SUFFIX,greasyfork.org# Else Websites
+DOMAIN-SUFFIX,greasyfork.org# Hugging Face
+DOMAIN-SUFFIX,huggingface.co
+DOMAIN-SUFFIX,hf.co# Else Websites
 DOMAIN-SUFFIX,kpkuang.org
 DOMAIN-SUFFIX,18p.fun
 DOMAIN-SUFFIX,18pfun.com

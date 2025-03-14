@@ -153,8 +153,48 @@ const BASIC_BUILT = () => {
         mmdb: "https://cdn.jsdelivr.net/gh/Loyalsoldier/geoip@release/Country.mmdb",
         asn: "https://cdn.jsdelivr.net/gh/Loyalsoldier/geoip@release/GeoLite2-ASN.mmdb",
     };
+    initConfiguration["global-ua"] = "clash.rev"; // *.如果保持默认值 clash.meta 那么 MP 似乎无法更新某些资源，例如 GeoLite2-ASN.mmdb 文件
+    initConfiguration["etag-support"] = true; // *.是否启用 ETag 支持
 
-    /*
+    /**
+     * listeners 可以配置多个监听器， CLASH 会在所有监听器上同时监听。这实际等同于
+     * 在 CLASH 中配置多个其他端口，数组中的每个对象都代表一个监听器。
+     * 
+     * 监听器可以支持添加 rule、proxy 等参数，其中 proxy 参数的优先级较高，它可以是代理
+     * 或代理组，也可以是内置的 DIRECT 或 REJECT 等规则。
+     * 
+     * 参数 rule 表示此监听器所遵循的规则， 一般会将它配置为某个 sub-rule 的名称。如果子
+     * 规则无效，则  CLASH 会使用默认值 rules 来进行匹配。
+     * 
+     * 根据规则配置，只有符合要求的应用能够使用某些子规则。但利用监听器，可直接通过端口
+     * 的形式将子规则开放给所有其他应用使用，只要应用能够连接到此端口就可以使用此子规则。
+     */
+    initConfiguration["listeners"] = [
+        {
+            name: "SUPER_WHITELIST_PORT", // *.监听器名称，只用作标识符而没有其他用处
+            type: "mixed",      // *.HTTPS/SOCKS5
+            listen: "0.0.0.0",  // *.监听地址
+            port: 13768,        // *.监听端口
+            rule: "whitelist",  // *.子规则名称
+        }
+    ];
+
+    /**
+     * NTP （Network Time Protocol）配置如果启用，则会在 CLASH 启动时自动
+     * 向指定的 NTP 服务器发送请求以获取当前时间，并将其写入系统时间。
+     * 
+     * 这点非常好，因为某些代理服务提供商的节点会对时间进行验证，如果系统时间
+     * 不正确，则可能会导致节点无法使用。
+     */
+    initConfiguration["ntp"] = {
+        enable: true,
+        "write-to-system": true,    // *.是否将时间写入系统，需管理员权限
+        server: "ntp.aliyun.com",   // *.NTP 服务器
+        port: 123,
+        interval: 30, // *.更新间隔（单位：分）
+    };
+
+    /**
      * DNS
      *
      * TUN 模式下，所有使用 DIRECT 或遇到未添加 no-resolve 的 IP 规则的域名，
@@ -262,11 +302,14 @@ const BASIC_BUILT = () => {
         "https://doh.360.cn/dns-query", // *.360DNS
     ];
 
-    initConfiguration.dns["respect-rules"] = true;
-    initConfiguration.dns["proxy-server-nameserver"] = initConfiguration.dns.nameserver.slice(); // *.硬拷贝 nameserver 配置
+    // *.用于 DIRECT 出口的 DNS 服务器，如果不填则遵循 nameserver-policy、nameserver 和 fallback 的配置
+    initConfiguration.dns["direct-nameserver"] = initConfiguration.dns.nameserver.slice(); // *.硬拷贝 nameserver 配置
 
-    initConfiguration.dns.fallback = [];
-    initConfiguration.dns["fallback-filter"] = {};
+    initConfiguration.dns["respect-rules"] = true; // *.如果此项为 true 值，则需要配置 proxy-server-nameserver 参数
+    initConfiguration.dns["proxy-server-nameserver"] = initConfiguration.dns.nameserver.slice(); // *.解析代理节点的 DNS 服务器，即用于解析代理提供商的节点
+
+    initConfiguration.dns.fallback = []; // *.后备域名解析服务器，一般情况下使用境外 DNS 服务器
+    initConfiguration.dns["fallback-filter"] = {}; // *.配置 fallback 后默认启用 fallback-filter 功能，其中 geoip-code 为 cn 值
 
     /*
      * TUN（仅接管 TCP/UDP 流量）

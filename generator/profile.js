@@ -137,6 +137,7 @@ const RULES = [
      */
     "SUB-RULE,(PROCESS-NAME,IDMan.exe)," + DOWNLOAD, // *.IDM
     "SUB-RULE,(PROCESS-NAME,PotPlayerMini64.exe)," + DOWNLOAD, // *.POTPLAYER
+    "SUB-RULE,(PROCESS-NAME,whisper-faster.exe)," + DOWNLOAD, // *.FASTER WHISPER
     "SUB-RULE,(PROCESS-NAME,PowerToys.Update.exe)," + DOWNLOAD, // *.POWERTOY UPDATER
     "SUB-RULE,(PROCESS-NAME,draw.io.exe)," + DOWNLOAD, // *.DRAW.IO
 
