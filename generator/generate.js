@@ -25,6 +25,8 @@ const {
     FALLBACK_PARAMS,
     HEALTH_CHECK,
     OVERRIDE,
+    OVERRIDE_SKIP_CERT_VERIFY,
+    PROTOCOL_SKIP_CERT_VERIFY,
     PROFILE_SAVE,
     PROFILE_PATH,
     COLLECT_APPEND,
@@ -258,12 +260,30 @@ function getRuleProvider(params, yaml, override) {
 function getProxyProvider(map) {
     const provider = {};
     for (const [key, value] of Object.entries(map)) {
+        // *.其中 key 为完整的 MP 上的订阅名称
         const providerName = formatName(PROXY_PROVIDER_REG, key) || key;
 
         provider[providerName] = {};
         provider[providerName].type = "file";
         provider[providerName].path = value.id;
-        provider[providerName] = Object.assign(provider[providerName], HEALTH_CHECK, OVERRIDE);
+
+        // *.默认不跳过证书验证（较为安全）
+        let skipCertVerify = false;
+
+        // *.根据完整的订阅名称来判断是否需要启用 skip-cert-verify 属性
+        PROTOCOL_SKIP_CERT_VERIFY.forEach(protocol => {
+            if (key.toLowerCase().includes(protocol.toLowerCase())) {
+                // *.skip-cert-verify: true => 跳过证书验证
+                provider[providerName] = Object.assign(provider[providerName], HEALTH_CHECK, OVERRIDE_SKIP_CERT_VERIFY);
+                skipCertVerify = true;
+                return;
+            }
+        });
+
+        if (!skipCertVerify) {
+            // *.skip-cert-verify: false => 不跳过证书验证（较为安全）
+            provider[providerName] = Object.assign(provider[providerName], HEALTH_CHECK, OVERRIDE);
+        }
     }
     return provider;
 }

@@ -8,3 +8,4 @@ payload:
   - DOMAIN-SUFFIX,ngosang.github.io # BitComet.exe
   - DOMAIN-SUFFIX,cf.trackerslist.com # BitComet.exe
   - DOMAIN-SUFFIX,tracker.openwebtorrent.com #BitComet.exe
+  - DOMAIN-SUFFIX,cdn.jsdelivr.net

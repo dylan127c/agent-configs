@@ -10,7 +10,7 @@ const COLLECT_FILTER = "^(?!.*(?:套|剩|网|请|官|备|此|重|跳)).*$"; // *
 
 const PROXY_PROVIDER_REG = /\b.*/;
 const SUBS_COLLECT_REGEX = /\b.+?\b/;
-const PROXY_GROUPS_REGEX = /(?<=\[).*(?=\])/;
+const PROXY_GROUPS_REGEX = /(?<=\[).*?(?=\])/;
 
 const FLAG = { HK: "🇭🇰", SG: "🇸🇬", TW: "🇹🇼", US: "🇺🇸", JP: "🇯🇵", UK: "🇬🇧", KR: "🇰🇷", MY: "🇲🇾", PL: "🇵🇱", UN: "🏴‍☠️" };
 
@@ -21,7 +21,7 @@ const DOMAIN = "domain";
 const TYPE_MAP = {
     IPCIDR: ["cidr"],
     CLASSICAL: ["special", "application", "pre"],
-}
+};
 
 /**
  * 关于嵌套组之间 lazy: false 的问题，该参数不具备传递性。
@@ -44,7 +44,7 @@ const TYPE_MAP = {
  */
 const LOAD_BALANCE = "load-balance"
 const LOAD_BALANCE_PARAMS = {
-    url: "http://www.google.com/generate_204",
+    url: "https://www.google.com/generate_204",
     strategy: "consistent-hashing", // *.consistent-hashing：相同域名的请求会被转发到同一个节点
     lazy: false,
     interval: 300,
@@ -58,7 +58,7 @@ const LOAD_BALANCE_PARAMS = {
  */
 const URL_TEST = "url-test";
 const URL_TEST_PARAMS = {
-    url: "http://www.google.com/generate_204",
+    url: "https://www.google.com/generate_204",
     tolerance: 50, // *.目标节点的延迟小于当前选择节点的延迟至少 tolerance 值时，才会切换到目标节点
     lazy: false,
     interval: 300,
@@ -74,7 +74,7 @@ const URL_TEST_PARAMS = {
  */
 const FALLBACK = "fallback";
 const FALLBACK_PARAMS = {
-    url: "http://www.google.com/generate_204",
+    url: "https://www.google.com/generate_204",
     lazy: false,
     interval: 300,
     timeout: 2500,
@@ -91,7 +91,7 @@ const FALLBACK_PARAMS = {
 const HEALTH_CHECK = {
     "health-check": {
         enable: true,
-        url: "http://www.google.com/generate_204",
+        url: "https://www.google.com/generate_204",
         lazy: true,
         interval: 300
     }
@@ -102,9 +102,32 @@ const OVERRIDE = {
         "udp": true,
         "tfo": true,
         "mptcp": true,
+        "skip-cert-verify": false,
+    }
+};
+
+/**
+ * 某些协议支持使用 SNI 指定了 TLS 握手时的服务器，它能够实现连接伪装、流量伪装等功能。
+ * 
+ * 当指定了 SNI 为例如 cdn.alibaba.com 但实际访问的是 xxx-proxy-cdn.top 时，证书验证
+ * 必然会失败。此时需要将 skip-cert-verify 设置为 true 值来跳过证书验证。
+ * 
+ * 将 skip-cert-verify 设置为 true 值，可以 确保即使证书域名不匹配，连接也能成功建立。
+ */
+const OVERRIDE_SKIP_CERT_VERIFY = {
+   "override": {
+        "udp": true,
+        "tfo": true,
+        "mptcp": true,
         "skip-cert-verify": true,
     }
 };
+
+const PROTOCOL_SKIP_CERT_VERIFY = [
+    "trojan",
+    "vmess",
+    "vless",
+];
 
 /**
  * 许多配置 Mihomo Party 都有提供，默认情况下客户端提供的规则会覆盖本配置文件提供的规则。
@@ -193,6 +216,11 @@ const BASIC_BUILT = () => {
         port: 123,
         interval: 30, // *.更新间隔（单位：分）
     };
+
+    // *.全局 TLS 指纹，用于对抗网络检查，提高一致性和隐蔽性。
+    // *.可选：chrome、firefox、safari、iOS、android、edge、360、qq 和 random 等。
+    // *.若选择 random，则按 Cloudflare Radar 数据按概率生成一个现代浏览器指纹。
+    initConfiguration["global-client-fingerprint"] = "chrome";
 
     /**
      * DNS
@@ -336,7 +364,7 @@ const BASIC_BUILT = () => {
         "dns-hijack": ["any:53"],
         "auto-redirect": false, // *.仅支持 Linux 系统，Windows 系统下配置无效
         "mtu": 1500,
-        "strict-route": false // *.可能造成问题，建议不启用
+        "strict-route": true // *.可能造成问题，造成问题则不启用
     };
 
     /*
@@ -367,6 +395,8 @@ module.exports = {
     FALLBACK_PARAMS,
     HEALTH_CHECK,
     OVERRIDE,
+    OVERRIDE_SKIP_CERT_VERIFY,
+    PROTOCOL_SKIP_CERT_VERIFY,
     PROFILE_SAVE,
     PROFILE_PATH,
     COLLECT_APPEND,
