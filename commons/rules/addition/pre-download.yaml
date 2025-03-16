@@ -16,4 +16,4 @@ payload:
   # 将 JetBrains 的 CDN 服务纳入下载规则
   - DOMAIN-SUFFIX,download-cdn.jetbrains.com # 非匿名应用，但现有规则未能匹配 DOWNLOAD 分组
   - DOMAIN-SUFFIX,downloads.marketplace.jetbrains.com
-  - DOMAIN-SUFFIX,downloads.jetbrains.com
+  - DOMAIN-SUFFIX,download.jetbrains.com

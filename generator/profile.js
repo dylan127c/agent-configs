@@ -38,24 +38,25 @@ const READ_PROVIDER = (fs, yaml) => {
 
 const AUTO_GROUPS = ["[AUTO] => HK", "[AUTO] => SG", "[AUTO] => TW", "[AUTO] => JP", "[AUTO] => US", "[AUTO] => KR"];
 const DAILER_GROUPS = [
-    "[DIALER] => MC-HK/AK-SG",
     "[DIALER] => OR-HK-CT/AK-SG",
     "[DIALER] => OR-JP-CT/AK-SG",
-    "[DIALER] => MC-SG/AK-HK",
     "[DIALER] => OR-HK-CT/AK-HK",
-    "[DIALER] => OR-JP-CT/AK-HK"
+    "[DIALER] => OR-JP-CT/AK-HK",
+    "[DIALER] => MC-HK/AK-SG",
+    "[DIALER] => MC-SG/AK-HK",
 ];
 
 const AUTO_DIRECT = ["DIRECT"].concat(AUTO_GROUPS);
 const AUTO_REJECT = ["REJECT"].concat(AUTO_GROUPS);
-const DAILER_REJECT = ["REJECT", "ALL"].concat(DAILER_GROUPS);
+const DEFAULT_DAILER = DAILER_GROUPS.concat(["ALL"]);
 
 const GROUPS = [
     { name: "ALL", type: "select", proxies: AUTO_GROUPS, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Available.png" },
     { name: "DOWNLOAD", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[M|L\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Speedtest.png" },
     { name: "SPECIFIC", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Target.png" },
 
-    { name: "ORACLE", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Oracle_Cloud.png" },
+    { name: "JETBRAINS", type: "fallback", proxies: DEFAULT_DAILER, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/JetBrains.png" },
+    { name: "ORACLE", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Oracle.png" },
     { name: "CLAUDE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Claude.png" },
     { name: "OPENAI", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/ChatGPT.png" },
     { name: "CLOUDFLARE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cloudflare.png" },
@@ -63,7 +64,6 @@ const GROUPS = [
     { name: "GITHUB", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/GitHub.png" },
     { name: "TELEGRAM", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:SG).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Telegram.png" },
     { name: "YOUTUBE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[M|L\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/YouTube.png" },
-    { name: "JETBRAINS", type: "select", proxies: DAILER_REJECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/JetBrains.png" },
     { name: "GEMINI", type: "select", proxies: AUTO_REJECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Google.png" },
     { name: "REDDIT", type: "select", proxies: AUTO_REJECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Reddit.png" },
     { name: "STEAM", type: "select", proxies: AUTO_DIRECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Steam.png" },
@@ -78,12 +78,12 @@ const GROUPS = [
     // *.内核官方提示 relay 策略即将被弃用，并建议在 proxies 上指定 dialer-proxy 以替代 relay 策略。
     // *.然而奇怪的是 relay 策略下可用的链式代理配置转换为 dialer-proxy 后不再可用，疑似存在某些问题。
     // *.对于生成式配置来说完成 dialer-proxy 的部署需要添加巨量的配置，而配置 relay 则仅需添加几个分组。
-    { name: "[DIALER] => MC-HK/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|MC.*HK).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Singapore.png" },
     { name: "[DIALER] => OR-HK-CT/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|OR.*HK.*CT).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Singapore.png" },
     { name: "[DIALER] => OR-JP-CT/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|OR.*JP.*CT).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Singapore.png" },
-    { name: "[DIALER] => MC-SG/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|MC.*SG).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
     { name: "[DIALER] => OR-HK-CT/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|OR.*HK.*CT).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
     { name: "[DIALER] => OR-JP-CT/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|OR.*JP.*CT).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
+    { name: "[DIALER] => MC-HK/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|MC.*HK).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Singapore.png" },
+    { name: "[DIALER] => MC-SG/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|MC.*SG).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
 ];
 
 const FULLLIST = "fulllist"; // *.针对浏览器的分流规则，较完整，可根据 HTTP 和 SOCKS5 流量进一步分配策略组
@@ -142,7 +142,6 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,msedge.exe)," + FULLLIST,
     "SUB-RULE,(PROCESS-NAME,chrome.exe)," + FULLLIST,
 
-
     /**
      * 特殊说明，某些下载程序有类似 PikPak 内置下载器 DowanloadServer.exe 发起数量庞大 IP 请求的行为。这些 IP 请求
      * 如果都属于国内 CDN 且分流规则无法判断其所属，那么在白名单模式下，程序将会使用 PROXY 反复发起请求。
@@ -158,36 +157,45 @@ const RULES = [
      */
     "SUB-RULE,(PROCESS-NAME,IDMan.exe)," + DOWNLOAD, // *.IDM
     "SUB-RULE,(PROCESS-NAME,PotPlayerMini64.exe)," + DOWNLOAD, // *.POTPLAYER
-    "SUB-RULE,(PROCESS-NAME,whisper-faster.exe)," + DOWNLOAD, // *.FASTER WHISPER
+    "SUB-RULE,(PROCESS-NAME,whisper-faster.exe)," + DOWNLOAD, // *.FASTER WHISPER
     "SUB-RULE,(PROCESS-NAME,PowerToys.Update.exe)," + DOWNLOAD, // *.POWERTOY UPDATER
     "SUB-RULE,(PROCESS-NAME,draw.io.exe)," + DOWNLOAD, // *.DRAW.IO
 
-    "SUB-RULE,(PROCESS-NAME-REGEX,(?i).*docker.*)," + BLACKLIST, // *.DOCKER DESKTOP
-    "SUB-RULE,(PROCESS-NAME,java.exe)," + BLACKLIST, // *.JAVA RUNTIME
+    "SUB-RULE,(PROCESS-NAME,curl.exe)," + BLACKLIST, // *.GITHUB/REPO
+    "SUB-RULE,(PROCESS-NAME,ssh.exe)," + BLACKLIST,
+    "SUB-RULE,(PROCESS-NAME,git-remote-https.exe)," + BLACKLIST,
+
+    "SUB-RULE,(PROCESS-NAME-REGEX,(?i).*docker.*)," + BLACKLIST, // *.DOCKER DESKTOP
+
+    "SUB-RULE,(PROCESS-PATH-REGEX,(?i).*jetbrains.*)," + BLACKLIST, // *.JETBRAINS
     "SUB-RULE,(PROCESS-NAME,idea64.exe)," + BLACKLIST, // *.INTELLIJ IDEA
     "SUB-RULE,(PROCESS-NAME,pycharm64.exe)," + BLACKLIST, // *.PYCHARM
     "SUB-RULE,(PROCESS-NAME,datagrip64.exe)," + BLACKLIST, // *.DATAGRIP
+    "SUB-RULE,(PROCESS-NAME,goland64.exe)," + BLACKLIST, // *.GOLAND
+    "SUB-RULE,(PROCESS-NAME,webstorm64.exe)," + BLACKLIST, // *.WEBSTORM
+
     "SUB-RULE,(PROCESS-NAME,code.exe)," + BLACKLIST, // *.VISUAL STUDIO CODE
+    "SUB-RULE,(PROCESS-NAME,java.exe)," + BLACKLIST, // *.JAVA RUNTIME
 
     "SUB-RULE,(PROCESS-NAME,Mihomo Party.exe)," + BLACKLIST, // *.MIHOMO PARTY
-    "SUB-RULE,(PROCESS-NAME,WeaselServer.exe)," + BLACKLIST, // *.WEASEL SERVER
     "SUB-RULE,(PROCESS-NAME,thunderbird.exe)," + BLACKLIST, // *.THUNDERBIRD
     "SUB-RULE,(PROCESS-NAME,PowerToys.exe)," + BLACKLIST, // *.POWERTOY
+
     "SUB-RULE,(PROCESS-NAME,steam.exe)," + BLACKLIST, // *.STEAM
     "SUB-RULE,(PROCESS-NAME,steamwebhelper.exe)," + BLACKLIST,
     "SUB-RULE,(PROCESS-NAME,steamservice.exe)," + BLACKLIST,
+
     "SUB-RULE,(PROCESS-NAME,gitkraken.exe)," + BLACKLIST, // *.GITKRAKEN
     "SUB-RULE,(PROCESS-NAME,Postman.exe)," + BLACKLIST, // *.POSTMAN
     "SUB-RULE,(PROCESS-NAME,node.exe)," + BLACKLIST, // *.NODE.JS
+
     "SUB-RULE,(PROCESS-NAME,Playnite.DesktopApp.exe)," + BLACKLIST, // *.PLAYNITE
     "SUB-RULE,(PROCESS-NAME,Playnite.FullscreenApp.exe)," + BLACKLIST,
     "SUB-RULE,(PROCESS-NAME,CefSharp.BrowserSubprocess.exe)," + BLACKLIST,
     "SUB-RULE,(PROCESS-NAME,Toolbox.exe)," + BLACKLIST,
+    
     "SUB-RULE,(PROCESS-NAME,bg3.exe)," + BLACKLIST, // *.BALDURS GATE 3
     "SUB-RULE,(PROCESS-NAME,bg3_dx11.exe)," + BLACKLIST,
-    "SUB-RULE,(PROCESS-NAME,curl.exe)," + BLACKLIST, // *.GITHUB/REPO
-    "SUB-RULE,(PROCESS-NAME,ssh.exe)," + BLACKLIST,
-    "SUB-RULE,(PROCESS-NAME,git-remote-https.exe)," + BLACKLIST,
 
     "SUB-RULE,(PROCESS-NAME,Telegram.exe)," + WHITELIST, // *.TELEGRAM
     "SUB-RULE,(PROCESS-NAME,pikpak.exe)," + WHITELIST, // *.PIKPAK
@@ -217,7 +225,7 @@ const SUB_RULES = {
         "RULE-SET,special-telegram,TELEGRAM",
         "RULE-SET,original-telegramcidr,TELEGRAM,no-resolve",
         "RULE-SET,special-github,GITHUB",
-        "RULE-SET,special-jetbrains,JETBRAINS",
+        "RULE-SET,special-jetbrains,JETBRAINS", // *.这组别要放在 Github 组别之后，因为会用到 Github 的 API 服务
         "RULE-SET,special-steam,STEAM",
         "RULE-SET,special-epic,ALL",
 
@@ -268,7 +276,7 @@ const SUB_RULES = {
         "RULE-SET,special-telegram,TELEGRAM",
         "RULE-SET,original-telegramcidr,TELEGRAM,no-resolve",
         "RULE-SET,special-github,GITHUB",
-        "RULE-SET,special-jetbrains,JETBRAINS",
+        "RULE-SET,special-jetbrains,JETBRAINS", // *.这组别要放在 Github 组别之后，因为会用到 Github 的 API 服务
         "RULE-SET,special-steam,STEAM",
         "RULE-SET,special-epic,ALL",
 
@@ -298,7 +306,7 @@ const SUB_RULES = {
         "RULE-SET,special-telegram,TELEGRAM",
         "RULE-SET,original-telegramcidr,TELEGRAM,no-resolve",
         "RULE-SET,special-github,GITHUB",
-        "RULE-SET,special-jetbrains,JETBRAINS",
+        "RULE-SET,special-jetbrains,JETBRAINS", // *.这组别要放在 Github 组别之后，因为会用到 Github 的 API 服务
         "RULE-SET,special-steam,STEAM",
         "RULE-SET,special-epic,ALL",
 
