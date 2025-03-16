@@ -91,7 +91,7 @@ function getProxyGroups(map) {
         if (value.hasOwnProperty("override")) { // *.以防万一可以检查一下是否存在 override 字段
             const script = value.override;
             delete require.cache[require.resolve(script)];
-            const { GROUP } = require(script);
+            const { GROUP } = require(script); // *.读取绑定至各个订阅配置上的 OVERRIDE 脚本中自定义 EXPORT 的 GROUP 变量
 
             if (GROUP) { // *.如果存在 GROUP 则进行下一步，它可能为 undefined 值
                 if (COLLECT_APPEND) {
@@ -194,8 +194,13 @@ function getProxyGroups(map) {
         }
 
         const filtered = providerGroupsName.filter(name => new RegExp(preset.autofilter, "i").test(name));
-        group.proxies.push(...filtered);
 
+        // *.代理链模式下存在 reverse 属性，可以更灵活地控制分组的顺序
+        if (preset.hasOwnProperty("reverse") && preset.reverse) {
+            filtered.reverse();
+        }
+        
+        group.proxies.push(...filtered);
         groupsArr.push(addTypeParams(group));
     });
 

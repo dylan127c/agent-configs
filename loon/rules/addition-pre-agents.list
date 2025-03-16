@@ -1,9 +1,9 @@
-# 某些不纳入管控程序的、依赖代理服务的域名# Anonymous Programs
+# 某些不纳入管控程序的、但依赖代理服务的或需要提前管控的域名# Anonymous Programs
 DOMAIN-SUFFIX,googleusercontent.com
 
 DOMAIN-SUFFIX,pti.store.microsoft.com # Svchost.exe
 DOMAIN-SUFFIX,ingest.twitch.tv # RadeonSoftware.exe
 DOMAIN-SUFFIX,ngosang.github.io # BitComet.exe
 DOMAIN-SUFFIX,cf.trackerslist.com # BitComet.exe
-DOMAIN-SUFFIX,tracker.openwebtorrent.com #BitComet.exe
-DOMAIN-SUFFIX,cdn.jsdelivr.net
+DOMAIN-SUFFIX,tracker.openwebtorrent.com # BitComet.exe
+DOMAIN-SUFFIX,cdn.jsdelivr.net # mihomo.exe

@@ -1,4 +1,4 @@
-# 存在大量下载请求的域名规则
+# 存在大量下载请求的、且需要代理服务的域名
 payload:
   # （VMWare）解决 CentOS 7 在添加 docker-ce 源时可能出现的网络连通性问题（需要为 yum 提供代理服务）
   # https://download.docker.com/linux/centos/docker-ce.repo
@@ -12,3 +12,8 @@ payload:
 
   # 将 PikPak 的 Storj CDN 服务纳入下载规则
   - DOMAIN-SUFFIX,smn3.storagenode.cc # 非匿名应用，但现有规则未能匹配 DOWNLOAD 分组
+
+  # 将 JetBrains 的 CDN 服务纳入下载规则
+  - DOMAIN-SUFFIX,download-cdn.jetbrains.com # 非匿名应用，但现有规则未能匹配 DOWNLOAD 分组
+  - DOMAIN-SUFFIX,downloads.marketplace.jetbrains.com
+  - DOMAIN-SUFFIX,downloads.jetbrains.com

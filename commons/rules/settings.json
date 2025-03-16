@@ -139,6 +139,12 @@
             "savePath": "./special",
             "saveName": "onedrive",
             "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/JetBrains/JetBrains_No_Resolve.yaml",
+            "savePath": "./special",
+            "saveName": "jetbrains",
+            "saveType": "yaml"
         }
     ]
 }

@@ -25,10 +25,10 @@ const READ_PROVIDER = (fs, yaml) => {
         if (item.id !== COMPREHENSIVE_CONFIG_NAME && item.override.length !== 0) {
             // *.只记录存在 override 的数据，不存在 override 值的视为不需要纳入 COMPREHENSIVE_CONFIG 配置
             // *.还需要确认 override 值是否存在导出的分组规则，这个判断逻辑交由 generate.js 来完成，这里仅记录数据
-            // *.疑似 override 值对应的数组中，只会包含一个元素，那为什么它是数组类型呢？TODO: unknown
+            // *.疑似 override 值对应的数组中，只会包含一个元素，那为什么它是数组类型呢？TODO: UNKNOWN
             const detail = {};
             detail.id = PROXY_PROVIDER_PATH + item.id + "." + PROXY_PROVIDER_TYPE; // *.id 为订阅配置对应的 YAML 文件路径
-            detail.override = GROUP_PROVIDER_PATH + item.override[0]; // *.override 为订阅配置绑定的分组规则 JS 文件路径
+            detail.override = GROUP_PROVIDER_PATH + item.override[0]; // *.override 为订阅配置绑定的分组规则的 JS 文件路径，可以直接 require 进来
 
             PROXY_PROVIDERS_MAP[item.name] = detail; // *.key 为配置名称，value 包含 id 和 override 两个字段
         };
@@ -36,9 +36,12 @@ const READ_PROVIDER = (fs, yaml) => {
     return { COMPREHENSIVE_CONFIG_PATH, COMPREHENSIVE_CONFIG_NAME, COMPREHENSIVE_CONFIG_TYPE, PROXY_PROVIDERS_MAP };
 };
 
-const AUTO_GROUPS = ["HK", "SG", "TW", "JP", "US", "KR"];
-const DEFAULT_DIRECT = ["DIRECT"].concat(AUTO_GROUPS);
-const DEFAULT_REJECT = ["REJECT"].concat(AUTO_GROUPS);
+const AUTO_GROUPS = ["[AUTO] => HK", "[AUTO] => SG", "[AUTO] => TW", "[AUTO] => JP", "[AUTO] => US", "[AUTO] => KR"];
+const DAILER_GROUPS = ["[DAILER] => HK", "[DAILER] => HK/CT", "[DAILER] => HK/CM"];
+
+const AUTO_DIRECT = ["DIRECT"].concat(AUTO_GROUPS);
+const AUTO_REJECT = ["REJECT"].concat(AUTO_GROUPS);
+const DAILER_REJECT = ["REJECT", "ALL"].concat(DAILER_GROUPS);
 
 const GROUPS = [
     { name: "ALL", type: "select", proxies: AUTO_GROUPS, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Available.png" },
@@ -53,16 +56,21 @@ const GROUPS = [
     { name: "GITHUB", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/GitHub.png" },
     { name: "TELEGRAM", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:SG).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Telegram.png" },
     { name: "YOUTUBE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[M|L\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/YouTube.png" },
-    { name: "GEMINI", type: "select", proxies: DEFAULT_REJECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Google.png" },
-    { name: "REDDIT", type: "select", proxies: DEFAULT_REJECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Reddit.png" },
-    { name: "STEAM", type: "select", proxies: DEFAULT_DIRECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Steam.png" },
+    { name: "JETBRAINS", type: "select", proxies: DAILER_REJECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/JetBrains.png" },
+    { name: "GEMINI", type: "select", proxies: AUTO_REJECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Google.png" },
+    { name: "REDDIT", type: "select", proxies: AUTO_REJECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Reddit.png" },
+    { name: "STEAM", type: "select", proxies: AUTO_DIRECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Steam.png" },
 
-    { name: "HK", type: "fallback", append: true, autofilter: "^.*HK", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
-    { name: "SG", type: "fallback", append: true, autofilter: "^.*SG", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Singapore.png" },
-    { name: "TW", type: "fallback", append: true, autofilter: "^.*TW", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Taiwan.png" },
-    { name: "JP", type: "fallback", append: true, autofilter: "^.*JP", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Japan.png" },
-    { name: "US", type: "fallback", append: true, autofilter: "^.*US", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_United_States.png" },
-    { name: "KR", type: "fallback", append: true, autofilter: "^.*KR", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_South_Korea.png" },
+    { name: "[AUTO] => HK", type: "fallback", append: true, autofilter: "^.*HK", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
+    { name: "[AUTO] => SG", type: "fallback", append: true, autofilter: "^.*SG", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Singapore.png" },
+    { name: "[AUTO] => TW", type: "fallback", append: true, autofilter: "^.*TW", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Taiwan.png" },
+    { name: "[AUTO] => JP", type: "fallback", append: true, autofilter: "^.*JP", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Japan.png" },
+    { name: "[AUTO] => US", type: "fallback", append: true, autofilter: "^.*US", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_United_States.png" },
+    { name: "[AUTO] => KR", type: "fallback", append: true, autofilter: "^.*KR", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_South_Korea.png" },
+
+    { name: "[DAILER] => HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK|OR).*HK$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
+    { name: "[DAILER] => HK/CT", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|OR.*HK.*CT)$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
+    { name: "[DAILER] => HK/CM", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|OR.*HK.*CM)$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
 ];
 
 const FULLLIST = "fulllist"; // *.针对浏览器的分流规则，较完整，可根据 HTTP 和 SOCKS5 流量进一步分配策略组
@@ -73,10 +81,10 @@ const PROXY = "proxy"; // *.针对完全依赖代理的程序，将直接 MATC
 
 // *.QUALIFICATION SCREENING
 const RULES = [
-    "RULE-SET,addition-pre-block,REJECT", // *.需要提前拦截的域名，例如参与 PCDN 的域名，规则为 classical 类型
+    "RULE-SET,addition-pre-block,REJECT", // *.需要提前拦截的域名，例如参与 PCDN 的域名（规则为 classical 类型）
     "RULE-SET,addition-pre-direct,DIRECT", // *.需要提前放行的域名，例如游戏或网盘程序（规则为 classical 类型）
-    "RULE-SET,addition-pre-agents,ALL", // *.不纳入程序管控，但需要代理服务的域名，规则为 classical 类型
-    "RULE-SET,addition-pre-download,DOWNLOAD", // *.没有使用 DOWNLOAD 子规则的、但存在大量下载流量的域名，规则为 classical 类型
+    "RULE-SET,addition-pre-download,DOWNLOAD", // *.没有使用 DOWNLOAD 子规则的、但存在大量下载流量的域名（规则为 classical 类型）
+    "RULE-SET,addition-pre-agents,ALL", // *.不纳入程序管控，但需要代理服务的域名（规则为 classical 类型）
 
     /**
      * 浏览器内置直连规则时，这些域名在不使用浏览器代理或代理插件的情况下，会走 TUN 模式
@@ -196,6 +204,7 @@ const SUB_RULES = {
         "RULE-SET,special-telegram,TELEGRAM",
         "RULE-SET,original-telegramcidr,TELEGRAM,no-resolve",
         "RULE-SET,special-github,GITHUB",
+        "RULE-SET,special-jetbrains,JETBRAINS",
         "RULE-SET,special-steam,STEAM",
         "RULE-SET,special-epic,ALL",
 
@@ -246,6 +255,7 @@ const SUB_RULES = {
         "RULE-SET,special-telegram,TELEGRAM",
         "RULE-SET,original-telegramcidr,TELEGRAM,no-resolve",
         "RULE-SET,special-github,GITHUB",
+        "RULE-SET,special-jetbrains,JETBRAINS",
         "RULE-SET,special-steam,STEAM",
         "RULE-SET,special-epic,ALL",
 
@@ -275,6 +285,7 @@ const SUB_RULES = {
         "RULE-SET,special-telegram,TELEGRAM",
         "RULE-SET,original-telegramcidr,TELEGRAM,no-resolve",
         "RULE-SET,special-github,GITHUB",
+        "RULE-SET,special-jetbrains,JETBRAINS",
         "RULE-SET,special-steam,STEAM",
         "RULE-SET,special-epic,ALL",
 

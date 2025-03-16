@@ -3,3 +3,5 @@
   - PROCESS-NAME,quark.exe
   - PROCESS-NAME,HipsDaemon.exe
   - PROCESS-NAME,WeChat.exe
+
+  - DOMAIN-SUFFIX,leetcode.cn

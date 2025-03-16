@@ -97,6 +97,9 @@ const HEALTH_CHECK = {
     }
 };
 
+/**
+ * 产生 UDP 流量的服务有游戏、通讯应用、流媒体等。 
+ */
 const OVERRIDE = {
     "override": {
         "udp": true,
@@ -141,7 +144,7 @@ const BASIC_BUILT = () => {
     let initConfiguration = {};
 
     /* BASIC CONFIGURATION */
-    initConfiguration["mixed-port"] = 13766;
+    initConfiguration["mixed-port"] = 13766; // *.HTTP(S) 和 SOCKS5 代理端口，后续使用 listeners 可以配置其他的监听端口
     initConfiguration["port"] = 0; // *.HTTP(S) 代理端口
     initConfiguration["socks-port"] = 0; // *.SOCKS5 代理端口
     initConfiguration["redir-port"] = 0; // *.Redirect 透明代理端口，仅限 Linux(Android) 和 macOS 系统，仅代理 TCP 流量
@@ -157,8 +160,8 @@ const BASIC_BUILT = () => {
     initConfiguration.authentication = [];
     initConfiguration["skip-auth-prefixes"] = ["127.0.0.1/32"];
 
-    initConfiguration["external-controller"] = "127.0.0.1:9090";
-    initConfiguration.secret = "";
+    initConfiguration["external-controller"] = "127.0.0.1:9090"; // *.该配置的 GUI 优先级较高
+    initConfiguration.secret = ""; // *.该配置的 GUI 优先级较高
 
     initConfiguration["bind-address"] = "*";
     initConfiguration["find-process-mode"] = "strict";
@@ -265,8 +268,27 @@ const BASIC_BUILT = () => {
     initConfiguration.dns["fake-ip-range"] = "192.18.0.1/16";
 
     /**
-     * fake-ip-filter 中的域名会使用 nameserver 和 fallback 中的 DNS 服务器进行解析，
-     * 以得到真实的 IP 地址，而非使用 fake-ip-range 中的虚假 IP 地址。
+     * 正常情况下的 DNS 解析流程：
+     * 
+     * 1.虚假 IP 分配：当应用程序请求解析域名时，CLASH 不向实际 DNS 服务器查询，
+     *   而是直接从内部的 fake-ip-range 中分配一个虚假 IP 地址返回给应用程序。
+     * 2.建立连接：应用程序拿到这个虚假的 IP 地址后，尝试与其建立连接；
+     * 3.CLASH 内部处理：当应用使用虚假 IP 地址建立连接时，CLASH 可以捕获请求，
+     *   并根据 FakeIP 映射查找到原始的域名并应用规则，以使用代理或直连策略。
+     * 
+     * 应用失效的关键：远程控制、P2P 等应用程序依赖真实的 IP 完成连接！
+     * 
+     * 例如，向日葵远程控制软件从 CLASH 中获取到虚假 IP 后：
+     * 
+     * 1.向日葵会尝试与虚假 IP 建立 P2P 连接；
+     * 2.但虚假 IP 是 CLASH 内部分配的虚假地址，并不存在于实际的网络中；
+     * 3.这将表现为向日葵无法与远程主机连接的假象，即远程控制无法建立。
+     * 
+     * 当域名被添加到 fake-ip-filter 后：
+     * 
+     * 1.CLASH 会使用 nameserver 和 fallback 中的 DNS 服务器对域名进行解析；
+     * 2.得到真实的 IP 地址后，CLASH 会将其返回给应用程序；
+     * 3.应用程序使用目标服务器的真实 IP 地址与之建立连接。
      * 
      * 其主要的作用是屏蔽特定域名使用 fake-ip 模式进行解析，以保证部分应用能够正常运行。
      * 
@@ -281,31 +303,35 @@ const BASIC_BUILT = () => {
      * 到虚假 IP 导致异常或错误。
      * 
      * 最后需注意，即使 fake‑ip‑filter 返回了真实 IP，这个真实 IP 也仅用于建立连接；规则匹配过程
-     * 依然会基于原始的域名来进行判断，即解析得到的真实 IP 在规则匹配时无用，除非原始请求是 IP 请求。
+     * 依然会基于原始的域名来进行判断，即解析得到的真实 IP 在规则匹配时无效。
      * 
-     * 关于如何获得原始域名，浏览器建立 HTTPS 连接时会将原始域名放在 SNI 字段中，这样 CLASH 就能
-     * 拿到原始域名进行规则匹配。
+     * 如何获得原始域名？例如建立 HTTPS 连接时，原始域名信息回放在 SNI 字段中，那么 CLASH 就能从中
+     * 取到原始域名并进行规则匹配。
      * 
-     * 综上，哪些域名需要添加到 fake-ip-filter 中呢？一般来说，非浏览器类应用访问的域名都要考虑
-     * 是否需要添加到 fake-ip-filter 中，比如说游戏、视频、直播等应用。
+     * 推荐根据实际情况来决定是否需要将域名添加 fake-ip-filter 参数中，例如并非所有远程控制软件
+     * 都需要添加特定域名信息到 fake-ip-filter 中，因此推荐根据实际异常情况来决定是否添加。
+     * 
+     * 综合 GUI 提供的日志功能及应用表现出来的异常行为，一般就可以判断出是否有必要将该应用程序关联
+     * 的域名添加到 fake-ip-filter 中了。
      */
-    initConfiguration.dns["fake-ip-filter"] = [ // *.MP 需要到 DNS 配置中添加 fake-ip-filter 参数（优先级高）
-        "+.msftncsi.com",
-        "+.msftconnecttest.com",
+    initConfiguration.dns["fake-ip-filter"] = [ // *.MP 需要到 DNS 配置中添加 fake-ip-filter 参数（GUI 的配置优先级较高）
+        "+.lan",
+        "+.ntp.aliyun.com",
         "+.time.windows.com",
         "+.time.nist.gov",
-        "+.ntp.aliyun.com",
+        "+.msftncsi.com",
+        "+.msftconnecttest.com",
         "+.ipv6.microsoft.com",
-        "+.lan",
+        "+.qq.com",
         "+.mihoyo.com",
         "+.bhsr.com",
         "+.anticheatexpert.com",
         "+.kurogame.com",
-        "+.qq.com",
         "+.aki-game.com",
         "+.orayimg.com",
         "+.oray.com",
         "+.oray.net",
+        "+.todesk.com"
     ];
 
     // *.支持 DoH 协议，但域名需为 IP 地址形式（不是所有 IPv4 地址都支持 DoH 协议，因此不能直接将 IPv4 书写为 DoH 协议）
