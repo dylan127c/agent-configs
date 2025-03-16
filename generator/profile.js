@@ -37,7 +37,14 @@ const READ_PROVIDER = (fs, yaml) => {
 };
 
 const AUTO_GROUPS = ["[AUTO] => HK", "[AUTO] => SG", "[AUTO] => TW", "[AUTO] => JP", "[AUTO] => US", "[AUTO] => KR"];
-const DAILER_GROUPS = ["[DAILER] => HK", "[DAILER] => HK/CT", "[DAILER] => HK/CM"];
+const DAILER_GROUPS = [
+    "[DIALER] => MC-HK/AK-SG",
+    "[DIALER] => OR-HK-CT/AK-SG",
+    "[DIALER] => OR-JP-CT/AK-SG",
+    "[DIALER] => MC-SG/AK-HK",
+    "[DIALER] => OR-HK-CT/AK-HK",
+    "[DIALER] => OR-JP-CT/AK-HK"
+];
 
 const AUTO_DIRECT = ["DIRECT"].concat(AUTO_GROUPS);
 const AUTO_REJECT = ["REJECT"].concat(AUTO_GROUPS);
@@ -68,9 +75,15 @@ const GROUPS = [
     { name: "[AUTO] => US", type: "fallback", append: true, autofilter: "^.*US", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_United_States.png" },
     { name: "[AUTO] => KR", type: "fallback", append: true, autofilter: "^.*KR", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_South_Korea.png" },
 
-    { name: "[DAILER] => HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK|OR).*HK$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
-    { name: "[DAILER] => HK/CT", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|OR.*HK.*CT)$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
-    { name: "[DAILER] => HK/CM", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|OR.*HK.*CM)$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
+    // *.内核官方提示 relay 策略即将被弃用，并建议在 proxies 上指定 dialer-proxy 以替代 relay 策略。
+    // *.然而奇怪的是 relay 策略下可用的链式代理配置转换为 dialer-proxy 后不再可用，疑似存在某些问题。
+    // *.对于生成式配置来说完成 dialer-proxy 的部署需要添加巨量的配置，而配置 relay 则仅需添加几个分组。
+    { name: "[DIALER] => MC-HK/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|MC.*HK).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Singapore.png" },
+    { name: "[DIALER] => OR-HK-CT/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|OR.*HK.*CT).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Singapore.png" },
+    { name: "[DIALER] => OR-JP-CT/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|OR.*JP.*CT).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Singapore.png" },
+    { name: "[DIALER] => MC-SG/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|MC.*SG).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
+    { name: "[DIALER] => OR-HK-CT/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|OR.*HK.*CT).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
+    { name: "[DIALER] => OR-JP-CT/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|OR.*JP.*CT).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
 ];
 
 const FULLLIST = "fulllist"; // *.针对浏览器的分流规则，较完整，可根据 HTTP 和 SOCKS5 流量进一步分配策略组

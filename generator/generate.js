@@ -195,7 +195,7 @@ function getProxyGroups(map) {
 
         const filtered = providerGroupsName.filter(name => new RegExp(preset.autofilter, "i").test(name));
 
-        // *.代理链模式下存在 reverse 属性，可以更灵活地控制分组的顺序
+        // *.使用 relay 代理链模式时具备 reverse 属性，它可以更灵活地控制链式代理的顺序
         if (preset.hasOwnProperty("reverse") && preset.reverse) {
             filtered.reverse();
         }
@@ -279,7 +279,7 @@ function getProxyProvider(map) {
         PROTOCOL_SKIP_CERT_VERIFY.forEach(protocol => {
             if (key.toLowerCase().includes(protocol.toLowerCase())) {
                 // *.skip-cert-verify: true => 跳过证书验证
-                provider[providerName] = Object.assign(provider[providerName], HEALTH_CHECK, OVERRIDE_SKIP_CERT_VERIFY);
+                provider[providerName] = Object.assign(provider[providerName], HEALTH_CHECK, JSON.parse(JSON.stringify(OVERRIDE_SKIP_CERT_VERIFY)));
                 skipCertVerify = true;
                 return;
             }
@@ -287,7 +287,7 @@ function getProxyProvider(map) {
 
         if (!skipCertVerify) {
             // *.skip-cert-verify: false => 不跳过证书验证（较为安全）
-            provider[providerName] = Object.assign(provider[providerName], HEALTH_CHECK, OVERRIDE);
+            provider[providerName] = Object.assign(provider[providerName], HEALTH_CHECK, JSON.parse(JSON.stringify(OVERRIDE)));
         }
     }
     return provider;
