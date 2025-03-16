@@ -56,7 +56,7 @@ const GROUPS = [
     { name: "SPECIFIC", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Target.png" },
 
     { name: "JETBRAINS", type: "fallback", proxies: DEFAULT_DAILER, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/JetBrains.png" },
-    { name: "ORACLE", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Oracle.png" },
+    { name: "ORACLE", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Orcl.png" },
     { name: "CLAUDE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Claude.png" },
     { name: "OPENAI", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/ChatGPT.png" },
     { name: "CLOUDFLARE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cloudflare.png" },
