@@ -51,39 +51,39 @@ const AUTO_REJECT = ["REJECT"].concat(AUTO_GROUPS);
 const DEFAULT_DAILER = DAILER_GROUPS.concat(["ALL"]);
 
 const GROUPS = [
-    { name: "ALL", type: "select", proxies: AUTO_GROUPS, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Available.png" },
-    { name: "DOWNLOAD", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[M|L\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Speedtest.png" },
-    { name: "SPECIFIC", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Target.png" },
+    { name: "ALL", type: "select", proxies: AUTO_GROUPS.concat(["SPECIFIC"]), icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Available_1.png" },
+    { name: "SPECIFIC", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/ULB.png" },
+    { name: "DOWNLOAD", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/SSID.png" },
 
+    { name: "GITHUB", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/GitHub_1.png" },
     { name: "JETBRAINS", type: "fallback", proxies: DEFAULT_DAILER, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/JetBrains.png" },
-    { name: "ORACLE", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Orcl.png" },
     { name: "CLAUDE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Claude.png" },
     { name: "OPENAI", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/ChatGPT.png" },
     { name: "CLOUDFLARE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cloudflare.png" },
-    { name: "GOOGLEDRIVE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Google_Drive.png" },
-    { name: "GITHUB", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/GitHub.png" },
-    { name: "TELEGRAM", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:SG).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Telegram.png" },
-    { name: "YOUTUBE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[M|L\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/YouTube.png" },
-    { name: "GEMINI", type: "select", proxies: AUTO_REJECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Google.png" },
-    { name: "REDDIT", type: "select", proxies: AUTO_REJECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Reddit.png" },
-    { name: "STEAM", type: "select", proxies: AUTO_DIRECT, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Steam.png" },
+    { name: "GOOGLEDRIVE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Google_Drive.png" },
+    { name: "YOUTUBE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube.png" },
+    { name: "TELEGRAM", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:SG).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Telegram.png" },
+    { name: "GEMINI", type: "select", proxies: AUTO_REJECT, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Google_Search.png" },
+    { name: "REDDIT", type: "select", proxies: AUTO_REJECT, icon: "https://raw.githubusercontent.com/lige47/QuanX-icon-rule/main/icon/reddit(1).png" },
+    { name: "STEAM", type: "select", proxies: AUTO_DIRECT, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Steam.png" },
+    { name: "ORACLE", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Orcl.png" },
 
-    { name: "[AUTO] => HK", type: "fallback", append: true, autofilter: "^.*HK", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
-    { name: "[AUTO] => SG", type: "fallback", append: true, autofilter: "^.*SG", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Singapore.png" },
-    { name: "[AUTO] => TW", type: "fallback", append: true, autofilter: "^.*TW", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Taiwan.png" },
-    { name: "[AUTO] => JP", type: "fallback", append: true, autofilter: "^.*JP", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Japan.png" },
-    { name: "[AUTO] => US", type: "fallback", append: true, autofilter: "^.*US", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_United_States.png" },
-    { name: "[AUTO] => KR", type: "fallback", append: true, autofilter: "^.*KR", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_South_Korea.png" },
+    { name: "[AUTO] => HK", type: "fallback", append: true, autofilter: "^.*HK", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Auto.png" },
+    { name: "[AUTO] => SG", type: "fallback", append: true, autofilter: "^.*SG", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Auto.png" },
+    { name: "[AUTO] => TW", type: "fallback", append: true, autofilter: "^.*TW", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Auto.png" },
+    { name: "[AUTO] => JP", type: "fallback", append: true, autofilter: "^.*JP", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Auto.png" },
+    { name: "[AUTO] => US", type: "fallback", append: true, autofilter: "^.*US", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Auto.png" },
+    { name: "[AUTO] => KR", type: "fallback", append: true, autofilter: "^.*KR", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Auto.png" },
 
     // *.内核官方提示 relay 策略即将被弃用，并建议在 proxies 上指定 dialer-proxy 以替代 relay 策略。
     // *.然而奇怪的是 relay 策略下可用的链式代理配置转换为 dialer-proxy 后不再可用，疑似存在某些问题。
     // *.对于生成式配置来说完成 dialer-proxy 的部署需要添加巨量的配置，而配置 relay 则仅需添加几个分组。
-    { name: "[DIALER] => OR-HK-CT/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|OR.*HK.*CT).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Singapore.png" },
-    { name: "[DIALER] => OR-JP-CT/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|OR.*JP.*CT).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Singapore.png" },
-    { name: "[DIALER] => OR-HK-CT/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|OR.*HK.*CT).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
-    { name: "[DIALER] => OR-JP-CT/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|OR.*JP.*CT).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
-    { name: "[DIALER] => MC-HK/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|MC.*HK).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Singapore.png" },
-    { name: "[DIALER] => MC-SG/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|MC.*SG).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/special/S_Hong_Kong.png" },
+    { name: "[DIALER] => OR-HK-CT/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|OR.*HK.*CT).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
+    { name: "[DIALER] => OR-JP-CT/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|OR.*JP.*CT).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
+    { name: "[DIALER] => OR-HK-CT/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|OR.*HK.*CT).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
+    { name: "[DIALER] => OR-JP-CT/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|OR.*JP.*CT).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
+    { name: "[DIALER] => MC-HK/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|MC.*HK).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
+    { name: "[DIALER] => MC-SG/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|MC.*SG).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
 ];
 
 const FULLLIST = "fulllist"; // *.针对浏览器的分流规则，较完整，可根据 HTTP 和 SOCKS5 流量进一步分配策略组
@@ -212,7 +212,6 @@ const SUB_RULES = {
         "RULE-SET,addition-direct,DIRECT",
         "RULE-SET,addition-proxy,ALL",
 
-        "RULE-SET,addition-specific,SPECIFIC",
         "RULE-SET,special-claude,CLAUDE",
         "RULE-SET,addition-oracle,ORACLE",
         "RULE-SET,addition-openai,OPENAI",
@@ -263,7 +262,6 @@ const SUB_RULES = {
         "RULE-SET,addition-reject,REJECT",
         "RULE-SET,addition-proxy,ALL",
 
-        "RULE-SET,addition-specific,SPECIFIC",
         "RULE-SET,special-claude,CLAUDE",
         "RULE-SET,addition-oracle,ORACLE",
         "RULE-SET,addition-openai,OPENAI",
@@ -293,7 +291,6 @@ const SUB_RULES = {
         "RULE-SET,addition-reject,REJECT",
         "RULE-SET,addition-direct,DIRECT",
 
-        "RULE-SET,addition-specific,SPECIFIC",
         "RULE-SET,special-claude,CLAUDE",
         "RULE-SET,addition-oracle,ORACLE",
         "RULE-SET,addition-openai,OPENAI",
