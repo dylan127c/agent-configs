@@ -1,16 +1,17 @@
 const PROFILE_SAVE = "h:/github/agent configs/generator/profile.js"; // *.仓库内的配置文件路径（备份）
 const PROFILE_PATH = "d:/program files/mihomo party/data/override/192b4acc89e.js"; // *.MP 覆写内的配置文件路径
 
-const COLLECT_APPEND = true; // *.是否在代理组中添加指定订阅的节点集合
-const COLLECT_SYMBOL = "-CHECK";
-const COLLECT_TYPE = "select";
-const COLLECT_PROXIES = ["REJECT"];
-const COLLECT_ICON = "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/PostBox.png";
-const COLLECT_FILTER = "^(?!.*(?:套|剩|网|请|官|备|此|重|跳)).*$"; // *.过滤掉包含指定关键字的节点
-
 const PROXY_PROVIDER_REG = /\b.*/;
 const SUBS_COLLECT_REGEX = /\b.+?\b/;
 const PROXY_GROUPS_REGEX = /(?<=\[).*?(?=\])/;
+
+const COLLECT_APPEND = true;        // *.是否在代理组中添加指定订阅的节点集合
+const COLLECT_SYMBOL = "[COL]";     // *.如果 SUBS_COLLECT_REGEX 无法匹配成功，则在节点集合（代理组）的命名后添加 COLLECT_SYMBOL（后缀）
+const COLLECT_TYPE = "select";      // *.节点集合的默认类型
+const COLLECT_PROXIES = ["REJECT"]; // *.节点集合的初始代理节点
+const COLLECT_ICON = "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/PostBox.png"; // *.节点集合的图标
+const COLLECT_FILTER = "^(?!.*(?:套|剩|网|请|官|备|此|重|跳)).*$"; // *.节点入组时过滤掉包含指定关键字的节点（过滤条件）
+
 
 const FLAG = { HK: "🇭🇰", SG: "🇸🇬", TW: "🇹🇼", US: "🇺🇸", JP: "🇯🇵", UK: "🇬🇧", KR: "🇰🇷", MY: "🇲🇾", PL: "🇵🇱", UN: "🏴‍☠️" };
 

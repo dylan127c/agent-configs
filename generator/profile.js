@@ -3,34 +3,40 @@
  *** name like this: 192b4acc89e.js. Finally, setup this path into params.js.   ***
  **********************************************************************************/
 
-const MIHOMO_PARTY = "d:/program files/mihomo party/"; // *.MIHOMO PARTY 安装路径
-const OVERRIDE_MAPPING = MIHOMO_PARTY + "data/override.yaml";
-const PROVIDER_MAPPING = MIHOMO_PARTY + "data/profile.yaml";
+const MIHOMO_PARTY = "d:/program files/mihomo party/"; // *.MIHOMO PARTY 安装路径（不区分大小写）
 
-const PROXY_PROVIDER_PATH = MIHOMO_PARTY + "data/profiles/";
-const GROUP_PROVIDER_PATH = MIHOMO_PARTY + "data/override/"
-const PROXY_PROVIDER_TYPE = "yaml";
+const OVERRIDE_MAPPING = MIHOMO_PARTY + "data/override.yaml";   // *.GUI => 覆写（OVERRIDE）结构文件
+const PROVIDER_MAPPING = MIHOMO_PARTY + "data/profile.yaml";    // *.GUI => 订阅（PROVIDER）结构文件
+
+const GROUP_PROVIDER_PATH = MIHOMO_PARTY + "data/override/";    // *.GUI => 覆写（OVERRIDE）结构目录
+const PROXY_PROVIDER_PATH = MIHOMO_PARTY + "data/profiles/";    // *.GUI => 订阅（PROVIDER）结构目录
 const RULES_PROVIDER_TYPE = "yaml";
+const PROXY_PROVIDER_TYPE = "yaml";
 
 const READ_PROVIDER = (fs, yaml) => {
     const file = fs.readFileSync(PROVIDER_MAPPING, "utf8");
     const result = yaml.parse(file);
 
     const COMPREHENSIVE_CONFIG_PATH = MIHOMO_PARTY + "data/profiles/";
-    const COMPREHENSIVE_CONFIG_NAME = result.current; // *.当前启用配置需定位到 COMPREHENSIVE_CONFIG 总配置上
+    const COMPREHENSIVE_CONFIG_NAME = result.current; // *.确保“启用配置”为自定义的 COMPREHENSIVE_CONFIG 总配置
     const COMPREHENSIVE_CONFIG_TYPE = "yaml";
 
     const PROXY_PROVIDERS_MAP = {};
     result.items.forEach(item => {
         if (item.id !== COMPREHENSIVE_CONFIG_NAME && item.override.length !== 0) {
             // *.只记录存在 override 的数据，不存在 override 值的视为不需要纳入 COMPREHENSIVE_CONFIG 配置
-            // *.还需要确认 override 值是否存在导出的分组规则，这个判断逻辑交由 generate.js 来完成，这里仅记录数据
-            // *.疑似 override 值对应的数组中，只会包含一个元素，那为什么它是数组类型呢？TODO: UNKNOWN
+            // *.还需要确认 override 值是否存在已导出的分组依据，这个逻辑判断交由 generate.js 完成
             const detail = {};
-            detail.id = PROXY_PROVIDER_PATH + item.id + "." + PROXY_PROVIDER_TYPE; // *.id 为订阅配置对应的 YAML 文件路径
-            detail.override = GROUP_PROVIDER_PATH + item.override[0]; // *.override 为订阅配置绑定的分组规则的 JS 文件路径，可以直接 require 进来
 
-            PROXY_PROVIDERS_MAP[item.name] = detail; // *.key 为配置名称，value 包含 id 和 override 两个字段
+            // *.detail.id 为其他“订阅配置”所对应的 YAML 文件路径
+            detail.id = PROXY_PROVIDER_PATH + item.id + "." + PROXY_PROVIDER_TYPE;
+
+            // *.detail.override 为其他“订阅配置”所绑定的分组依据（JS 文件路径），该文件在 generate.js 中可用 require 并读取
+            detail.override = GROUP_PROVIDER_PATH + item.override[0];
+
+            // *.item.name 为其他“订阅配置”所对应的组名，这里将其作为 key 值，将 detail 作为对应的 value 值
+            // *.{key, value} => {name: {id, override}}
+            PROXY_PROVIDERS_MAP[item.name] = detail;
         };
     });
     return { COMPREHENSIVE_CONFIG_PATH, COMPREHENSIVE_CONFIG_NAME, COMPREHENSIVE_CONFIG_TYPE, PROXY_PROVIDERS_MAP };
@@ -193,7 +199,7 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,Playnite.FullscreenApp.exe)," + BLACKLIST,
     "SUB-RULE,(PROCESS-NAME,CefSharp.BrowserSubprocess.exe)," + BLACKLIST,
     "SUB-RULE,(PROCESS-NAME,Toolbox.exe)," + BLACKLIST,
-    
+
     "SUB-RULE,(PROCESS-NAME,bg3.exe)," + BLACKLIST, // *.BALDURS GATE 3
     "SUB-RULE,(PROCESS-NAME,bg3_dx11.exe)," + BLACKLIST,
 
