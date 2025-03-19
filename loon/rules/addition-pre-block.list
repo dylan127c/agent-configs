@@ -1,4 +1,5 @@
-# PCDN BLOCKER
+# 提前拦截的流量，例如参与 PCDN 的域名# PCDN BLOCKER
+
 DOMAIN-SUFFIX,gjfzpt.cn
 DOMAIN-SUFFIX,szbdyd.com
 DOMAIN-SUFFIX,bsccdn.net
@@ -21,7 +22,7 @@ DOMAIN-REGEX,.*pcdn.*biliapi\.net
 DOMAIN-REGEX,.*pcdn.*youku\.com
 DOMAIN-REGEX,.*p2p.*douyucdn\.cn
 DOMAIN-REGEX,.*p2p.*qq\.com
-DOMAIN-REGEX,.*[a-z]{1}\iss[a-z]{2}\..*
-DOMAIN-REGEX,.*[a-z]{1}\a[a-z]{1}\db\..*
-DOMAIN-REGEX,.*[a-z]{1}\a[a-z]{1}\le\..*
+DOMAIN-REGEX,.*[a-z]{1}iss[a-z]{2}\..*
+DOMAIN-REGEX,.*[a-z]{1}a[a-z]{1}db\..*
+DOMAIN-REGEX,.*[a-z]{1}a[a-z]{1}le\..*
 DOMAIN-REGEX,.*th[a-z]{5}du[a-z]{2}\..*

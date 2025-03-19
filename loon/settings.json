@@ -32,7 +32,8 @@
             "applications",
             "pre-block",
             "pre-agents",
-            "pre-download"
+            "pre-download",
+            "pre-direct"
         ],
         "ipcidr": [
             "telegramcidr",

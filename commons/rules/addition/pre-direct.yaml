@@ -1,5 +1,5 @@
-# 如果不想经过大量规则最终仍走 MATCH 提供的 DIRECT 策略，
-# 或存在大量请求亟需提前放行，则可以将配置写在此文档中。
+# 提前放行的流量，例如游戏、网盘程序产生的流量
+
 payload:
   - PROCESS-NAME,StarRail.exe
   - PROCESS-NAME,quark.exe

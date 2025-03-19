@@ -9,7 +9,7 @@ const COLLECT_APPEND = true;        // *.是否在代理组中添加指定订阅
 const COLLECT_SYMBOL = "[COL]";     // *.如果 SUBS_COLLECT_REGEX 无法匹配成功，则在节点集合（代理组）的命名后添加 COLLECT_SYMBOL（后缀）
 const COLLECT_TYPE = "select";      // *.节点集合的默认类型
 const COLLECT_PROXIES = ["REJECT"]; // *.节点集合的初始代理节点
-const COLLECT_ICON = "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/PostBox.png"; // *.节点集合的图标
+const COLLECT_ICON = "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Puzzle.png"; // *.节点集合的图标
 const COLLECT_FILTER = "^(?!.*(?:套|剩|网|请|官|备|此|重|跳)).*$"; // *.节点入组时过滤掉包含指定关键字的节点（过滤条件）
 
 

@@ -1,4 +1,4 @@
-# 存在大量下载请求的、且需要代理服务的域名# （VMWare）解决 CentOS 7 在添加 docker-ce 源时可能出现的网络连通性问题（需要为 yum 提供代理服务）# https://download.docker.com/linux/centos/docker-ce.repo
+# 未知程序产生的、需要下载服务的流量；或已被管控的程序中存在大量下载请求的流量# （VMWare）解决 CentOS 7 在添加 docker-ce 源时可能出现的网络连通性问题（需要为 yum 提供代理服务）# https://download.docker.com/linux/centos/docker-ce.repo
 DOMAIN-SUFFIX,download.docker.com # 匿名应用，无法使用 PROCESS-NAME 匹配，存在大量下载请求# （VMWare）解决 Docker 在拉取镜像时可能出现的网络连通性问题
 DOMAIN-SUFFIX,docker.io # 匿名应用，无法使用 PROCESS-NAME 匹配，存在大量下载请求# 解决 IntelliJ IDEA 在拉取 Gradle 依赖时可能出现的网络连通性问题
 DOMAIN-SUFFIX,gradle.org # 非匿名应用，但现有规则未能匹配 DOWNLOAD 分组# 将 PikPak 的 Storj CDN 服务纳入下载规则

@@ -1,4 +1,5 @@
-# 存在大量下载请求的、且需要代理服务的域名
+# 未知程序产生的、需要下载服务的流量；或已被管控的程序中存在大量下载请求的流量
+
 payload:
   # （VMWare）解决 CentOS 7 在添加 docker-ce 源时可能出现的网络连通性问题（需要为 yum 提供代理服务）
   # https://download.docker.com/linux/centos/docker-ce.repo
