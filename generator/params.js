@@ -251,16 +251,20 @@ const BASIC_BUILT = () => {
      * 
      * 无论是 CFW 还是 CV，都需要启用服务模式后，才能正常使用 TUN 模式。
      */
-    initConfiguration["hosts"] = { // *. hosts 关键字配置的多种类型的映射
-        "www.google.com": "216.239.38.120",
+    initConfiguration["hosts"] = {
+        // *.hosts 关键字配置的多种类型的映射，相当于CLASH 自己的 hosts 文件
+
+        // *.注意 dns 配置中的 use-hosts 参数只控制 dns 回应，CLASH 内部的 resolver 依旧遵循此 hosts 配置
+        // *.或者简单来说，即便 use-hosts 为 false 值，CLASH 依旧会使用此 hosts 配置
+        // *.这也是为什么 use-hosts 疑似无效的原因
     };
     initConfiguration["dns"] = {};
     initConfiguration.dns.enable = false;
     initConfiguration.dns.ipv6 = false;
     initConfiguration.dns.listen = "0.0.0.0:53";
 
-    initConfiguration.dns["use-hosts"] = false; // *.是否使用 hosts 关键字配置的映射（疑似无效参数，实测 hosts 配置并不受此参数影响）
-    initConfiguration.dns["use-system-hosts"] = true; // *.是否使用系统 host 文件的 IP 映射
+    initConfiguration.dns["use-hosts"] = false; // *.是否使用 hosts 关键字配置的映射
+    initConfiguration.dns["use-system-hosts"] = true; // *.是否使用系统 hosts 文件的 IP 映射
 
     /**
      * fake-ip 模式建立的映射关系是：域名 → 虚假 IP 地址（无文档记录，但猜测这样才合理）
