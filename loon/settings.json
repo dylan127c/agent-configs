@@ -28,7 +28,6 @@
     "defaultBehavior": "domain",
     "behavior": {
         "classical": [
-            "pikpak",
             "applications",
             "pre-block",
             "pre-agents",

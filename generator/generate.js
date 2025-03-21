@@ -39,6 +39,7 @@ const {
     SUBS_COLLECT_REGEX,
     PROXY_GROUPS_REGEX,
     BASIC_BUILT,
+    CVR_PROFILES,
 } = require("./params.js");
 
 delete require.cache[require.resolve(PROFILE_PATH)];
@@ -50,6 +51,18 @@ const {
     SUB_RULES,
     READ_PROVIDER,
 } = require(PROFILE_PATH);
+
+function addonWriteIntoCVR(log, output, ...paths) {
+    const funcName = "addonWriteIntoCVR";
+    // *.将配置同步到 CVR_PROFILES 中（CLASH VERGE REV）
+    paths.forEach(p => {
+        // *.检查文件是否存在，如果存在则写入；如果不存在则跳过
+        if (fs.existsSync(p)) {
+            fs.writeFileSync(p, output, "utf-8");
+            log.info(mark(funcName), "["+ path.basename(p) + "]", "done.");
+        }
+    });
+}
 
 function generate(log, yaml) {
     const funcName = "generate";
@@ -78,6 +91,7 @@ function generate(log, yaml) {
             COMPREHENSIVE_CONFIG_NAME.replace(/$/gm, "." + COMPREHENSIVE_CONFIG_TYPE)
         ),
         output, "utf-8");
+    addonWriteIntoCVR(log, output, ...CVR_PROFILES); // *.将配置同步到 CVR_PROFILES 中（CLASH VERGE REV）
     log.info(mark(funcName), "done.");
 }
 
@@ -199,7 +213,7 @@ function getProxyGroups(map) {
         if (preset.hasOwnProperty("reverse") && preset.reverse) {
             filtered.reverse();
         }
-        
+
         group.proxies.push(...filtered);
         groupsArr.push(addTypeParams(group));
     });

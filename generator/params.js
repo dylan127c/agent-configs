@@ -1,6 +1,11 @@
 const PROFILE_SAVE = "h:/github/agent configs/generator/profile.js"; // *.仓库内的配置文件路径（备份）
 const PROFILE_PATH = "d:/program files/mihomo party/data/override/192b4acc89e.js"; // *.MP 覆写内的配置文件路径
 
+const CVR_PROFILES = [
+    "C:/Users/dylan/AppData/Roaming/io.github.clash-verge-rev.clash-verge-rev/profiles/LXYasedmprkb.yaml",  // *.LAN.NETWORK
+    "C:/Users/dylan/AppData/Roaming/io.github.clash-verge-rev.clash-verge-rev/profiles/LF56hOZiUPpV.yaml",  // *.WLAN.NETWORK
+];
+
 const PROXY_PROVIDER_REG = /\b.*/;
 const SUBS_COLLECT_REGEX = /\b.+?\b/;
 const PROXY_GROUPS_REGEX = /(?<=\[).*?(?=\])/;
@@ -119,7 +124,7 @@ const OVERRIDE = {
  * 将 skip-cert-verify 设置为 true 值，可以 确保即使证书域名不匹配，连接也能成功建立。
  */
 const OVERRIDE_SKIP_CERT_VERIFY = {
-   "override": {
+    "override": {
         "udp": true,
         "tfo": true,
         "mptcp": true,
@@ -145,11 +150,11 @@ const BASIC_BUILT = () => {
     let initConfiguration = {};
 
     /* BASIC CONFIGURATION */
-    initConfiguration["mixed-port"] = 13766; // *.HTTP(S) 和 SOCKS5 代理端口，后续使用 listeners 可以配置其他的监听端口
-    initConfiguration["port"] = 0; // *.HTTP(S) 代理端口
-    initConfiguration["socks-port"] = 0; // *.SOCKS5 代理端口
-    initConfiguration["redir-port"] = 0; // *.Redirect 透明代理端口，仅限 Linux(Android) 和 macOS 系统，仅代理 TCP 流量
-    initConfiguration["tproxy-port"] = 0; // *.TProxy 透明代理端口，仅限 Linux(Android) 系统，可代理 TCP/UDP 流量
+    initConfiguration["mixed-port"] = 13766;    // *.HTTP(S) 和 SOCKS5 代理端口，后续使用 listeners 可以配置其他的监听端口
+    initConfiguration["port"] = 0;              // *.HTTP(S) 代理端口
+    initConfiguration["socks-port"] = 0;        // *.SOCKS5 代理端口
+    initConfiguration["redir-port"] = 0;        // *.Redirect 透明代理端口，仅限 Linux(Android) 和 macOS 系统，仅代理 TCP 流量
+    initConfiguration["tproxy-port"] = 0;       // *.TProxy 透明代理端口，仅限 Linux(Android) 系统，可代理 TCP/UDP 流量
 
     initConfiguration.mode = "rule";
     initConfiguration["log-level"] = "info";
@@ -161,13 +166,13 @@ const BASIC_BUILT = () => {
     initConfiguration.authentication = [];
     initConfiguration["skip-auth-prefixes"] = ["127.0.0.1/32"];
 
-    initConfiguration["external-controller"] = "127.0.0.1:9090"; // *.该配置的 GUI 优先级较高
+    initConfiguration["external-controller"] = "127.0.0.1:9097"; // *.该配置的 GUI 优先级较高
     initConfiguration.secret = ""; // *.该配置的 GUI 优先级较高
 
     initConfiguration["bind-address"] = "*";
     initConfiguration["find-process-mode"] = "strict";
 
-    initConfiguration["unified-delay"] = true; // *.是否启用 RTT 延迟测试
+    initConfiguration["unified-delay"] = true;  // *.是否启用 RTT 延迟测试
     initConfiguration["tcp-concurrent"] = true; // *.是否开启 TCP 并发连接数限制
 
     initConfiguration["geodata-mode"] = true;
@@ -180,8 +185,8 @@ const BASIC_BUILT = () => {
         mmdb: "https://cdn.jsdelivr.net/gh/Loyalsoldier/geoip@release/Country.mmdb",
         asn: "https://cdn.jsdelivr.net/gh/Loyalsoldier/geoip@release/GeoLite2-ASN.mmdb",
     };
-    initConfiguration["global-ua"] = "clash.rev"; // *.如果保持默认值 clash.meta 那么 MP 似乎无法更新某些资源，例如 GeoLite2-ASN.mmdb 文件
-    initConfiguration["etag-support"] = true; // *.是否启用 ETag 支持
+    initConfiguration["global-ua"] = "clash.rev";   // *.如果保持默认值 clash.meta 那么 MP 似乎无法更新某些资源，例如 GeoLite2-ASN.mmdb 文件
+    initConfiguration["etag-support"] = true;       // *.是否启用 ETag 支持
 
     /**
      * listeners 可以配置多个监听器， CLASH 会在所有监听器上同时监听。这实际等同于
@@ -259,12 +264,12 @@ const BASIC_BUILT = () => {
         // *.这也是为什么 use-hosts 疑似无效的原因
     };
     initConfiguration["dns"] = {};
-    initConfiguration.dns.enable = false;
+    initConfiguration.dns.enable = true;
     initConfiguration.dns.ipv6 = false;
     initConfiguration.dns.listen = "0.0.0.0:53";
 
-    initConfiguration.dns["use-hosts"] = false; // *.是否使用 hosts 关键字配置的映射
-    initConfiguration.dns["use-system-hosts"] = true; // *.是否使用系统 hosts 文件的 IP 映射
+    initConfiguration.dns["use-hosts"] = false;         // *.是否使用 hosts 关键字配置的映射
+    initConfiguration.dns["use-system-hosts"] = true;   // *.是否使用系统 hosts 文件的 IP 映射
 
     /**
      * fake-ip 模式建立的映射关系是：域名 → 虚假 IP 地址（无文档记录，但猜测这样才合理）
@@ -440,4 +445,5 @@ module.exports = {
     SUBS_COLLECT_REGEX,
     PROXY_GROUPS_REGEX,
     BASIC_BUILT,
+    CVR_PROFILES,
 };  

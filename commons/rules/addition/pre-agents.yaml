@@ -1,11 +1,28 @@
 # 未知程序产生的、需要代理服务的流量
 # 或已知程序产生的，但仅有少量域名需要代理服务的流量
+# 避免 DNS 泄露，本规则集需要使用 no-resolve 关键字
 
 payload:
-  # Anonymous Programs
+  # 特殊规则，TUN 模式（透明代理）下浏览器会使用 host 文件中域名映射的 IP 地址，
+  # 如果这个 IP 地址需要代理服务，则需要将该 IP 地址添加到规则中，否则对应域名无法访问。
+  #
+  # 产生这种问题的根本原因是进入 Clash 的请求并非域名请求，而是 IP 地址请求：
+  #
+  # TUN：浏览器 -> 域名 -> 检查 host 文件 -> IP 地址 -> Clash
+  # SOCKS 或 HTTP：浏览器 -> 域名 -> Clash -> 检查 host 文件 -> IP 地址
+  #
+  # 这里的区别是SOCKS 或 HTTP 模式下即便得到了 IP 地址，分流也会根据原始的域名来完成；
+  # 但在 TUN 模式下，进入 Clash 的本身就是个 IP 地址，它无法得知这个 IP 地址对应的原始域名是什么。
+  #
+  # 因此在 TUN 模式下，如果确定 host 映射中的 IP 需要使用代理服务，则必须将它添加到对应的规则中。
+  
+  # FOR TUN MODE, MAPPING HOST FILE
+  - IP-CIDR,216.239.38.120/32,no-resolve
+
+  # ANONYMOUS PROGRAMS
   - DOMAIN-SUFFIX,googleusercontent.com
 
-  # Non-Anonymous Programs
+  # NON-ANONYMOUS PROGRAMS
   - DOMAIN-SUFFIX,pti.store.microsoft.com     # Svchost.exe
   - DOMAIN-SUFFIX,ingest.twitch.tv            # RadeonSoftware.exe
   - DOMAIN-SUFFIX,ngosang.github.io           # BitComet.exe

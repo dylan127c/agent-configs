@@ -141,9 +141,15 @@
             "saveType": "yaml"
         },
         {
-            "updateUrl": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/JetBrains/JetBrains_No_Resolve.yaml",
+            "updateUrl": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Jetbrains/Jetbrains_No_Resolve.yaml",
             "savePath": "./special",
             "saveName": "jetbrains",
+            "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Gemini/Gemini_No_Resolve.yaml",
+            "savePath": "./special",
+            "saveName": "gemini",
             "saveType": "yaml"
         }
     ]

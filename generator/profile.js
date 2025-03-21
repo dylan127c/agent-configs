@@ -56,12 +56,12 @@ const FILTER_GROUPS = [
     // *.内核官方提示 relay 策略即将被弃用，并建议在 proxies 上指定 dialer-proxy 以替代 relay 策略。
     // *.然而奇怪的是 relay 策略下可用的链式代理配置转换为 dialer-proxy 后不再可用，疑似存在某些问题。
     // *.对于生成式配置来说完成 dialer-proxy 的部署需要添加巨量的配置，而配置 relay 则仅需添加几个分组。
-    { name: DAILER_PREFIX + " => OR-HK-CT/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|OR.*HK.*CT).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
-    { name: DAILER_PREFIX + " => OR-JP-CT/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|OR.*JP.*CT).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
-    { name: DAILER_PREFIX + " => OR-HK-CT/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|OR.*HK.*CT).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
     { name: DAILER_PREFIX + " => OR-JP-CT/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|OR.*JP.*CT).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
-    { name: DAILER_PREFIX + " => MC-HK/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|MC.*HK).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
+    { name: DAILER_PREFIX + " => OR-HK-CT/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|OR.*HK.*CT).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
     { name: DAILER_PREFIX + " => MC-SG/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|MC.*SG).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
+    { name: DAILER_PREFIX + " => OR-JP-CT/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|OR.*JP.*CT).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
+    { name: DAILER_PREFIX + " => OR-HK-CT/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|OR.*HK.*CT).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
+    { name: DAILER_PREFIX + " => MC-HK/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|MC.*HK).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
 ];
 
 const AUTO_GROUPS = FILTER_GROUPS.filter(group => group.name.startsWith(ATUO_PREFIX)).map(group => group.name);
@@ -213,6 +213,7 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,java.exe)," + BLACKLIST,                // *.JAVA RUNTIME
 
     "SUB-RULE,(PROCESS-NAME,Mihomo Party.exe)," + BLACKLIST,        // *.MIHOMO PARTY
+    "SUB-RULE,(PROCESS-NAME,clash-verge.exe)," + BLACKLIST,         // *.CLASH VERGE
     "SUB-RULE,(PROCESS-NAME,thunderbird.exe)," + BLACKLIST,         // *.THUNDERBIRD
     "SUB-RULE,(PROCESS-NAME,PowerToys.exe)," + BLACKLIST,           // *.POWERTOY
 
@@ -254,14 +255,13 @@ const SUB_RULES = {
     [FULLLIST]: [
         "RULE-SET,addition-reject,REJECT",
         "RULE-SET,addition-direct,DIRECT",
-        "RULE-SET,addition-proxy,ALL",
 
         "RULE-SET,addition-cloudflare,CLOUDFLARE",
         "RULE-SET,addition-oracle,ORACLE",
 
         "RULE-SET,special-claude,CLAUDE",
         "RULE-SET,addition-openai,OPENAI",
-        "RULE-SET,addition-gemini,GEMINI",
+        "RULE-SET,special-gemini,GEMINI",
 
         /**
          * JETBRAINS 组别要放在 Github 组别之后，因为它会用到 Github 的 API 服务
@@ -294,6 +294,22 @@ const SUB_RULES = {
         "RULE-SET,special-pikpak,ALL", // *.THIS FOR PIKPAK IN BROWSER, NO DOWNLOAD TRAFFIC
 
         /**
+         * 额外的、需要代理服务的域名规则，推荐后置在特殊的分组规则之后。
+         * 
+         * 例如 google.com 域名会建议添加到 addition-proxy 规则集，避免匹配后续
+         * 数量庞大的默认规则集。
+         * 
+         * 但该规则会覆盖掉大部分 special-gemini 规则集内的域名规则，为了避免代理
+         * 组 GEMINI 失效，建议将 addition-proxy 规则集后置。
+         * 
+         * 因此 addition-proxy 规则集的最佳位置应该是在特殊代理组之后，同时保持在
+         * 默认规则集之前。
+         */
+        "RULE-SET,addition-proxy,ALL",
+
+        /**
+         * 默认规则集。
+         * 
          * 后续为自定义策略组无法处理的流量，规则集 original-xxx 是更为全面的规则集，
          * 但全面意味着数量庞大，顺序匹配的情况下，可能会影响 CLASH 核心的性能。
          * 
@@ -324,29 +340,30 @@ const SUB_RULES = {
     ],
     [BLACKLIST]: [
         "RULE-SET,addition-reject,REJECT",
-        "RULE-SET,addition-proxy,ALL",
-
+        
         "RULE-SET,addition-cloudflare,CLOUDFLARE",
         "RULE-SET,addition-oracle,ORACLE",
-
+        
         "RULE-SET,special-claude,CLAUDE",
         "RULE-SET,addition-openai,OPENAI",
-        "RULE-SET,addition-gemini,GEMINI",
-
+        "RULE-SET,special-gemini,GEMINI",
+        
         "RULE-SET,special-github,GITHUB",
         "RULE-SET,special-jetbrains,JETBRAINS",
-
+        
         "RULE-SET,special-onedrive,ONEDRIVE",
-
+        
         "RULE-SET,special-reddit,REDDIT",
         "RULE-SET,special-youtube,YOUTUBE",
         "RULE-SET,special-steam,STEAM",
         "RULE-SET,special-epic,EPIC",
-
+        
         "RULE-SET,special-telegram,TELEGRAM",
         "RULE-SET,original-telegramcidr,TELEGRAM,no-resolve",
-
+        
         "RULE-SET,special-pikpak,ALL", // *.NOT DOWNLOAD TRAFFIC, IT CAME FROM PIKPAK.EXE
+
+        "RULE-SET,addition-proxy,ALL",
 
         /**
          * 后续为自定义策略组无法处理的流量，规则集 original-xxx 是更为全面的规则集，
@@ -375,7 +392,7 @@ const SUB_RULES = {
 
         "RULE-SET,special-claude,CLAUDE",
         "RULE-SET,addition-openai,OPENAI",
-        "RULE-SET,addition-gemini,GEMINI",
+        "RULE-SET,special-gemini,GEMINI",
 
         "RULE-SET,special-github,GITHUB",
         "RULE-SET,special-jetbrains,JETBRAINS",
@@ -422,8 +439,8 @@ const SUB_RULES = {
      * 的 MATCH 规则将使用 DIRECT 策略。
      */
     [DOWNLOAD]: [
-        "RULE-SET,addition-proxy,DOWNLOAD",
         "RULE-SET,special-pikpak,DOWNLOAD",
+        "RULE-SET,addition-proxy,DOWNLOAD",
         "RULE-SET,original-greatfire,DOWNLOAD",
         "RULE-SET,original-gfw,DOWNLOAD",
         "RULE-SET,original-proxy,DOWNLOAD",
