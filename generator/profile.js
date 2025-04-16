@@ -73,8 +73,10 @@ const DEFAULT_DAILER = DAILER_GROUPS.concat(["ALL"]);
 
 const SPECIFIC_GROUPS = [
     { name: "ALL", type: "select", proxies: AUTO_GROUPS.concat(["SPECIFIC"]), icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Available_1.png" },
-    { name: "DOWNLOAD", type: "select", proxies: ["DIRECT", "SPECIFIC"], append: true, autofilter: "^.*(?:\\[M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/SSID.png" },
     { name: "SPECIFIC", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/ULB.png" },
+    { name: "INTERCEPTOR", type: "select", proxies: ["PASS", "DIRECT"], icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hijacking.png" },
+    { name: "DOWNLOAD", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/SSID.png" },
+    { name: "MEDIA", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Media.png" },
 
     { name: "GITHUB", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/GitHub_1.png" },
     { name: "JETBRAINS", type: "fallback", proxies: DEFAULT_DAILER, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/JetBrains.png" },
@@ -98,6 +100,7 @@ const FULLLIST = "fulllist";    // *.针对浏览器的分流规则，较完整�
 const BLACKLIST = "blacklist";  // *.针对普通程序，分流规则遵循黑名单模式，即 MATCH 前匹配 PROXY 策略，MATCH 匹配 DIRECT 策略
 const WHITELIST = "whitelist";  // *.针对普通程序，分流规则遵循白名单模式，即 MATCH 前匹配 DIRECT 策略，MATCH 匹配 PROXY 策略
 const DOWNLOAD = "download";    // *.针对下载器或需求代理流量但流量较大的程序，遵循黑名单模式
+const DYNAMIC = "dynamic";      // *.针对需要临时切换 DIRECT 策略的程序，默认匹配 PASS 策略，允许手动切换至 DIRECT 策略
 const PROXY = "proxy";          // *.针对完全依赖代理的程序，将直接 MATCH 至 PROXY 策略
 
 // *.QUALIFICATION SCREENING
@@ -209,14 +212,15 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,goland64.exe)," + BLACKLIST,            // *.GOLAND
     "SUB-RULE,(PROCESS-NAME,webstorm64.exe)," + BLACKLIST,          // *.WEBSTORM
 
-    "SUB-RULE,(PROCESS-NAME,code.exe)," + BLACKLIST,                // *.VISUAL STUDIO CODE/VSCODE
     "SUB-RULE,(PROCESS-NAME,java.exe)," + BLACKLIST,                // *.JAVA RUNTIME
+    "SUB-RULE,(PROCESS-NAME,code.exe)," + BLACKLIST,                // *.VISUAL STUDIO CODE/VSCODE
 
     "SUB-RULE,(PROCESS-NAME,Mihomo Party.exe)," + BLACKLIST,        // *.MIHOMO PARTY
     "SUB-RULE,(PROCESS-NAME,clash-verge.exe)," + BLACKLIST,         // *.CLASH VERGE
     "SUB-RULE,(PROCESS-NAME,thunderbird.exe)," + BLACKLIST,         // *.THUNDERBIRD
     "SUB-RULE,(PROCESS-NAME,PowerToys.exe)," + BLACKLIST,           // *.POWERTOY
 
+    "SUB-RULE,(PROCESS-NAME,steam.exe)," + DYNAMIC,                 // *.STEAM (NORMAL USE PASS)
     "SUB-RULE,(PROCESS-NAME,steam.exe)," + BLACKLIST,               // *.STEAM
     "SUB-RULE,(PROCESS-NAME,steamwebhelper.exe)," + BLACKLIST,
     "SUB-RULE,(PROCESS-NAME,steamservice.exe)," + BLACKLIST,
@@ -293,6 +297,8 @@ const SUB_RULES = {
          */
         "RULE-SET,special-pikpak,ALL", // *.THIS FOR PIKPAK IN BROWSER, NO DOWNLOAD TRAFFIC
 
+        "RULE-SET,addition-media,MEDIA", // *.MEDIA GROUP
+
         /**
          * 额外的、需要代理服务的域名规则，推荐后置在特殊的分组规则之后。
          * 
@@ -340,28 +346,30 @@ const SUB_RULES = {
     ],
     [BLACKLIST]: [
         "RULE-SET,addition-reject,REJECT",
-        
+
         "RULE-SET,addition-cloudflare,CLOUDFLARE",
         "RULE-SET,addition-oracle,ORACLE",
-        
+
         "RULE-SET,special-claude,CLAUDE",
         "RULE-SET,addition-openai,OPENAI",
         "RULE-SET,special-gemini,GEMINI",
-        
+
         "RULE-SET,special-github,GITHUB",
         "RULE-SET,special-jetbrains,JETBRAINS",
-        
+
         "RULE-SET,special-onedrive,ONEDRIVE",
-        
+
         "RULE-SET,special-reddit,REDDIT",
         "RULE-SET,special-youtube,YOUTUBE",
         "RULE-SET,special-steam,STEAM",
         "RULE-SET,special-epic,EPIC",
-        
+
         "RULE-SET,special-telegram,TELEGRAM",
         "RULE-SET,original-telegramcidr,TELEGRAM,no-resolve",
-        
+
         "RULE-SET,special-pikpak,ALL", // *.NOT DOWNLOAD TRAFFIC, IT CAME FROM PIKPAK.EXE
+
+        "RULE-SET,addition-media,MEDIA", // *.MEDIA GROUP
 
         "RULE-SET,addition-proxy,ALL",
 
@@ -409,6 +417,8 @@ const SUB_RULES = {
 
         "RULE-SET,special-pikpak,ALL", // *.NOT DOWNLOAD TRAFFIC, IT CAME FROM PIKPAK.EXE
 
+        "RULE-SET,addition-media,MEDIA", // *.MEDIA GROUP
+
         /**
          * 后续为自定义策略组无法处理的流量，规则集 original-xxx 是更为全面的规则集，
          * 但全面意味着数量庞大，顺序匹配的情况下，可能会影响 CLASH 核心的性能。
@@ -447,6 +457,9 @@ const SUB_RULES = {
         "RULE-SET,original-tld-not-cn,DOWNLOAD",
 
         "MATCH,DIRECT" // *.ELSE NO MATCHING TRAFFIC THAT NEED PROXY CONNECTION  CAN ADD TO PRE-DOWNLOAD RULES
+    ],
+    [DYNAMIC]: [
+        "PROCESS-NAME,steam.exe,INTERCEPTOR",
     ],
     [PROXY]: [
         "MATCH,ALL", // *.COMPLETE RELIANCE ON AGENTS

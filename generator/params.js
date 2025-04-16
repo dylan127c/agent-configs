@@ -201,15 +201,15 @@ const BASIC_BUILT = () => {
      * 根据规则配置，只有符合要求的应用能够使用某些子规则。但利用监听器，可直接通过端口
      * 的形式将子规则开放给所有其他应用使用，只要应用能够连接到此端口就可以使用此子规则。
      */
-    initConfiguration["listeners"] = [
-        {
-            name: "SUPER_WHITELIST_PORT", // *.监听器名称，只用作标识符而没有其他用处
-            type: "mixed",      // *.HTTPS/SOCKS5
-            listen: "0.0.0.0",  // *.监听地址
-            port: 13768,        // *.监听端口
-            rule: "whitelist",  // *.子规则名称
-        }
-    ];
+    // initConfiguration["listeners"] = [
+    //     {
+    //         name: "SUPER_WHITELIST_PORT", // *.监听器名称，只用作标识符而没有其他用处
+    //         type: "mixed",      // *.HTTPS/SOCKS5
+    //         listen: "0.0.0.0",  // *.监听地址
+    //         port: 13768,        // *.监听端口
+    //         rule: "whitelist",  // *.子规则名称
+    //     }
+    // ];
 
     /**
      * NTP （Network Time Protocol）配置如果启用，则会在 CLASH 启动时自动
@@ -217,14 +217,18 @@ const BASIC_BUILT = () => {
      * 
      * 这点非常好，因为某些代理服务提供商的节点会对时间进行验证，如果系统时间
      * 不正确，则可能会导致节点无法使用。
+     * 
+     * 对于 MP 来说可以正常使用，因为它本身启动就需要管理员权限。
+     * 
+     * 同步时间还可以使用第三方的 NTP 客户端来实现，例如 NetTime 等。（推荐）
      */
-    initConfiguration["ntp"] = {
-        enable: true,
-        "write-to-system": true,    // *.是否将时间写入系统，需管理员权限
-        server: "ntp.aliyun.com",   // *.NTP 服务器
-        port: 123,
-        interval: 30, // *.更新间隔（单位：分）
-    };
+    // initConfiguration["ntp"] = {
+    //     enable: true,
+    //     "write-to-system": true,   // *.是否将时间写入系统（需管理员权限）
+    //     server: "ntp.aliyun.com",  // *.NTP 服务器
+    //     port: 123,
+    //     interval: 30, // *.更新间隔（单位：分）
+    // };
 
     // *.全局 TLS 指纹，用于对抗网络检查，提高一致性和隐蔽性。
     // *.可选：chrome、firefox、safari、iOS、android、edge、360、qq 和 random 等。
@@ -327,6 +331,8 @@ const BASIC_BUILT = () => {
     initConfiguration.dns["fake-ip-filter"] = [ // *.MP 需要到 DNS 配置中添加 fake-ip-filter 参数（GUI 的配置优先级较高）
         "+.lan",
         "+.ntp.aliyun.com",
+        "+.ntp.tencent.com",
+        "+.time.asia.apple.com",
         "+.time.windows.com",
         "+.time.nist.gov",
         "+.msftncsi.com",

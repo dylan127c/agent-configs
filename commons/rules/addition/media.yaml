@@ -1,0 +1,16 @@
+# 其他影视类网站（存在大量下载流量）
+ payload:
+  - '+.ziziys.com'
+  - '+.chinaq.biz'
+  - '*.duboku.*'
+  - '6tm.*.*'
+  - 'h6t.*.*'
+  - 'h6t24.*.*'
+  - '+.vdabo.com'
+  - '+.vdubo.com'
+  - '+.kdubo.com'
+  - '+.wdubo.com'
+  - '*.vdabo.*'
+  - '*.vdubo.*'
+  - '*.kdubo.*'
+  - '*.wdubo.*'

@@ -18,3 +18,13 @@ payload:
   - DOMAIN-SUFFIX,download-cdn.jetbrains.com # 非匿名应用，但现有规则未能匹配 DOWNLOAD 分组
   - DOMAIN-SUFFIX,downloads.marketplace.jetbrains.com
   - DOMAIN-SUFFIX,download.jetbrains.com
+
+  # BitComet 更新服务
+  - DOMAIN-SUFFIX,download.bitcomet.com
+
+  # AMD 显卡驱动
+  - DOMAIN-SUFFIX,drivers.amd.com
+
+  # JDK 下载
+  - DOMAIN-SUFFIX,download.java.net
+  - DOMAIN-SUFFIX,download.oracle.com

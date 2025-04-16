@@ -28,3 +28,6 @@ payload:
   - DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}db\..*
   - DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}le\..*
   - DOMAIN-REGEX,^th[a-z]{5}du[a-z]{2}\..*
+  - DOMAIN-SUFFIX,adobe.io
+  - DOMAIN-SUFFIX,adobestats.io
+  - DOMAIN-SUFFIX,hstatic.io
