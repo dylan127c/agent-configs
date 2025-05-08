@@ -2,11 +2,10 @@
 DOMAIN-SUFFIX,download.docker.com # 匿名应用，无法使用 PROCESS-NAME 匹配，存在大量下载请求# （VMWare）解决 Docker 在拉取镜像时可能出现的网络连通性问题
 DOMAIN-SUFFIX,docker.io # 匿名应用，无法使用 PROCESS-NAME 匹配，存在大量下载请求# 解决 IntelliJ IDEA 在拉取 Gradle 依赖时可能出现的网络连通性问题
 DOMAIN-SUFFIX,gradle.org # 非匿名应用，但现有规则未能匹配 DOWNLOAD 分组# 将 PikPak 的 Storj CDN 服务纳入下载规则
-DOMAIN-SUFFIX,smn3.storagenode.cc # 非匿名应用，但现有规则未能匹配 DOWNLOAD 分组# 将 JetBrains 的 CDN 服务纳入下载规则
-DOMAIN-SUFFIX,download-cdn.jetbrains.com # 非匿名应用，但现有规则未能匹配 DOWNLOAD 分组
-DOMAIN-SUFFIX,downloads.marketplace.jetbrains.com
-DOMAIN-SUFFIX,download.jetbrains.com# BitComet 更新服务
+DOMAIN-SUFFIX,smn3.storagenode.cc # 非匿名应用，但现有规则未能匹配 DOWNLOAD 分组# BitComet 更新服务
 DOMAIN-SUFFIX,download.bitcomet.com# AMD 显卡驱动
 DOMAIN-SUFFIX,drivers.amd.com# JDK 下载
 DOMAIN-SUFFIX,download.java.net
-DOMAIN-SUFFIX,download.oracle.com
+DOMAIN-SUFFIX,download.oracle.com# VSCode 下载服务器
+DOMAIN-SUFFIX,download.visualstudio.microsoft.
+DOMAIN-SUFFIX,update.code.visualstudio.com

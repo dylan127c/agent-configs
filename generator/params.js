@@ -201,15 +201,36 @@ const BASIC_BUILT = () => {
      * 根据规则配置，只有符合要求的应用能够使用某些子规则。但利用监听器，可直接通过端口
      * 的形式将子规则开放给所有其他应用使用，只要应用能够连接到此端口就可以使用此子规则。
      */
-    // initConfiguration["listeners"] = [
-    //     {
-    //         name: "SUPER_WHITELIST_PORT", // *.监听器名称，只用作标识符而没有其他用处
-    //         type: "mixed",      // *.HTTPS/SOCKS5
-    //         listen: "0.0.0.0",  // *.监听地址
-    //         port: 13768,        // *.监听端口
-    //         rule: "whitelist",  // *.子规则名称
-    //     }
-    // ];
+    initConfiguration["listeners"] = [
+        // {
+        //     name: "PROXYCAP_BLACKLIST", // *.监听器名称，只用作标识符而没有其他用处
+        //     type: "mixed",              // *.HTTPS/SOCKS5
+        //     listen: "0.0.0.0",          // *.监听地址
+        //     port: 37412,                // *.监听端口
+        //     rule: "blacklist",          // *.子规则名称
+        // },
+        // {
+        //     name: "PROXYCAP_WHITELIST", // *.监听器名称，只用作标识符而没有其他用处
+        //     type: "mixed",              // *.HTTPS/SOCKS5
+        //     listen: "0.0.0.0",          // *.监听地址
+        //     port: 37413,                // *.监听端口
+        //     rule: "whitelist",          // *.子规则名称
+        // },
+        // {
+        //     name: "PROXYCAP_DOWNLOAD",  // *.监听器名称，只用作标识符而没有其他用处
+        //     type: "mixed",              // *.HTTPS/SOCKS5
+        //     listen: "0.0.0.0",          // *.监听地址
+        //     port: 37414,                // *.监听端口
+        //     rule: "download",           // *.子规则名称
+        // },
+        {
+            name: "PROXYCAP_DIRECT",   // *.监听器名称，只用作标识符而没有其他用处
+            type: "mixed",                  // *.HTTPS/SOCKS5
+            listen: "0.0.0.0",              // *.监听地址
+            port: 51162,                    // *.监听端口
+            proxy: "DIRECT",           // *.策略组名称
+        }
+    ];
 
     /**
      * NTP （Network Time Protocol）配置如果启用，则会在 CLASH 启动时自动
@@ -221,6 +242,7 @@ const BASIC_BUILT = () => {
      * 对于 MP 来说可以正常使用，因为它本身启动就需要管理员权限。
      * 
      * 同步时间还可以使用第三方的 NTP 客户端来实现，例如 NetTime 等。（推荐）
+     * 如果已安装了诸如 NetTime 等第三方 NTP 客户端，则将下述 ntp 配置注释掉。
      */
     // initConfiguration["ntp"] = {
     //     enable: true,

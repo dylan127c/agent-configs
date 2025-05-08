@@ -29,3 +29,4 @@ DOMAIN-REGEX,^th[a-z]{5}du[a-z]{2}\..*
 DOMAIN-SUFFIX,adobe.io
 DOMAIN-SUFFIX,adobestats.io
 DOMAIN-SUFFIX,hstatic.io
+DOMAIN-SUFFIX,xiaolvpuzi.cn

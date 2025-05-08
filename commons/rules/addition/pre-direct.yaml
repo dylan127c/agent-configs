@@ -7,3 +7,4 @@ payload:
   - PROCESS-NAME,WeChat.exe
 
   - DOMAIN-SUFFIX,leetcode.cn
+  - DOMAIN-SUFFIX,cloudconfig.jetbrains.com # JetBrains 配置同步，需考虑要不要放行

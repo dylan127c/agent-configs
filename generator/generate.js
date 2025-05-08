@@ -190,6 +190,9 @@ function getProxyGroups(map) {
         if (preset.hasOwnProperty("icon")) {
             group.icon = preset.icon;
         }
+        if (preset.hasOwnProperty("url")) {
+            group.url = preset.url;
+        }
 
         if (!preset.hasOwnProperty("append") || !preset.append) {
             if (isEmptyArray(group.proxies)) {

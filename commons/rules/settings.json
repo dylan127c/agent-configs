@@ -151,6 +151,12 @@
             "savePath": "./special",
             "saveName": "gemini",
             "saveType": "yaml"
+        },
+        {
+            "updateUrl": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Docker/Docker_No_Resolve.yaml",
+            "savePath": "./special",
+            "saveName": "docker",
+            "saveType": "yaml"
         }
     ]
 }

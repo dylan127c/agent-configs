@@ -56,12 +56,12 @@ const FILTER_GROUPS = [
     // *.内核官方提示 relay 策略即将被弃用，并建议在 proxies 上指定 dialer-proxy 以替代 relay 策略。
     // *.然而奇怪的是 relay 策略下可用的链式代理配置转换为 dialer-proxy 后不再可用，疑似存在某些问题。
     // *.对于生成式配置来说完成 dialer-proxy 的部署需要添加巨量的配置，而配置 relay 则仅需添加几个分组。
-    { name: DAILER_PREFIX + " => OR-JP-CT/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|OR.*JP.*CT).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
-    { name: DAILER_PREFIX + " => OR-HK-CT/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|OR.*HK.*CT).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
-    { name: DAILER_PREFIX + " => MC-SG/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|MC.*SG).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
-    { name: DAILER_PREFIX + " => OR-JP-CT/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|OR.*JP.*CT).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
-    { name: DAILER_PREFIX + " => OR-HK-CT/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|OR.*HK.*CT).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
-    { name: DAILER_PREFIX + " => MC-HK/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|MC.*HK).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
+    // { name: DAILER_PREFIX + " => OR-JP-CT/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|OR.*JP.*CT).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
+    // { name: DAILER_PREFIX + " => OR-HK-CT/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|OR.*HK.*CT).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
+    // { name: DAILER_PREFIX + " => MC-SG/AK-HK", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*HK|MC.*SG).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
+    // { name: DAILER_PREFIX + " => OR-JP-CT/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|OR.*JP.*CT).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
+    // { name: DAILER_PREFIX + " => OR-HK-CT/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|OR.*HK.*CT).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
+    // { name: DAILER_PREFIX + " => MC-HK/AK-SG", type: "relay", reverse: true, append: true, autofilter: "^.*(?:AK.*SG|MC.*HK).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png" },
 ];
 
 const AUTO_GROUPS = FILTER_GROUPS.filter(group => group.name.startsWith(ATUO_PREFIX)).map(group => group.name);
@@ -74,12 +74,39 @@ const DEFAULT_DAILER = DAILER_GROUPS.concat(["ALL"]);
 const SPECIFIC_GROUPS = [
     { name: "ALL", type: "select", proxies: AUTO_GROUPS.concat(["SPECIFIC"]), icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Available_1.png" },
     { name: "SPECIFIC", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/ULB.png" },
-    { name: "INTERCEPTOR", type: "select", proxies: ["PASS", "DIRECT"], icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hijacking.png" },
+
+    /**
+     * 关于 DOWNLOAD 的说明：灵活处理流量，尽量使用 DIRECT 策略。
+     * 只有在 DIRECT 策略下无法完成下载操作时，才选择使用代理策略。
+     */
     { name: "DOWNLOAD", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/SSID.png" },
     { name: "MEDIA", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Media.png" },
 
-    { name: "GITHUB", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/GitHub_1.png" },
-    { name: "JETBRAINS", type: "fallback", proxies: DEFAULT_DAILER, icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/JetBrains.png" },
+    /**
+     * 关于 GITHUB 的说明：这里专门为 GitHub 提供了特殊的健康检查 URL，
+     * 主动测速时，会使用该 URL 来测试节点的连通性，而非使用谷歌的链接。
+     * 
+     * 注意即便是 SELECT 策略组也可以提供测速 URL，对于一些拥有测速 API
+     * 的服务商来说，使用自家的测速 API 来测试节点的连通性一般是最好的。
+     * 
+     * 考虑到 GitHub Copilot 的特殊性，这里不提供 DIRECT 策略组。
+     */
+    { name: "GITHUB", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/GitHub_1.png", url: "https://api.github.com/zen" },
+
+    /**
+     * 关于 JetBrains 的说明：个人使用的情况下可以选择代理或者 DIRECT 策略。
+     * 涉及商用时，为了避免检查机制，可以选择使用 REJECT 策略来处理流量。
+     * 
+     * 如果 JetBrains 需要进行插件下载等耗费流量的操作，则建议使用 DIRECT 策略；
+     * 当 DIRECT 策略下无法完成下载操作时，则选择性使用代理策略。
+     * 
+     * 由于追求的完全避免检测，因此所有 JetBrains 的流量都不会在其他规则中出现，
+     * 包括下载等耗费流量的连接请求。REJECT 策略下的流量将直接丢弃。
+     * 
+     * 代理用于日常时，推荐 H|M 类型节点；代理用于下载时，推荐 L 类型节点。
+     */
+    { name: "JETBRAINS", type: "select", proxies: ["DIRECT", "REJECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/JetBrains.png" },
+    { name: "DOCKER", type: "select", proxies: ["DIRECT", "REJECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Docker.png" },
     { name: "CLAUDE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Claude.png" },
     { name: "OPENAI", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/ChatGPT.png" },
     { name: "CLOUDFLARE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cloudflare.png" },
@@ -100,7 +127,6 @@ const FULLLIST = "fulllist";    // *.针对浏览器的分流规则，较完整�
 const BLACKLIST = "blacklist";  // *.针对普通程序，分流规则遵循黑名单模式，即 MATCH 前匹配 PROXY 策略，MATCH 匹配 DIRECT 策略
 const WHITELIST = "whitelist";  // *.针对普通程序，分流规则遵循白名单模式，即 MATCH 前匹配 DIRECT 策略，MATCH 匹配 PROXY 策略
 const DOWNLOAD = "download";    // *.针对下载器或需求代理流量但流量较大的程序，遵循黑名单模式
-const DYNAMIC = "dynamic";      // *.针对需要临时切换 DIRECT 策略的程序，默认匹配 PASS 策略，允许手动切换至 DIRECT 策略
 const PROXY = "proxy";          // *.针对完全依赖代理的程序，将直接 MATCH 至 PROXY 策略
 
 // *.QUALIFICATION SCREENING
@@ -220,7 +246,6 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,thunderbird.exe)," + BLACKLIST,         // *.THUNDERBIRD
     "SUB-RULE,(PROCESS-NAME,PowerToys.exe)," + BLACKLIST,           // *.POWERTOY
 
-    "SUB-RULE,(PROCESS-NAME,steam.exe)," + DYNAMIC,                 // *.STEAM (NORMAL USE PASS)
     "SUB-RULE,(PROCESS-NAME,steam.exe)," + BLACKLIST,               // *.STEAM
     "SUB-RULE,(PROCESS-NAME,steamwebhelper.exe)," + BLACKLIST,
     "SUB-RULE,(PROCESS-NAME,steamservice.exe)," + BLACKLIST,
@@ -263,6 +288,7 @@ const SUB_RULES = {
         "RULE-SET,addition-cloudflare,CLOUDFLARE",
         "RULE-SET,addition-oracle,ORACLE",
 
+        "RULE-SET,special-docker,DOCKER",
         "RULE-SET,special-claude,CLAUDE",
         "RULE-SET,addition-openai,OPENAI",
         "RULE-SET,special-gemini,GEMINI",
@@ -350,6 +376,7 @@ const SUB_RULES = {
         "RULE-SET,addition-cloudflare,CLOUDFLARE",
         "RULE-SET,addition-oracle,ORACLE",
 
+        "RULE-SET,special-docker,DOCKER",
         "RULE-SET,special-claude,CLAUDE",
         "RULE-SET,addition-openai,OPENAI",
         "RULE-SET,special-gemini,GEMINI",
@@ -398,6 +425,7 @@ const SUB_RULES = {
         "RULE-SET,addition-cloudflare,CLOUDFLARE",
         "RULE-SET,addition-oracle,ORACLE",
 
+        "RULE-SET,special-docker,DOCKER",
         "RULE-SET,special-claude,CLAUDE",
         "RULE-SET,addition-openai,OPENAI",
         "RULE-SET,special-gemini,GEMINI",
@@ -457,9 +485,6 @@ const SUB_RULES = {
         "RULE-SET,original-tld-not-cn,DOWNLOAD",
 
         "MATCH,DIRECT" // *.ELSE NO MATCHING TRAFFIC THAT NEED PROXY CONNECTION  CAN ADD TO PRE-DOWNLOAD RULES
-    ],
-    [DYNAMIC]: [
-        "PROCESS-NAME,steam.exe,INTERCEPTOR",
     ],
     [PROXY]: [
         "MATCH,ALL", // *.COMPLETE RELIANCE ON AGENTS
