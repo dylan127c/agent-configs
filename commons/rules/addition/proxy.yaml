@@ -17,6 +17,9 @@ payload:
   # Linux Do
   - "+.linux.do"
 
+  # Elastic
+  - "+.elastic.co"
+
   # Frameworks && Toolkits && Resources
   - '+.docker.com'
   - '+.listary.com'

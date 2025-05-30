@@ -1,10 +1,9 @@
 # 提前放行的流量，例如游戏、网盘程序产生的流量
 
 payload:
-  - PROCESS-NAME,StarRail.exe
-  - PROCESS-NAME,quark.exe
-  - PROCESS-NAME,HipsDaemon.exe
-  - PROCESS-NAME,WeChat.exe
+  - PROCESS-NAME,StarRail.exe     # 崩坏：星穹铁道
+  - PROCESS-NAME,quark.exe        # 夸克网盘
+  - PROCESS-NAME,HipsDaemon.exe   # 火绒杀毒
+  - PROCESS-NAME,WeChat.exe       # 微信
 
-  - DOMAIN-SUFFIX,leetcode.cn
-  - DOMAIN-SUFFIX,cloudconfig.jetbrains.com # JetBrains 配置同步，需考虑要不要放行
+  - DOMAIN-SUFFIX,leetcode.cn     # 力扣

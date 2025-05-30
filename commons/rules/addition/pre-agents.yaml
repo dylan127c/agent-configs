@@ -29,3 +29,7 @@ payload:
   - DOMAIN-SUFFIX,cf.trackerslist.com         # BitComet.exe
   - DOMAIN-SUFFIX,tracker.openwebtorrent.com  # BitComet.exe
   - DOMAIN-SUFFIX,cdn.jsdelivr.net            # mihomo.exe
+
+  # BROWSER WEBSITE
+  - DOMAIN-SUFFIX,tiobe.com
+  - DOMAIN-SUFFIX,youtrack.jetbrains.com

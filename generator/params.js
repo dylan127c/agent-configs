@@ -428,7 +428,24 @@ const BASIC_BUILT = () => {
         "dns-hijack": ["any:53"],
         "auto-redirect": false, // *.仅支持 Linux 系统，Windows 系统下配置无效
         "mtu": 1500,
-        "strict-route": true // *.可能造成问题，造成问题则不启用
+        /**
+         * Windows 系统中严格路由会添加防火墙规则以组织 Windows 的普通多宿主 DNS 解析行为造成的 DNS 泄漏。
+         * 但它也可能使某些应用程序（如 VirtualBox 等）在某些情况下无法正常工作。
+         * 
+         * 实测，启用此选项会让默认情况下的 Vue3 应用无法本地访问，需在 vite.config.js 中添加额外的 server 配置:
+         * export default defineConfig({
+         *   plugins: [vue()],
+         *   server: {
+         *     host: true,         // *.TUN 模式启用严格路由的情况下，需要监听所有地址（包括局域网和公网地址）才能访问项目地址
+         *     port: 5173,         // *.默认端口
+         *     strictPort: false,  // *.如果端口已被占用，则尝试下一个可用端口
+         *     open: false,        // *.启动时是否自动在浏览器中打开
+         *   }
+         * })
+         * 
+         * 同时，严格路由一般由 CLASH GUI 接管，是否选择启用严格路由请谨慎考虑，推荐不启用。
+         */
+        "strict-route": false // *.此选项会让默认情况下的 Vue3 应用无法本地访问
     };
 
     /*
