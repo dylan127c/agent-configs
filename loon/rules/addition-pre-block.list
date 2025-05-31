@@ -1,4 +1,4 @@
-# 提前拦截的流量，例如参与 PCDN 的域名# PCDN BLOCKER
+# !.ADDITION-PRE-BLOCK# !.提前拦截（例如参与 PCDN 的域名）
 
 DOMAIN-SUFFIX,gjfzpt.cn
 DOMAIN-SUFFIX,szbdyd.com

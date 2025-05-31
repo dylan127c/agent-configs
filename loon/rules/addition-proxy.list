@@ -1,25 +1,22 @@
-# Google
-DOMAIN-SUFFIX,google.com# Cursor
-DOMAIN-SUFFIX,cursor.com# GitHub && Git
-DOMAIN-SUFFIX,gitkraken.com# AI Comprehensive Website
-DOMAIN-SUFFIX,lobehub.com# TOUHOU Project
-DOMAIN-SUFFIX,touhou.tel# Linux Do
-DOMAIN-SUFFIX,linux.do# Elastic
-DOMAIN-SUFFIX,elastic.co# Frameworks && Toolkits && Resources
-DOMAIN-SUFFIX,docker.com
+# !.ADDTION-PROXY# >.TOOLS/FRAMEWORKS
+DOMAIN-SUFFIX,cursor.com
+DOMAIN-SUFFIX,gitkraken.com
+DOMAIN-SUFFIX,lobehub.com
+DOMAIN-SUFFIX,linux.do
 DOMAIN-SUFFIX,listary.com
 DOMAIN-SUFFIX,gigabyte.com
 DOMAIN-SUFFIX,wiki.metacubex.one
-DOMAIN-SUFFIX,swiftnet.tech# Bahamut
+DOMAIN-SUFFIX,swiftnet.tech
+DOMAIN-SUFFIX,touhou.tel
+DOMAIN-SUFFIX,greasyfork.org# >.BAHAMUT
 DOMAIN-SUFFIX,bahamut.com.tw
 DOMAIN-SUFFIX,digicert.com
 DOMAIN-SUFFIX,gamer.com.tw
 DOMAIN-SUFFIX,gvt1.com
 DOMAIN-SUFFIX,hinet.net
-DOMAIN-SUFFIX,viblast.com# Tampermonkey
-DOMAIN-SUFFIX,greasyfork.org# Hugging Face
+DOMAIN-SUFFIX,viblast.com# >.HUGGING FACE
 DOMAIN-SUFFIX,huggingface.co
-DOMAIN-SUFFIX,hf.co# Else Websites
+DOMAIN-SUFFIX,hf.co# >.ELSE
 DOMAIN-SUFFIX,kpkuang.org
 DOMAIN-SUFFIX,18p.fun
 DOMAIN-SUFFIX,18pfun.com

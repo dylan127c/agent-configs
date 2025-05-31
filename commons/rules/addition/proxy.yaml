@@ -1,33 +1,19 @@
+# !.ADDTION-PROXY
+
 payload:
-  # Google
-  - '+.google.com'
-
-  # Cursor
+  # >.TOOLS/FRAMEWORKS
   - '+.cursor.com'
-  
-  # GitHub && Git
   - '+.gitkraken.com'
-
-  # AI Comprehensive Website
   - '+.lobehub.com'
-
-  # TOUHOU Project
-  - '+.touhou.tel'
-
-  # Linux Do
   - "+.linux.do"
-
-  # Elastic
-  - "+.elastic.co"
-
-  # Frameworks && Toolkits && Resources
-  - '+.docker.com'
   - '+.listary.com'
   - '+.gigabyte.com'
   - '+.wiki.metacubex.one'
   - '+.swiftnet.tech'
+  - '+.touhou.tel'
+  - '+.greasyfork.org'
 
-  # Bahamut
+  # >.BAHAMUT
   - '+.bahamut.com.tw'
   - '+.digicert.com'
   - '+.gamer.com.tw'
@@ -35,14 +21,11 @@ payload:
   - '+.hinet.net'
   - '+.viblast.com'
 
-  # Tampermonkey
-  - '+.greasyfork.org'
-
-  # Hugging Face
+  # >.HUGGING FACE
   - '+.huggingface.co'
   - '+.hf.co'
 
-  # Else Websites
+  # >.ELSE
   - '+.kpkuang.org'
   - '+.18p.fun'
   - '+.18pfun.com'

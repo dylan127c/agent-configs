@@ -1,13 +1,13 @@
-# AdGuard Windows用以下域名完成广告过滤，使用直连模式即可。
-DOMAIN-SUFFIX,injections.adguard.org# 远程代理规则让以下域名使用代理模式是错误的。# 参考：https://adguard.com/kb/zh-CN/general/https-filtering/local-adguard-com-domain/
-DOMAIN-SUFFIX,local.adguard.org# Razord
-DOMAIN-SUFFIX,clash.razord.top# 360 安全
+# !.ADDITION-DIRECT# >.ADGUARD WINDOWS
+DOMAIN-SUFFIX,injections.adguard.org
+DOMAIN-SUFFIX,local.adguard.org# >.RAZORD
+DOMAIN-SUFFIX,clash.razord.top# >.360
 DOMAIN-SUFFIX,360.com
 DOMAIN-SUFFIX,360safe.com
 DOMAIN-SUFFIX,360totalsecurity.com
 DOMAIN-SUFFIX,360.cn
-DOMAIN-SUFFIX,qihoo.com# Bitwarden
+DOMAIN-SUFFIX,qihoo.com# >.BITWARDEN
 DOMAIN-SUFFIX,bitwarden.com
-DOMAIN-SUFFIX,bitwarden.net# Time.is
-DOMAIN-SUFFIX,time.is# Listary
+DOMAIN-SUFFIX,bitwarden.net# >.TIME.IS
+DOMAIN-SUFFIX,time.is# >.LISTARY
 DOMAIN-SUFFIX,stripe.com

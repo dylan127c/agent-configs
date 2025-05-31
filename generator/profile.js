@@ -91,6 +91,7 @@ const RULES = [
     // !.本规则的设计原则是基于 PROCESS 完成初次分流匹配，后续根据规则集针对请求深度分流
     // >.某些流量（已知或未知）可能需要提前进行分流（REJECT、DIRECT、PROXY 或 DOWNLOAD）
     // >.规则集 ADDITION-PRE-* 用于匹配这类型流量，以提前完成拦截、直连、代理或下载等需求
+    // >.注意前置规则不能过多，TUN 模式下所有程序都要经过这些规则集的匹配，尽量保持少量精准
 
     // !.注意 ADDITION-PRE-* 规则文件是 CLASSICAL 类型
     // !.普通 ADDITION-* 规则则多使用 DOMAIN 而非 CLASSICAL 类型

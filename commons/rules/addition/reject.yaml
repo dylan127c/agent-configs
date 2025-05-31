@@ -1,7 +1,9 @@
+# !.ADDITION-REJECT
+
 payload:
-  # MALICIOUS WEBSITES
+  # >.MALICIOUS WEBSITES
   - '+.mixcrack.net'
   - '+.antiadblocksystems.com'
 
-  # GITHUB PROXY (DEPRECATED, NO USEFUL)
+  # >.GITHUB PROXY (DEPRECATED, NO USEFUL)
   - '+.ghproxy.com'

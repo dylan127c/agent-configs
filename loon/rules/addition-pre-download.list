@@ -1,9 +1,9 @@
-# 未知程序产生的、需要下载服务的流量；或已被管控的程序中存在大量下载请求的流量# 解决 IntelliJ IDEA 在拉取 Gradle 依赖时可能出现的网络连通性问题
-DOMAIN-SUFFIX,gradle.org # 非匿名应用，但现有规则未能匹配 DOWNLOAD 分组# 将 PikPak 的 Storj CDN 服务纳入下载规则
-DOMAIN-SUFFIX,smn3.storagenode.cc # 非匿名应用，但现有规则未能匹配 DOWNLOAD 分组# BitComet 更新服务
-DOMAIN-SUFFIX,download.bitcomet.com# AMD 显卡驱动
-DOMAIN-SUFFIX,drivers.amd.com# JDK 下载
+# !.ADDITION-PRE-DOWNLOAD# !.提前下载（或未知下载）# >.程序特殊策略组的主要目录不是为了下载# >.如果存在大流量下载需求，应主动导向 DOWNLOAD 策略组# >.INTELLIJ IDEA：GRADLE 依赖下载
+DOMAIN-SUFFIX,gradle.org# >.PIKPAK：Storj（Storj DCS） 分布式云存储网络
+DOMAIN-SUFFIX,smn3.storagenode.cc# >.BitComet：更新相关
+DOMAIN-SUFFIX,download.bitcomet.com# >.AMD 显卡驱动下载
+DOMAIN-SUFFIX,drivers.amd.com# >.JDK 下载
 DOMAIN-SUFFIX,download.java.net
-DOMAIN-SUFFIX,download.oracle.com# VSCode 下载服务器
+DOMAIN-SUFFIX,download.oracle.com# >.VSCode 下载
 DOMAIN-SUFFIX,download.visualstudio.microsoft.
 DOMAIN-SUFFIX,update.code.visualstudio.com

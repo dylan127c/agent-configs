@@ -1,9 +1,10 @@
-# 提前放行的流量，例如游戏、网盘程序产生的流量
+# !.ADDITION-PRE-DIRECT
+# !.提前直连（例如游戏、网盘程序产生的流量）
 
 payload:
-  - PROCESS-NAME,StarRail.exe     # 崩坏：星穹铁道
-  - PROCESS-NAME,quark.exe        # 夸克网盘
-  - PROCESS-NAME,HipsDaemon.exe   # 火绒杀毒
-  - PROCESS-NAME,WeChat.exe       # 微信
+  - PROCESS-NAME,quark.exe
+  - PROCESS-NAME,WeChat.exe
+  - PROCESS-NAME,StarRail.exe
+  - PROCESS-NAME,HipsDaemon.exe
 
-  - DOMAIN-SUFFIX,leetcode.cn     # 力扣
+  - DOMAIN-SUFFIX,leetcode.cn

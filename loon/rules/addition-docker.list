@@ -1,6 +1,7 @@
-# https://mihomo.party/docs/guide/override/yaml# （VMWare）解决 CentOS 7 在添加 docker-ce 源时可能出现的网络连通性问题（需要为 yum 提供代理服务）# https://download.docker.com/linux/centos/docker-ce.repoDOMAIN-SUFFIX,download.docker.com" # 匿名应用，无法使用 PROCESS-NAME 匹配，存在大量下载请求# （VMWare）解决 Docker 在拉取镜像时可能出现的网络连通性问题
-DOMAIN-SUFFIX,docker.io" # 匿名应用，无法使用 PROCESS-NAME 匹配，存在大量下载请求
-DOMAIN-SUFFIX,rubygems.org" # Logstash 安装插件请求的地址，com.docker.backend.exe 无法匹配规则
-DOMAIN-SUFFIX,segment.io
+# !.ADDITON-DOCKER
+
+DOMAIN-SUFFIX,docker.io
 DOMAIN-SUFFIX,docker.com
 DOMAIN-SUFFIX,dockerhub.com
+DOMAIN-SUFFIX,rubygems.org
+DOMAIN-SUFFIX,segment.io

@@ -1,27 +1,26 @@
-payload:
-  # AdGuard Windows用以下域名完成广告过滤，使用直连模式即可。
-  - "+.injections.adguard.org"
+# !.ADDITION-DIRECT
 
-  # 远程代理规则让以下域名使用代理模式是错误的。
-  # 参考：https://adguard.com/kb/zh-CN/general/https-filtering/local-adguard-com-domain/
+payload:
+  # >.ADGUARD WINDOWS
+  - "+.injections.adguard.org"
   - "+.local.adguard.org"
 
-  # Razord
+  # >.RAZORD
   - "+.clash.razord.top"
 
-  # 360 安全
+  # >.360
   - '+.360.com'
   - '+.360safe.com'
   - '+.360totalsecurity.com'
   - '+.360.cn'
   - '+.qihoo.com'
 
-  # Bitwarden
+  # >.BITWARDEN
   - '+.bitwarden.com'
   - '+.bitwarden.net'
 
-  # Time.is
+  # >.TIME.IS
   - '+.time.is'
 
-  # Listary
+  # >.LISTARY
   - '+.stripe.com'
