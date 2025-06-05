@@ -30,5 +30,6 @@ DOMAIN-REGEX,^[w]{3}\.\d{3}[a-z]{1}a[a-z]{1}\..*
 DOMAIN-REGEX,^[a-z]{3}bj[a-z]{3}\..*
 DOMAIN-SUFFIX,adobe.io
 DOMAIN-SUFFIX,adobestats.io
-DOMAIN-SUFFIX,hstatic.io
+DOMAIN-SUFFIX,hstatic.io# >.SMART INPUT PRO
 DOMAIN-SUFFIX,xiaolvpuzi.cn
+IP-CIDR,139.196.20.59/32,no-resolve

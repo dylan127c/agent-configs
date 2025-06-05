@@ -33,4 +33,7 @@ payload:
   - DOMAIN-SUFFIX,adobe.io
   - DOMAIN-SUFFIX,adobestats.io
   - DOMAIN-SUFFIX,hstatic.io
+  
+  # >.SMART INPUT PRO
   - DOMAIN-SUFFIX,xiaolvpuzi.cn
+  - IP-CIDR,139.196.20.59/32,no-resolve

@@ -173,9 +173,13 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,bg3.exe)," + B_LIST,                        // _.BALDURS GATE 3
     "SUB-RULE,(PROCESS-NAME,bg3_dx11.exe)," + B_LIST,                   // _.BALDURS GATE 3 DX11
 
+    // !.PIKPAK 不能使用 W_LIST 子规则（白名单不保留 ALL 策略组）
+    // ?.原因是 mypikpak.com 域名存在于 original-direct 规则集
+    // ?.规则集 speial-pikpak 需前置以提前匹配 mypikpak.com 域名
+    "SUB-RULE,(PROCESS-NAME,pikpak.exe)," + B_LIST,                     // _.PIKPAK
+
     // !.白名单模式
     "SUB-RULE,(PROCESS-NAME,Telegram.exe)," + W_LIST,                   // _.TELEGRAM
-    "SUB-RULE,(PROCESS-NAME,pikpak.exe)," + W_LIST,                     // _.PIKPAK
 
     // !.无匹配流量
     "MATCH,DIRECT",                                                     // _.ESCAPE REQUESTS
@@ -258,7 +262,7 @@ function simplify(erase, arr) {
         const hasStrategy = strategyErase.some(s => rule.includes(s));
 
         return !(hasType || hasStrategy);
-    }).concat("MATCH," + strategyMatch);
+    }).concat(`MATCH,${strategyMatch}`);
 }
 
 function download(replaced, arr) {
@@ -269,7 +273,7 @@ function download(replaced, arr) {
             !excluded.some(t => rule.startsWith(t))
         )
         .map(rule => rule.replace(before, after))
-        .concat("MATCH," + match);
+        .concat(`MATCH,${match}`);
 }
 
 const BROWSER_ONLY = ["IN-TYPE", "OR", "MATCH"];
