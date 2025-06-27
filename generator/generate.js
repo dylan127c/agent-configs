@@ -25,6 +25,9 @@ const {
     FALLBACK_PARAMS,
     HEALTH_CHECK,
     OVERRIDE,
+    OVERRIDE_SKIP_CERT_VERIFY,
+    PROTOCOL_SKIP_CERT_VERIFY,
+    PROFILE_SAVE,
     PROFILE_PATH,
     COLLECT_APPEND,
     COLLECT_SYMBOL,
@@ -36,6 +39,7 @@ const {
     SUBS_COLLECT_REGEX,
     PROXY_GROUPS_REGEX,
     BASIC_BUILT,
+    CVR_PROFILES,
 } = require("./params.js");
 
 delete require.cache[require.resolve(PROFILE_PATH)];
@@ -48,8 +52,23 @@ const {
     READ_PROVIDER,
 } = require(PROFILE_PATH);
 
+function addonWriteIntoCVR(log, output, ...paths) {
+    const funcName = "addonWriteIntoCVR";
+    // *.将配置同步到 CVR_PROFILES 中（CLASH VERGE REV）
+    paths.forEach(p => {
+        // *.检查文件是否存在，如果存在则写入；如果不存在则跳过
+        if (fs.existsSync(p)) {
+            fs.writeFileSync(p, output, "utf-8");
+            log.info(mark(funcName), "["+ path.basename(p) + "]", "done.");
+        }
+    });
+}
+
 function generate(log, yaml) {
     const funcName = "generate";
+
+    // *.配置备份，将 PROFILE_PATH 中的配置文件备份到 PROFILE_SAVE 中
+    fs.copyFileSync(PROFILE_PATH, PROFILE_SAVE);
 
     const {
         COMPREHENSIVE_CONFIG_PATH,
@@ -72,6 +91,7 @@ function generate(log, yaml) {
             COMPREHENSIVE_CONFIG_NAME.replace(/$/gm, "." + COMPREHENSIVE_CONFIG_TYPE)
         ),
         output, "utf-8");
+    addonWriteIntoCVR(log, output, ...CVR_PROFILES); // *.将配置同步到 CVR_PROFILES 中（CLASH VERGE REV）
     log.info(mark(funcName), "done.");
 }
 
@@ -85,7 +105,7 @@ function getProxyGroups(map) {
         if (value.hasOwnProperty("override")) { // *.以防万一可以检查一下是否存在 override 字段
             const script = value.override;
             delete require.cache[require.resolve(script)];
-            const { GROUP } = require(script);
+            const { GROUP } = require(script); // *.读取绑定至各个订阅配置上的 OVERRIDE 脚本中自定义 EXPORT 的 GROUP 变量
 
             if (GROUP) { // *.如果存在 GROUP 则进行下一步，它可能为 undefined 值
                 if (COLLECT_APPEND) {
@@ -170,6 +190,9 @@ function getProxyGroups(map) {
         if (preset.hasOwnProperty("icon")) {
             group.icon = preset.icon;
         }
+        if (preset.hasOwnProperty("url")) {
+            group.url = preset.url;
+        }
 
         if (!preset.hasOwnProperty("append") || !preset.append) {
             if (isEmptyArray(group.proxies)) {
@@ -188,8 +211,13 @@ function getProxyGroups(map) {
         }
 
         const filtered = providerGroupsName.filter(name => new RegExp(preset.autofilter, "i").test(name));
-        group.proxies.push(...filtered);
 
+        // *.使用 relay 代理链模式时具备 reverse 属性，它可以更灵活地控制链式代理的顺序
+        if (preset.hasOwnProperty("reverse") && preset.reverse) {
+            filtered.reverse();
+        }
+
+        group.proxies.push(...filtered);
         groupsArr.push(addTypeParams(group));
     });
 
@@ -254,12 +282,30 @@ function getRuleProvider(params, yaml, override) {
 function getProxyProvider(map) {
     const provider = {};
     for (const [key, value] of Object.entries(map)) {
+        // *.其中 key 为完整的 MP 上的订阅名称
         const providerName = formatName(PROXY_PROVIDER_REG, key) || key;
 
         provider[providerName] = {};
         provider[providerName].type = "file";
         provider[providerName].path = value.id;
-        provider[providerName] = Object.assign(provider[providerName], HEALTH_CHECK, OVERRIDE);
+
+        // *.默认不跳过证书验证（较为安全）
+        let skipCertVerify = false;
+
+        // *.根据完整的订阅名称来判断是否需要启用 skip-cert-verify 属性
+        PROTOCOL_SKIP_CERT_VERIFY.forEach(protocol => {
+            if (key.toLowerCase().includes(protocol.toLowerCase())) {
+                // *.skip-cert-verify: true => 跳过证书验证
+                provider[providerName] = Object.assign(provider[providerName], HEALTH_CHECK, JSON.parse(JSON.stringify(OVERRIDE_SKIP_CERT_VERIFY)));
+                skipCertVerify = true;
+                return;
+            }
+        });
+
+        if (!skipCertVerify) {
+            // *.skip-cert-verify: false => 不跳过证书验证（较为安全）
+            provider[providerName] = Object.assign(provider[providerName], HEALTH_CHECK, JSON.parse(JSON.stringify(OVERRIDE)));
+        }
     }
     return provider;
 }

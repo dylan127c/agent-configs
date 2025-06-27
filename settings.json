@@ -1,5 +1,6 @@
 {
     "override": "d:/program files/mihomo party/data/override.yaml",
+    "commonsRules": "./commons/rules",
     "logPath": "./run.log",
     "generator": "./generator/generate",
     "log": "./commons/lib/log",

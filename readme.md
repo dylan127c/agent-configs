@@ -1,5 +1,7 @@
 ## AGENT CONFIGS
 
+ONLY SUPPORT MIHOMO V1.19.5!
+
 Quickly generating Clash configuration files. 
 
 <div align="center"><img src="images/readme.images/Snipaste_2024-07-22_04-02-57.png" alt="Snipaste_2024-07-22_04-02-57" style="width:65%;" /></div>

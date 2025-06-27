@@ -28,8 +28,11 @@
     "defaultBehavior": "domain",
     "behavior": {
         "classical": [
-            "pikpak",
-            "applications"
+            "applications",
+            "pre-block",
+            "pre-agents",
+            "pre-download",
+            "pre-direct"
         ],
         "ipcidr": [
             "telegramcidr",
