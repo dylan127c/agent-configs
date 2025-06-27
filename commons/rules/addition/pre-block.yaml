@@ -1,4 +1,6 @@
-# 某些不纳入管控程序的、依赖代理服务的域名
+# !.ADDITION-PRE-BLOCK
+# !.提前拦截（例如参与 PCDN 的域名）
+
 payload:
   - DOMAIN-SUFFIX,gjfzpt.cn
   - DOMAIN-SUFFIX,szbdyd.com
@@ -22,3 +24,17 @@ payload:
   - DOMAIN-REGEX,.*pcdn.*youku\.com
   - DOMAIN-REGEX,.*p2p.*douyucdn\.cn
   - DOMAIN-REGEX,.*p2p.*qq\.com
+  - DOMAIN-REGEX,^[a-z]{1}iss[a-z]{2}\..*
+  - DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}db\..*
+  - DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}le\..*
+  - DOMAIN-REGEX,^th[a-z]{5}du[a-z]{2}\..*
+  - DOMAIN-REGEX,^[w]{3}\.\d{3}[a-z]{1}a[a-z]{1}\..*
+  - DOMAIN-REGEX,^[a-z]{3}bj[a-z]{3}\..*
+  - DOMAIN-SUFFIX,adobe.io
+  - DOMAIN-SUFFIX,adobestats.io
+  - DOMAIN-SUFFIX,hstatic.io
+  
+  # >.SMART INPUT PRO
+  - DOMAIN-SUFFIX,xiaolvpuzi.cn
+  - IP-CIDR,139.196.20.59/32,no-resolve
+  - IP-CIDR,47.102.221.152/32,no-resolve

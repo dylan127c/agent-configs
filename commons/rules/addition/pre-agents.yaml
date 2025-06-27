@@ -1,7 +1,42 @@
-# 某些不纳入管控程序的、依赖代理服务的域名
+# !.ADDITION-PRE-AGENTS
+# !.提前代理（或未知代理）
+
+# !.注意，不同类型流量对待 HOSTS（use-system-hosts）行为不同：
+# >.SOCKS5/HTTP(S) 流量会保留域名信息，映射 IP 会使用域名匹配到的规则；
+# >.TUN 流量则不保留域名信息，仅使用映射 IP 地址所能匹配到的规则完成请求。
+
 payload:
-  # Anonymous Programs
+  # >.GOOGLE (SPEED UP)
+  - '+.google.com'
+  
+  # >.HOSTS FILE
+  # >.GOOGLE FORCE SAFE SEARCH (FOR TUN)
+  # 1.USE-SYSTEM-HOSTS ENABLED, AND HOSTS EXISTS
+  # 2.TUN MODE, MAPPING IP REQUIRES PROXY SERVER
+  # 3.CURRENT NO ANY RULES MATCHING THAT IP ADDR
+  - IP-CIDR,216.239.38.120/32,no-resolve
+
+  # >.COMPANY
+  - IP-CIDR,156.233.234.246/32,no-resolve
+  - IP-CIDR,156.233.234.50/32,no-resolve
+
+  # >.ANONYMOUS PROGRAMS
   - DOMAIN-SUFFIX,googleusercontent.com
 
-  - DOMAIN-SUFFIX,pti.store.microsoft.com # Svchost.exe
-  - DOMAIN-SUFFIX,ingest.twitch.tv # RadeonSoftware.exe
+  # >.SVCHOST.EXE
+  - DOMAIN-SUFFIX,pti.store.microsoft.com
+
+  # >.RADIONSOFTWARE.EXE
+  - DOMAIN-SUFFIX,ingest.twitch.tv
+
+  # >.BITCOMET.EXE
+  - DOMAIN-SUFFIX,ngosang.github.io
+  - DOMAIN-SUFFIX,cf.trackerslist.com
+  - DOMAIN-SUFFIX,tracker.openwebtorrent.com
+
+  # >.MIHOMO.EXE
+  - DOMAIN-SUFFIX,cdn.jsdelivr.net
+
+  # >.BROWSER WEBSITE
+  - DOMAIN-SUFFIX,tiobe.com
+  - DOMAIN-SUFFIX,youtrack.jetbrains.com

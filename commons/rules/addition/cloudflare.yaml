@@ -1,0 +1,5 @@
+# !.ADDITION-CLOUDFLARE
+
+payload:
+  # >.CLOUDFLARE CHALLENGE
+  - '+.challenges.cloudflare.com'

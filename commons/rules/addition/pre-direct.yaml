@@ -1,0 +1,10 @@
+# !.ADDITION-PRE-DIRECT
+# !.提前直连（例如游戏、网盘程序产生的流量）
+
+payload:
+  - PROCESS-NAME,quark.exe
+  - PROCESS-NAME,WeChat.exe
+  - PROCESS-NAME,StarRail.exe
+  - PROCESS-NAME,HipsDaemon.exe
+
+  - DOMAIN-SUFFIX,leetcode.cn

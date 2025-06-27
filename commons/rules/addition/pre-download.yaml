@@ -1,14 +1,26 @@
-# 存在大量下载请求的域名规则
+# !.ADDITION-PRE-DOWNLOAD
+# !.提前下载（或未知下载）
+
+# >.程序特殊策略组的主要目录不是为了下载
+# >.如果存在大流量下载需求，应主动导向 DOWNLOAD 策略组
+
 payload:
-  # （VMWare）解决 CentOS 7 在添加 docker-ce 源时可能出现的网络连通性问题（需要为 yum 提供代理服务）
-  # https://download.docker.com/linux/centos/docker-ce.repo
-  - DOMAIN-SUFFIX,download.docker.com # 匿名应用，无法使用 PROCESS-NAME 匹配，存在大量下载请求
+  # >.INTELLIJ IDEA：GRADLE 依赖下载
+  - DOMAIN-SUFFIX,gradle.org
 
-  # （VMWare）解决 Docker 在拉取镜像时可能出现的网络连通性问题
-  - DOMAIN-SUFFIX,docker.io # 匿名应用，无法使用 PROCESS-NAME 匹配，存在大量下载请求
-  
-  # 解决 IntelliJ IDEA 在拉取 Gradle 依赖时可能出现的网络连通性问题
-  - DOMAIN-SUFFIX,gradle.org # 非匿名应用，但现有规则未能匹配 DOWNLOAD 分组
+  # >.PIKPAK：Storj（Storj DCS） 分布式云存储网络
+  - DOMAIN-SUFFIX,smn3.storagenode.cc
 
-  # 将 PikPak 的 Storj CDN 服务纳入下载规则
-  - DOMAIN-SUFFIX,smn3.storagenode.cc # 非匿名应用，但现有规则未能匹配 DOWNLOAD 分组
+  # >.BitComet：更新相关
+  - DOMAIN-SUFFIX,download.bitcomet.com
+
+  # >.AMD 显卡驱动下载
+  - DOMAIN-SUFFIX,drivers.amd.com
+
+  # >.JDK 下载
+  - DOMAIN-SUFFIX,download.java.net
+  - DOMAIN-SUFFIX,download.oracle.com
+
+  # >.VSCode 下载
+  - DOMAIN-SUFFIX,download.visualstudio.microsoft.
+  - DOMAIN-SUFFIX,update.code.visualstudio.com

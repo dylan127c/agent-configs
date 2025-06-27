@@ -1,5 +1,6 @@
+# !.ADDITION-OPENAI
+
 payload:
-  # OpenAI
   - '+.openai.com'
   - '+.intercom.io'
   - '+.intercomcdn.com'
@@ -8,3 +9,4 @@ payload:
   - '+.openaiapi-site.azureedge.net'
   - '+.api.statsig.com'
   - '+.chatgpt.com'
+  - '+.cdn.oaistatic.com'
