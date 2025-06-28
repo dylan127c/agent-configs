@@ -74,10 +74,10 @@ const SPECIFIC_GROUPS = [
     { name: "ONEDRIVE", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/OneDrive.png" },
     { name: "YOUTUBE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube.png" },
     { name: "TELEGRAM", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:SG).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Telegram.png" },
+    { name: "STEAM", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Steam.png" },
+    { name: "EPIC", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Epic_Games.png" },
     { name: "GEMINI", type: "select", proxies: AUTO_REJECT, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Google_Search.png" },
     { name: "REDDIT", type: "select", proxies: AUTO_REJECT, icon: "https://raw.githubusercontent.com/lige47/QuanX-icon-rule/main/icon/reddit(1).png" },
-    { name: "STEAM", type: "select", proxies: AUTO_DIRECT, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Steam.png" },
-    { name: "EPIC", type: "select", proxies: AUTO_DIRECT, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Epic_Games.png" },
     { name: "ORACLE", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Orcl.png" },
 ];
 const GROUPS = SPECIFIC_GROUPS.concat(FILTER_GROUPS);
@@ -148,10 +148,12 @@ const RULES = [
     "SUB-RULE,(PROCESS-PATH-REGEX,(?i).*docker.*)," + B_LIST,           // _.DOCKER DESKTOP
 
     "SUB-RULE,(PROCESS-NAME,java.exe)," + B_LIST,                       // _.JAVA RUNTIME
+    "SUB-RULE,(PROCESS-NAME,go.exe)," + B_LIST,                         // _.GO RUNTIME
     "SUB-RULE,(PROCESS-NAME,code.exe)," + B_LIST,                       // _.VISUAL STUDIO CODE/VSCODE
 
     "SUB-RULE,(PROCESS-NAME,Mihomo Party.exe)," + B_LIST,               // _.MIHOMO PARTY
     "SUB-RULE,(PROCESS-NAME,clash-verge.exe)," + B_LIST,                // _.CLASH VERGE
+    "SUB-RULE,(PROCESS-NAME,Postman.exe)," + B_LIST,                    // _.POSTMAN
 
     "SUB-RULE,(PROCESS-NAME,thunderbird.exe)," + B_LIST,                // _.THUNDERBIRD
     "SUB-RULE,(PROCESS-NAME,PowerToys.exe)," + B_LIST,                  // _.POWERTOY
@@ -159,10 +161,13 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,steam.exe)," + B_LIST,                      // _.STEAM
     "SUB-RULE,(PROCESS-NAME,steamwebhelper.exe)," + B_LIST,             // _.STEAM WEBHELPER 
     "SUB-RULE,(PROCESS-NAME,steamservice.exe)," + B_LIST,               // _.STEAM SERVICE
+    "SUB-RULE,(PROCESS-NAME,EpicWebHelper.exe)," + B_LIST,              // _.EPIC
+    "SUB-RULE,(PROCESS-NAME,EpicGamesLauncher.exe)," + B_LIST,          // _.EPIC GAMES LAUNCHER
 
     "SUB-RULE,(PROCESS-NAME,node.exe)," + B_LIST,                       // _.NODE.JS
     "SUB-RULE,(PROCESS-NAME,Postman.exe)," + B_LIST,                    // _.POSTMAN
     "SUB-RULE,(PROCESS-NAME,gitkraken.exe)," + B_LIST,                  // _.GITKRAKEN
+    "SUB-RULE,(PROCESS-NAME,miktex-console.exe)," + B_LIST,             // _.MIKTEX CONSOLE
 
     // ?.内核版本 1.19.5 => 路径规则能够正常匹配使用“.”分割的进程名
     "SUB-RULE,(PROCESS-NAME,Playnite.DesktopApp.exe)," + B_LIST,        // _.PLAYNITE
@@ -180,6 +185,8 @@ const RULES = [
 
     // !.白名单模式
     "SUB-RULE,(PROCESS-NAME,Telegram.exe)," + W_LIST,                   // _.TELEGRAM
+    "SUB-RULE,(PROCESS-NAME,AdsPower Global.exe)," + W_LIST,            // _.ADSPOWER
+    "SUB-RULE,(PROCESS-NAME,SunBrowser.exe)," + W_LIST,                 // _.SUN BROWSER
 
     // !.无匹配流量
     "MATCH,DIRECT",                                                     // _.ESCAPE REQUESTS

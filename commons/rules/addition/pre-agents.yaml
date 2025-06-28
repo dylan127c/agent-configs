@@ -17,8 +17,8 @@ payload:
   - IP-CIDR,216.239.38.120/32,no-resolve
 
   # >.COMPANY
-  - IP-CIDR,156.233.234.246/32,no-resolve
-  - IP-CIDR,156.233.234.50/32,no-resolve
+  - IP-CIDR,156.233.234.0/24,no-resolve
+  - IP-CIDR,154.94.236.0/24,no-resolve
 
   # >.ANONYMOUS PROGRAMS
   - DOMAIN-SUFFIX,googleusercontent.com
