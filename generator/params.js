@@ -224,11 +224,11 @@ const BASIC_BUILT = () => {
         //     rule: "download",           // *.子规则名称
         // },
         {
-            name: "PROXYCAP_DIRECT",   // *.监听器名称，只用作标识符而没有其他用处
+            name: "FINALSHELL_STABLE",      // *.监听器名称，只用作标识符而没有其他用处
             type: "mixed",                  // *.HTTPS/SOCKS5
             listen: "0.0.0.0",              // *.监听地址
             port: 51162,                    // *.监听端口
-            proxy: "DIRECT",           // *.策略组名称
+            proxy: "SSH",                   // *.策略组名称
         }
     ];
 

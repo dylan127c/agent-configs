@@ -58,6 +58,9 @@ const SPECIFIC_GROUPS = [
     { name: "DOWNLOAD", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/SSID.png" },
     { name: "STREAMING", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Media.png" },
 
+    // !.远程 SSH 需要代理的情况（LISTENNING）
+    { name: "SSH", type: "select", proxies: ["DIRECT"], single: true, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Round_Robin.png" },
+
     // ?.PIKPAK 下载存在大量请求建议优先进行匹配
     { name: "PIKPAK.DS", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/lige47/QuanX-icon-rule/main/icon/pikpak.png" },
 

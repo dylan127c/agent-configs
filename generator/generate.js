@@ -194,6 +194,21 @@ function getProxyGroups(map) {
             group.url = preset.url;
         }
 
+        // *.远程 SSH 需要代理的情况（LISTENNING）
+        if (preset.hasOwnProperty("single")) {
+            let filtered = false;
+            group.use = [];
+            providerCollection.forEach(collect => {
+                group.use.push(collect.use[0]);
+                if (!filtered) {
+                    group.filter = collect.filter;
+                    filtered = true;
+                }
+            })
+            groupsArr.push(addTypeParams(group));
+            return; // *.进行下一次迭代
+        }
+
         if (!preset.hasOwnProperty("append") || !preset.append) {
             if (isEmptyArray(group.proxies)) {
                 group.proxies.push(...providerGroupsName);

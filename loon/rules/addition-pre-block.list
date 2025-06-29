@@ -33,4 +33,5 @@ DOMAIN-SUFFIX,adobestats.io
 DOMAIN-SUFFIX,hstatic.io# >.SMART INPUT PRO
 DOMAIN-SUFFIX,xiaolvpuzi.cn
 IP-CIDR,139.196.20.59/32,no-resolve
-IP-CIDR,47.102.221.152/32,no-resolve
+IP-CIDR,47.102.221.152/32,no-resolve# >.GITKRAKEN
+DOMAIN-SUFFIX,release.gitkraken.com
