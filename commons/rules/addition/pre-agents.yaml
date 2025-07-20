@@ -7,7 +7,10 @@
 
 payload:
   # >.GOOGLE (SPEED UP)
-  - '+.google.com'
+  - DOMAIN-SUFFIX,google.com
+
+  # >.MAVEN REPO
+  - DOMAIN-SUFFIX,mvnrepository.com
   
   # >.HOSTS FILE
   # >.GOOGLE FORCE SAFE SEARCH (FOR TUN)
@@ -15,10 +18,6 @@ payload:
   # 2.TUN MODE, MAPPING IP REQUIRES PROXY SERVER
   # 3.CURRENT NO ANY RULES MATCHING THAT IP ADDR
   - IP-CIDR,216.239.38.120/32,no-resolve
-
-  # >.COMPANY
-  - IP-CIDR,156.233.234.0/24,no-resolve
-  - IP-CIDR,154.94.236.0/24,no-resolve
 
   # >.ANONYMOUS PROGRAMS
   - DOMAIN-SUFFIX,googleusercontent.com

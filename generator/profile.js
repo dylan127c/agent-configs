@@ -57,22 +57,23 @@ const SPECIFIC_GROUPS = [
     { name: "SPECIFIC", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/ULB.png" },
     { name: "DOWNLOAD", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/SSID.png" },
     { name: "STREAMING", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Media.png" },
-
-    // !.远程 SSH 需要代理的情况（LISTENNING）
+    
+    // !.远程 SSH 需要代理的情况（例如配合 FinalShell 使用）
     { name: "SSH", type: "select", proxies: ["DIRECT"], single: true, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Round_Robin.png" },
+
+    { name: "CLOUDFLARE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cloudflare.png", url: "https://cloudflare.com/cdn-cgi/trace" },
+    { name: "CURSOR", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Cursor.png" },
+    { name: "GITHUB", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/GitHub_1.png", url: "https://api.github.com/zen" },
+    { name: "LINUX.DO", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cat.png", url: "https://status.linux.do/api/status-page/heartbeat/default"},
 
     // ?.PIKPAK 下载存在大量请求建议优先进行匹配
     { name: "PIKPAK.DS", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/lige47/QuanX-icon-rule/main/icon/pikpak.png" },
-
-    // ?.GITHUB 健康检查：https://api.github.com/zen
-    { name: "GITHUB", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/GitHub_1.png", url: "https://api.github.com/zen" },
 
     // ?.JETBRAINS 日常使用推荐 H|M 类型节点；下载使用推荐 L 类型节点。规避风险选择 REJECT 策略组
     { name: "JETBRAINS", type: "select", proxies: ["DIRECT", "REJECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/JetBrains.png" },
     { name: "DOCKER", type: "select", proxies: ["DIRECT", "REJECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Docker.png" },
     { name: "CLAUDE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Claude.png" },
     { name: "OPENAI", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/ChatGPT.png" },
-    { name: "CLOUDFLARE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cloudflare.png" },
     { name: "GOOGLEDRIVE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Google_Drive.png" },
     { name: "ONEDRIVE", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/OneDrive.png" },
     { name: "YOUTUBE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube.png" },
@@ -112,6 +113,7 @@ const RULES = [
     "PROCESS-NAME,DownloadServer.exe,PIKPAK.DS",                        // _.PIKPAK DOWNLOAD SERVER
 
     // !.浏览器存在大量请求，使用 F_LIST 完整规则集分流
+    "SUB-RULE,(PROCESS-NAME,zen.exe)," + F_LIST,                        // _.ZEN
     "SUB-RULE,(PROCESS-NAME,firefox.exe)," + F_LIST,                    // _.FIREFOX
     "SUB-RULE,(PROCESS-NAME,msedge.exe)," + F_LIST,                     // _.MICROSOFT EDGE
     "SUB-RULE,(PROCESS-NAME,chrome.exe)," + F_LIST,                     // _.GOOGLE CHROME
@@ -152,6 +154,7 @@ const RULES = [
 
     "SUB-RULE,(PROCESS-NAME,java.exe)," + B_LIST,                       // _.JAVA RUNTIME
     "SUB-RULE,(PROCESS-NAME,go.exe)," + B_LIST,                         // _.GO RUNTIME
+    "SUB-RULE,(PROCESS-NAME,cursor.exe)," + B_LIST,                     // _.CURSOR
     "SUB-RULE,(PROCESS-NAME,code.exe)," + B_LIST,                       // _.VISUAL STUDIO CODE/VSCODE
 
     "SUB-RULE,(PROCESS-NAME,Mihomo Party.exe)," + B_LIST,               // _.MIHOMO PARTY
@@ -205,6 +208,9 @@ const ALL_SUB_RULES = [
     // !.CLOUDFLARE 常用于验证，对很多服务来说都特别重要（建议置顶）
     "RULE-SET,addition-cloudflare,CLOUDFLARE",                      // _.CLOUDFLARE
     "RULE-SET,addition-oracle,ORACLE",                              // _.ORACLE
+    
+    // !.CURSOR
+    "RULE-SET,addition-cursor,CURSOR",                              // _.CURSOR
 
     // !.AI 御三家
     "RULE-SET,special-claude,CLAUDE",                               // _.CLAUDE
@@ -220,6 +226,7 @@ const ALL_SUB_RULES = [
     "RULE-SET,addition-docker,DOCKER",                              // _.DOCKER
 
     // !.游戏、视频、网盘等
+    "RULE-SET,addition-linux.do,LINUX.DO",                          // _.LINUX.DO
     "RULE-SET,addition-media,STREAMING",                            // _.STREAMING
     "RULE-SET,special-epic,EPIC",                                   // _.EPIC
     "RULE-SET,special-steam,STEAM",                                 // _.STEAM

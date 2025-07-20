@@ -24,3 +24,7 @@ payload:
   # >.VSCode 下载
   - DOMAIN-SUFFIX,download.visualstudio.microsoft.
   - DOMAIN-SUFFIX,update.code.visualstudio.com
+
+  # >.
+  - DOMAIN-SUFFIX,docker.io
+  - DOMAIN-SUFFIX,docker.com

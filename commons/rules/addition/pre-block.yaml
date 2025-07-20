@@ -41,3 +41,10 @@ payload:
 
   # >.GITKRAKEN
   - DOMAIN-SUFFIX,release.gitkraken.com
+  
+  # >.HOSTBUF (FinalShell)
+  - DOMAIN-SUFFIX,youtusoft.com
+  - DOMAIN-SUFFIX,hostbuf.com
+  - DOMAIN-SUFFIX,dkys.org
+  - DOMAIN-SUFFIX,tcpspeed.com
+  - DOMAIN-SUFFIX,wn1998.com
