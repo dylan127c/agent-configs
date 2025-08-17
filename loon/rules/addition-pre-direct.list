@@ -6,3 +6,7 @@ PROCESS-NAME,StarRail.exe
 PROCESS-NAME,HipsDaemon.exe
 
 DOMAIN-SUFFIX,leetcode.cn
+DOMAIN-SUFFIX,huya.com
+DOMAIN-SUFFIX,jianguoyun.com
+
+DOMAIN-SUFFIX,steamdb.info

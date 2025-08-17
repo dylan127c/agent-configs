@@ -57,14 +57,14 @@ const SPECIFIC_GROUPS = [
     { name: "SPECIFIC", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/ULB.png" },
     { name: "DOWNLOAD", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/SSID.png" },
     { name: "STREAMING", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Media.png" },
-    
+
     // !.远程 SSH 需要代理的情况（例如配合 FinalShell 使用）
     { name: "SSH", type: "select", proxies: ["DIRECT"], single: true, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Round_Robin.png" },
 
     { name: "CLOUDFLARE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cloudflare.png", url: "https://cloudflare.com/cdn-cgi/trace" },
     { name: "CURSOR", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Cursor.png" },
     { name: "GITHUB", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/GitHub_1.png", url: "https://api.github.com/zen" },
-    { name: "LINUX.DO", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cat.png", url: "https://status.linux.do/api/status-page/heartbeat/default"},
+    { name: "LINUX.DO", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cat.png", url: "https://status.linux.do/api/status-page/heartbeat/default" },
 
     // ?.PIKPAK 下载存在大量请求建议优先进行匹配
     { name: "PIKPAK.DS", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/lige47/QuanX-icon-rule/main/icon/pikpak.png" },
@@ -111,6 +111,16 @@ const RULES = [
     // !.一般的下载程序根据请求是否需要代理服务来按需完成下载
     // !.PIKPAK 较为特殊，其存在国内 CDN 节点允许进行直连下载（尽量直连）
     "PROCESS-NAME,DownloadServer.exe,PIKPAK.DS",                        // _.PIKPAK DOWNLOAD SERVER
+    
+    // !.下载场景下未被规则集囊括的下载域名可能会被后续规则集囊括
+    // !.从而造成下载流量走代理的情况，这里直接使用单独代理组管理流量
+    "PROCESS-NAME,steam.exe,STEAM",                                     // _.STEAM
+    "PROCESS-NAME,steamwebhelper.exe,STEAM",                            // _.STEAM WEBHELPER 
+    "PROCESS-NAME,steamservice.exe,STEAM",                              // _.STEAM SERVICE   
+    
+    // !.单独代理组管理 EPIC 的原因和 STEAM 类似
+    "PROCESS-NAME,EpicWebHelper.exe,EPIC",                              // _.EPIC
+    "PROCESS-NAME,EpicGamesLauncher.exe,EPIC",                          // _.EPIC GAMES LAUNCHER
 
     // !.浏览器存在大量请求，使用 F_LIST 完整规则集分流
     "SUB-RULE,(PROCESS-NAME,zen.exe)," + F_LIST,                        // _.ZEN
@@ -139,7 +149,6 @@ const RULES = [
     // !.存在 msedgewebview2.exe 进程发起类似 githubcontents.com 的请求
     "SUB-RULE,(PROCESS-NAME,msedgewebview2.exe)," + B_LIST,             // _.MICROSOFT EDGE WEBVIEW2
 
-
     // !.针对 JETBRAINS 关键字进程分流，同时对目标产品单独进行分流
     "SUB-RULE,(PROCESS-PATH-REGEX,(?i).*jetbrains.*)," + B_LIST,        // _.JETBRAINS
     "SUB-RULE,(PROCESS-NAME,idea64.exe)," + B_LIST,                     // _.INTELLIJ IDEA
@@ -164,25 +173,22 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,thunderbird.exe)," + B_LIST,                // _.THUNDERBIRD
     "SUB-RULE,(PROCESS-NAME,PowerToys.exe)," + B_LIST,                  // _.POWERTOY
 
-    "SUB-RULE,(PROCESS-NAME,steam.exe)," + B_LIST,                      // _.STEAM
-    "SUB-RULE,(PROCESS-NAME,steamwebhelper.exe)," + B_LIST,             // _.STEAM WEBHELPER 
-    "SUB-RULE,(PROCESS-NAME,steamservice.exe)," + B_LIST,               // _.STEAM SERVICE
-    "SUB-RULE,(PROCESS-NAME,EpicWebHelper.exe)," + B_LIST,              // _.EPIC
-    "SUB-RULE,(PROCESS-NAME,EpicGamesLauncher.exe)," + B_LIST,          // _.EPIC GAMES LAUNCHER
 
     "SUB-RULE,(PROCESS-NAME,node.exe)," + B_LIST,                       // _.NODE.JS
     "SUB-RULE,(PROCESS-NAME,Postman.exe)," + B_LIST,                    // _.POSTMAN
     "SUB-RULE,(PROCESS-NAME,gitkraken.exe)," + B_LIST,                  // _.GITKRAKEN
     "SUB-RULE,(PROCESS-NAME,miktex-console.exe)," + B_LIST,             // _.MIKTEX CONSOLE
 
+    "SUB-RULE,(PROCESS-NAME,CefSharp.BrowserSubprocess.exe)," + B_LIST, // _.STEAM/PLAYNITE
+
     // ?.内核版本 1.19.5 => 路径规则能够正常匹配使用“.”分割的进程名
     "SUB-RULE,(PROCESS-NAME,Playnite.DesktopApp.exe)," + B_LIST,        // _.PLAYNITE
     "SUB-RULE,(PROCESS-NAME,Playnite.FullscreenApp.exe)," + B_LIST,     // _.PLAYNITE FULLSCREEN
-    "SUB-RULE,(PROCESS-NAME,CefSharp.BrowserSubprocess.exe)," + B_LIST, // _.PLAYNITE CEF SHARP
     "SUB-RULE,(PROCESS-NAME,Toolbox.exe)," + B_LIST,                    // _.PLAYNITE TOOLBOX
 
     "SUB-RULE,(PROCESS-NAME,bg3.exe)," + B_LIST,                        // _.BALDURS GATE 3
     "SUB-RULE,(PROCESS-NAME,bg3_dx11.exe)," + B_LIST,                   // _.BALDURS GATE 3 DX11
+    "SUB-RULE,(PROCESS-NAME,LariLauncher.exe)," + B_LIST,               // _.LARIAN LAUNCHER
 
     // !.PIKPAK 不能使用 W_LIST 子规则（白名单不保留 ALL 策略组）
     // ?.原因是 mypikpak.com 域名存在于 original-direct 规则集
@@ -208,7 +214,7 @@ const ALL_SUB_RULES = [
     // !.CLOUDFLARE 常用于验证，对很多服务来说都特别重要（建议置顶）
     "RULE-SET,addition-cloudflare,CLOUDFLARE",                      // _.CLOUDFLARE
     "RULE-SET,addition-oracle,ORACLE",                              // _.ORACLE
-    
+
     // !.CURSOR
     "RULE-SET,addition-cursor,CURSOR",                              // _.CURSOR
 
@@ -228,8 +234,6 @@ const ALL_SUB_RULES = [
     // !.游戏、视频、网盘等
     "RULE-SET,addition-linux.do,LINUX.DO",                          // _.LINUX.DO
     "RULE-SET,addition-media,STREAMING",                            // _.STREAMING
-    "RULE-SET,special-epic,EPIC",                                   // _.EPIC
-    "RULE-SET,special-steam,STEAM",                                 // _.STEAM
     "RULE-SET,special-reddit,REDDIT",                               // _.REDDIT
     "RULE-SET,special-youtube,YOUTUBE",                             // _.YOUTUBE
     "RULE-SET,special-onedrive,ONEDRIVE",                           // _.ONEDRIVE
@@ -317,7 +321,7 @@ const SUB_RULES = {
             before: "ALL",
             after: "DOWNLOAD",
             excluded: BROWSER_ONLY,
-            match: "DIRECT",
+            match: "DOWNLOAD",
         },
         [...ALL_SUB_RULES]),
 };

@@ -6,6 +6,7 @@ DOMAIN-SUFFIX,drivers.amd.com# >.JDK 下载
 DOMAIN-SUFFIX,download.java.net
 DOMAIN-SUFFIX,download.oracle.com# >.VSCode 下载
 DOMAIN-SUFFIX,download.visualstudio.microsoft.
-DOMAIN-SUFFIX,update.code.visualstudio.com# >.
+DOMAIN-SUFFIX,update.code.visualstudio.com# >.Docker
 DOMAIN-SUFFIX,docker.io
-DOMAIN-SUFFIX,docker.com
+DOMAIN-SUFFIX,docker.com# >.Baldur's Gate 3 Official Mod
+DOMAIN-SUFFIX,modcdn.io

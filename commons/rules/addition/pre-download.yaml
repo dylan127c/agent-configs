@@ -25,6 +25,9 @@ payload:
   - DOMAIN-SUFFIX,download.visualstudio.microsoft.
   - DOMAIN-SUFFIX,update.code.visualstudio.com
 
-  # >.
+  # >.Docker
   - DOMAIN-SUFFIX,docker.io
   - DOMAIN-SUFFIX,docker.com
+
+  # >.Baldur's Gate 3 Official Mod
+  - DOMAIN-SUFFIX,modcdn.io

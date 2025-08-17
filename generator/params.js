@@ -369,7 +369,8 @@ const BASIC_BUILT = () => {
         "+.orayimg.com",
         "+.oray.com",
         "+.oray.net",
-        "+.todesk.com"
+        "+.todesk.com",
+        "+.huya.com"
     ];
 
     // *.支持 DoH 协议，但域名需为 IP 地址形式（不是所有 IPv4 地址都支持 DoH 协议，因此不能直接将 IPv4 书写为 DoH 协议）

@@ -30,10 +30,7 @@ DOMAIN-REGEX,^[w]{3}\.\d{3}[a-z]{1}a[a-z]{1}\..*
 DOMAIN-REGEX,^[a-z]{3}bj[a-z]{3}\..*
 DOMAIN-SUFFIX,adobe.io
 DOMAIN-SUFFIX,adobestats.io
-DOMAIN-SUFFIX,hstatic.io# >.SMART INPUT PRO
-DOMAIN-SUFFIX,xiaolvpuzi.cn
-IP-CIDR,139.196.20.59/32,no-resolve
-IP-CIDR,47.102.221.152/32,no-resolve# >.GITKRAKEN
+DOMAIN-SUFFIX,hstatic.io# >.SMART INPUT PRO# - DOMAIN-SUFFIX,xiaolvpuzi.cn# - IP-CIDR,139.196.20.59/32,no-resolve# - IP-CIDR,47.102.221.152/32,no-resolve# >.GITKRAKEN
 DOMAIN-SUFFIX,release.gitkraken.com# >.HOSTBUF (FinalShell)
 DOMAIN-SUFFIX,youtusoft.com
 DOMAIN-SUFFIX,hostbuf.com
