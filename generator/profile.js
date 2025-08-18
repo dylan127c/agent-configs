@@ -172,7 +172,7 @@ const RULES = [
 
     "SUB-RULE,(PROCESS-NAME,thunderbird.exe)," + B_LIST,                // _.THUNDERBIRD
     "SUB-RULE,(PROCESS-NAME,PowerToys.exe)," + B_LIST,                  // _.POWERTOY
-
+    "SUB-RULE,(PROCESS-NAME,memreduct.exe)," + B_LIST,                  // _.MEMREDUCT
 
     "SUB-RULE,(PROCESS-NAME,node.exe)," + B_LIST,                       // _.NODE.JS
     "SUB-RULE,(PROCESS-NAME,Postman.exe)," + B_LIST,                    // _.POSTMAN
@@ -321,7 +321,7 @@ const SUB_RULES = {
             before: "ALL",
             after: "DOWNLOAD",
             excluded: BROWSER_ONLY,
-            match: "DOWNLOAD",
+            match: "DIRECT",
         },
         [...ALL_SUB_RULES]),
 };
