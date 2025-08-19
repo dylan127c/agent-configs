@@ -4,3 +4,4 @@ package-lock.json
 *.log
 commons/rules/original/
 commons/rules/special/
+commons/rules/updateTimestamp.log
