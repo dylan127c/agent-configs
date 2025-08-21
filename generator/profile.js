@@ -92,9 +92,6 @@ const W_LIST = "whitelist"; // _.白名单模式（MATCH PROXY）
 const D_LIST = "download";  // _.下载流量分流规则（DOWNLOAD）
 
 const RULES = [
-    // !.延长 Windows 11 系统更新，在触发开始菜单的搜索栏后，会出现大量从 msedgewebview2.exe 进程发起的 bing.com 请求
-    "AND,((PROCESS-NAME,msedgewebview2.exe),(DOMAIN-SUFFIX,bing.com)),REJECT",
-
     // !.本规则的设计原则是基于 PROCESS 完成初次分流匹配，后续根据规则集针对请求深度分流
     // >.某些流量（已知或未知）可能需要提前进行分流（REJECT、DIRECT、PROXY 或 DOWNLOAD）
     // >.规则集 ADDITION-PRE-* 用于匹配这类型流量，以提前完成拦截、直连、代理或下载等需求
@@ -106,6 +103,11 @@ const RULES = [
     "RULE-SET,addition-pre-direct,DIRECT",                              // _.提前直连（例如游戏、网盘程序产生的流量）
     "RULE-SET,addition-pre-download,DOWNLOAD",                          // _.提前下载（或未知下载）
     "RULE-SET,addition-pre-agents,ALL",                                 // _.提前代理（或未知代理）
+    
+    // !.类似 CLASH VERGE 等工具使用 Microsoft Edge 作为渲染引擎来
+    // !.存在 msedgewebview2.exe 进程发起类似 githubcontents.com 的请求
+    // !.注意 Windows 系统中存在许多 msedgewebview2.exe 进程要求直连网络，不能一概而论地走代理
+    "AND,((PROCESS-NAME,msedgewebview2.exe),(DOMAIN-KEYWORD,github)),GITHUB",
 
     // !.后续分流完全基于 PROCESS 规则，未匹配的程序将使用 DIRECT 策略（MATCH）
     // !.完全依赖代理服务的程序可以不使用规则集分流（推荐直接分配专用的代理策略组）
@@ -147,10 +149,6 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,curl.exe)," + B_LIST,                       // _.GIT => CLONE/PULL/PUSH
     "SUB-RULE,(PROCESS-NAME,ssh.exe)," + B_LIST,                        // _.GIT => SSH
     "SUB-RULE,(PROCESS-NAME,git-remote-https.exe)," + B_LIST,           // _.GIT => HTTPS
-
-    // !.类似 CLASH VERGE 等工具使用 Microsoft Edge 作为渲染引擎来
-    // !.存在 msedgewebview2.exe 进程发起类似 githubcontents.com 的请求
-    "SUB-RULE,(PROCESS-NAME,msedgewebview2.exe)," + B_LIST,             // _.MICROSOFT EDGE WEBVIEW2
 
     // !.针对 JETBRAINS 关键字进程分流，同时对目标产品单独进行分流
     "SUB-RULE,(PROCESS-PATH-REGEX,(?i).*jetbrains.*)," + B_LIST,        // _.JETBRAINS
