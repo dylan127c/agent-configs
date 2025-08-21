@@ -92,6 +92,9 @@ const W_LIST = "whitelist"; // _.白名单模式（MATCH PROXY）
 const D_LIST = "download";  // _.下载流量分流规则（DOWNLOAD）
 
 const RULES = [
+    // !.延长 Windows 11 系统更新，在触发开始菜单的搜索栏后，会出现大量从 msedgewebview2.exe 进程发起的 bing.com 请求
+    "AND,((PROCESS-NAME,msedgewebview2.exe),(DOMAIN-SUFFIX,bing.com)),REJECT",
+
     // !.本规则的设计原则是基于 PROCESS 完成初次分流匹配，后续根据规则集针对请求深度分流
     // >.某些流量（已知或未知）可能需要提前进行分流（REJECT、DIRECT、PROXY 或 DOWNLOAD）
     // >.规则集 ADDITION-PRE-* 用于匹配这类型流量，以提前完成拦截、直连、代理或下载等需求
