@@ -3,3 +3,6 @@
 payload:
   # >.CLOUDFLARE CHALLENGE
   - '+.challenges.cloudflare.com'
+
+  # >.AMAZON CLOUDFRONT
+  - '+.cloudfront.net'

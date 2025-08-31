@@ -1,2 +1,3 @@
 # !.ADDITION-CLOUDFLARE# >.CLOUDFLARE CHALLENGE
-DOMAIN-SUFFIX,challenges.cloudflare.com
+DOMAIN-SUFFIX,challenges.cloudflare.com# >.AMAZON CLOUDFRONT
+DOMAIN-SUFFIX,cloudfront.net

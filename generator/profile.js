@@ -178,7 +178,7 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,node.exe)," + B_LIST,                       // _.NODE.JS
     "SUB-RULE,(PROCESS-NAME,Postman.exe)," + B_LIST,                    // _.POSTMAN
     "SUB-RULE,(PROCESS-NAME,gitkraken.exe)," + B_LIST,                  // _.GITKRAKEN
-    "SUB-RULE,(PROCESS-NAME,miktex-console.exe)," + B_LIST,             // _.MIKTEX CONSOLE
+    "SUB-RULE,(PROCESS-NAME,Typora.exe)," + B_LIST,                     // _.TYPORA
 
     "SUB-RULE,(PROCESS-NAME,CefSharp.BrowserSubprocess.exe)," + B_LIST, // _.STEAM/PLAYNITE
 

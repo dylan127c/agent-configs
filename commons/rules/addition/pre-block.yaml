@@ -48,3 +48,7 @@ payload:
   - DOMAIN-SUFFIX,dkys.org
   - DOMAIN-SUFFIX,tcpspeed.com
   - DOMAIN-SUFFIX,wn1998.com
+
+  # >.IMTIP / FOR BLOCKING UPDATE
+  - PROCESS-NAME,ImTip.exe
+  - PROCESS-NAME,aardio.exe
