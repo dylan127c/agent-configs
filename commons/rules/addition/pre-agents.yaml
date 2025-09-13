@@ -39,3 +39,6 @@ payload:
   # >.BROWSER WEBSITE
   - DOMAIN-SUFFIX,tiobe.com
   - DOMAIN-SUFFIX,youtrack.jetbrains.com
+
+  # >.THECHPOWERUP
+  - DOMAIN-SUFFIX,techpowerup.com
