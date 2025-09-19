@@ -76,7 +76,7 @@ const SPECIFIC_GROUPS = [
     { name: "OPENAI", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/ChatGPT.png" },
     { name: "GOOGLEDRIVE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Google_Drive.png" },
     { name: "ONEDRIVE", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/OneDrive.png" },
-    { name: "YOUTUBE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube.png" },
+    { name: "YOUTUBE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube.png" },
     { name: "TELEGRAM", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:SG).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Telegram.png" },
     { name: "STEAM", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Steam.png" },
     { name: "EPIC", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Epic_Games.png" },
