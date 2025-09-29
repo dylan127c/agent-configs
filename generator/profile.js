@@ -103,7 +103,7 @@ const RULES = [
     "RULE-SET,addition-pre-direct,DIRECT",                              // _.提前直连（例如游戏、网盘程序产生的流量）
     "RULE-SET,addition-pre-download,DOWNLOAD",                          // _.提前下载（或未知下载）
     "RULE-SET,addition-pre-agents,ALL",                                 // _.提前代理（或未知代理）
-    
+
     // !.类似 CLASH VERGE 等工具使用 Microsoft Edge 作为渲染引擎来
     // !.存在 msedgewebview2.exe 进程发起类似 githubcontents.com 的请求
     // !.注意 Windows 系统中存在许多 msedgewebview2.exe 进程要求直连网络，不能一概而论地走代理
@@ -116,13 +116,13 @@ const RULES = [
     // !.一般的下载程序根据请求是否需要代理服务来按需完成下载
     // !.PIKPAK 较为特殊，其存在国内 CDN 节点允许进行直连下载（尽量直连）
     "PROCESS-NAME,DownloadServer.exe,PIKPAK.DS",                        // _.PIKPAK DOWNLOAD SERVER
-    
+
     // !.下载场景下未被规则集囊括的下载域名可能会被后续规则集囊括
     // !.从而造成下载流量走代理的情况，这里直接使用单独代理组管理流量
     "PROCESS-NAME,steam.exe,STEAM",                                     // _.STEAM
     "PROCESS-NAME,steamwebhelper.exe,STEAM",                            // _.STEAM WEBHELPER 
     "PROCESS-NAME,steamservice.exe,STEAM",                              // _.STEAM SERVICE   
-    
+
     // !.单独代理组管理 EPIC 的原因和 STEAM 类似
     "PROCESS-NAME,EpicWebHelper.exe,EPIC",                              // _.EPIC
     "PROCESS-NAME,EpicGamesLauncher.exe,EPIC",                          // _.EPIC GAMES LAUNCHER

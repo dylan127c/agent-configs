@@ -13,6 +13,7 @@ payload:
 
   # >.BitComet：更新相关
   - DOMAIN-SUFFIX,download.bitcomet.com
+  - DOMAIN-SUFFIX,cometbbs.com
 
   # >.AMD 显卡驱动下载
   - DOMAIN-SUFFIX,drivers.amd.com
