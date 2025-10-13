@@ -133,7 +133,7 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,msedge.exe)," + F_LIST,                     // _.MICROSOFT EDGE
     "SUB-RULE,(PROCESS-NAME,chrome.exe)," + F_LIST,                     // _.GOOGLE CHROME
 
-    // !.局域网设备 IP 直连
+    // !.允许局域网设备连接，此类型不会造成 DNS 泄漏
     "SUB-RULE,(SRC-IP-CIDR,192.168.1.102/32)," + F_LIST,                // _.IPHONE
     "SUB-RULE,(SRC-IP-CIDR,192.168.1.105/32)," + F_LIST,                // _.IPAD
 

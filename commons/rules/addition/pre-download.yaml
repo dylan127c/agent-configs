@@ -31,5 +31,3 @@ payload:
 
   # >.NETWORK DISK
   - DOMAIN-SUFFIX,dailyuploads.net
-
-  - DOMAIN-SUFFIX,hls.obmoti.cn
