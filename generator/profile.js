@@ -97,9 +97,16 @@ const RULES = [
     // >.规则集 ADDITION-PRE-* 用于匹配这类型流量，以提前完成拦截、直连、代理或下载等需求
     // >.注意前置规则不能过多，TUN 模式下所有程序都要经过这些规则集的匹配，尽量保持少量精准
 
+    // !.如果浏览器本身安装了 WebRTC 插件或扩展程序，那么可以不屏蔽 PCDN 流量
+    // >.某些视频网站只能从 P/MCDN 节点下载视频内容，屏蔽会导致视频无法观看（卡加载）
+    "AND,((PROCESS-NAME,firefox.exe),(RULE-SET,addition-pre-pcdn)),DIRECT",
+    "AND,((PROCESS-NAME,msedge.exe),(RULE-SET,addition-pre-pcdn)),DIRECT",
+    "AND,((PROCESS-NAME,chrome.exe),(RULE-SET,addition-pre-pcdn)),DIRECT",
+
     // !.注意 ADDITION-PRE-* 规则文件是 CLASSICAL 类型
     // !.普通 ADDITION-* 规则则多使用 DOMAIN 而非 CLASSICAL 类型
-    "RULE-SET,addition-pre-block,REJECT",                               // _.提前拦截（例如参与 PCDN 的域名）
+    "RULE-SET,addition-pre-pcdn,REJECT",                                // _.提前拦截（仅浏览器不进行拦截）
+    "RULE-SET,addition-pre-block,REJECT",                               // _.提前拦截（包括浏览器在内的应用不可访问）
     "RULE-SET,addition-pre-direct,DIRECT",                              // _.提前直连（例如游戏、网盘程序产生的流量）
     "RULE-SET,addition-pre-download,DOWNLOAD",                          // _.提前下载（或未知下载）
     "RULE-SET,addition-pre-agents,ALL",                                 // _.提前代理（或未知代理）

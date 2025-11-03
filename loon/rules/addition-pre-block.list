@@ -1,27 +1,15 @@
-# !.ADDITION-PRE-BLOCK# !.提前拦截（例如参与 PCDN 的域名）
-
-DOMAIN-SUFFIX,gjfzpt.cn
-DOMAIN-SUFFIX,szbdyd.com
-DOMAIN-SUFFIX,bsccdn.net
-DOMAIN-SUFFIX,pkoplink.com
-DOMAIN-SUFFIX,saxysec.com
-DOMAIN-SUFFIX,uhabo.com
-DOMAIN-SUFFIX,xycdn.com
-DOMAIN-SUFFIX,kuiniuca.com
-DOMAIN-SUFFIX,onethingpcs.com
-DOMAIN-SUFFIX,jomodns.cn
-DOMAIN-SUFFIX,p2p.huya.com
-DOMAIN-SUFFIX,stun.douyucdn.cn
-DOMAIN-SUFFIX,stun.hitv.com
-DOMAIN-SUFFIX,stun1.douyucdn.cn
-DOMAIN-SUFFIX,mcdn.bilivideo.cn
-DOMAIN-SUFFIX,tpa-hcdn.iqiyi.com
-DOMAIN-SUFFIX,pcdn.xmcdn.com
-DOMAIN-SUFFIX,pcdn.yximgs.com
-DOMAIN-REGEX,.*pcdn.*biliapi\.net
-DOMAIN-REGEX,.*pcdn.*youku\.com
-DOMAIN-REGEX,.*p2p.*douyucdn\.cn
-DOMAIN-REGEX,.*p2p.*qq\.com
+# !.ADDITION-PRE-BLOCK# !.提前拦截（包括浏览器在内的应用不可访问）# >.SMART INPUT PRO
+DOMAIN-SUFFIX,xiaolvpuzi.cn
+IP-CIDR,139.196.20.59/32,no-resolve
+IP-CIDR,47.102.221.152/32,no-resolve# >.GITKRAKEN
+DOMAIN-SUFFIX,release.gitkraken.com# >.HOSTBUF (FinalShell)
+DOMAIN-SUFFIX,youtusoft.com
+DOMAIN-SUFFIX,hostbuf.com
+DOMAIN-SUFFIX,dkys.org
+DOMAIN-SUFFIX,tcpspeed.com
+DOMAIN-SUFFIX,wn1998.com# >.IMTIP / FOR BLOCKING UPDATE
+PROCESS-NAME,ImTip.exe
+PROCESS-NAME,aardio.exe# >. ELSE
 DOMAIN-REGEX,^[a-z]{1}iss[a-z]{2}\..*
 DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}db\..*
 DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}le\..*
@@ -30,12 +18,4 @@ DOMAIN-REGEX,^[w]{3}\.\d{3}[a-z]{1}a[a-z]{1}\..*
 DOMAIN-REGEX,^[a-z]{3}bj[a-z]{3}\..*
 DOMAIN-SUFFIX,adobe.io
 DOMAIN-SUFFIX,adobestats.io
-DOMAIN-SUFFIX,hstatic.io# >.SMART INPUT PRO# - DOMAIN-SUFFIX,xiaolvpuzi.cn# - IP-CIDR,139.196.20.59/32,no-resolve# - IP-CIDR,47.102.221.152/32,no-resolve# >.GITKRAKEN
-DOMAIN-SUFFIX,release.gitkraken.com# >.HOSTBUF (FinalShell)
-DOMAIN-SUFFIX,youtusoft.com
-DOMAIN-SUFFIX,hostbuf.com
-DOMAIN-SUFFIX,dkys.org
-DOMAIN-SUFFIX,tcpspeed.com
-DOMAIN-SUFFIX,wn1998.com# >.IMTIP / FOR BLOCKING UPDATE
-PROCESS-NAME,ImTip.exe
-PROCESS-NAME,aardio.exe
+DOMAIN-SUFFIX,hstatic.io
