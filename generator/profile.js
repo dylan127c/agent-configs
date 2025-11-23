@@ -141,8 +141,7 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,chrome.exe)," + F_LIST,                     // _.GOOGLE CHROME
 
     // !.允许局域网设备连接，此类型不会造成 DNS 泄漏
-    "SUB-RULE,(SRC-IP-CIDR,192.168.1.102/32)," + F_LIST,                // _.IPHONE
-    "SUB-RULE,(SRC-IP-CIDR,192.168.1.105/32)," + F_LIST,                // _.IPAD
+    "SUB-RULE,(SRC-IP-CIDR,192.168.1.0/24)," + F_LIST,                // _.IPHONE && IPAD
 
     // ?.注意 BT 程序产生的大量超时请求的问题（不推荐将 BT 程序纳入分流）
     // >.BT 可能产生的大量超时请求，这会让 CLASH 误判策略组存在问题；
