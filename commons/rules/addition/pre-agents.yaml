@@ -42,3 +42,6 @@ payload:
 
   # >.THECHPOWERUP
   - DOMAIN-SUFFIX,techpowerup.com
+
+  - DOMAIN-SUFFIX,gstatic.com
+  - DOMAIN-SUFFIX,fonts.googleapis.com

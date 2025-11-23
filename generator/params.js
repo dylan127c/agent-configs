@@ -1,9 +1,13 @@
 const PROFILE_SAVE = "h:/github/agent configs/generator/profile.js"; // *.仓库内的配置文件路径（备份）
 const PROFILE_PATH = "d:/program files/mihomo party/data/override/192b4acc89e.js"; // *.MP 覆写内的配置文件路径
 
+function homepath() {
+    return process.env.homepath.replace(/^\\/gm, "c:\\");
+}
+
 const CVR_PROFILES = [
-    "C:/Users/dylan/AppData/Roaming/io.github.clash-verge-rev.clash-verge-rev/profiles/LXYasedmprkb.yaml",  // *.LAN.NETWORK
-    "C:/Users/dylan/AppData/Roaming/io.github.clash-verge-rev.clash-verge-rev/profiles/LF56hOZiUPpV.yaml",  // *.WLAN.NETWORK
+    homepath() + "/AppData/Roaming/io.github.clash-verge-rev.clash-verge-rev/profiles/LXYasedmprkb.yaml",  // *.LAN.NETWORK
+    homepath() + "/AppData/Roaming/io.github.clash-verge-rev.clash-verge-rev/profiles/LF56hOZiUPpV.yaml",  // *.WLAN.NETWORK
 ];
 
 const PROXY_PROVIDER_REG = /\b.*/;
