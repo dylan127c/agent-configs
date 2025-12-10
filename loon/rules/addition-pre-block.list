@@ -9,7 +9,19 @@ DOMAIN-SUFFIX,dkys.org
 DOMAIN-SUFFIX,tcpspeed.com
 DOMAIN-SUFFIX,wn1998.com# >.IMTIP / FOR BLOCKING UPDATE
 PROCESS-NAME,ImTip.exe
-PROCESS-NAME,aardio.exe# >. ELSE
+PROCESS-NAME,aardio.exe# >.AUDIT
+DOMAIN-REGEX,\b([\w-]+\.)*(beijingspring|chinaaffairs|chengmingmag|dafahao|dongtaiwang|epochweekly|epochtimes|aboluowang|zhengwunet|rfa|cn\.nytimes|appledaily|chinadigitaltimes)\.(com|cn|org|net)
+DOMAIN-REGEX,\b([\w-]+\.)*(falundafa|ifjc|minghui|ntdtv|open|bannedboot|secretchina|tuidang|wujieliulan|zhuichaguoji|24fa|li-hongzhi-master|voachinese|voacantonese)\.(com|cn|org)
+DOMAIN-REGEX,\b([\w-]+\.)*(guo\.media|(gnews|gtv)\.org)
+DOMAIN-REGEX,\b([\w-]+\.)*ancl\.jp
+DOMAIN-REGEX,\b([\w-]+\.)*aulaespazocoop\.com
+DOMAIN-REGEX,\b([\w-]+\.)*(pin-cong\.com|pincong\.rocks)
+DOMAIN-REGEX,\b([\w-]+\.)*((esu|zhina)\.(dog|moe|red|wiki|zone)|t91y\.com)
+DOMAIN-REGEX,\b([\w-]+\.)*ltn\.com\.tw
+DOMAIN-REGEX,\b([\w-]+\.)*furimajp\.com
+DOMAIN-REGEX,\b([\w-]+\.)*(mycard520|gashpoint|520game)\.com
+DOMAIN-REGEX,\b([\w-]+\.)*torproject\.org
+DOMAIN-REGEX,\b([\w-]+\.)*netvigator\.com# >.ELSE
 DOMAIN-REGEX,^[a-z]{1}iss[a-z]{2}\..*
 DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}db\..*
 DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}le\..*

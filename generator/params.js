@@ -376,7 +376,7 @@ const BASIC_BUILT = () => {
         "+.todesk.com",
         "+.163.com",
         "+.kurogame.xyz",
-        "+.anticheatexpert.com"
+        "+.anticheatexpert.com",
     ];
 
     // *.支持 DoH 协议，但域名需为 IP 地址形式（不是所有 IPv4 地址都支持 DoH 协议，因此不能直接将 IPv4 书写为 DoH 协议）
@@ -463,7 +463,7 @@ const BASIC_BUILT = () => {
     // initConfiguration["profile"] = { "tracing": false };
     initConfiguration["profile"] = {
         "store-selected": true,
-        "store-fake-ip": true
+        "store-fake-ip": false
     };
 
     return initConfiguration;

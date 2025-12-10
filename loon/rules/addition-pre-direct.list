@@ -1,14 +1,12 @@
-# !.ADDITION-PRE-DIRECT# !.提前直连（例如游戏、网盘程序产生的流量）
-
+# !.ADDITION-PRE-DIRECT# !.提前直连（例如游戏、网盘程序产生的流量）# >.AUDIT
+DOMAIN-REGEX,\b([\w-]+\.)*(360\.cn|(360|360safe|360totalsecurity|qihoo)\.com)
+DOMAIN-REGEX,\b([\w-]+\.)*((auth\.api|account)\.sonyentertainmentnetwork|((native-ps3|auth|native)\.np\.ac|accounts\.api)\.playstation)\.(com|net)# >.PROCESS
 PROCESS-NAME,quark.exe
 PROCESS-NAME,WeChat.exe
 PROCESS-NAME,StarRail.exe
-PROCESS-NAME,HipsDaemon.exe
-
+PROCESS-NAME,HipsDaemon.exe# >.WEBSITE
 DOMAIN-SUFFIX,leetcode.cn
 DOMAIN-SUFFIX,huya.com
 DOMAIN-SUFFIX,jianguoyun.com
-
 DOMAIN-SUFFIX,steamdb.info
-
 DOMAIN-SUFFIX,oth.eve.mdt.qq.com
