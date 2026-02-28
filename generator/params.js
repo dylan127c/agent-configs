@@ -173,7 +173,7 @@ const BASIC_BUILT = () => {
     initConfiguration["external-controller"] = "127.0.0.1:9097"; // *.该配置的 GUI 优先级较高
     initConfiguration.secret = ""; // *.该配置的 GUI 优先级较高
 
-    initConfiguration["bind-address"] = "*";
+    initConfiguration["bind-address"] = "0.0.0.0";
     initConfiguration["find-process-mode"] = "strict";
 
     initConfiguration["unified-delay"] = true;  // *.是否启用 RTT 延迟测试

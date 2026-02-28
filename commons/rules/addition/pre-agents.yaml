@@ -9,6 +9,10 @@ payload:
   # >.GOOGLE (SPEED UP)
   - DOMAIN-SUFFIX,google.com
 
+  # >.SUBSCRIPTION (TAISHAN NET)
+  - DOMAIN-SUFFIX,ts1110.top
+  - DOMAIN-SUFFIX,taishan.pro
+
   # >.MAVEN REPO
   - DOMAIN-SUFFIX,mvnrepository.com
   
@@ -43,5 +47,13 @@ payload:
   # >.THECHPOWERUP
   - DOMAIN-SUFFIX,techpowerup.com
 
+  # >.ELSE
+  - AND,((DOMAIN-REGEX,^[a-z]{1}iss[a-z]{2}\..*),(OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))))
+  - AND,((DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}db\..*),(OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))))
+  - AND,((DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}le\..*),(OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))))
+  - AND,((DOMAIN-REGEX,^th[a-z]{5}du[a-z]{2}\..*),(OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))))
+  - AND,((DOMAIN-REGEX,^[w]{3}\.\d{3}[a-z]{1}a[a-z]{1}\..*),(OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))))
+  - AND,((DOMAIN-REGEX,^[a-z]{3}bj[a-z]{3}\..*),(OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS)))
+  - AND,((DOMAIN-REGEX,^[0-9]{2}cg[0-9]{1}\..*),(OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS)))
   - DOMAIN-SUFFIX,gstatic.com
   - DOMAIN-SUFFIX,fonts.googleapis.com

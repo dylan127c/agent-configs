@@ -22,12 +22,13 @@ DOMAIN-REGEX,\b([\w-]+\.)*furimajp\.com
 DOMAIN-REGEX,\b([\w-]+\.)*(mycard520|gashpoint|520game)\.com
 DOMAIN-REGEX,\b([\w-]+\.)*torproject\.org
 DOMAIN-REGEX,\b([\w-]+\.)*netvigator\.com# >.ELSE
-DOMAIN-REGEX,^[a-z]{1}iss[a-z]{2}\..*
-DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}db\..*
-DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}le\..*
-DOMAIN-REGEX,^th[a-z]{5}du[a-z]{2}\..*
-DOMAIN-REGEX,^[w]{3}\.\d{3}[a-z]{1}a[a-z]{1}\..*
-DOMAIN-REGEX,^[a-z]{3}bj[a-z]{3}\..*
+AND,((DOMAIN-REGEX,^[a-z]{1}iss[a-z]{2}\..*),(IN-TYPE,SOCKS5),(NOT,((SRC-IP-CIDR,192.168.1.0/24))))
+AND,((DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}db\..*),(IN-TYPE,SOCKS5),(NOT,((SRC-IP-CIDR,192.168.1.0/24))))
+AND,((DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}le\..*),(IN-TYPE,SOCKS5),(NOT,((SRC-IP-CIDR,192.168.1.0/24))))
+AND,((DOMAIN-REGEX,^th[a-z]{5}du[a-z]{2}\..*),(IN-TYPE,SOCKS5),(NOT,((SRC-IP-CIDR,192.168.1.0/24))))
+AND,((DOMAIN-REGEX,^[w]{3}\.\d{3}[a-z]{1}a[a-z]{1}\..*),(IN-TYPE,SOCKS5),(NOT,((SRC-IP-CIDR,192.168.1.0/24))))
+AND,((DOMAIN-REGEX,^[a-z]{3}bj[a-z]{3}\..*),(IN-TYPE,SOCKS5),(NOT,((SRC-IP-CIDR,192.168.1.0/24))))
+AND,((DOMAIN-REGEX,^[0-9]{2}cg[0-9]{1}\..*),(IN-TYPE,SOCKS5),(NOT,((SRC-IP-CIDR,192.168.1.0/24))))
 DOMAIN-SUFFIX,adobe.io
 DOMAIN-SUFFIX,adobestats.io
 DOMAIN-SUFFIX,hstatic.io

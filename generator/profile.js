@@ -124,6 +124,10 @@ const RULES = [
     // !.PIKPAK 较为特殊，其存在国内 CDN 节点允许进行直连下载（尽量直连）
     "PROCESS-NAME,DownloadServer.exe,PIKPAK.DS",                        // _.PIKPAK DOWNLOAD SERVER
 
+    // ?.某些时候需要勾选“使用代理连接 Tracker”才能使 BitComet 查找到“种子/用户”
+    // !.这里直接让 BitComet 走 DIRECT 策略（DOWNLOAD 组别默认）
+    "PROCESS-NAME,BitComet.exe,DOWNLOAD",                               // _.BITCOMET
+
     // !.下载场景下未被规则集囊括的下载域名可能会被后续规则集囊括
     // !.从而造成下载流量走代理的情况，这里直接使用单独代理组管理流量
     "PROCESS-NAME,steam.exe,STEAM",                                     // _.STEAM
@@ -176,6 +180,8 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,go.exe)," + B_LIST,                         // _.GO RUNTIME
     "SUB-RULE,(PROCESS-NAME,cursor.exe)," + B_LIST,                     // _.CURSOR
     "SUB-RULE,(PROCESS-NAME,code.exe)," + B_LIST,                       // _.VISUAL STUDIO CODE/VSCODE
+    "SUB-RULE,(PROCESS-NAME,uv.exe)," + B_LIST,                         // _.ANKI LAUNCHER
+
 
     "SUB-RULE,(PROCESS-NAME,Mihomo Party.exe)," + B_LIST,               // _.MIHOMO PARTY
     "SUB-RULE,(PROCESS-NAME,clash-verge.exe)," + B_LIST,                // _.CLASH VERGE
