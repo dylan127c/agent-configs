@@ -299,6 +299,7 @@ DOMAIN-SUFFIX,pchomeonline.com.tw
 DOMAIN-SUFFIX,pki.google.com
 DOMAIN-SUFFIX,play-edge.itunes.apple.com
 DOMAIN-SUFFIX,poshtestgallery.cloudapp.net
+DOMAIN-SUFFIX,ppl-ai-file-upload.s3.amazonaws.com
 DOMAIN-SUFFIX,pplx-res.cloudinary.com
 DOMAIN-SUFFIX,practivate.adobe
 DOMAIN-SUFFIX,practivate.adobe.com
@@ -2846,6 +2847,7 @@ DOMAIN-SUFFIX,arctosia.com
 DOMAIN-SUFFIX,area120.com
 DOMAIN-SUFFIX,area51.to
 DOMAIN-SUFFIX,areca-backup.org
+DOMAIN-SUFFIX,arena.ai
 DOMAIN-SUFFIX,arena.taipei
 DOMAIN-SUFFIX,arethusa.su
 DOMAIN-SUFFIX,arewereadyyet.com
@@ -2877,6 +2879,7 @@ DOMAIN-SUFFIX,artstationmedia.com
 DOMAIN-SUFFIX,artstor.org
 DOMAIN-SUFFIX,artstorm.com
 DOMAIN-SUFFIX,arvanstorage.ir
+DOMAIN-SUFFIX,arweave.org
 DOMAIN-SUFFIX,arxiv.org
 DOMAIN-SUFFIX,arzon.jp
 DOMAIN-SUFFIX,as-hp.ca
@@ -7008,6 +7011,7 @@ DOMAIN-SUFFIX,dhlestudio.com.co
 DOMAIN-SUFFIX,diablo3.com
 DOMAIN-SUFFIX,diabloimmortal.com
 DOMAIN-SUFFIX,diabrowser.com
+DOMAIN-SUFFIX,diabrowser.engineering
 DOMAIN-SUFFIX,dialga.com
 DOMAIN-SUFFIX,dialogflow.com
 DOMAIN-SUFFIX,diamantewebcam.com
@@ -7266,6 +7270,7 @@ DOMAIN-SUFFIX,dkrecttv.com
 DOMAIN-SUFFIX,dl-iphone.com
 DOMAIN-SUFFIX,dl-laby.jp
 DOMAIN-SUFFIX,dl.box.net
+DOMAIN-SUFFIX,dlaf.jp
 DOMAIN-SUFFIX,dlap001.xyz
 DOMAIN-SUFFIX,dlap301.com
 DOMAIN-SUFFIX,dldlinks.com
@@ -7420,6 +7425,7 @@ DOMAIN-SUFFIX,dowjones.io
 DOMAIN-SUFFIX,dowjoneson.com
 DOMAIN-SUFFIX,download.aircrack-ng.org
 DOMAIN-SUFFIX,download.com
+DOMAIN-SUFFIX,download.dappcdn.com
 DOMAIN-SUFFIX,download.qatp1.net
 DOMAIN-SUFFIX,downloadpass.com
 DOMAIN-SUFFIX,downloadsforipod.com
@@ -12112,9 +12118,8 @@ DOMAIN-SUFFIX,ilife.eu
 DOMAIN-SUFFIX,ilife.gr
 DOMAIN-SUFFIX,ilife.wang
 DOMAIN-SUFFIX,illawarramercury.com.au
+DOMAIN-SUFFIX,illgames.jp
 DOMAIN-SUFFIX,illianacomputerrecycling.com
-DOMAIN-SUFFIX,illusion.co.jp
-DOMAIN-SUFFIX,illusion.jp
 DOMAIN-SUFFIX,illusion111.com
 DOMAIN-SUFFIX,illusionas.com
 DOMAIN-SUFFIX,illusionchn.com
@@ -12911,6 +12916,7 @@ DOMAIN-SUFFIX,jamyangnorbu.com
 DOMAIN-SUFFIX,jan.ai
 DOMAIN-SUFFIX,janor6.net
 DOMAIN-SUFFIX,japan-forward.com
+DOMAIN-SUFFIX,japan-illgames.com
 DOMAIN-SUFFIX,japan-whores.com
 DOMAIN-SUFFIX,japan18tube.com
 DOMAIN-SUFFIX,japanbeast.com
@@ -12944,6 +12950,7 @@ DOMAIN-SUFFIX,jav.guru
 DOMAIN-SUFFIX,jav.la
 DOMAIN-SUFFIX,jav.land
 DOMAIN-SUFFIX,jav.place
+DOMAIN-SUFFIX,jav.sb
 DOMAIN-SUFFIX,jav.si
 DOMAIN-SUFFIX,jav.wine
 DOMAIN-SUFFIX,jav01.cc
@@ -13017,6 +13024,7 @@ DOMAIN-SUFFIX,javhdporn.net
 DOMAIN-SUFFIX,javher.com
 DOMAIN-SUFFIX,javheroine.com
 DOMAIN-SUFFIX,javhihi.com
+DOMAIN-SUFFIX,javhub.com
 DOMAIN-SUFFIX,javhub.me
 DOMAIN-SUFFIX,javhub.net
 DOMAIN-SUFFIX,javhuge.com
@@ -13052,6 +13060,7 @@ DOMAIN-SUFFIX,javprime.net
 DOMAIN-SUFFIX,javpub.me
 DOMAIN-SUFFIX,javpush.com
 DOMAIN-SUFFIX,javqd.com
+DOMAIN-SUFFIX,javquick.com
 DOMAIN-SUFFIX,javrank.com
 DOMAIN-SUFFIX,javrate.com
 DOMAIN-SUFFIX,javrave.club
@@ -13117,6 +13126,7 @@ DOMAIN-SUFFIX,jerkofftocelebs.com
 DOMAIN-SUFFIX,jessicaturner.co.uk
 DOMAIN-SUFFIX,jessicaturner.com
 DOMAIN-SUFFIX,jetbrains.ai
+DOMAIN-SUFFIX,jetbrains.cloud
 DOMAIN-SUFFIX,jetbrains.com
 DOMAIN-SUFFIX,jetbrains.net
 DOMAIN-SUFFIX,jetbrains.space
@@ -17823,6 +17833,10 @@ DOMAIN-SUFFIX,pleasefuck.org
 DOMAIN-SUFFIX,pleasurebabe.com
 DOMAIN-SUFFIX,pleasuregirl.net
 DOMAIN-SUFFIX,pleasuremore.com
+DOMAIN-SUFFIX,plex.com
+DOMAIN-SUFFIX,plex.services
+DOMAIN-SUFFIX,plex.tv
+DOMAIN-SUFFIX,plexapp.com
 DOMAIN-SUFFIX,plexvpn.pro
 DOMAIN-SUFFIX,plos.org
 DOMAIN-SUFFIX,plug-into.com
@@ -21841,6 +21855,7 @@ DOMAIN-SUFFIX,tsundora.com
 DOMAIN-SUFFIX,tsuradou.noonvob.com
 DOMAIN-SUFFIX,tsyum.com
 DOMAIN-SUFFIX,tt1069.com
+DOMAIN-SUFFIX,ttcdn-us.com
 DOMAIN-SUFFIX,tteshop.com
 DOMAIN-SUFFIX,ttlivecdn.com
 DOMAIN-SUFFIX,ttoverseaus.net
@@ -23611,6 +23626,7 @@ DOMAIN-SUFFIX,wisekey.com
 DOMAIN-SUFFIX,wisekey.com.hk
 DOMAIN-SUFFIX,wisevid.com
 DOMAIN-SUFFIX,wish.com
+DOMAIN-SUFFIX,wispbyte.com
 DOMAIN-SUFFIX,wistia.com
 DOMAIN-SUFFIX,wistia.net
 DOMAIN-SUFFIX,withgoogle.com
@@ -24545,6 +24561,7 @@ DOMAIN-SUFFIX,yandexadexchange.net
 DOMAIN-SUFFIX,yandexcloud.net
 DOMAIN-SUFFIX,yandexcom.net
 DOMAIN-SUFFIX,yandexmetrica.com
+DOMAIN-SUFFIX,yandexwebcache.net
 DOMAIN-SUFFIX,yandexwebcache.org
 DOMAIN-SUFFIX,yangzhi.org
 DOMAIN-SUFFIX,yantaqu.com

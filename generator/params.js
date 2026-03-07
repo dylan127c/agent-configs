@@ -452,7 +452,7 @@ const BASIC_BUILT = () => {
          * 
          * 同时，严格路由一般由 CLASH GUI 接管，是否选择启用严格路由请谨慎考虑，推荐不启用。
          */
-        "strict-route": false // *.此选项会让默认情况下的 Vue3 应用无法本地访问
+        "strict-route": false, // *.此选项会让默认情况下的 Vue3 应用无法本地访问
     };
 
     /*

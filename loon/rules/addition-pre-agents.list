@@ -1,8 +1,11 @@
 # !.ADDITION-PRE-AGENTS# !.提前代理（或未知代理）# !.注意，不同类型流量对待 HOSTS（use-system-hosts）行为不同：# >.SOCKS5/HTTP(S) 流量会保留域名信息，映射 IP 会使用域名匹配到的规则；# >.TUN 流量则不保留域名信息，仅使用映射 IP 地址所能匹配到的规则完成请求。# >.GOOGLE (SPEED UP)
-DOMAIN-SUFFIX,google.com# >.SUBSCRIPTION (TAISHAN NET)
-DOMAIN-SUFFIX,ts1110.top
+DOMAIN-SUFFIX,google.com
+DOMAIN-SUFFIX,gstatic.com
+DOMAIN-SUFFIX,fonts.googleapis.com
+DOMAIN-SUFFIX,c.pki.goog# >.SUBSCRIPTION (TAISHAN NET)
+DOMAIN-REGEX,[9]{3}\..+\.top
 DOMAIN-SUFFIX,taishan.pro# >.MAVEN REPO
-DOMAIN-SUFFIX,mvnrepository.com# >.HOSTS FILE# >.GOOGLE FORCE SAFE SEARCH (FOR TUN)# 1.USE-SYSTEM-HOSTS ENABLED, AND HOSTS EXISTS# 2.TUN MODE, MAPPING IP REQUIRES PROXY SERVER# 3.CURRENT NO ANY RULES MATCHING THAT IP ADDR
+DOMAIN-SUFFIX,mvnrepository.com# >.GOOGLE FORCE SAFE SEARCH# >.ENABLED USE-SYSTEM-HOSTS ENABLED# >.ADD MAPPING TO HOST FILE: 216.239.38.120 www.google.com
 IP-CIDR,216.239.38.120/32,no-resolve# >.ANONYMOUS PROGRAMS
 DOMAIN-SUFFIX,googleusercontent.com# >.SVCHOST.EXE
 DOMAIN-SUFFIX,pti.store.microsoft.com# >.RADIONSOFTWARE.EXE
@@ -19,7 +22,5 @@ AND,((DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}db\..*),(OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS)
 AND,((DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}le\..*),(OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))))
 AND,((DOMAIN-REGEX,^th[a-z]{5}du[a-z]{2}\..*),(OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))))
 AND,((DOMAIN-REGEX,^[w]{3}\.\d{3}[a-z]{1}a[a-z]{1}\..*),(OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))))
-AND,((DOMAIN-REGEX,^[a-z]{3}bj[a-z]{3}\..*),(OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS)))
-AND,((DOMAIN-REGEX,^[0-9]{2}cg[0-9]{1}\..*),(OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS)))
-DOMAIN-SUFFIX,gstatic.com
-DOMAIN-SUFFIX,fonts.googleapis.com
+AND,((DOMAIN-REGEX,^[a-z]{3}bj[a-z]{3}\..*),(OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))))
+AND,((DOMAIN-REGEX,^[0-9]{2}cg[0-9]{1}\..*),(OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))))

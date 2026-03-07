@@ -59,12 +59,13 @@ const SPECIFIC_GROUPS = [
     { name: "STREAMING", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Media.png" },
 
     // !.远程 SSH 需要代理的情况（例如配合 FinalShell 使用）
+    // !.目前 51162 端口单独提供给 FinalShell 使用，并配置了此 SSH 策略组
     { name: "SSH", type: "select", proxies: ["DIRECT"], single: true, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Round_Robin.png" },
 
     { name: "CLOUDFLARE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cloudflare.png", url: "https://cloudflare.com/cdn-cgi/trace" },
     { name: "CURSOR", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Cursor.png" },
     { name: "GITHUB", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/GitHub_1.png", url: "https://api.github.com/zen" },
-    { name: "LINUX.DO", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cat.png", url: "https://status.linux.do/api/status-page/heartbeat/default" },
+    // { name: "LINUX.DO", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cat.png", url: "https://status.linux.do/api/status-page/heartbeat/default" },
 
     // ?.PIKPAK 下载存在大量请求建议优先进行匹配
     { name: "PIKPAK.DS", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/lige47/QuanX-icon-rule/main/icon/pikpak.png" },
@@ -97,7 +98,7 @@ const RULES = [
     // >.规则集 ADDITION-PRE-* 用于匹配这类型流量，以提前完成拦截、直连、代理或下载等需求
     // >.注意前置规则不能过多，TUN 模式下所有程序都要经过这些规则集的匹配，尽量保持少量精准
 
-    // !.如果浏览器本身安装了 WebRTC 插件或扩展程序，那么可以不屏蔽 PCDN 流量
+    // !.如果浏览器本身安装了 WebRTC 插件或扩展程序，那么可以不屏蔽 PCDN 流量（使用 DIRECT 替代 REJECT）
     // >.某些视频网站只能从 P/MCDN 节点下载视频内容，屏蔽会导致视频无法观看（卡加载）
     "AND,((PROCESS-NAME,firefox.exe),(RULE-SET,addition-pre-pcdn)),DIRECT",
     "AND,((PROCESS-NAME,msedge.exe),(RULE-SET,addition-pre-pcdn)),DIRECT",
@@ -105,11 +106,16 @@ const RULES = [
 
     // !.注意 ADDITION-PRE-* 规则文件是 CLASSICAL 类型
     // !.普通 ADDITION-* 规则则多使用 DOMAIN 而非 CLASSICAL 类型
-    "RULE-SET,addition-pre-pcdn,REJECT",                                // _.提前拦截（仅浏览器不进行拦截）
-    "RULE-SET,addition-pre-block,REJECT",                               // _.提前拦截（包括浏览器在内的应用不可访问）
+    "RULE-SET,addition-pre-pcdn,REJECT",                                // _.提前拦截（除浏览器之外的 PCDN 均拦截）
+    "RULE-SET,addition-pre-block,REJECT",                               // _.提前拦截（所有应用均不可访问）
     "RULE-SET,addition-pre-direct,DIRECT",                              // _.提前直连（例如游戏、网盘程序产生的流量）
     "RULE-SET,addition-pre-download,DOWNLOAD",                          // _.提前下载（或未知下载）
     "RULE-SET,addition-pre-agents,ALL",                                 // _.提前代理（或未知代理）
+
+    // !.浏览器存在大量请求，使用 F_LIST 完整规则集分流
+    "SUB-RULE,(PROCESS-NAME,firefox.exe)," + F_LIST,                    // _.FIREFOX
+    "SUB-RULE,(PROCESS-NAME,msedge.exe)," + F_LIST,                     // _.MICROSOFT EDGE
+    "SUB-RULE,(PROCESS-NAME,chrome.exe)," + F_LIST,                     // _.GOOGLE CHROME
 
     // !.类似 CLASH VERGE 等工具使用 Microsoft Edge 作为渲染引擎来
     // !.存在 msedgewebview2.exe 进程发起类似 githubcontents.com 的请求
@@ -124,9 +130,20 @@ const RULES = [
     // !.PIKPAK 较为特殊，其存在国内 CDN 节点允许进行直连下载（尽量直连）
     "PROCESS-NAME,DownloadServer.exe,PIKPAK.DS",                        // _.PIKPAK DOWNLOAD SERVER
 
+    // ?.注意 BT 程序的问题：
+    // >.BT 可能产生的大量超时请求，这会让 CLASH 误判策略组存在问题；
+    // >.DOWNLOAD 策略组存在问题时，CLASH 会反复对指定组别进行延迟测试；
+    // >.长时间的、密集的延迟测试可能会影响 CLASH 核心的稳定性；
+    // >.同时，请求量过大无异于对核心发起 DDOS 攻击。
+    // !.无论是 BitComet 还是 Motrix（aria2）都支持网卡配置，从而避免伪 DDOS 发生。
+
     // ?.某些时候需要勾选“使用代理连接 Tracker”才能使 BitComet 查找到“种子/用户”
     // !.这里直接让 BitComet 走 DIRECT 策略（DOWNLOAD 组别默认）
     "PROCESS-NAME,BitComet.exe,DOWNLOAD",                               // _.BITCOMET
+    "PROCESS-NAME,Motrix.exe,DOWNLOAD",                                 // _.MOTRIX
+
+    // !.允许局域网设备连接，此类型不会造成 DNS 泄漏
+    "SUB-RULE,(SRC-IP-CIDR,192.168.1.0/24)," + W_LIST,                  // _.IPHONE && IPAD
 
     // !.下载场景下未被规则集囊括的下载域名可能会被后续规则集囊括
     // !.从而造成下载流量走代理的情况，这里直接使用单独代理组管理流量
@@ -137,21 +154,6 @@ const RULES = [
     // !.单独代理组管理 EPIC 的原因和 STEAM 类似
     "PROCESS-NAME,EpicWebHelper.exe,EPIC",                              // _.EPIC
     "PROCESS-NAME,EpicGamesLauncher.exe,EPIC",                          // _.EPIC GAMES LAUNCHER
-
-    // !.浏览器存在大量请求，使用 F_LIST 完整规则集分流
-    "SUB-RULE,(PROCESS-NAME,zen.exe)," + F_LIST,                        // _.ZEN
-    "SUB-RULE,(PROCESS-NAME,firefox.exe)," + F_LIST,                    // _.FIREFOX
-    "SUB-RULE,(PROCESS-NAME,msedge.exe)," + F_LIST,                     // _.MICROSOFT EDGE
-    "SUB-RULE,(PROCESS-NAME,chrome.exe)," + F_LIST,                     // _.GOOGLE CHROME
-
-    // !.允许局域网设备连接，此类型不会造成 DNS 泄漏
-    "SUB-RULE,(SRC-IP-CIDR,192.168.1.0/24)," + W_LIST,                  // _.IPHONE && IPAD
-
-    // ?.注意 BT 程序产生的大量超时请求的问题（不推荐将 BT 程序纳入分流）
-    // >.BT 可能产生的大量超时请求，这会让 CLASH 误判策略组存在问题；
-    // >.DOWNLOAD 策略组存在问题时，CLASH 会反复对指定组别进行延迟测试；
-    // >.长时间的、密集的延迟测试可能会影响 CLASH 核心的稳定性；
-    // >.同时，请求量过大无异于对核心发起 DDOS 攻击。
 
     // !.普通下载需求使用 D_LIST 规则集
     "SUB-RULE,(PROCESS-NAME,IDMan.exe)," + D_LIST,                      // _.IDM
@@ -196,16 +198,8 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,gitkraken.exe)," + B_LIST,                  // _.GITKRAKEN
     "SUB-RULE,(PROCESS-NAME,Typora.exe)," + B_LIST,                     // _.TYPORA
 
-    "SUB-RULE,(PROCESS-NAME,CefSharp.BrowserSubprocess.exe)," + B_LIST, // _.STEAM/PLAYNITE
-
     // ?.内核版本 1.19.5 => 路径规则能够正常匹配使用“.”分割的进程名
-    "SUB-RULE,(PROCESS-NAME,Playnite.DesktopApp.exe)," + B_LIST,        // _.PLAYNITE
-    "SUB-RULE,(PROCESS-NAME,Playnite.FullscreenApp.exe)," + B_LIST,     // _.PLAYNITE FULLSCREEN
-    "SUB-RULE,(PROCESS-NAME,Toolbox.exe)," + B_LIST,                    // _.PLAYNITE TOOLBOX
-
-    "SUB-RULE,(PROCESS-NAME,bg3.exe)," + B_LIST,                        // _.BALDURS GATE 3
-    "SUB-RULE,(PROCESS-NAME,bg3_dx11.exe)," + B_LIST,                   // _.BALDURS GATE 3 DX11
-    "SUB-RULE,(PROCESS-NAME,LariLauncher.exe)," + B_LIST,               // _.LARIAN LAUNCHER
+    "SUB-RULE,(PROCESS-NAME,CefSharp.BrowserSubprocess.exe)," + B_LIST, // _.STEAM/PLAYNITE
 
     // !.PIKPAK 不能使用 W_LIST 子规则（白名单不保留 ALL 策略组）
     // ?.原因是 mypikpak.com 域名存在于 original-direct 规则集
@@ -214,13 +208,22 @@ const RULES = [
 
     // !.白名单模式
     "SUB-RULE,(PROCESS-NAME,Telegram.exe)," + W_LIST,                   // _.TELEGRAM
-    "SUB-RULE,(PROCESS-NAME,AdsPower Global.exe)," + W_LIST,            // _.ADSPOWER
-    "SUB-RULE,(PROCESS-NAME,SunBrowser.exe)," + W_LIST,                 // _.SUN BROWSER
+
+    // _.归档
+    // "SUB-RULE,(PROCESS-NAME,Playnite.DesktopApp.exe)," + B_LIST,     // _.PLAYNITE
+    // "SUB-RULE,(PROCESS-NAME,Playnite.FullscreenApp.exe)," + B_LIST,  // _.PLAYNITE FULLSCREEN
+    // "SUB-RULE,(PROCESS-NAME,Toolbox.exe)," + B_LIST,                 // _.PLAYNITE TOOLBOX
+
+    // "SUB-RULE,(PROCESS-NAME,bg3.exe)," + B_LIST,                     // _.BALDURS GATE 3
+    // "SUB-RULE,(PROCESS-NAME,bg3_dx11.exe)," + B_LIST,                // _.BALDURS GATE 3 DX11
+    // "SUB-RULE,(PROCESS-NAME,LariLauncher.exe)," + B_LIST,            // _.LARIAN LAUNCHER
+    // 
+    // "SUB-RULE,(PROCESS-NAME,AdsPower Global.exe)," + W_LIST,         // _.ADSPOWER
+    // "SUB-RULE,(PROCESS-NAME,SunBrowser.exe)," + W_LIST,              // _.SUN BROWSER
 
     // !.无匹配流量
     "MATCH,DIRECT",                                                     // _.ESCAPE REQUESTS
 ];
-
 
 const ALL_SUB_RULES = [
     // !.一些广告拦截及直连请求
@@ -249,8 +252,8 @@ const ALL_SUB_RULES = [
     "RULE-SET,addition-docker,DOCKER",                              // _.DOCKER
 
     // !.游戏、视频、网盘等
-    "RULE-SET,addition-linux.do,LINUX.DO",                          // _.LINUX.DO
-    "RULE-SET,addition-media,STREAMING",                            // _.STREAMING
+    // "RULE-SET,addition-linux.do,LINUX.DO",                       // _.LINUX.DO
+    "RULE-SET,addition-streaming,STREAMING",                        // _.STREAMING
     "RULE-SET,special-reddit,REDDIT",                               // _.REDDIT
     "RULE-SET,special-youtube,YOUTUBE",                             // _.YOUTUBE
     "RULE-SET,special-onedrive,ONEDRIVE",                           // _.ONEDRIVE
