@@ -1,8 +1,0 @@
-# !.ADDITON-DOCKER
-
-payload:
-  - "+.docker.io"
-  - "+.docker.com"
-  - "+.dockerhub.com"
-  - "+.rubygems.org"
-  - "+.segment.io"

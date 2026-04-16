@@ -1,8 +1,5 @@
 # !.ADDITION-PRE-DOWNLOAD
-# !.提前下载（或未知下载）
-
-# >.程序特殊策略组的主要目录不是为了下载
-# >.如果存在大流量下载需求，应主动导向 DOWNLOAD 策略组
+# >.规则内的域名、程序等将直接使用 DOWNLOAD 代理组
 
 payload:
   # >.INTELLIJ IDEA：GRADLE 依赖下载
@@ -31,3 +28,6 @@ payload:
 
   # >.NETWORK DISK
   - DOMAIN-SUFFIX,dailyuploads.net
+
+  # >.临时允许（可删除）
+  - DOMAIN-SUFFIX,playrecord.biz

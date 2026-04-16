@@ -62,7 +62,7 @@ const SPECIFIC_GROUPS = [
     // !.目前 51162 端口单独提供给 FinalShell 使用，并配置了此 SSH 策略组
     { name: "SSH", type: "select", proxies: ["DIRECT"], single: true, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Round_Robin.png" },
 
-    { name: "CLOUDFLARE", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cloudflare.png", url: "https://cloudflare.com/cdn-cgi/trace" },
+    { name: "CLOUDFLARE", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cloudflare.png", url: "https://cloudflare.com/cdn-cgi/trace" },
     { name: "CURSOR", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/Cursor.png" },
     { name: "GITHUB", type: "select", proxies: ["REJECT"], append: true, autofilter: "^.*(?:\\[H|M\\]).*$", icon: "https://raw.githubusercontent.com/dylan127c/agent-configs/main/commons/icons/normal/GitHub_1.png", url: "https://api.github.com/zen" },
     // { name: "LINUX.DO", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cat.png", url: "https://status.linux.do/api/status-page/heartbeat/default" },
@@ -104,13 +104,16 @@ const RULES = [
     "AND,((PROCESS-NAME,msedge.exe),(RULE-SET,addition-pre-pcdn)),DIRECT",
     "AND,((PROCESS-NAME,chrome.exe),(RULE-SET,addition-pre-pcdn)),DIRECT",
 
+    // !.除浏览器之外的 PCDN 均拦截
+    "RULE-SET,addition-pre-pcdn,REJECT",
+
     // !.注意 ADDITION-PRE-* 规则文件是 CLASSICAL 类型
     // !.普通 ADDITION-* 规则则多使用 DOMAIN 而非 CLASSICAL 类型
-    "RULE-SET,addition-pre-pcdn,REJECT",                                // _.提前拦截（除浏览器之外的 PCDN 均拦截）
-    "RULE-SET,addition-pre-block,REJECT",                               // _.提前拦截（所有应用均不可访问）
-    "RULE-SET,addition-pre-direct,DIRECT",                              // _.提前直连（例如游戏、网盘程序产生的流量）
-    "RULE-SET,addition-pre-download,DOWNLOAD",                          // _.提前下载（或未知下载）
-    "RULE-SET,addition-pre-agents,ALL",                                 // _.提前代理（或未知代理）
+    "RULE-SET,addition-pre-audit,REJECT",                               // _.拦截（运营商审计规则 REJECT 部分）
+    "RULE-SET,addition-pre-reject,REJECT",                              // _.拦截（所有应用均禁止访问）
+    "RULE-SET,addition-pre-direct,DIRECT",                              // _.直连（例如游戏、网盘程序产生的流量）
+    "RULE-SET,addition-pre-download,DOWNLOAD",                          // _.下载（未知下载）
+    "RULE-SET,addition-pre-agent,ALL",                                  // _.代理（未知代理）
 
     // !.浏览器存在大量请求，使用 F_LIST 完整规则集分流
     "SUB-RULE,(PROCESS-NAME,firefox.exe)," + F_LIST,                    // _.FIREFOX
@@ -138,9 +141,8 @@ const RULES = [
     // !.无论是 BitComet 还是 Motrix（aria2）都支持网卡配置，从而避免伪 DDOS 发生。
 
     // ?.某些时候需要勾选“使用代理连接 Tracker”才能使 BitComet 查找到“种子/用户”
-    // !.这里直接让 BitComet 走 DIRECT 策略（DOWNLOAD 组别默认）
+    // !.这里直接让 BitComet 走 DOWNLOAD 代理组（根据实际情况自行调整节点）
     "PROCESS-NAME,BitComet.exe,DOWNLOAD",                               // _.BITCOMET
-    "PROCESS-NAME,Motrix.exe,DOWNLOAD",                                 // _.MOTRIX
 
     // !.允许局域网设备连接，此类型不会造成 DNS 泄漏
     "SUB-RULE,(SRC-IP-CIDR,192.168.1.0/24)," + W_LIST,                  // _.IPHONE && IPAD
@@ -156,6 +158,7 @@ const RULES = [
     "PROCESS-NAME,EpicGamesLauncher.exe,EPIC",                          // _.EPIC GAMES LAUNCHER
 
     // !.普通下载需求使用 D_LIST 规则集
+    // >.D_LIST 本质是浓缩版的 B_LIST（规则十分有限）
     "SUB-RULE,(PROCESS-NAME,IDMan.exe)," + D_LIST,                      // _.IDM
     "SUB-RULE,(PROCESS-NAME,draw.io.exe)," + D_LIST,                    // _.DRAW.IO
     "SUB-RULE,(PROCESS-NAME,PotPlayerMini64.exe)," + D_LIST,            // _.POTPLAYER
@@ -226,65 +229,57 @@ const RULES = [
 ];
 
 const ALL_SUB_RULES = [
-    // !.一些广告拦截及直连请求
-    // >.后续先匹配特殊代理分组以应用更贴切的代理节点
-    "RULE-SET,addition-reject,REJECT",                              // _.REJECT
-    "RULE-SET,addition-direct,DIRECT",                              // _.DIRECT
+    "RULE-SET,addition-reject,REJECT",                          // _.REJECT
+    "RULE-SET,addition-direct,DIRECT",                          // _.DIRECT
 
     // !.CLOUDFLARE 常用于验证，对很多服务来说都特别重要（建议置顶）
-    "RULE-SET,addition-cloudflare,CLOUDFLARE",                      // _.CLOUDFLARE
-    "RULE-SET,addition-oracle,ORACLE",                              // _.ORACLE
+    "RULE-SET,special-cloudflare,CLOUDFLARE",                   // _.CLOUDFLARE
 
-    // !.CURSOR
-    "RULE-SET,addition-cursor,CURSOR",                              // _.CURSOR
+    "RULE-SET,addition-proxy,ALL",                              // _.PROXY
+    "RULE-SET,addition-cursor,CURSOR",                          // _.CURSOR
+    "RULE-SET,addition-stream,STREAMING",                       // _.STREAMING
+
+    "RULE-SET,special-oracle,ORACLE",                           // _.ORACLE
 
     // !.AI 御三家
-    "RULE-SET,special-claude,CLAUDE",                               // _.CLAUDE
-    "RULE-SET,special-gemini,GEMINI",                               // _.GEMINI
-    "RULE-SET,addition-openai,OPENAI",                              // _.OPENAI
+    "RULE-SET,special-openai,OPENAI",                           // _.OPENAI
+    "RULE-SET,special-claude,CLAUDE",                           // _.CLAUDE
+    "RULE-SET,special-gemini,GEMINI",                           // _.GEMINI
 
     // !.JETBRAINS 组别要放在 Github 组别之后
     // !.因为 JETBRAINS 需要用到 Github API 服务
-    "RULE-SET,special-github,GITHUB",                               // _.GITHUB
-    "RULE-SET,special-jetbrains,JETBRAINS",                         // _.JETBRAINS
+    "RULE-SET,special-github,GITHUB",                           // _.GITHUB
+    "RULE-SET,special-jetbrains,JETBRAINS",                     // _.JETBRAINS
 
     // !.DOCKER 多用于下载镜像（IMAGE）
-    "RULE-SET,addition-docker,DOCKER",                              // _.DOCKER
+    "RULE-SET,special-docker,DOCKER",                           // _.DOCKER
 
     // !.游戏、视频、网盘等
-    // "RULE-SET,addition-linux.do,LINUX.DO",                       // _.LINUX.DO
-    "RULE-SET,addition-streaming,STREAMING",                        // _.STREAMING
-    "RULE-SET,special-reddit,REDDIT",                               // _.REDDIT
-    "RULE-SET,special-youtube,YOUTUBE",                             // _.YOUTUBE
-    "RULE-SET,special-onedrive,ONEDRIVE",                           // _.ONEDRIVE
+    "RULE-SET,special-reddit,REDDIT",                           // _.REDDIT
+    "RULE-SET,special-youtube,YOUTUBE",                         // _.YOUTUBE
+    "RULE-SET,special-onedrive,ONEDRIVE",                       // _.ONEDRIVE
 
     // !.TELEGRAM
-    "RULE-SET,special-telegram,TELEGRAM",                           // _.TELEGRAM
-    "RULE-SET,original-telegramcidr,TELEGRAM,no-resolve",           // _.TELEGRAM
+    "RULE-SET,special-telegram,TELEGRAM",                       // _.TELEGRAM
 
-    // !.PIKPAK
-    "RULE-SET,special-pikpak,ALL",                                  // _.PIKPAK
+    // !.常用的、需求代理的域名
+    "RULE-SET,special-google,ALL",                              // _.GOOGLE
+    "RULE-SET,special-pikpak,ALL",                              // _.PIKPAK
+    "RULE-SET,special-twitter,ALL",                             // _.TWITTER
 
-    // !.常见的自定义代理规则匹配
-    "RULE-SET,addition-proxy,ALL",                                  // _.PROXY
+    // !.常见的、需求代理的域名
+    "RULE-SET,special-proxy,ALL",                               // _.PROXY
+    
+    // !.尽量避免国内域名、IP 错误使用代理
+    // >.不影响电脑性能的前提下，建议使用此规则集
+    "RULE-SET,special-chinamax,DIRECT",                         // _.CHINAMAX
 
-    // !.内置规则（尽量避免匹配，影响性能）
-    // >.此规则集合之前的规则应覆盖大部分的代理使用场景
-    "RULE-SET,original-applications,DIRECT",
-    "RULE-SET,original-apple,DIRECT",
-    "RULE-SET,original-icloud,DIRECT",
-    "RULE-SET,original-private,DIRECT",
-    "RULE-SET,original-direct,DIRECT",
-    "RULE-SET,original-greatfire,ALL",
-    "RULE-SET,original-gfw,ALL",
-    "RULE-SET,original-proxy,ALL",
-    "RULE-SET,original-tld-not-cn,ALL",
-    "RULE-SET,original-reject,REJECT",
-
-    // !.局域网流量（等价 original-lancidr 规则集）
-    "GEOIP,LAN,DIRECT,no-resolve",
-    // !.国内流量（等价 original-cncidr 规则集）
-    "GEOIP,CN,DIRECT,no-resolve",
+    // !.局域网流量（GEOIP,LAN 等价 original-lancidr 规则集）
+    // "GEOIP,LAN,DIRECT,no-resolve",
+    "RULE-SET,original-lancidr,DIRECT,no-resolve",
+    // !.国内流量（GEOIP,CN 等价 original-cncidr 规则集）
+    // "GEOIP,CN,DIRECT,no-resolve",
+    "RULE-SET,original-cncidr,DIRECT,no-resolve",
 
     // !.浏览器优化：根据 SOCKS5/HTTP(S) 协议类型实现 DIRECT/PROXY 策略组动态匹配
     // >.简而言之，浏览器可选使用 SOCKS5 还是 HTTP(S) 协议连接代理服务

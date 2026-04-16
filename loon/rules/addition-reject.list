@@ -1,4 +1,5 @@
-# !.ADDITION-REJECT# >.MALICIOUS WEBSITES
-DOMAIN-SUFFIX,mixcrack.net
-DOMAIN-SUFFIX,antiadblocksystems.com# >.GITHUB PROXY (DEPRECATED, NO USEFUL)
-DOMAIN-SUFFIX,ghproxy.com
+# !.ADDITION-REJECT
+
+  - DOMAIN-SUFFIX,mixcrack.net
+  - DOMAIN-SUFFIX,antiadblocksystems.com
+  - DOMAIN-SUFFIX,ghproxy.com

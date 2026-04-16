@@ -1,9 +1,6 @@
 # !.ADDITION-REJECT
 
 payload:
-  # >.MALICIOUS WEBSITES
-  - '+.mixcrack.net'
-  - '+.antiadblocksystems.com'
-
-  # >.GITHUB PROXY (DEPRECATED, NO USEFUL)
-  - '+.ghproxy.com'
+  - DOMAIN-SUFFIX,mixcrack.net
+  - DOMAIN-SUFFIX,antiadblocksystems.com
+  - DOMAIN-SUFFIX,ghproxy.com

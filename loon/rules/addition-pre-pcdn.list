@@ -1,4 +1,5 @@
-# !.ADDITION-PRE-PCDN# !.提前拦截（仅浏览器不进行拦截）# >.PCDN
+# ADDITION-PRE-PCDN
+
   - DOMAIN-SUFFIX,gjfzpt.cn
   - DOMAIN-SUFFIX,szbdyd.com
   - DOMAIN-SUFFIX,bsccdn.net

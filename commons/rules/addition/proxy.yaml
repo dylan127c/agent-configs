@@ -1,44 +1,44 @@
 # !.ADDTION-PROXY
 
 payload:
-  # >.TOOLS/FRAMEWORKS
-  - '+.cursor.com'
-  - '+.gitkraken.com'
-  - '+.lobehub.com'
-  - '+.listary.com'
-  - '+.gigabyte.com'
-  - '+.wiki.metacubex.one'
-  - '+.swiftnet.tech'
-  - '+.touhou.tel'
-  - '+.greasyfork.org'
-  - '+.byrutgame.org'
-
-  # >.BAHAMUT
-  - '+.bahamut.com.tw'
-  - '+.digicert.com'
-  - '+.gamer.com.tw'
-  - '+.gvt1.com'
-  - '+.hinet.net'
-  - '+.viblast.com'
-
-  # >.HUGGING FACE
-  - '+.huggingface.co'
-  - '+.hf.co'
-
-  # >.ELSE
-  - '+.kpkuang.org'
-  - '+.18p.fun'
-  - '+.18pfun.com'
-  - '+.18comic.vip'
-  - '+.gohaveababy'
-  - '+.homdgcat.wiki'
-  - '+.pomofocus.io'
-  - '+.icons8.com'
-  - '+.acgndog.com'
-  - '+.wpzysq.vip'
-  - '+.wpzysq.com'
-  - '+.hembed.com'
-  - '+.ihaxs.com'
-  - '+.dusu.org'
-  - '+.xn--4gq62f52gdss.com'
-  - '+.linux.do'
+  - DOMAIN-SUFFIX,google.com
+  - DOMAIN-SUFFIX,gitkraken.com
+  - DOMAIN-SUFFIX,lobehub.com
+  - DOMAIN-SUFFIX,listary.com
+  - DOMAIN-SUFFIX,gigabyte.com
+  - DOMAIN-SUFFIX,wiki.metacubex.one
+  - DOMAIN-SUFFIX,touhou.tel
+  - DOMAIN-SUFFIX,greasyfork.org
+  - DOMAIN-SUFFIX,byrutgame.org
+  - DOMAIN-SUFFIX,bahamut.com.tw
+  - DOMAIN-SUFFIX,digicert.com
+  - DOMAIN-SUFFIX,gamer.com.tw
+  - DOMAIN-SUFFIX,gvt1.com
+  - DOMAIN-SUFFIX,hinet.net
+  - DOMAIN-SUFFIX,viblast.com
+  - DOMAIN-SUFFIX,huggingface.co
+  - DOMAIN-SUFFIX,hf.co
+  - DOMAIN-SUFFIX,kpkuang.org
+  - DOMAIN-SUFFIX,18p.fun
+  - DOMAIN-SUFFIX,18pfun.com
+  - DOMAIN-SUFFIX,18comic.vip
+  - DOMAIN-SUFFIX,gohaveababy
+  - DOMAIN-SUFFIX,homdgcat.wiki
+  - DOMAIN-SUFFIX,pomofocus.io
+  - DOMAIN-SUFFIX,icons8.com
+  - DOMAIN-SUFFIX,acgndog.com
+  - DOMAIN-SUFFIX,wpzysq.vip
+  - DOMAIN-SUFFIX,wpzysq.com
+  - DOMAIN-SUFFIX,hembed.com
+  - DOMAIN-SUFFIX,ihaxs.com
+  - DOMAIN-SUFFIX,dusu.org
+  - DOMAIN-SUFFIX,xn--4gq62f52gdss.com
+  - DOMAIN-SUFFIX,linux.do
+  - DOMAIN-SUFFIX,huroka.com
+  - DOMAIN-REGEX,^[a-z]{1}iss[a-z]{2}\..*
+  - DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}db\..*
+  - DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}le\..*
+  - DOMAIN-REGEX,^th[a-z]{5}du[a-z]{2}\..*
+  - DOMAIN-REGEX,^[w]{3}\.\d{3}[a-z]{1}a[a-z]{1}\..*
+  - DOMAIN-REGEX,^[a-z]{3}bj[a-z]{3}\..*
+  - DOMAIN-REGEX,^[0-9]{2}cg[0-9]{1}\..*

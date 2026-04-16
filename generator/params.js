@@ -30,7 +30,7 @@ const DOMAIN = "domain";
 
 const TYPE_MAP = {
     IPCIDR: ["cidr"],
-    CLASSICAL: ["special", "application", "pre"],
+    CLASSICAL: ["special", "application", "pre", "direct", "reject", "proxy"],
 };
 
 /**
@@ -71,7 +71,7 @@ const URL_TEST_PARAMS = {
     url: "https://www.google.com/generate_204",
     tolerance: 50, // *.目标节点的延迟小于当前选择节点的延迟至少 tolerance 值时，才会切换到目标节点
     lazy: false,
-    interval: 300,
+    interval: 300, // !.节点质量差则建议缩短此参数
     timeout: 2500,
     'max-failed-times': 2,
     'disable-udp': false,
@@ -86,7 +86,8 @@ const FALLBACK = "fallback";
 const FALLBACK_PARAMS = {
     url: "https://www.google.com/generate_204",
     lazy: false,
-    interval: 300,
+    // interval: 300,
+    interval: 5, // !.节点质量差则建议缩短此参数
     timeout: 2500,
     'max-failed-times': 2,
     'disable-udp': false,

@@ -1,0 +1,15 @@
+# !.ADDITION-PRE-BLOCK# !.提前拦截（包括浏览器在内的应用不可访问）# >.SMART INPUT PRO
+  - DOMAIN-SUFFIX,xiaolvpuzi.cn
+  - IP-CIDR,139.196.20.59/32,no-resolve
+  - IP-CIDR,47.102.221.152/32,no-resolve# >.GITKRAKEN
+  - DOMAIN-SUFFIX,release.gitkraken.com# >.HOSTBUF (FINALSHELL)
+  - DOMAIN-SUFFIX,youtusoft.com
+  - DOMAIN-SUFFIX,hostbuf.com
+  - DOMAIN-SUFFIX,dkys.org
+  - DOMAIN-SUFFIX,tcpspeed.com
+  - DOMAIN-SUFFIX,wn1998.com# >.IMTIP / FOR BLOCKING UPDATE
+  - PROCESS-NAME,ImTip.exe
+  - PROCESS-NAME,aardio.exe# >.ADOBE
+  - DOMAIN-SUFFIX,adobe.io
+  - DOMAIN-SUFFIX,adobestats.io
+  - DOMAIN-SUFFIX,hstatic.io

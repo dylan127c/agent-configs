@@ -1,26 +1,14 @@
 # !.ADDITION-DIRECT
 
 payload:
-  # >.ADGUARD WINDOWS
-  - "+.injections.adguard.org"
-  - "+.local.adguard.org"
-
-  # >.RAZORD
-  - "+.clash.razord.top"
-
-  # >.360
-  - '+.360.com'
-  - '+.360safe.com'
-  - '+.360totalsecurity.com'
-  - '+.360.cn'
-  - '+.qihoo.com'
-
-  # >.BITWARDEN
-  - '+.bitwarden.com'
-  - '+.bitwarden.net'
-
-  # >.TIME.IS
-  - '+.time.is'
-
-  # >.LISTARY
-  - '+.stripe.com'
+  - DOMAIN-SUFFIX,injections.adguard.org
+  - DOMAIN-SUFFIX,local.adguard.org
+  - DOMAIN-SUFFIX,clash.razord.top
+  - DOMAIN-SUFFIX,360.com
+  - DOMAIN-SUFFIX,360safe.com
+  - DOMAIN-SUFFIX,360totalsecurity.com
+  - DOMAIN-SUFFIX,360.cn
+  - DOMAIN-SUFFIX,qihoo.com
+  - DOMAIN-SUFFIX,bitwarden.com
+  - DOMAIN-SUFFIX,bitwarden.net
+  - DOMAIN-SUFFIX,time.is

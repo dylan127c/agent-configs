@@ -1,4 +1,4 @@
-# !.ADDITION-PRE-DOWNLOAD# !.提前下载（或未知下载）# >.程序特殊策略组的主要目录不是为了下载# >.如果存在大流量下载需求，应主动导向 DOWNLOAD 策略组# >.INTELLIJ IDEA：GRADLE 依赖下载
+# !.ADDITION-PRE-DOWNLOAD# >.规则内的域名、程序等将直接使用 DOWNLOAD 代理组# >.INTELLIJ IDEA：GRADLE 依赖下载
 DOMAIN-SUFFIX,gradle.org# >.PIKPAK：Storj（Storj DCS） 分布式云存储网络
 DOMAIN-SUFFIX,smn3.storagenode.cc# >.BitComet：更新相关
 DOMAIN-SUFFIX,download.bitcomet.com
@@ -9,4 +9,5 @@ DOMAIN-SUFFIX,download.oracle.com# >.VSCode 下载
 DOMAIN-SUFFIX,download.visualstudio.microsoft.
 DOMAIN-SUFFIX,update.code.visualstudio.com# >.Baldur's Gate 3 Official Mod
 DOMAIN-SUFFIX,modcdn.io# >.NETWORK DISK
-DOMAIN-SUFFIX,dailyuploads.net
+DOMAIN-SUFFIX,dailyuploads.net# >.临时允许（可删除）
+DOMAIN-SUFFIX,playrecord.biz
