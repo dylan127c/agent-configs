@@ -1,5 +1,7 @@
 # !.ADDITION-PRE-DOWNLOAD# >.规则内的域名、程序等将直接使用 DOWNLOAD 代理组# >.INTELLIJ IDEA：GRADLE 依赖下载
-DOMAIN-SUFFIX,gradle.org# >.PIKPAK：Storj（Storj DCS） 分布式云存储网络
+DOMAIN-SUFFIX,gradle.org
+DOMAIN-SUFFIX,plugins.jetbrains.com
+DOMAIN-SUFFIX,downloads.marketplace.jetbrains.com# >.PIKPAK：Storj（Storj DCS） 分布式云存储网络
 DOMAIN-SUFFIX,smn3.storagenode.cc# >.BitComet：更新相关
 DOMAIN-SUFFIX,download.bitcomet.com
 DOMAIN-SUFFIX,cometbbs.com# >.AMD 显卡驱动下载

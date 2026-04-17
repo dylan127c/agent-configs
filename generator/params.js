@@ -56,7 +56,7 @@ const LOAD_BALANCE = "load-balance"
 const LOAD_BALANCE_PARAMS = {
     url: "https://www.google.com/generate_204",
     strategy: "consistent-hashing", // *.consistent-hashing：相同域名的请求会被转发到同一个节点
-    lazy: false,
+    lazy: true,
     interval: 300,
     timeout: 2500,
     'max-failed-times': 2,
@@ -70,7 +70,7 @@ const URL_TEST = "url-test";
 const URL_TEST_PARAMS = {
     url: "https://www.google.com/generate_204",
     tolerance: 50, // *.目标节点的延迟小于当前选择节点的延迟至少 tolerance 值时，才会切换到目标节点
-    lazy: false,
+    lazy: true,
     interval: 300, // !.节点质量差则建议缩短此参数
     timeout: 2500,
     'max-failed-times': 2,
@@ -85,7 +85,7 @@ const URL_TEST_PARAMS = {
 const FALLBACK = "fallback";
 const FALLBACK_PARAMS = {
     url: "https://www.google.com/generate_204",
-    lazy: false,
+    lazy: true,
     // interval: 300,
     interval: 5, // !.节点质量差则建议缩短此参数
     timeout: 2500,

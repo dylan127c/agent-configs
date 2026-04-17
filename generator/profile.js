@@ -93,6 +93,11 @@ const W_LIST = "whitelist"; // _.白名单模式（MATCH PROXY）
 const D_LIST = "download";  // _.下载流量分流规则（DOWNLOAD）
 
 const RULES = [
+    // !.MOTRIX-NEXT 3.7.0 暂时无法通过修改 aria2.conf 指定网卡
+    // !.所有下载连接的请求，都会直接打到内核上造成伪 DDOS 攻击的现象
+    // >.暂时提前分流，避免造成资源浪费，尽量不在网络繁忙时进行下载作业
+    "PROCESS-NAME,motrixnext-aria2c.exe,DIRECT",                        // _.MOTRIX-NEXT ARIA2C
+
     // !.本规则的设计原则是基于 PROCESS 完成初次分流匹配，后续根据规则集针对请求深度分流
     // >.某些流量（已知或未知）可能需要提前进行分流（REJECT、DIRECT、PROXY 或 DOWNLOAD）
     // >.规则集 ADDITION-PRE-* 用于匹配这类型流量，以提前完成拦截、直连、代理或下载等需求
@@ -123,7 +128,15 @@ const RULES = [
     // !.类似 CLASH VERGE 等工具使用 Microsoft Edge 作为渲染引擎来
     // !.存在 msedgewebview2.exe 进程发起类似 githubcontents.com 的请求
     // !.注意 Windows 系统中存在许多 msedgewebview2.exe 进程要求直连网络，不能一概而论地走代理
-    "AND,((PROCESS-NAME,msedgewebview2.exe),(DOMAIN-KEYWORD,github)),GITHUB",
+    "AND,((PROCESS-NAME,msedgewebview2.exe),\
+            (DOMAIN-SUFFIX,raw.githubusercontent.com)),GITHUB",         // _.MSEDGEWEBVIEW2
+
+    // !.Tracker 更新会尝试请求 raw.githubusercontent.com 域名
+    // >.配置文件内的换行操作，会导致生成的规则间存在空格，这些规则在 MP 内运行正常
+    "AND,((PROCESS-NAME,Motrix.exe),\
+            (DOMAIN-SUFFIX,raw.githubusercontent.com)),GITHUB",         // _.MOTRIX
+    "AND,((PROCESS-NAME,motrix-next.exe),\
+            (DOMAIN-SUFFIX,raw.githubusercontent.com)),GITHUB",         // _.MOTRIX-NEXT
 
     // !.后续分流完全基于 PROCESS 规则，未匹配的程序将使用 DIRECT 策略（MATCH）
     // !.完全依赖代理服务的程序可以不使用规则集分流（推荐直接分配专用的代理策略组）
@@ -269,14 +282,15 @@ const ALL_SUB_RULES = [
 
     // !.常见的、需求代理的域名
     "RULE-SET,special-proxy,ALL",                               // _.PROXY
-    
-    // !.尽量避免国内域名、IP 错误使用代理
+
+    // !.尽量避免国内域名、IP 错误使用代理（浏览器 & HTTPs）
     // >.不影响电脑性能的前提下，建议使用此规则集
     "RULE-SET,special-chinamax,DIRECT",                         // _.CHINAMAX
 
     // !.局域网流量（GEOIP,LAN 等价 original-lancidr 规则集）
     // "GEOIP,LAN,DIRECT,no-resolve",
     "RULE-SET,original-lancidr,DIRECT,no-resolve",
+
     // !.国内流量（GEOIP,CN 等价 original-cncidr 规则集）
     // "GEOIP,CN,DIRECT,no-resolve",
     "RULE-SET,original-cncidr,DIRECT,no-resolve",

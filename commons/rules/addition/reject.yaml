@@ -4,3 +4,15 @@ payload:
   - DOMAIN-SUFFIX,mixcrack.net
   - DOMAIN-SUFFIX,antiadblocksystems.com
   - DOMAIN-SUFFIX,ghproxy.com
+  - AND,((IN-TYPE,SOCKS5),(DOMAIN-REGEX,^[a-z]{1}iss[a-z]{2}\..*))
+  - AND,((IN-TYPE,SOCKS5),(DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}db\..*))
+  - AND,((IN-TYPE,SOCKS5),(DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}le\..*))
+  - AND,((IN-TYPE,SOCKS5),(DOMAIN-REGEX,^th[a-z]{5}du[a-z]{2}\..*))
+  - AND,((IN-TYPE,SOCKS5),(DOMAIN-REGEX,^\d{3}[a-z]{1}a[a-z]{1}\..*))
+  - AND,((IN-TYPE,SOCKS5),(DOMAIN-REGEX,^[w]{3}\.\d{3}[a-z]{1}a[a-z]{1}\..*))
+  - AND,((IN-TYPE,SOCKS5),(DOMAIN-REGEX,^[a-z]{3}bj[a-z]{3}\..*))
+  - AND,((IN-TYPE,SOCKS5),(DOMAIN-REGEX,^[0-9]{2}cg[0-9]{1}\..*))
+  - AND,((IN-TYPE,SOCKS5),(DOMAIN-REGEX,^x[a-z]{2}in[a-z]{1}\..*))
+  - AND,((IN-TYPE,SOCKS5),(DOMAIN-REGEX,^a[a-z]{1}[0-9]{1}1\..*))
+  - AND,((IN-TYPE,SOCKS5),(DOMAIN-REGEX,^[w]{3}\.a[a-z]{1}[0-9]{1}1\..*))
+  - AND,((IN-TYPE,SOCKS5),(DOMAIN-REGEX,^[a-z]{1}9[a-z]{1}9\..*))

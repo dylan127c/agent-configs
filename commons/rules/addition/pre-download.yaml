@@ -4,6 +4,8 @@
 payload:
   # >.INTELLIJ IDEA：GRADLE 依赖下载
   - DOMAIN-SUFFIX,gradle.org
+  - DOMAIN-SUFFIX,plugins.jetbrains.com
+  - DOMAIN-SUFFIX,downloads.marketplace.jetbrains.com
 
   # >.PIKPAK：Storj（Storj DCS） 分布式云存储网络
   - DOMAIN-SUFFIX,smn3.storagenode.cc

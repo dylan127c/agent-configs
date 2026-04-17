@@ -25,3 +25,6 @@ payload:
   - DOMAIN-SUFFIX,adobe.io
   - DOMAIN-SUFFIX,adobestats.io
   - DOMAIN-SUFFIX,hstatic.io
+  
+  # >.POTPLAYER
+  - DOMAIN-SUFFIX,stat.tiara.kakao.com

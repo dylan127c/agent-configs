@@ -1,4 +1,5 @@
-# !.ADDITION-PRE-DIRECT# !.提前直连（例如游戏、网盘程序产生的流量）# >.AUDIT
+# !.ADDITION-PRE-DIRECT# !.提前直连（例如游戏、网盘程序产生的流量）# >.JSDELIVR
+DOMAIN-SUFFIX,cdn.jsdelivr.net# >.AUDIT
 DOMAIN-REGEX,\b([\w-]+\.)*(360\.cn|(360|360safe|360totalsecurity|qihoo)\.com)
 DOMAIN-REGEX,\b([\w-]+\.)*((auth\.api|account)\.sonyentertainmentnetwork|((native-ps3|auth|native)\.np\.ac|accounts\.api)\.playstation)\.(com|net)# >.PROCESS
 PROCESS-NAME,quark.exe
