@@ -55,8 +55,7 @@ const AUTO_REJECT = ["REJECT"].concat(AUTO_GROUPS);
 const SPECIFIC_GROUPS = [
     { name: "ALL", type: "select", proxies: AUTO_GROUPS.concat(["SPECIFIC"]), icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Available_1.png" },
     { name: "SPECIFIC", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/ULB.png" },
-    { name: "DOWNLOAD", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/SSID.png" },
-    { name: "STREAMING", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Media.png" },
+    { name: "FLUX", type: "select", proxies: ["DIRECT"], append: true, autofilter: "^.*(?:\\[H|M|L\\]).*$", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/SSID.png" },
 
     // !.远程 SSH 需要代理的情况（例如配合 FinalShell 使用）
     // !.目前 51162 端口单独提供给 FinalShell 使用，并配置了此 SSH 策略组
@@ -90,16 +89,20 @@ const GROUPS = SPECIFIC_GROUPS.concat(FILTER_GROUPS);
 const F_LIST = "fulllist";  // _.完整的规则集（常用于浏览器分流）
 const B_LIST = "blacklist"; // _.黑名单模式（MATCH DIRECT）
 const W_LIST = "whitelist"; // _.白名单模式（MATCH PROXY）
-const D_LIST = "download";  // _.下载流量分流规则（DOWNLOAD）
+const D_LIST = "download";  // _.下载流量分流规则（FLUX）
 
 const RULES = [
+    // !.针对配置文件内的请求解析，例如 DoH 域名
+    // !.此外 GEO 数据更新的链接同样匹配此 INNER 规则 
+    "IN-TYPE,INNER,DIRECT",                                             // _.MIHOMO(INNER) REQUEST
+
     // !.MOTRIX-NEXT 3.7.0 暂时无法通过修改 aria2.conf 指定网卡
     // !.所有下载连接的请求，都会直接打到内核上造成伪 DDOS 攻击的现象
     // >.暂时提前分流，避免造成资源浪费，尽量不在网络繁忙时进行下载作业
     "PROCESS-NAME,motrixnext-aria2c.exe,DIRECT",                        // _.MOTRIX-NEXT ARIA2C
 
     // !.本规则的设计原则是基于 PROCESS 完成初次分流匹配，后续根据规则集针对请求深度分流
-    // >.某些流量（已知或未知）可能需要提前进行分流（REJECT、DIRECT、PROXY 或 DOWNLOAD）
+    // >.某些流量（已知或未知）可能需要提前进行分流（REJECT、DIRECT、PROXY 或 FLUX）
     // >.规则集 ADDITION-PRE-* 用于匹配这类型流量，以提前完成拦截、直连、代理或下载等需求
     // >.注意前置规则不能过多，TUN 模式下所有程序都要经过这些规则集的匹配，尽量保持少量精准
 
@@ -117,7 +120,7 @@ const RULES = [
     "RULE-SET,addition-pre-audit,REJECT",                               // _.拦截（运营商审计规则 REJECT 部分）
     "RULE-SET,addition-pre-reject,REJECT",                              // _.拦截（所有应用均禁止访问）
     "RULE-SET,addition-pre-direct,DIRECT",                              // _.直连（例如游戏、网盘程序产生的流量）
-    "RULE-SET,addition-pre-download,DOWNLOAD",                          // _.下载（未知下载）
+    "RULE-SET,addition-pre-download,FLUX",                              // _.下载（未知下载）
     "RULE-SET,addition-pre-agent,ALL",                                  // _.代理（未知代理）
 
     // !.浏览器存在大量请求，使用 F_LIST 完整规则集分流
@@ -148,14 +151,14 @@ const RULES = [
 
     // ?.注意 BT 程序的问题：
     // >.BT 可能产生的大量超时请求，这会让 CLASH 误判策略组存在问题；
-    // >.DOWNLOAD 策略组存在问题时，CLASH 会反复对指定组别进行延迟测试；
+    // >.FLUX 策略组存在问题时，CLASH 会反复对指定组别进行延迟测试；
     // >.长时间的、密集的延迟测试可能会影响 CLASH 核心的稳定性；
     // >.同时，请求量过大无异于对核心发起 DDOS 攻击。
     // !.无论是 BitComet 还是 Motrix（aria2）都支持网卡配置，从而避免伪 DDOS 发生。
 
     // ?.某些时候需要勾选“使用代理连接 Tracker”才能使 BitComet 查找到“种子/用户”
-    // !.这里直接让 BitComet 走 DOWNLOAD 代理组（根据实际情况自行调整节点）
-    "PROCESS-NAME,BitComet.exe,DOWNLOAD",                               // _.BITCOMET
+    // !.这里直接让 BitComet 走 FLUX 代理组（根据实际情况自行调整节点）
+    "PROCESS-NAME,BitComet.exe,FLUX",                                   // _.BITCOMET
 
     // !.允许局域网设备连接，此类型不会造成 DNS 泄漏
     "SUB-RULE,(SRC-IP-CIDR,192.168.1.0/24)," + W_LIST,                  // _.IPHONE && IPAD
@@ -200,7 +203,6 @@ const RULES = [
     "SUB-RULE,(PROCESS-NAME,code.exe)," + B_LIST,                       // _.VISUAL STUDIO CODE/VSCODE
     "SUB-RULE,(PROCESS-NAME,uv.exe)," + B_LIST,                         // _.ANKI LAUNCHER
 
-
     "SUB-RULE,(PROCESS-NAME,Mihomo Party.exe)," + B_LIST,               // _.MIHOMO PARTY
     "SUB-RULE,(PROCESS-NAME,clash-verge.exe)," + B_LIST,                // _.CLASH VERGE
     "SUB-RULE,(PROCESS-NAME,Postman.exe)," + B_LIST,                    // _.POSTMAN
@@ -242,6 +244,9 @@ const RULES = [
 ];
 
 const ALL_SUB_RULES = [
+    // !.一些自收集的、需要在浏览器端屏蔽或直连的域名规则
+    // >.规则集不再添加去广告条目，99% 去广告需求来自浏览器
+    // >.术业有专攻，避免大量重复，推荐使用 uBlock Origin 插件
     "RULE-SET,addition-reject,REJECT",                          // _.REJECT
     "RULE-SET,addition-direct,DIRECT",                          // _.DIRECT
 
@@ -250,7 +255,6 @@ const ALL_SUB_RULES = [
 
     "RULE-SET,addition-proxy,ALL",                              // _.PROXY
     "RULE-SET,addition-cursor,CURSOR",                          // _.CURSOR
-    "RULE-SET,addition-stream,STREAMING",                       // _.STREAMING
 
     "RULE-SET,special-oracle,ORACLE",                           // _.ORACLE
 
@@ -348,7 +352,7 @@ const SUB_RULES = {
     [D_LIST]: download(
         {
             before: "ALL",
-            after: "DOWNLOAD",
+            after: "FLUX",
             excluded: BROWSER_ONLY,
             match: "DIRECT",
         },

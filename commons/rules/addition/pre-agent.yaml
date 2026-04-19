@@ -1,5 +1,5 @@
 # !.ADDITION-PRE-AGENTS
-# !.提前代理（或未知代理）：请求来着未纳入代理管理的、非浏览器程序
+# !.提前代理（或未知代理）：请求来自未纳入代理管理的、非浏览器程序
 
 # !.注意，不同类型流量对待 HOSTS（use-system-hosts）行为不同：
 # >.SOCKS5/HTTP(S) 流量会保留域名信息，映射 IP 会使用域名匹配到的规则；
@@ -8,10 +8,10 @@
 # !.如果规则被注释，表示多数情况下该域名能够直连
 
 payload:
-  # >.SUBSCRIPTION ()
-  # - DOMAIN-SUFFIX,touhou.tel
+  # >.SUBSCRIPTION
   - DOMAIN-REGEX,[9]{3}\..+\.top
   - DOMAIN-SUFFIX,taishan.pro
+  - DOMAIN-SUFFIX,fcapp.run
 
   # >.SVCHOST
   - DOMAIN-SUFFIX,pti.store.microsoft.com

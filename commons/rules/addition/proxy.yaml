@@ -2,6 +2,7 @@
 
 payload:
   - DOMAIN-SUFFIX,google.com
+  - DOMAIN-SUFFIX,bitwarden.com
   - DOMAIN-SUFFIX,gitkraken.com
   - DOMAIN-SUFFIX,lobehub.com
   - DOMAIN-SUFFIX,listary.com
@@ -34,15 +35,3 @@ payload:
   - DOMAIN-SUFFIX,xn--4gq62f52gdss.com
   - DOMAIN-SUFFIX,linux.do
   - DOMAIN-SUFFIX,huroka.com
-  - AND,((OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))),(DOMAIN-REGEX,^[a-z]{1}iss[a-z]{2}\..*))
-  - AND,((OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))),(DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}db\..*))
-  - AND,((OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))),(DOMAIN-REGEX,^[a-z]{1}a[a-z]{1}le\..*))
-  - AND,((OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))),(DOMAIN-REGEX,^th[a-z]{5}du[a-z]{2}\..*))
-  - AND,((OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))),(DOMAIN-REGEX,^\d{3}[a-z]{1}a[a-z]{1}\..*))
-  - AND,((OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))),(DOMAIN-REGEX,^[w]{3}\.\d{3}[a-z]{1}a[a-z]{1}\..*))
-  - AND,((OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))),(DOMAIN-REGEX,^[a-z]{3}bj[a-z]{3}\..*))
-  - AND,((OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))),(DOMAIN-REGEX,^[0-9]{2}cg[0-9]{1}\..*))
-  - AND,((OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))),(DOMAIN-REGEX,^x[a-z]{2}in[a-z]{1}\..*))
-  - AND,((OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))),(DOMAIN-REGEX,^a[a-z]{1}[0-9]{1}1\..*))
-  - AND,((OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))),(DOMAIN-REGEX,^[w]{3}\.a[a-z]{1}[0-9]{1}1\..*))
-  - AND,((OR,((IN-TYPE,HTTP),(IN-TYPE,HTTPS))),(DOMAIN-REGEX,^[a-z]{1}9[a-z]{1}9\..*))

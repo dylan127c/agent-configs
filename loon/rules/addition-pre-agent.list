@@ -1,6 +1,7 @@
-# !.ADDITION-PRE-AGENTS# !.提前代理（或未知代理）：请求来着未纳入代理管理的、非浏览器程序# !.注意，不同类型流量对待 HOSTS（use-system-hosts）行为不同：# >.SOCKS5/HTTP(S) 流量会保留域名信息，映射 IP 会使用域名匹配到的规则；# >.TUN 流量则不保留域名信息，仅使用映射 IP 地址所能匹配到的规则完成请求。# !.如果规则被注释，表示多数情况下该域名能够直连# >.SUBSCRIPTION ()# - DOMAIN-SUFFIX,touhou.tel
+# !.ADDITION-PRE-AGENTS# !.提前代理（或未知代理）：请求来自未纳入代理管理的、非浏览器程序# !.注意，不同类型流量对待 HOSTS（use-system-hosts）行为不同：# >.SOCKS5/HTTP(S) 流量会保留域名信息，映射 IP 会使用域名匹配到的规则；# >.TUN 流量则不保留域名信息，仅使用映射 IP 地址所能匹配到的规则完成请求。# !.如果规则被注释，表示多数情况下该域名能够直连# >.SUBSCRIPTION
   - DOMAIN-REGEX,[9]{3}\..+\.top
-  - DOMAIN-SUFFIX,taishan.pro# >.SVCHOST
+  - DOMAIN-SUFFIX,taishan.pro
+  - DOMAIN-SUFFIX,fcapp.run# >.SVCHOST
   - DOMAIN-SUFFIX,pti.store.microsoft.com
   - DOMAIN-SUFFIX,c.pki.goog# >.MAVEN REPO
   - DOMAIN-SUFFIX,mvnrepository.com# >.GOOGLE FORCE SAFE SEARCH# >.ENABLED USE-SYSTEM-HOSTS ENABLED# >.ADD MAPPING TO HOST FILE: 216.239.38.120 www.google.com# - IP-CIDR,216.239.38.120/32,no-resolve# >.ANONYMOUS PROGRAMS

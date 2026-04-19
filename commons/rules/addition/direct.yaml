@@ -9,6 +9,5 @@ payload:
   - DOMAIN-SUFFIX,360totalsecurity.com
   - DOMAIN-SUFFIX,360.cn
   - DOMAIN-SUFFIX,qihoo.com
-  - DOMAIN-SUFFIX,bitwarden.com
   - DOMAIN-SUFFIX,bitwarden.net
   - DOMAIN-SUFFIX,time.is

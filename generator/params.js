@@ -56,7 +56,7 @@ const LOAD_BALANCE = "load-balance"
 const LOAD_BALANCE_PARAMS = {
     url: "https://www.google.com/generate_204",
     strategy: "consistent-hashing", // *.consistent-hashing：相同域名的请求会被转发到同一个节点
-    lazy: true,
+    // lazy: false, // !.默认值：true
     interval: 300,
     timeout: 2500,
     'max-failed-times': 2,
@@ -70,7 +70,7 @@ const URL_TEST = "url-test";
 const URL_TEST_PARAMS = {
     url: "https://www.google.com/generate_204",
     tolerance: 50, // *.目标节点的延迟小于当前选择节点的延迟至少 tolerance 值时，才会切换到目标节点
-    lazy: true,
+    // lazy: false,
     interval: 300, // !.节点质量差则建议缩短此参数
     timeout: 2500,
     'max-failed-times': 2,
@@ -85,7 +85,7 @@ const URL_TEST_PARAMS = {
 const FALLBACK = "fallback";
 const FALLBACK_PARAMS = {
     url: "https://www.google.com/generate_204",
-    lazy: true,
+    // lazy: false,
     // interval: 300,
     interval: 5, // !.节点质量差则建议缩短此参数
     timeout: 2500,
@@ -182,15 +182,19 @@ const BASIC_BUILT = () => {
 
     initConfiguration["geodata-mode"] = true;
     initConfiguration["geodata-loader"] = "standard";
-    initConfiguration["geo-auto-update"] = true;
+    initConfiguration["geo-auto-update"] = false;
     initConfiguration["geo-update-interval"] = 24;
+    
+    // ?.没有使用任何 GEO 规则时，日志显示更新 GEO 文件但实际并未执行
+    // ?.实际存放 GEO 文件的目录是 data/work 目录
+    // !.由于目前未启用任何 GEO 规则，因此上述问题暂时搁置
     initConfiguration["geox-url"] = {
         geoip: "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat",
         geosite: "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat",
         mmdb: "https://cdn.jsdelivr.net/gh/Loyalsoldier/geoip@release/Country.mmdb",
         asn: "https://cdn.jsdelivr.net/gh/Loyalsoldier/geoip@release/GeoLite2-ASN.mmdb",
     };
-    initConfiguration["global-ua"] = "clash.rev";   // *.如果保持默认值 clash.meta 那么 MP 似乎无法更新某些资源，例如 GeoLite2-ASN.mmdb 文件
+    initConfiguration["global-ua"] = "clash.meta";
     initConfiguration["etag-support"] = true;       // *.是否启用 ETag 支持
 
     /**

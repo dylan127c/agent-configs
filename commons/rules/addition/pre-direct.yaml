@@ -2,6 +2,9 @@
 # !.提前直连（例如游戏、网盘程序产生的流量）
 
 payload:
+  # >.SUBSCRIPTION
+  - DOMAIN-KEYWORD,touhou
+  
   # >.JSDELIVR
   - DOMAIN-SUFFIX,cdn.jsdelivr.net
   
